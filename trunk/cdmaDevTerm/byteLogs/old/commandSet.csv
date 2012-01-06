@@ -1,0 +1,17 @@
+HexForCommand;CommandName;CommandDescription
+&H20, &H0, &H23, &H6E, &HD6, &H7E;sendPound;Sends Pound Key
+&H20, &H0, &H2A, &HAF, &H4B, &H7E;sendStar;Sends Star Key
+&H20, &H0, &H30, &H74, &HF4, &H7E;sendZero;Sends Zero Key
+&H20, &H0, &H31, &HFD, &HE5, &H7E;sendOne;Sends One Key
+&H20, &H0, &H32, &H66, &HD7, &H7E;sendTwo;Sends Two Key
+&H20, &H0, &H33, &HEF, &HC6, &H7E;sendThree;Sends Three Key
+&H20, &H0, &H34, &H50, &HB2, &H7E;sendFour;Sends Four Key
+&H20, &H0, &H35, &HD9, &HA3, &H7E;sendFive;Sends Five Key
+&H20, &H0, &H36, &H42, &H91, &H7E;sendSix;Sends Six Key
+&H20, &H0, &H37, &HCB, &H80, &H7E;sendSeven;Sends Seven Key
+&H20, &H0, &H38, &H3C, &H78, &H7E;sendEight;Sends Eight Key
+&H20, &H0, &H39, &HB5, &H69, &H7E;sendNine;Sends Nine Key
+&H20, &H0, &H50, &H72, &H97, &H7E;sendCall;Sends Call Key
+&H20, &H0, &H51, &HFB, &H86, &H7E;sendEnd;Sends End
+&H46, &HFF, &HFF, &HFF, &HFF, &HFF, &HFF, &HFF, &HFF, &HFE, &H74, &H7E  ;send16DigitFF;Sends FFFFFFFFFFFFFFFF 16 Digit Code
+a;b;b

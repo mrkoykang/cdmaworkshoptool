@@ -1,0 +1,45 @@
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwTool\cwTool\bin\Release\cwTool.exe
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwTool\cwTool\bin\Release\cwTool.pdb
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwTool\cwTool\bin\Release\cwTool.xml
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwTool\cwTool\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwTool\cwTool\obj\Release\WindowsApplication1.cwTool.resources
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwTool\cwTool\obj\Release\WindowsApplication1.Resources.resources
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwTool\cwTool\obj\Release\cwTool.vbproj.GenerateResource.Cache
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwTool\cwTool\obj\Release\cwTool.exe
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwTool\cwTool\obj\Release\cwTool.xml
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwTool\cwTool\obj\Release\cwTool.pdb
+C:\Data\Dev\ct\pt3ct\cwTool\bin\Release\cwTool.exe
+C:\Data\Dev\ct\pt3ct\cwTool\bin\Release\cwTool.pdb
+C:\Data\Dev\ct\pt3ct\cwTool\bin\Release\cwTool.xml
+C:\Data\Dev\ct\pt3ct\cwTool\obj\Release\ResolveAssemblyReference.cache
+C:\Data\Dev\ct\pt3ct\cwTool\obj\Release\WindowsApplication1.cwTool.resources
+C:\Data\Dev\ct\pt3ct\cwTool\obj\Release\WindowsApplication1.Resources.resources
+C:\Data\Dev\ct\pt3ct\cwTool\obj\Release\cwTool.vbproj.GenerateResource.Cache
+C:\Data\Dev\ct\pt3ct\cwTool\obj\Release\cwTool.exe
+C:\Data\Dev\ct\pt3ct\cwTool\obj\Release\cwTool.xml
+C:\Data\Dev\ct\pt3ct\cwTool\obj\Release\cwTool.pdb
+C:\FOSS\cT\cT.4a\pt4ct\cwTool\bin\Release\cwTool.exe
+C:\FOSS\cT\cT.4a\pt4ct\cwTool\bin\Release\cwTool.pdb
+C:\FOSS\cT\cT.4a\pt4ct\cwTool\bin\Release\cwTool.xml
+C:\FOSS\cT\cT.4a\pt4ct\cwTool\obj\Release\ResolveAssemblyReference.cache
+C:\FOSS\cT\cT.4a\pt4ct\cwTool\obj\Release\WindowsApplication1.cwTool.resources
+C:\FOSS\cT\cT.4a\pt4ct\cwTool\obj\Release\WindowsApplication1.Resources.resources
+C:\FOSS\cT\cT.4a\pt4ct\cwTool\obj\Release\cwTool.vbproj.GenerateResource.Cache
+C:\FOSS\cT\cT.4a\pt4ct\cwTool\obj\Release\cwTool.exe
+C:\FOSS\cT\cT.4a\pt4ct\cwTool\obj\Release\cwTool.xml
+C:\FOSS\cT\cT.4a\pt4ct\cwTool\obj\Release\cwTool.pdb
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\obj\Release\cwTool.exe
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\obj\Release\cwTool.xml
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\obj\Release\cwTool.pdb
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\bin\Release\cwTool.exe.manifest
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\bin\Release\cwTool.application
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\bin\Release\cwTool.exe
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\bin\Release\cwTool.pdb
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\bin\Release\cwTool.xml
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\obj\Release\ResolveAssemblyReference.cache
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\obj\Release\cT.cwTool.resources
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\obj\Release\cT.Resources.resources
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\obj\Release\GenerateResource.read.1.tlog
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\obj\Release\GenerateResource.write.1.tlog
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\obj\Release\cwTool.exe.manifest
+D:\data\dev\cT.4a\pt5ctSRC\cwTool\obj\Release\cwTool.application

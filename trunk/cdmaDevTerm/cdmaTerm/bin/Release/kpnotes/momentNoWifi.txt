@@ -1,0 +1,47 @@
+Samsung m900 moment - talk,txt,wap
+usb debugging = ADB
+dial up = DM
+
+k this command will tell if the pc can see the moment ok
+
+adb devices
+
+successful output will list a serial like this
+
+m900______________   device
+
+1. get the spc
+
+next type this command to get the spc for the moment
+
+adb shell getprop
+
+this will output a bunch of lines, look for ril:msl
+
+[ril.MSL]: [741021]
+
+would indicate 741021 for the spc
+
+2. change the spc and upload prl (half-flash)
+
+Enter ##debug# on the phone and enable dial up networking
+
+now open up cdmaWS and connect to the port DM (may need 
+drivers)
+
+if u need drivers http://randomtechinfo.com/Moment/Samsung.Mobile.USB.Drivers.rar
+
+turn off dial up networking when done
+
+3. copy the bettercut or anycut .apk file into c:\sdk\tools
+
+install it with the following command
+
+adb install com.betterandroid.bettercut.apk
+
+4.go to  anycut/bettercut>activites>proxy
+
+wap.mycricket.com
+port 8080
+
+

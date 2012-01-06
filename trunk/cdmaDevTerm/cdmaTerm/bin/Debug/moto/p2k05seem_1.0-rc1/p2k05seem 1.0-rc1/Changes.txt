@@ -1,0 +1,40 @@
+v1.0 Release Candidate 1
+Bugfixes:
+- Fixed displaying bytes in decimal in Seem Info group box when loading a seem
+  from a file.  Now correctly shows bytes in HEX.
+- Fixed text boxes so they properly limit the number of characters that can be entered
+- Fixed a crash when a seem loaded from a file has changed and you attemp to open
+  another file.
+- Fixed a crash when trying to open a file that doesn't exist.
+Changes:
+- The Open File dialog now has filters for Seem files (*.seem) and All files (*.*)
+- The Save File dialog now has filters for Seem files (*.seem) and All files (*.*)
+- Added a Decimal text box in the Selected Byte Details section which displays the
+  the value of the selected byte in decimal format, and allows the user to set the
+  value of the byte by entering their own decimal number like you can in MoST.
+- Added a drop-down list of *.csv files in the program directory that allows you to
+  change the .csv file used for bit/seem descriptions on the fly.  Allows for configs
+  for multiple phones to be used.
+- When loading a file the Bytes textbox under the Read section now resets to zero
+  since the bytes left over in the box do not reflect the number of bytes loaded
+  from the file.
+
+v1.0 Beta 2
+Bugfixes:
+- Fixed bug where certain seems wouldn't pull correctly or pulled at all 00's
+- Fixed instances of code that failed to check for invalid characters in Hex 
+  strings that could cause crashes
+- Fixed .csv file code that seem descriptions are placed in the Info: label in 
+  the Selected Byte Details group box (See README.txt for info on this)
+- Fixed the main window title to reflect the correct version
+- Fixed Bytes: in seem info from showing in decimal instead of HEX
+Changes:
+- Updated bit descriptions code to support offsets greater than FF
+- Removed "Partial Suspend Phone" button since I don't know of any use for this
+  phone state
+- Changed Bytes text box in the Load group box to be only 4 characters instead
+  8 since nobody will ever need to pull anything that large (p2k/p2k05 doesn't
+  support it anyways).
+- Changed the order the phone info loads to be more streamlined
+- Lowered the read from phone timeout for p2k to 10 seconds from original of 40
+

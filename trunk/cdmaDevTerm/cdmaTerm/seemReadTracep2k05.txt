@@ -1,0 +1,58 @@
+41	out down	n/a	48.717	VENDOR_INTERFACE	00 0b 00 20 00 08 00 00	
+URB Header (length: 80)
+SequenceNumber: 41
+Function: 0018 (VENDOR_INTERFACE)
+PipeHandle: 00000000
+
+SetupPacket:
+0000: 00 02 00 00 00 00 00 00 
+bmRequestType: 00
+  DIR: Host-To-Device
+  TYPE: Standard
+  RECIPIENT: Device
+bRequest: 02  
+  reserved for future use!!
+
+
+TransferBuffer: 0x00000010 (16) length
+0000: 00 0b 00 20 00 08 00 00 00 55 00 01 00 00 00 06 
+41	out up	n/a	48.721	CONTROL_TRANSFER	-	0x00000000
+42	in down	n/a	48.721	VENDOR_INTERFACE	-	
+42	in up	n/a	48.726	CONTROL_TRANSFER	00 01 00 0f	0x00000000
+43	in down	n/a	48.727	VENDOR_INTERFACE	-	
+43	in up	n/a	48.730	CONTROL_TRANSFER	01 00 00 00 00 0f 80 0b	0x00000000
+URB Header (length: 80)
+SequenceNumber: 43
+Function: 0008 (CONTROL_TRANSFER)
+PipeHandle: 8e35103c
+
+SetupPacket:
+0000: c1 01 01 00 00 00 15 00 
+bmRequestType: c1
+  DIR: Device-To-Host
+  TYPE: Vendor
+  RECIPIENT: Interface
+bRequest: 01  
+
+
+TransferBuffer: 0x00000015 (21) length
+0000: 01 00 00 00 00 0f 80 0b 80 20 00 07 00 00 00 30 
+0010: 30 30 30 30 30 
+44	out down	n/a	57.427	VENDOR_INTERFACE	00 0c 00 20 00 08 00 00	
+URB Header (length: 80)
+SequenceNumber: 44
+Function: 0018 (VENDOR_INTERFACE)
+PipeHandle: 00000000
+
+SetupPacket:
+0000: 00 02 00 00 00 00 00 00 
+bmRequestType: 00
+  DIR: Host-To-Device
+  TYPE: Standard
+  RECIPIENT: Device
+bRequest: 02  
+  reserved for future use!!
+
+
+TransferBuffer: 0x00000010 (16) length
+0000: 00 0c 00 20 00 08 00 00 00 56 00 01 00 00 00 06 

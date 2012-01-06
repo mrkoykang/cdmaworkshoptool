@@ -1,0 +1,1970 @@
+
+#include "comdef.h" 
+/////////////////////////////////////////////// 
+#define FTM_RF_RSP_SIZE	23 
+#define FTM_RF_CMD			119 
+#define	DIAG_NV_ITEM_SIZE	128 
+//#define DIAG_MAX_RX_PKT_SIZ (DIAG_NV_ITEM_SIZE * 2) 
+//#define DIAG_MAX_TX_PKT_SIZ (DIAG_NV_ITEM_SIZE * 2) 
+#define DIAG_MAX_RX_PKT_SIZ (2048 * 2) 
+#define DIAG_MAX_TX_PKT_SIZ (2048 * 2) 
+ 
+///////////////////////////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////////////////////////// 
+//nv here 
+typedef enum{ 
+	 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Electronic Serial Number.                                               */ 
+		 
+		NV_ESN_I = 0,            /* Electronic Serial Number                     */ 
+		NV_ESN_CHKSUM_I,         /* Electronic Serial Number checksum            */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* NV version numbers.                                                     */ 
+		 
+		NV_VERNO_MAJ_I,          /* NV Major version number                      */ 
+		NV_VERNO_MIN_I,          /* NV Minor version number                      */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Permanent physical station configuration parameters.                    */ 
+		 
+		NV_SCM_I,                /* SCMp                                         */ 
+		NV_SLOT_CYCLE_INDEX_I,   /* Slot cycle index                             */ 
+		NV_MOB_CAI_REV_I,        /* Mobile CAI revision number                   */ 
+		NV_MOB_FIRM_REV_I,       /* Mobile firmware revision number              */ 
+		NV_MOB_MODEL_I,          /* Mobile model                                 */ 
+		NV_CONFIG_CHKSUM_I,      /* Checksum of physical configuration parameters*/ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Permanent general NAM items.  Each of these is associated with a        */ 
+		/* particular NAM (there are up to four NAMs per unit).  The NAM id is     */ 
+		/* specified in the request.  Certain analog parameters are truly          */ 
+		/* associated with the MIN, but since there is only one MIN per NAM        */ 
+		/* in analog mode they are defined as a NAM item.                          */ 
+		 
+		NV_PREF_MODE_I,          /* Digital/Analog mode preference        */ /*10*/ 
+		NV_CDMA_PREF_SERV_I,     /* CDMA preferred serving system (A/B)          */ 
+		NV_ANALOG_PREF_SERV_I,   /* Analog preferred serving system (A/B)        */ 
+		 
+		/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/ 
+		 
+		/* The NAM parameters in the block below are protected by the NAM          */ 
+		/* checksum and can only be programmed via service programming.            */ 
+		/* The NAM parameters in the block above are not protected by checksum     */ 
+		/* and may be changed by the user 'on the fly'.                            */ 
+		 
+		NV_CDMA_SID_LOCK_I,      /* CDMA SID(s) to lockout                       */ 
+		NV_CDMA_SID_ACQ_I,       /* CDMA SID to acquire                          */ 
+		NV_ANALOG_SID_LOCK_I,    /* ANALOG SID(s) to lockout                     */ 
+		NV_ANALOG_SID_ACQ_I,     /* ANALOG SID to acquire                        */ 
+		NV_ANALOG_FIRSTCHP_I,    /* Analog FIRSTCHPp                             */ 
+		NV_ANALOG_HOME_SID_I,    /* Analog HOME_SIDp                             */ 
+		NV_ANALOG_REG_I,         /* Analog registration setting                  */ 
+		NV_PCDMACH_I,            /* Primary CDMA channel   */                /*20*/ 
+		NV_SCDMACH_I,            /* Secondary CDMA channel                       */ 
+		NV_PPCNCH_I,             /* Primary PCN channel                          */ 
+		NV_SPCNCH_I,             /* Secondary PCN channel                        */ 
+		NV_NAM_CHKSUM_I,         /* NAM checksum                                 */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Authentication NAM items.  Each of these is associated with a NAM       */ 
+		/* authentication (there are up to four NAMs per unit).  The NAM id is     */ 
+		/* specified in the request.                                               */ 
+		 
+		NV_A_KEY_I,              /* Authentication A key                         */ 
+		NV_A_KEY_CHKSUM_I,       /* Authentication A key checksum                */ 
+		NV_SSD_A_I,              /* SSD_Asp                                      */ 
+		NV_SSD_A_CHKSUM_I,       /* SSD_Asp checksum                             */ 
+		NV_SSD_B_I,              /* SSD_Bsp                                      */ 
+		NV_SSD_B_CHKSUM_I,       /* SSD_Bsp checksum        */               /*30*/ 
+		NV_COUNT_I,              /* COUNTsp                                      */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* MIN items.  Each of these is associated with a particular MIN within    */ 
+		/* the NAM (there are up to 2 MINs per NAM).  The MIN id itself is         */ 
+		/* specified in the request.  When operating in analog mode the first MIN  */ 
+		/* is the one and only meaningfull one.                                    */ 
+		 
+		NV_MIN1_I,               /* MIN1p                                        */ 
+		NV_MIN2_I,               /* MIN2p                                        */ 
+		NV_MOB_TERM_HOME_I,      /* CDMA MOB_TERM_HOMEp registration flag        */ 
+		NV_MOB_TERM_FOR_SID_I,   /* CDMA MOB_TERM_FOR_SIDp registration flag     */ 
+		NV_MOB_TERM_FOR_NID_I,   /* CDMA MOB_TERM_FOR_NIDp registration flag     */ 
+		NV_ACCOLC_I,             /* ACCOLCp                                      */ 
+		NV_SID_NID_I,            /* CDMA SID/NID pairs                           */ 
+		NV_MIN_CHKSUM_I,         /* MIN checksum                                 */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Operational NAM settings.                                               */ 
+		 
+		NV_CURR_NAM_I,           /* Current NAM     */                       /*40*/ 
+		NV_ORIG_MIN_I,           /* Call origination MIN within NAM              */ 
+		NV_AUTO_NAM_I,           /* Select NAM automatically on roaming          */ 
+		NV_NAME_NAM_I,           /* A user selectable name for each NAM          */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Semi-permanent analog registration parameters.                          */ 
+		 
+		NV_NXTREG_I,             /* NXTREGsp                                     */ 
+		NV_LSTSID_I,             /* SIDsp (last SID registered)                  */ 
+		NV_LOCAID_I,             /* LOCAIDsp                                     */ 
+		NV_PUREG_I,              /* PUREGsp                                      */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Semi-permanent CDMA registration and channel parameters.                */ 
+		 
+		NV_ZONE_LIST_I,          /* ZONE_LISTsp                                  */ 
+		NV_SID_NID_LIST_I,       /* SID_NID_LISTsp                               */ 
+		NV_DIST_REG_I,           /* Distance registration variables   */     /*50*/ 
+		NV_LAST_CDMACH_I,        /* Last CDMA channel acquired                   */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Timers, each associated with a specific NAM.                            */ 
+		 
+		NV_CALL_TIMER_I,      /* Last call time                                  */ 
+		NV_AIR_TIMER_I,       /* Air time (resettable cummulative call timer)    */ 
+		NV_ROAM_TIMER_I,      /* Roam time (resettable cummulative roam timer)   */ 
+		NV_LIFE_TIMER_I,      /* Life time (non-resettable cumm. call timer)     */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Run timer, independent of NAM.                                          */ 
+		 
+		NV_RUN_TIMER_I,       /* Run timer (time hardware has been running)      */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Memory (speed) dial numbers.                                            */ 
+		 
+		NV_DIAL_I,            /* Speed dial number                               */ 
+		NV_STACK_I,           /* Call stack number                               */ 
+		NV_STACK_IDX_I,       /* Call stack last number index                    */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Telephone pages (obsolete).                                             */ 
+		 
+		NV_PAGE_SET_I,        /* OBSOLETE Page setting     */                /*60*/ 
+		NV_PAGE_MSG_I,        /* OBSOLETE Page message and time                  */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Volumes.                                                                */ 
+		 
+		NV_EAR_LVL_I,         /* Handset ear piece volume level                  */ 
+		NV_SPEAKER_LVL_I,     /* Handsfree speaker volume level                  */ 
+		NV_RINGER_LVL_I,      /* Ringer volume level                             */ 
+		NV_BEEP_LVL_I,        /* Key beep volume level                           */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Tones.                                                                  */ 
+		 
+		NV_CALL_BEEP_I,       /* One minute call beeper select                   */ 
+		NV_CONT_KEY_DTMF_I,   /* Continuous keypad DTMF tones select             */ 
+		NV_CONT_STR_DTMF_I,   /* Continuous string (memory) DTMF tones select    */ 
+		NV_SVC_AREA_ALERT_I,  /* Service area enter/exit alert select            */ 
+		NV_CALL_FADE_ALERT_I, /* Call fade alert select     */               /*70*/ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Various phone settings.                                                 */ 
+		 
+		NV_BANNER_I,          /* Idle banner to display                          */ 
+		NV_LCD_I,             /* Display brightness setting                      */ 
+		NV_AUTO_POWER_I,      /* Auto power settings (power savings)             */ 
+		NV_AUTO_ANSWER_I,     /* Auto answer setting                             */ 
+		NV_AUTO_REDIAL_I,     /* Auto redial setting                             */ 
+		NV_AUTO_HYPHEN_I,     /* Auto hyphen setting                             */ 
+		NV_BACK_LIGHT_I,      /* Backlighting manual/auto mode                   */ 
+		NV_AUTO_MUTE_I,       /* Auto radio mute setting                         */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Locks and restrictions values.                                          */ 
+		 
+		NV_MAINTRSN_I,    /* Base station maintance required reason              */ 
+		NV_LCKRSN_P_I,    /* Base station lock reason, until power cycled */ /*80*/ 
+		NV_LOCK_I,        /* Indicator of whether user locked the phone          */ 
+		NV_LOCK_CODE_I,   /* Lock code string                                    */ 
+		NV_AUTO_LOCK_I,   /* Auto lock setting                                   */ 
+		NV_CALL_RSTRC_I,  /* Call restrictions                                   */ 
+		NV_SEC_CODE_I,    /* Security code                                       */ 
+		NV_HORN_ALERT_I,  /* Horn alert setting                                  */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Error log.                                                              */ 
+		 
+		NV_ERR_LOG_I,         /* Error log                                       */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Miscellaneous items.                                                    */ 
+		 
+		NV_UNIT_ID_I,         /* Unit hardware id  (obsolete)                    */ 
+		NV_FREQ_ADJ_I,        /* Frequency adjust values  (obsolete)             */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* V Battery Min/Max.   (Portable Only Item)                               */ 
+		 
+		NV_VBATT_I,           /* V battery regulator array for min/max */    /*90*/ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Analog (FM) Transmit power levels                                       */ 
+		 
+		NV_FM_TX_PWR_I,       /* Analog TX power level array                     */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Frequency/temperature offset table item                                 */ 
+		 
+		NV_FR_TEMP_OFFSET_I,    
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* DM Port Mode (Mobiles only) NOTE: Use to be NV_EXT_PORT_MODE_I          */ 
+		 
+		NV_DM_IO_MODE_I,      /* External port (I/O) mode for DM service         */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Portable Turnaround Compensation Tables  (Portable Only)                */ 
+		 
+		NV_CDMA_TX_LIMIT_I,   /* To limit TX_GAIN_ADJ when output exceeded       */ 
+		NV_FM_RSSI_I,         /* Analog RSSI adjustment                          */ 
+		NV_CDMA_RIPPLE_I,     /* CDMA UHF Ripple Compensation                    */ 
+		NV_CDMA_RX_OFFSET_I,  /* CDMA RX Offset compensation                     */ 
+		NV_CDMA_RX_POWER_I,   /* CDMA True RX Power Table                        */ 
+		NV_CDMA_RX_ERROR_I,   /* CDMA RX Linear and Non-linear error table       */ 
+		NV_CDMA_TX_SLOPE_1_I, /* CDMA TX Gain Comp Slope Compensation tbl*/ /*100*/ 
+		NV_CDMA_TX_SLOPE_2_I, /* CDMA TX Gain Adjust Slope Compensation table    */ 
+		NV_CDMA_TX_ERROR_I,   /* CDMA TX Non-linear Error Compensation table     */ 
+		NV_PA_CURRENT_CTL_I,  /* PA Current Control table                        */ 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Audio Adjustment values                                                 */ 
+		 
+		NV_SONY_ATTEN_1_I, 
+		NV_SONY_ATTEN_2_I, 
+		NV_VOC_GAIN_I, 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Spare items (2) for developer                                           */ 
+		 
+		NV_SPARE_1_I, 
+		NV_SPARE_2_I, 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Data Services items                                                     */ 
+		 
+		NV_DATA_SRVC_STATE_I,   /* Data Service(Task) Enabled/Disabled           */ 
+		NV_DATA_IO_MODE_I,      /* External port (I/O) mode for Data svc */ /*110*/ 
+		NV_IDLE_DATA_TIMEOUT_I, /* Data service idle time in seconds             */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Maximum TX adjustment                                                   */ 
+		 
+		NV_MAX_TX_ADJ_I, 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Initial Muting Modes                                                    */ 
+		 
+		NV_INI_MUTE_I, 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Factory free format test buffer                                         */ 
+		 
+		NV_FACTORY_INFO_I, 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Additional Sony Attenuation values                                      */ 
+		 
+		NV_SONY_ATTEN_3_I, 
+		NV_SONY_ATTEN_4_I, 
+		NV_SONY_ATTEN_5_I, 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* DM address item (for multi-drop HDLC)                                   */ 
+		 
+		NV_DM_ADDR_I, 
+		NV_CDMA_PN_MASK_I, 
+		NV_SEND_TIMEOUT_I,                                                  /*120*/ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		/* MSM2P and beyond NV items. */ 
+		 
+		NV_FM_AGC_SET_VS_PWR_I,        /* FM TX_AGC_ADJ setting vs power         */ 
+		NV_FM_AGC_SET_VS_FREQ_I,       /* FM TX_AGC_ADJ setting vs frequency     */ 
+		NV_FM_AGC_SET_VS_TEMP_I,       /* FM TX_AGC_ADJ setting vs temperature   */ 
+		 
+		NV_FM_EXP_HDET_VS_PWR_I,       /* FM expected HDET reading vs power      */ 
+		NV_FM_ERR_SLP_VS_PWR_I,        /* FM HDET error slope vs power           */ 
+		NV_FM_FREQ_SENSE_GAIN_I,       /* deviation adj. trim                    */ 
+		 
+		NV_CDMA_RX_LIN_OFF_0_I,        /* CDMA Rx linearizer offset              */ 
+		NV_CDMA_RX_LIN_SLP_I,          /* CDMA Rx linearizer slope               */ 
+		 
+		NV_CDMA_RX_COMP_VS_FREQ_I,     /* CDMA Rx gain comp vs frequency         */ 
+		NV_CDMA_TX_COMP_VS_FREQ_I,     /* CDMA Tx gain comp vs frequency */ /*130*/ 
+		NV_CDMA_TX_COMP_VS_VOLT_I,     /* CDMA Tx gain comp vs voltage           */ 
+		 
+		NV_CDMA_TX_LIN_MASTER_OFF_0_I, /* CDMA Tx linearizer master offset       */ 
+		NV_CDMA_TX_LIN_MASTER_SLP_I,   /* CDMA Tx linearizer master slope        */ 
+		NV_CDMA_TX_LIN_VS_TEMP_I,      /* CDMA Tx linearizer trim vs temp        */ 
+		NV_CDMA_TX_LIN_VS_VOLT_I,      /* CDMA Tx linearizer trim vs voltage     */                                           
+		 
+		NV_CDMA_TX_LIM_VS_TEMP_I,      /* CDMA Tx power limit vs temperature     */ 
+		NV_CDMA_TX_LIM_VS_VOLT_I,      /* CDMA Tx power limit vs voltage         */ 
+		NV_CDMA_TX_LIM_VS_FREQ_I,      /* CDMA Tx power limit vs frequency       */ 
+		NV_CDMA_EXP_HDET_VS_AGC_I,     /* CDMA expected HDET reading vs AGC PDM  */ 
+		NV_CDMA_ERR_SLP_VS_HDET_I,  /*CDMA HDET err slope vs HDET reading*/ /*140*/ 
+		 
+		NV_THERM_I,                    /* RF & LCD temp. based compensation      */ 
+		NV_VBATT_PA_I,                 /* RF comp. based on voltage              */ 
+		NV_HDET_OFF_I,                 /* ADC HDET reading offset                */ 
+		NV_HDET_SPN_I,                 /* ADC HDET reading span                  */ 
+		NV_ONETOUCH_DIAL_I,            /* ena/dis UI one touch dialing           */ 
+		 
+		NV_FM_AGC_ADJ_VS_FREQ_I, 
+		NV_FM_AGC_ADJ_VS_TEMP_I, 
+		NV_RF_CONFIG_I, 
+		NV_R1_RISE_I, 
+		NV_R1_FALL_I,                                                       /*150*/ 
+		NV_R2_RISE_I,                                                 
+		NV_R2_FALL_I, 
+		NV_R3_RISE_I, 
+		NV_R3_FALL_I, 
+		 
+		NV_PA_RANGE_STEP_CAL_I, 
+		NV_LNA_RANGE_POL_I, 
+		NV_LNA_RANGE_RISE_I, 
+		NV_LNA_RANGE_FALL_I, 
+		NV_LNA_RANGE_OFFSET_I, 
+		 
+		NV_POWER_CYCLES_I,                                                  /*160*/ 
+		NV_ALERTS_LVL_I, 
+		NV_ALERTS_LVL_SHADOW_I, 
+		NV_RINGER_LVL_SHADOW_I, 
+		NV_BEEP_LVL_SHADOW_I, 
+		NV_EAR_LVL_SHADOW_I, 
+		NV_TIME_SHOW_I, 
+		NV_MESSAGE_ALERT_I, 
+		NV_AIR_CNT_I, 
+		NV_ROAM_CNT_I, 
+		NV_LIFE_CNT_I,                                                      /*170*/ 
+		NV_SEND_PIN_I, 
+		NV_AUTO_ANSWER_SHADOW_I, 
+		NV_AUTO_REDIAL_SHADOW_I, 
+		NV_SMS_I, 
+		NV_SMS_DM_I, 
+		NV_IMSI_MCC_I, 
+		NV_IMSI_11_12_I, 
+		NV_DIR_NUMBER_I, 
+		NV_VOICE_PRIV_I, 
+		NV_SPARE_B1_I,                                                      /*180*/ 
+		NV_SPARE_B2_I,  
+		NV_SPARE_W1_I,                          
+		NV_SPARE_W2_I, 
+		NV_FSC_I, 
+		NV_ALARMS_I, 
+		NV_STANDING_ALARM_I, 
+		NV_ISD_STD_PASSWD_I, 
+		NV_ISD_STD_RESTRICT_I, 
+		NV_DIALING_PLAN_I, 
+		NV_FM_LNA_CTL_I,                                                    /*190*/ 
+		NV_LIFE_TIMER_G_I, 
+		NV_CALL_TIMER_G_I,                     
+		NV_PWR_DWN_CNT_I, 
+		NV_FM_AGC_I, 
+		NV_FSC2_I, 
+		NV_FSC2_CHKSUM_I, 
+		NV_WDC_I, 
+		NV_HW_CONFIG_I, 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		/* MSM2P and beyond NV items. (continued)  */ 
+		 
+		NV_CDMA_RX_LIN_VS_TEMP_I,            /* CDMA Rx linearizer vs temperature*/ 
+		NV_CDMA_ADJ_FACTOR_I,                /* CDMA adjustment factor */   /*200*/ 
+		NV_CDMA_TX_LIM_BOOSTER_OFF_I, 
+		NV_CDMA_RX_SLP_VS_TEMP_I,             
+		NV_CDMA_TX_SLP_VS_TEMP_I, 
+		NV_PA_RANGE_VS_TEMP_I, 
+		NV_LNA_SWITCH_VS_TEMP_I, 
+		NV_FM_EXP_HDET_VS_TEMP_I, 
+		NV_N1M_I,   
+		 
+		/*-------------------------------------------------------------------------*/ 
+		/* TMSI NAM parameters and extensions.                                     */ 
+		 
+		NV_IMSI_I,                        /* OBSOLETE InternationaMobileStationID*/ 
+		NV_IMSI_ADDR_NUM_I,                  /* Length of IMSI                   */ 
+		NV_ASSIGNING_TMSI_ZONE_LEN_I,        /* TMSI_ZONE_LENs-p  */        /*210*/ 
+		NV_ASSIGNING_TMSI_ZONE_I,            /* TMSI_ZONEs-p                     */ 
+		NV_TMSI_CODE_I,                      /* TMSI_CODEs-p                     */ 
+		NV_TMSI_EXP_I,                       /* TMSI expiration time             */ 
+		NV_HOME_PCS_FREQ_BLOCK_I,            /* Subscriber's home block          */ 
+		NV_DIR_NUMBER_PCS_I,                 /* Directory number, PCS format     */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		/* Roaming List and MRU Table.                                             */ 
+		 
+		NV_ROAMING_LIST_I,                   /* The roaming list                 */ 
+		NV_MRU_TABLE_I,                      /* Most recently used channels      */ 
+		/*  NOTE: This item is obsolete     */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_REDIAL_I,                 /* Last number redial                       */ 
+		NV_OTKSL_I,                  /* One-time keypad subsidy lock             */ 
+		NV_TIMED_PREF_MODE_I,        /* To allow analog-only operation */   /*220*/ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_RINGER_TYPE_I,            /* Ringer type setting                      */ 
+		NV_ANY_KEY_ANSWER_I,         /* Answer call with any key                 */ 
+		NV_BACK_LIGHT_HFK_I,         /* Hands Free Kit backlight setting         */ 
+		NV_RESTRICT_GLOBAL_I,        /* Global phone book restriction            */ 
+		NV_KEY_SOUND_I,              /* Type of keypress sound emitted           */ 
+		NV_DIALS_SORTING_METHOD_I,   /* Phone book sorting method                */ 
+		NV_LANGUAGE_SELECTION_I,     /* Language for user interface              */ 
+		NV_MENU_FORMAT_I,            /* Type of user interface menus             */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_RINGER_SPKR_LVL_I,        /* External speaker ringer volume           */ 
+		NV_BEEP_SPKR_LVL_I,          /* External speaker key beep volume */ /*230*/ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_MRU2_TABLE_I,             /* New format, Most Recently Used channels  */ 
+		NV_VIBRATOR_I,               /* Use vibrator instead of ringer           */ 
+		NV_FLIP_ANSWERS_I,           /* Opening clamshell answers call           */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_DIAL_RESTRICT_LVLS_I,     /* ISS2 dialing restriction levels          */ 
+		NV_DIAL_STATE_TABLE_LEN_I,   /* Number elements in state table           */ 
+		NV_DIAL_STATE_TABLE_I,       /* ISS2 dialing plan state table            */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_VOICE_PRIV_ALERT_I,       /* Voice privacy alert for TGP              */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_IP_ADDRESS_I,             /* IP/Port address  (obsolete)              */ 
+		NV_CURR_GATEWAY_I,           /* Last active IP address (obsolete)        */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_DATA_QNC_ENABLED_I,       /* QNC enabled flag                 */ /*240*/ 
+		NV_DATA_SO_SET_I,            /* Which Service Option set is in effect    */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_UP_LINK_INFO_I,           /* IP addresses and key data                */ 
+		NV_UP_PARMS_I,               /* Current gateway, alert state, etc.       */ 
+		NV_UP_CACHE_I,               /* The Unwired Planet cache                 */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_ELAPSED_TIME_I,           /* Timer for formal test use                */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_PDM2_I,                   /* For RF Cal use                           */ 
+		NV_RX_AGC_MINMAX_I,          /* Receiver AGC min-max                     */ 
+		NV_VBATT_AUX_I,              /* Auxillary VBATT min-max                  */ 
+		 
+		NV_DTACO_CONTROL_I,            /* DTACO enabled/disabled control         */ 
+		NV_DTACO_INTERDIGIT_TIMEOUT_I, /* DTACO interdigit timeout       */ /*250*/ 
+		 
+		NV_PDM1_I,                   /* For RF Cal use                           */ 
+		NV_BELL_MODEM_I,             /* Flag for ISS2                            */ 
+		 
+		NV_PDM1_VS_TEMP_I,           /* For RF Cal use                           */ 
+		NV_PDM2_VS_TEMP_I,           /* For RF Cal use                           */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_SID_NID_LOCK_I,           /* CDMA SID(s) and NID(s) to lockout        */ 
+		NV_PRL_ENABLED_I,            /* If the roaming list is enabled or not    */ 
+		NV_ROAMING_LIST_683_I,       /* IS-683-A format roaming list             */   
+		NV_SYSTEM_PREF_I,            /* System Preference, per NAM               */ 
+		NV_HOME_SID_NID_I,           /* "Home" SID/NID list                      */ 
+		NV_OTAPA_ENABLED_I,          /* Whether OTAPA is enabled, per NAM*/ /*260*/ 
+		NV_NAM_LOCK_I,               /* SPASM protection per NAM                 */ 
+		NV_IMSI_T_S1_I,              /* True IMSI - MIN1                         */ 
+		NV_IMSI_T_S2_I,              /* True IMSI - MIN2                         */ 
+		NV_IMSI_T_MCC_I,             /* True IMSI - MCC                          */ 
+		NV_IMSI_T_11_12_I,           /* True IMSI - 11th & 12th digits           */ 
+		NV_IMSI_T_ADDR_NUM_I,        /* True IMSI - Addr num                     */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_UP_ALERTS_I,              /* Unwired Planet alert records             */ 
+		NV_UP_IDLE_TIMER_I,          /* Idle time timer                          */ 
+		 
+		NV_SMS_UTC_I,                /* Specifies format of SMS time display     */ 
+		NV_ROAM_RINGER_I,            /* Specifies roam ringer on or off  */ /*270*/ 
+		NV_RENTAL_TIMER_I,           /* The rental timer item                    */ 
+		NV_RENTAL_TIMER_INC_I,       /* The rental timer increment value         */ 
+		NV_RENTAL_CNT_I,             /* The rental counter                       */ 
+		NV_RENTAL_TIMER_ENABLED_I,   /* Enables/disables the rental timer        */ 
+		NV_FULL_SYSTEM_PREF_I,       /* Controls system pref display options     */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_BORSCHT_RINGER_FREQ_I,    /* Ringer freq used for BORSCHT port (RJ-11)*/ 
+		NV_PAYPHONE_ENABLE_I,        /* Enable/disable payphone support          */ 
+		NV_DSP_ANSWER_DET_ENABLE_I,  /* Enable/disable dsp answer detection      */ 
+		NV_EVRC_PRI_I,               /* EVRC/13K priority: EVRC first, 13K first */ 
+		NV_AFAX_CLASS_20_I,          /* Obsolete item                    */ /*280*/ 
+		NV_V52_CONTROL_I,            /* V52 control option                       */ 
+		NV_CARRIER_INFO_I,           /* Bitmap and ASCII name info for carrier   */ 
+		NV_AFAX_I,                   /* Analog FAX type: end to end or class 2.0 */ 
+		NV_SIO_PWRDWN_I,             /* Distinguishes old/new UART hardware      */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+#ifdef FEATURE_EVRC_SO_MGMT 
+		NV_PREF_VOICE_SO_I,          /* EVRC voice service options               */ 
+#else 
+		NV_RSVD_ITEM_1_I,            /* Reserved item                            */ 
+#endif 
+		NV_VRHFK_ENABLED_I,          /* Voice recognition hands free kit enabled */ 
+		NV_VRHFK_VOICE_ANSWER_I,     /* Voice recognition voice answer           */ 
+		NV_PDM1_VS_FREQ_I,           /* For RF Cal use                           */ 
+		NV_PDM2_VS_FREQ_I,           /* For RF Cal use                           */ 
+		NV_SMS_AUTO_DELETE_I,        /* SMS auto-deletion enabled status */ /*290*/ 
+		NV_SRDA_ENABLED_I,           /* Silent redial enabled status             */ 
+		NV_OUTPUT_UI_KEYS_I,         /* Enable-disable sending UI keystrokes     */ 
+		NV_POL_REV_TIMEOUT_I,        /* Timeout for polarity reversal            */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_SI_TEST_DATA_1_I,         /* First stack-checker diagnostic buffer    */ 
+		NV_SI_TEST_DATA_2_I,         /* Second stack-checker diagnostic buffer   */ 
+		NV_SPC_CHANGE_ENABLED_I,     /* Enable-disable OTASP SPC change          */ 
+		 
+		NV_DATA_MDR_MODE_I,          /* Select the MDR mode                      */ 
+		NV_DATA_PKT_ORIG_STR_I,      /* Dial string for originating packet calls */ 
+		 
+		NV_UP_KEY_I,                 /* Unwired Planet access key item           */ 
+		NV_DATA_AUTO_PACKET_DETECTION_I, /* Packet data configuration item       */ 
+		NV_AUTO_VOLUME_ENABLED_I,    /* Enable-disable auto volume               */ 
+		NV_WILDCARD_SID_I,           /* Allow wildcard SID                       */ 
+		NV_ROAM_MSG_I,               /* Downloadable roaming messages            */ 
+		NV_OTKSL_FLAG_I,             /* OTKSL Flag                               */ 
+		NV_BROWSER_TYPE_I,           /* Browser identifier                       */  
+		NV_SMS_REMINDER_TONE_I,      /* Reminder tone is on or off               */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_UBROWSER_I,               /* Micro browser data                       */ 
+		NV_BTF_ADJUST_I,             /* BTF adjustment value                     */ 
+		NV_FULL_PREF_MODE_I,         /* Controls pref display options            */ 
+		NV_UP_BROWSER_WARN_I,        /* Confirmation screen option       */ /*310*/ 
+		NV_FM_HDET_ADC_RANGE_I,      /* ADC range for HDET sampling (analog)     */ 
+		NV_CDMA_HDET_ADC_RANGE_I,    /* ADC range for HDET sampling (CDMA)       */ 
+		NV_PN_ID_I,                  /* PN code selection                        */ 
+		NV_USER_ZONE_ENABLED_I,      /* Enable-disable User Zone table           */ 
+		NV_USER_ZONE_I,              /* User Zone table                          */ 
+		NV_PAP_DATA_I,               /* Password Authentication Protocol data    */ 
+		NV_DATA_DEFAULT_PROFILE_I,   /* Default user AT command profile          */ 
+		NV_PAP_USER_ID_I,            /* User_ID for Password Auth. Protocol      */ 
+		NV_PAP_PASSWORD_I,           /* Actual password for PAP                  */ 
+		NV_STA_TBYE_I,               /* Num wakeup samples below thrshld */ /*320*/ 
+		NV_STA_MIN_THR_I,            /* Threshold for Rx+Ec/Io (RSSI) trigger    */ 
+		NV_STA_MIN_RX_I,             /* Threshold for Rx trigger                 */ 
+		NV_STA_MIN_ECIO_I,           /* Threshold for Rx-Only idle trigger       */ 
+		NV_STA_PRI_I,                /* Switch to AMPS PRI setting               */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_PCS_RX_LIN_OFF_0_I,       /* PCS Rx linearizer offset                 */ 
+		NV_PCS_RX_LIN_SLP_I,         /* PCS Rx linearizer slope                  */ 
+		NV_PCS_RX_COMP_VS_FREQ_I,    /* PCS Rx gain comp vs frequency            */ 
+		NV_PCS_TX_COMP_VS_FREQ_I,    /* PCS Tx gain comp vs frequency            */ 
+		NV_PCS_TX_LIN_MASTER_OFF_0_I,/* PCS Tx linearizer master offset          */ 
+		NV_PCS_TX_LIN_MASTER_SLP_I,  /* PCS Tx linearizer master slope   */ /*330*/ 
+		NV_PCS_TX_LIN_VS_TEMP_I,     /* PCS Tx linearizer trim vs temp           */ 
+		NV_PCS_TX_LIM_VS_TEMP_I,     /* PCS Tx power limit vs temperature        */ 
+		NV_PCS_TX_LIM_VS_FREQ_I,     /* PCS Tx power limit vs frequency          */ 
+		NV_PCS_EXP_HDET_VS_AGC_I,    /* PCS expected HDET reading vs AGC PDM     */ 
+		NV_PCS_HDET_OFF_I,           /* ADC HDET reading offset                  */ 
+		NV_PCS_HDET_SPN_I,           /* ADC HDET reading span                    */ 
+		NV_PCS_R1_RISE_I,            /* TX pwr lvl at which PA is stepped up     */ 
+		NV_PCS_R1_FALL_I,            /* TX pwr lvl at which PA is stepped down   */ 
+		NV_PCS_R2_RISE_I,            /* TX pwr lvl at which PA is stepped up     */ 
+		NV_PCS_R2_FALL_I,            /* TX pwr lvl at which PA stpd down */ /*340*/ 
+		NV_PCS_R3_RISE_I,            /* TX pwr lvl at which PA is stepped up     */ 
+		NV_PCS_R3_FALL_I,            /* TX pwr lvl at which PA is stepped down   */ 
+		NV_PCS_PA_RANGE_STEP_CAL_I,  /* Calibrate PA Range gain step             */ 
+		NV_PCS_PDM1_VS_FREQ_I,       /* PDM1 vs frequency compensation table     */ 
+		NV_PCS_PDM2_VS_FREQ_I,       /* PDM2 vs frequency compensation table     */ 
+		NV_PCS_LNA_RANGE_POL_I,      /* Polarity of LNA range control signal     */ 
+		NV_PCS_LNA_RANGE_RISE_I,     /* Rx pwr lvl for: LNA bypass               */ 
+		NV_PCS_LNA_RANGE_FALL_I,     /* Rx pwr lvl for: LNA turned on            */ 
+		NV_PCS_LNA_RANGE_OFFSET_I,   /* Rx pwr lvl offset when LNA is bypassed   */ 
+		NV_PCS_RX_LIN_VS_TEMP_I,     /* PCS Rx linearizer vs temperature */ /*350*/ 
+		NV_PCS_ADJ_FACTOR_I,         /* PCS adjustment factor                    */ 
+		NV_PCS_PA_RANGE_VS_TEMP_I,   /* Changes in PA_RANGE_STEP over temp       */ 
+		NV_PCS_PDM1_VS_TEMP_I,       /* TX temperature compensation using PDM1   */ 
+		NV_PCS_PDM2_VS_TEMP_I,       /* TX temperature compensation using PDM2   */ 
+		NV_PCS_RX_SLP_VS_TEMP_I,     /* Slope of RX linearizer over temperature  */ 
+		NV_PCS_TX_SLP_VS_TEMP_I,     /* Slope of TX linearizer over temperature  */ 
+		NV_PCS_RX_AGC_MINMAX_I,      /* Receiver AGC min-max                     */ 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_PA_OFFSETS_I, 
+		NV_CDMA_TX_LIN_MASTER_I,     /* Obsolete tx linearizer item              */ 
+		 
+		NV_VEXT_I,                                                          /*360*/ 
+		NV_VLCD_ADC_CNT_I, 
+		NV_VLCD_DRVR_CNT_I, 
+		NV_VREF_ADJ_PDM_CNT_I, 
+		NV_IBAT_PER_LSB_I, 
+		NV_IEXT_I, 
+		NV_IEXT_THR_I, 
+		 
+		NV_CDMA_TX_LIN_MASTER0_I, 
+		NV_CDMA_TX_LIN_MASTER1_I, 
+		NV_CDMA_TX_LIN_MASTER2_I, 
+		NV_CDMA_TX_LIN_MASTER3_I,                                           /*370*/ 
+		NV_TIME_FMT_SELECTION_I, 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_SMS_BC_SERVICE_TABLE_SIZE_I, 
+		NV_SMS_BC_SERVICE_TABLE_I, 
+		NV_SMS_BC_CONFIG_I, 
+		NV_SMS_BC_USER_PREF_I, 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* RFR3100 items */ 
+		NV_LNA_RANGE_2_RISE_I, 
+		NV_LNA_RANGE_2_FALL_I, 
+		NV_LNA_RANGE_12_OFFSET_I, 
+		NV_NONBYPASS_TIMER_I, 
+		NV_BYPASS_TIMER_I,                                                  /*380*/ 
+		NV_IM_LEVEL1_I, 
+		NV_IM_LEVEL2_I, 
+		NV_CDMA_LNA_OFFSET_VS_FREQ_I, 
+		NV_CDMA_LNA_12_OFFSET_VS_FREQ_I, 
+		NV_AGC_PHASE_OFFSET_I, 
+		NV_RX_AGC_MIN_11_I, 
+		 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		/* Trimode - RFR3100 items */ 
+		NV_PCS_LNA_RANGE_2_RISE_I, 
+		NV_PCS_LNA_RANGE_2_FALL_I, 
+		NV_PCS_LNA_RANGE_12_OFFSET_I, 
+		NV_PCS_NONBYPASS_TIMER_I,                                           /*390*/ 
+		NV_PCS_BYPASS_TIMER_I,                                               
+		NV_PCS_IM_LEVEL1_I, 
+		NV_PCS_IM_LEVEL2_I, 
+		NV_PCS_CDMA_LNA_OFFSET_VS_FREQ_I, 
+		NV_PCS_CDMA_LNA_12_OFFSET_VS_FREQ_I, 
+		NV_PCS_AGC_PHASE_OFFSET_I, 
+		NV_PCS_RX_AGC_MIN_11_I, 
+		 
+		NV_RUIM_CHV_1_I,                 /* Card holder verification 1 for R-UIM */ 
+		NV_RUIM_CHV_2_I,                 /* Card holder verification 2 for R-UIM */ 
+		 
+		NV_GPS1_CAPABILITIES_I,                          /* GPS One Capabilities */ 
+		NV_GPS1_PDE_ADDRESS_I,                        /* GPS One PDE TCP Address */  
+		NV_GPS1_ALLOWED_I,   /* GPS One Position Determination Services Lock-out */ 
+		NV_GPS1_PDE_TRANSPORT_I,        /* GPS One Preferred transport mechanism */ 
+		NV_GPS1_MOBILE_CALC_I, 
+		/* GPS One Mobile vs PDE based Position Calculations */ 
+		 
+		NV_PREF_FOR_RC_I,        /* IS2000 CAI radio configuration RC preference */ 
+		NV_DS_DEFAULT_BAUD_I,             /* DATA SERVICES default SIO baud rate */   
+		NV_DIAG_DEFAULT_BAUD_I,                    /* DIAG default SIO baud rate */                 
+		NV_SIO_DEV_MAP_MENU_ITEM_I, 
+		/* Serial Device Mapper configuration menu item information */ 
+		 
+		NV_TTY_I,                      /* Specifies which TTY option is selected */ 
+		NV_PA_RANGE_OFFSETS_I,                                                 
+		/* Digitally compensate for PA gain steps in each of the 4 PA states */ 
+		NV_TX_COMP0_I,  /* For temp. and freq. compensation of the Tx linearizer */   
+		 
+		NV_MM_SDAC_LVL_I,                  /* Stereo DAC Multimedia volume level */ 
+		NV_BEEP_SDAC_LVL_I,                  /* Stereo DAC key beep volume level */ 
+		NV_SDAC_LVL_I,                                /* Stereo DAC volume level */ 
+		NV_MM_LVL_I,                          /* Handset Multimedia volume level */   
+		NV_MM_LVL_SHADOW_I,                   /* Headset Multimedia volume level */ 
+		NV_MM_SPEAKER_LVL_I,                      /* HFK Multimedia volume level */ 
+		NV_MM_PLAY_MODE_I,                               /* Multimedia play mode */ 
+		NV_MM_REPEAT_MODE_I,                           /* Multimedia repeat mode */ 
+		NV_TX_COMP1_I,  /* For temp. and freq. compensation of the Tx linearizer */   
+		NV_TX_COMP2_I,  /* For temp. and freq. compensation of the Tx linearizer */   
+		NV_TX_COMP3_I,  /* For temp. and freq. compensation of the Tx linearizer */ 
+		NV_PRIMARY_DNS_I,           /* Contains the IP Address of the DNS Server */   
+		NV_SECONDARY_DNS_I, 
+		/* Contains the IP Address of the Secondary DNS Server */ 
+		NV_DIAG_PORT_SELECT_I,              /* Info for DIAG boot port selection */ 
+		NV_GPS1_PDE_PORT_I,        /* Listening port associated with PDE address */ 
+		NV_MM_RINGER_FILE_I,                       /* Multimedia ringer filename */ 
+		NV_MM_STORAGE_DEVICE_I,                      /* Multimedia file location */ 
+		 
+		NV_DATA_SCRM_ENABLED_I, /* Enables/disables the mobile's ability to SCRM */ 
+		NV_RUIM_SMS_STATUS_I,                                               
+		/* For storing information required by R-UIM SMSS Elementary File */ 
+		NV_PCS_TX_LIN_MASTER0_I,        /* PCS Tx linearizer with internal PA=00 */ 
+		NV_PCS_TX_LIN_MASTER1_I,        /* PCS Tx linearizer with internal PA=01 */ 
+		NV_PCS_TX_LIN_MASTER2_I,        /* PCS Tx linearizer with internal PA=10 */ 
+		NV_PCS_TX_LIN_MASTER3_I,        /* PCS Tx linearizer with internal PA=11 */ 
+		 
+		NV_PCS_PA_RANGE_OFFSETS_I,                       /* PCS PA range offsets */ 
+		NV_PCS_TX_COMP0_I,        /* PCS transmit frequency compensation table 0 */   
+		NV_PCS_TX_COMP1_I,        /* PCS transmit frequency compensation table 1 */   
+		NV_PCS_TX_COMP2_I,        /* PCS transmit frequency compensation table 2 */   
+		NV_PCS_TX_COMP3_I,        /* PCS transmit frequency compensation table 3 */ 
+		 
+		NV_DIAG_RESTART_CONFIG_I,  
+		/* One-time startup configuration for DIAG services */ 
+		 
+		NV_BAND_PREF_I,   /* Stores the band-class preference on a per NAM basis */ 
+		NV_ROAM_PREF_I,      /* Stores the roaming preference on a per NAM basis */ 
+		 
+		NV_GPS1_GPS_RF_DELAY_I,                           /* GPS RF Signal Delay */ 
+		/* The len. of time taken for a GPS signal to pass through the RF chain  */ 
+		 
+		NV_GPS1_CDMA_RF_DELAY_I,                         /* CDMA RF Signal Delay */ 
+		/* The len. of time taken for a CDMA signal to pass through the RF chain */ 
+		 
+		NV_PCS_ENC_BTF_I, 
+		/* CHIPX8 delay for SYNC80M via 1900mhz PCS path in RF card, biased +25 */ 
+		NV_CDMA_ENC_BTF_I, 
+		/* CHIPX8 delay for SYNC80M via 800mhz CDMA path in RF card, biased +25 */ 
+		NV_BD_ADDR_I,               /* Holds the Bluetooth address of the mobile */ 
+		NV_SUBPCG_PA_WARMUP_DELAY_I, 
+		/* Provides the less-than-one-PCG warm-up for the PA */ 
+		NV_GPS1_GPS_RF_LOSS_I,        /* RF Loss in GPR RF Chain in 0.1 DB Units */ 
+		NV_DATA_TRTL_ENABLED_I,  
+		/* In IS2000, if mobile should self-throttle R-SCH */ 
+		NV_AMPS_BACKSTOP_ENABLED_I,       /* AMPS backstop system enabled status */ 
+		NV_GPS1_LOCK_I,                                   /* GPS One lock status */  
+		NV_FTM_MODE_I,    /* Determines boot up mode of a factory testmode phone */ 
+		/* DATA SERVICES default SIO baud rate (obsoletes NV_DS_DEFAULT_BAUD_I)  */ 
+		NV_DS_DEFAULT_BAUDRATE_I,  
+		/* DIAG default SIO baud rate     (obsoletes NV_DIAG_DEFAULT_BAUD_I)     */ 
+		NV_DIAG_DEFAULT_BAUDRATE_I,       
+		NV_JCDMA_DS_F92_I,                  /* Stores JCDMA F92 option selected  */ 
+		NV_IMEI_I,                                      
+		NV_IMEI_CHKSUM_I,                               
+		NV_DS_QCMIP_I,                        /* The mode for Mobile IP behavior */ 
+		NV_DS_MIP_RETRIES_I,                             
+		/* The number of Mobile IP Registration Retries attempted */ 
+		NV_DS_MIP_RETRY_INT_I,    
+		/* The initial interval between mobile IP registration attempts */ 
+		NV_DS_MIP_PRE_RE_RRQ_TIME_I,   
+		/* The time before Mobile IP reg. expiration to attempt re-registration. */ 
+		NV_DS_MIP_NUM_PROF_I,        /* Number of Mobile IP user profiles stored */ 
+		NV_DS_MIP_ACTIVE_PROF_I,  /* The currently active Mobile IP user profile */ 
+		NV_DS_MIP_GEN_USER_PROF_I,  
+		/* An instance of the Mobile IP general user profile. */ 
+		NV_DS_MIP_SS_USER_PROF_I, 
+		/* An instance of the Mobile IP shared secret user profile */  
+		 
+		/* Obsolete */ 
+		NV_HDR_CON_SUSPEND_I,              
+		/*  Preferred Control Channel Cycle Enabled   */ 
+		NV_HDR_PRE_CC_CYC_ENABLED_I,              
+		/*  Preferred Control Channel Cycle                                      */ 
+		NV_HDR_PRE_CC_CYC_I,                      
+		/* Obsolete */ 
+		NV_HDR_SRCH_PARAMS_I, 
+		/* Obsolete */   
+		NV_HDRSMP_KEEP_ALIVE_START_I, 
+		/* Obsolete */ 
+		NV_HDRSMP_KEEP_ALIVE_SENT_I, 
+		/* SMP - keep alive interval */ 
+		NV_HDRSMP_KEEP_ALIVE_REQ_INT_I, 
+		/* AMP - all data related to addresses */ 
+		NV_HDRAMP_ADDRESS_DATA_I, 
+		/* SCP - status of the session */ 
+		NV_HDRSCP_SESSION_STATUS_I, 
+		/* SCP - session token (generated by AN) */ 
+		NV_HDRSCP_TOKEN_I, 
+		/* SCP - list of all protocol subtypes */ 
+		NV_HDRSCP_PROTOCOL_SUBTYPE_I, 
+		/* AMP - time at which the dual addresses expire */ 
+		NV_HDRAMP_DUAL_EXPIRE_TIME_I, 
+		/* Configuration of current stream  */ 
+		NV_HDRSTREAM_CURR_STREAM_CFG_I, 
+		/* HDR Set Management Same Channel Parameters */ 
+		NV_HDR_SET_MNGMT_SAME_CHAN_I, 
+		/* HDR Set Management Different Channel Parameters */ 
+		NV_HDR_SET_MNGMT_DIFF_CHAN_I, 
+		/* If we are configured to send unsolicited location updates */ 
+		NV_HDRLUP_UNSOLICITED_ENABLED_I, 
+		/* HDR Access MAC InitialConfiguration Attribute */ 
+		NV_HDRAMAC_INITIAL_CONFIG_I, 
+		/* HDR Access MAC PowerParameters Attribute */ 
+		NV_HDRAMAC_POWER_PARAMS_I, 
+		/* Forward Traffic MAC DRC Gating Attribute */ 
+		NV_HDRFMAC_DRC_GATING_I, 
+		/* Forward Traffic MAC HandoffDelays Attribute */ 
+		NV_HDRFMAC_HANDOFF_DELAYS_I, 
+		/* Reverse Traffic MAC PowerParameters Attribute */ 
+		NV_HDRRMAC_POWER_PARAMS_I, 
+		/* Reverse Traffic MAC RateParameters Attribute */ 
+		NV_HDRRMAC_RATE_PARAMS_I, 
+		/* Next expected SLP ResetMsg Sequence Number (set to 0 at SessionBoot)  */ 
+		NV_HDRSLP_RESET_SEQNO_I, 
+		/* The backoff values for the medium backoff calibration values          */ 
+		NV_PWR_BACKOFF_VS_VOLT_MED_I,                                         /*490*/ 
+		/* The backoff values for the low backoff calibration values             */ 
+		NV_PWR_BACKOFF_VS_VOLT_LOW_I, 
+		/* Three voltages where PA Backoff was characterized                     */ 
+		NV_PA_BACKOFF_VOLTS_I, 
+		/* High and low voltages for Vbatt ADC calib. counts                     */ 
+		NV_VBATT_MIN_MAX_I, 
+		/* The timebase difference between the home agent and the mobile(in sec) */ 
+		NV_DS_MIP_MN_HA_TIME_DELTA_I, 
+		/* Qualcomm PREV 6 MIP handoff optimization enable                       */ 
+		NV_DS_MIP_QC_DRS_OPT_I, 
+		/* CDMA Rx linearizer offset for the second antenna                      */ 
+		NV_ANT2_CDMA_RX_LIN_OFF_0_I, 
+		/* CDMA Rx linearizer slope for the second antenna                       */ 
+		NV_ANT2_CDMA_RX_LIN_SLP_I, 
+		/* CDMA Rx gain comp vs frequency for the second antenna                 */ 
+		NV_ANT2_CDMA_RX_COMP_VS_FREQ_I,      
+		/* CDMA Rx linearizer vs temperature for the second antenna              */ 
+		NV_ANT2_CDMA_RX_LIN_VS_TEMP_I, 
+		/* PCS/CDMA RF Calibration items                                         */ 
+		NV_ANT2_CDMA_RX_SLP_VS_TEMP_I, 
+		/* Value that is added to receive power reading when LNA is bypassed     */ 
+		NV_ANT2_LNA_RANGE_OFFSET_I, 
+		/* Offset added to Rec. pwr when the 1st and 2nd LNAs are bypassed       */ 
+		NV_ANT2_LNA_RANGE_12_OFFSET_I, 
+		/* NV_LNA_RANGE_OFFSET freq. compensation table, units of AGC value      */ 
+		NV_ANT2_CDMA_LNA_OFFSET_VS_FREQ_I, 
+		/* NV_LNA_12_RANGE_OFFSET freq. compensation table, units of AGC value   */ 
+		NV_ANT2_CDMA_LNA_12_OFFSET_VS_FREQ_I, 
+		/* PCS/CDMA mode Rx AGC linearization table                              */ 
+		NV_ANT2_PCS_RX_LIN_OFF_0_I,       
+		/* PCS Rx linearizer slope for the second antenna                        */ 
+		NV_ANT2_PCS_RX_LIN_SLP_I, 
+		/* PCS Rx gain comp vs frequency for the second antenna                  */ 
+		NV_ANT2_PCS_RX_COMP_VS_FREQ_I, 
+		/* PCS Rx linearizer vs temperature for the second antenna               */ 
+		NV_ANT2_PCS_RX_LIN_VS_TEMP_I, 
+		/* Slope variations of Master RX linearizer curve for the second antenna */ 
+		NV_ANT2_PCS_RX_SLP_VS_TEMP_I, 
+		/* Value that is added to receive power reading when LNA is bypassed     */ 
+		NV_ANT2_PCS_LNA_RANGE_OFFSET_I, 
+		/* Offset added to Rec. pwr when the 1st and 2nd LNAs are bypassed       */ 
+		NV_ANT2_PCS_LNA_RANGE_12_OFFSET_I, 
+		/* NV_LNA_RANGE_OFFSET freq. compensation table, units of AGC value      */ 
+		NV_ANT2_PCS_CDMA_LNA_OFFSET_VS_FREQ_I, 
+		/* NV_LNA_12_RANGE_OFFSET freq. compensation table, units of AGC value   */ 
+		NV_ANT2_PCS_CDMA_LNA_12_OFFSET_VS_FREQ_I, 
+		/* WCDMA Rx AGC linearizer offset value                                  */ 
+		NV_WCDMA_RX_LIN_I, 
+		/* WCDMA RX AGC PDM delta vs. Frequency                                  */ 
+		NV_WCDMA_RX_COMP_VS_FREQ_I, 
+		/* WCDMA Rx AGC PDM delta vs. Temperature                                */ 
+		NV_WCDMA_RX_LIN_VS_TEMP_I,         
+		/* WCDMA Rx AGC PDM delta vs. Temperature                                */ 
+		NV_WCDMA_RX_SLP_VS_TEMP_I,         
+		/* WCDMA LNA range polarity                                              */ 
+		NV_WCDMA_LNA_RANGE_POL_I,          
+		/* WCDMA Rx power level at which LNA should be bypassed                  */ 
+		NV_WCDMA_LNA_RANGE_RISE_I, 
+		/* WCDMA Rx power level at which LNA should be turned on                 */ 
+		NV_WCDMA_LNA_RANGE_FALL_I, 
+		/* LNA InterMod (high to low gain ) anti-jamming threshold power level   */ 
+		NV_WCDMA_IM_LEVEL_I, 
+		/* Duration of non-bypass state in multiple of 66us (8-bits)             */ 
+		NV_WCDMA_NONBYPASS_TIMER_I, 
+		/* Duration of bypass state in multiple of 6.6ms (11-bits)               */ 
+		NV_WCDMA_BYPASS_TIMER_I, 
+		/* Value that is added to Rx power reading when LNA is bypassed          */ 
+		NV_WCDMA_LNA_RANGE_OFFSET_I, 
+		/* WCDMA LNA range offset delta vs. frequency in unit of AGC value       */ 
+		NV_WCDMA_LNA_OFFSET_VS_FREQ_I, 
+		/* WCDMA Receiver AGC min                                                */ 
+		NV_WCDMA_RX_AGC_MIN_I, 
+		/* WCDMA Receiver AGC max                                                */ 
+		NV_WCDMA_RX_AGC_MAX_I, 
+		/* WCDMA LNA Phase adjustment when LNA is bypassed                       */ 
+		NV_WCDMA_AGC_PHASE_OFFSET_I, 
+		/* WCDMA Tx AGC linearizer master offset value for lowest PA gain state  */ 
+		NV_WCDMA_TX_LIN_MASTER_0_I, 
+		/* WCDMA Tx AGC linearizer master offset value for highest PA gain state */ 
+		NV_WCDMA_TX_LIN_MASTER_1_I, 
+		/* WCDMA Tx AGC delta vs. frequency for lowest PA gain state             */ 
+		NV_WCDMA_TX_COMP_VS_FREQ_0_I, 
+		/* WCDMA Tx AGC delta vs. frequency for highest PA gain state            */ 
+		NV_WCDMA_TX_COMP_VS_FREQ_1_I, 
+		/* WCDMA Tx AGC PDM delta vs. temp for lowest PA gain state              */ 
+		NV_WCDMA_TX_LIN_VS_TEMP_0_I, 
+		/* WCDMA Tx AGC PDM delta vs. temp for highest PA gain state             */ 
+		NV_WCDMA_TX_LIN_VS_TEMP_1_I, 
+		/* WCDMA Tx AGC PDM slope delta vs. temp for lowest PA gain state        */ 
+		NV_WCDMA_TX_SLP_VS_TEMP_0_I, 
+		/* WCDMA Tx AGC PDM slope delta vs. temp for highest PA gain state       */ 
+		NV_WCDMA_TX_SLP_VS_TEMP_1_I, 
+		/* WCDMA TX power level to switch PA from lowest to highest gain state   */ 
+		NV_WCDMA_R1_RISE_I, 
+		/* WCDMA TX power level to switch PA from highest to lowest gain state   */ 
+		NV_WCDMA_R1_FALL_I, 
+		/* WCDMA Tx power limit vs. temperature (absolute not delta)             */ 
+		NV_WCDMA_TX_LIM_VS_TEMP_I, 
+		/* WCDMA Tx power limit vs. frequency (absolute not delta)               */ 
+		NV_WCDMA_TX_LIM_VS_FREQ_I, 
+		/* WCDMA TX power limit gain step adjustment factor                      */ 
+		NV_WCDMA_ADJ_FACTOR_I, 
+		/* WCDMA expected HDET reading vs Tx AGC                                 */ 
+		NV_WCDMA_EXP_HDET_VS_AGC_I,  
+		/* WCDMA ADC HDET reading offset                                         */ 
+		NV_WCDMA_HDET_OFF_I, 
+		/* WCDMA ADC HDET reading span                                           */ 
+		NV_WCDMA_HDET_SPN_I, 
+		/* CHIPX8 delay for SYNC80M via 800mhz CDMA path in RF card, biased +25. */ 
+		NV_WCDMA_ENC_BTF_I,  
+		/* RFC2002bis MN-HA authenticator calculation                            */ 
+		NV_DS_MIP_2002BIS_MN_HA_AUTH_I, 
+		/* UE rat capability                                                     */ 
+		NV_UE_RAT_CAPABILITY_I, 
+		/* GSM UE operating class                                                */ 
+		NV_GSM_UE_OP_CLASS_I, 
+		/* UMTS UE operating class                                               */ 
+		NV_UMTS_UE_OP_CLASS_I, 
+		/* International Mobile Equipment Identity                               */ 
+		NV_UE_IMEI_I, 
+		/* MSRAC-SMS value                                                       */ 
+		NV_MSRAC_SMS_VALUE_I, 
+		/* MSRAC-SM value                                                        */ 
+		NV_MSRAC_SM_VALUE_I, 
+		/* GSM A5 Algorithm Support Bitmap                                       */ 
+		NV_GSM_A5_ALGORITHMS_SUPPORTED_I, 
+		/* Configurable parameters for DRC Lock in HDR                           */ 
+		NV_HDRFMAC_DRC_LOCK_I, 
+		/* LO Calibration offset                                                 */ 
+		NV_GPS1_LO_CAL_I, 
+		/* GPS Antenna offset in DB                                              */ 
+		NV_GPS1_ANT_OFF_DB_I, 
+		/* The len. of time taken for a PCS signal to pass through the RF chain  */ 
+		NV_GPS1_PCS_RF_DELAY_I, 
+		/* Phone number of voice mail center for GSM/WCDMA system                */ 
+		NV_SMS_VM_NUMBER_I, 
+		/* Storage for GSM/WCDMA template                                        */ 
+		NV_SMS_GW_PARMS_I, 
+		/* Obsolete.  Replaced by NV_SMS_CFG_ROUTING_I.                          */ 
+		NV_SMS_ROUTING_I, 
+		/* Storage for GSM/WCDMA SMS messages                                    */ 
+		NV_SMS_GW_I, 
+		/* Preferred mode in hybrid operation                                    */ 
+		NV_HYBRID_PREF_I, 
+		/* If Service Provider ECC is enabled                                    */ 
+		NV_SP_ECC_ENABLED_I, 
+		/* Emergency Call Codes to be used for an emergency call without a SIM   */ 
+		NV_ECC_LIST_I, 
+		/* Latitude value for the Bluetooth LPOS application                     */ 
+		NV_BT_LPOS_LAT_I, 
+		/* Longitude value for the Bluetooth LPOS application                    */ 
+		NV_BT_LPOS_LONG_I, 
+		/* Embedded Phone-t Version                                              */ 
+		NV_TEST_CODE_VER_I, 
+		/* DMSS S/W Version                                                      */ 
+		NV_SYS_SW_VER_I, 
+		/* RF CAL Program version                                                */ 
+		NV_RF_CAL_VER_I, 
+		/* RF CAL configuration file version                                     */ 
+		NV_RF_CONFIG_VER_I, 
+		/* Date RF calibration was done                                          */ 
+		NV_RF_CAL_DATE_I, 
+		/* Date RF calibration data loaded                                       */ 
+		NV_RF_NV_LOADED_DATE_I, 
+		/* Name of RFCAL .dat                                                    */ 
+		NV_RF_CAL_DAT_FILE_I, 
+		/* Data Services domain name                                             */ 
+		NV_DOMAIN_NAME_I, 
+		/* The preferred network selection mode, either manual or automatic.     */ 
+		NV_NETWORK_SEL_MODE_I, 
+		/* The preferred service type, i.e. circuit switched, packet switched... */ 
+		NV_SERVICE_TYPE_I, 
+		/* The Public Land Mobile Network preferred by the user                  */ 
+		NV_PREF_PLMN_I, 
+		/* Obsolete item                                                         */ 
+		NV_DS_MIP_USER_PROF_VALID_I, 
+		/* Stores the NAI for 1xEV(HDR) Access Netword CHAP Authentication       */ 
+		NV_HDR_AN_AUTH_NAI_I, 
+		/* Stores the password for 1xEV(HDR) Access Network CHAP Authentication  */ 
+		NV_HDR_AN_AUTH_PASSWORD_I,                                            /*580*/ 
+		/* If the PUZL is enabled or not                                         */ 
+		NV_PUZL_ENABLED_I, 
+		/* Obsolete item                                                         */ 
+		NV_PUZL_I, 
+		/* Session configuration for HDR KEP                                     */ 
+		NV_HDRKEP_CONFIG_I, 
+		/* Session configuration for HDR AUTH                                    */ 
+		NV_HDRAUTH_CONFIG_I, 
+		/* IM anti-jamming threshold data for the 4th stage                      */ 
+		NV_IM_LEVEL3_I, 
+		/* IM anti-jamming threshold data for the 5th stage                      */ 
+		NV_IM_LEVEL4_I, 
+		/* Minimum power output from the AGC accumulator                         */ 
+		NV_AGC_VALUE_3_MIN_I, 
+		/* Minimum power output from the AGC accumulator                         */ 
+		NV_AGC_VALUE_4_MIN_I, 
+		/* Gain attenuation limit                                                */ 
+		NV_TX_GAIN_ATTEN_LIMIT_I, 
+		/* Falling threshold data for the third stage                            */ 
+		NV_CDMA_LNA_3_FALL_I,                                                 /*590*/ 
+		/* Offset Value subtracted from IF VGA linearizer table                  */ 
+		NV_CDMA_LNA_3_OFFSET_I, 
+		/* Rising threshold data                                                 */ 
+		NV_CDMA_LNA_3_RISE_I, 
+		/* Gain variations of the LNA                                            */ 
+		NV_CDMA_LNA_3_OFFSET_VS_FREQ_I, 
+		/* Falling threshold data                                                */ 
+		NV_PCS_LNA_3_FALL_I, 
+		/* Offset Value subtracted from IF VGA linearizer table                  */ 
+		NV_PCS_LNA_3_OFFSET_I, 
+		/* Rising threshold data                                                 */ 
+		NV_PCS_LNA_3_RISE_I, 
+		/* Gain variations of the LNA                                            */ 
+		NV_PCS_LNA_3_OFFSET_VS_FREQ_I, 
+		/* Falling threshold data                                                */ 
+		NV_CDMA_LNA_4_FALL_I,   
+		/* Offset Value subtracted from IF VGA linearizer table                  */ 
+		NV_CDMA_LNA_4_OFFSET_I, 
+		/* Rising threshold data                                                 */ 
+		NV_CDMA_LNA_4_RISE_I,                                                 /*600*/ 
+		/* Gain variations of the LNA                                            */ 
+		NV_CDMA_LNA_4_OFFSET_VS_FREQ_I, 
+		/* Falling threshold data                                                */ 
+		NV_PCS_LNA_4_FALL_I,   
+		/* Offset Value subtracted from IF VGA linearizer table                  */ 
+		NV_PCS_LNA_4_OFFSET_I, 
+		/* Rising threshold data                                                 */ 
+		NV_PCS_LNA_4_RISE_I, 
+		/* Gain variations of the LNA                                            */ 
+		NV_PCS_LNA_4_OFFSET_VS_FREQ_I, 
+		/* 2nd stage LNA falling threshold                                       */ 
+		NV_DFM_LNA_FALL_I, 
+		/* 2nd stage LNA rising threshold offset                                 */ 
+		NV_DFM_LNA_OFFSET_I, 
+		/* 1st stage LNA rising threshold                                        */ 
+		NV_DFM_LNA_RISE_I, 
+		/* Offset value when the two-stage LNA is in its 2nd stage               */ 
+		NV_DFM_LNA_OFFSET_VS_FREQ_I, 
+		/* 2nd stage LNA minimum AGC accumulator output                          */ 
+		NV_DFM_AGC_ACC_MIN_1_I,                                               /*610*/ 
+		/* AGC filter gain                                                       */ 
+		NV_DFM_AGC_IM_GAIN_I, 
+		/* AGC filter gain                                                       */ 
+		NV_DFM_AGC_DC_GAIN_I,   
+		/* 2 stage threshold data                                                */ 
+		NV_DFM_IM_LEVEL1_I, 
+		/* No. of shifts to the input value of the fine-grained DC offset loop   */ 
+		NV_GPS_FG_TRK_OFFSET_SCALER_I, 
+		/* No. of shifts to the input value of the fine-grained DC offset loop   */ 
+		NV_DIGITAL_FG_TRK_OFFSET_SCALER_I, 
+		/* No. of shifts to the input value of the fine-grained DC offset loop   */ 
+		NV_FM_FG_TRK_OFFSET_SCALER_I, 
+		/* Static phase offset for LNA gain step 0                               */ 
+		NV_DFM_LNA_S0_PHASE_OFFSET_I, 
+		/* Static phase offset for LNA gain step 1                               */ 
+		NV_DFM_LNA_S1_PHASE_OFFSET_I, 
+		/* I accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_CDMA_RXF_CG_IOFFSET_I, 
+		/* I accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_PCS_RXF_CG_IOFFSET_I,                                              /*620*/ 
+		/* I accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_FM_RXF_CG_IOFFSET_I,   
+		/* I accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_GPS_RXF_CG_IOFFSET_I, 
+		/* Q accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_CDMA_RXF_CG_QOFFSET_I, 
+		/* Q accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_PCS_RXF_CG_QOFFSET_I, 
+		/* Q accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_FM_RXF_CG_QOFFSET_I, 
+		/* Q accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_GPS_RXF_CG_QOFFSET_I, 
+		/* I accumulator in the fine-grain DC offset cancellation loop           */ 
+		NV_CDMA_RXF_FG_IOFFSET_I, 
+		/* I accumulator in the fine-grain DC offset cancellation loop           */ 
+		NV_PCS_RXF_FG_IOFFSET_I, 
+		/* I accumulator in the fine-grain DC offset cancellation loop           */ 
+		NV_FM_RXF_FG_IOFFSET_I, 
+		/* I accumulator in the fine-grain DC offset cancellation loop           */ 
+		NV_GPS_RXF_FG_IOFFSET_I,                                              /*630*/ 
+		/* Q accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_CDMA_RXF_FG_QOFFSET_I,   
+		/* Q accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_PCS_RXF_FG_QOFFSET_I, 
+		/* Q accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_FM_RXF_FG_QOFFSET_I, 
+		/* Q accumulator in the coarse-grain DC offset cancellation loop         */ 
+		NV_GPS_RXF_FG_QOFFSET_I, 
+		/* I accumulator in the estimator                                        */ 
+		NV_CDMA_DACC_EST_IOFFSET_I, 
+		/* I accumulator in the estimator                                        */ 
+		NV_PCS_DACC_EST_IOFFSET_I, 
+		/* I accumulator in the estimator                                        */ 
+		NV_FM_DACC_EST_IOFFSET_I, 
+		/* I accumulator in the estimator                                        */ 
+		NV_GPS_DACC_EST_IOFFSET_I, 
+		/* Q accumulator in the estimator                                        */ 
+		NV_CDMA_DACC_EST_QOFFSET_I,   
+		/* Q accumulator in the estimator                                        */ 
+		NV_PCS_DACC_EST_QOFFSET_I,                                            /*640*/ 
+		/* Q accumulator in the estimator                                        */ 
+		NV_FM_DACC_EST_QOFFSET_I,   
+		/* Q accumulator in the estimator                                        */ 
+		NV_GPS_DACC_EST_QOFFSET_I, 
+		/* I accumulator associated with gain step 0 in the DAC Controller       */ 
+		NV_CDMA_DACC_IACCUM0_I, 
+		/* I accumulator associated with gain step 0 in the DAC Controller       */ 
+		NV_PCS_DACC_IACCUM0_I, 
+		/* I accumulator associated with gain step 0 in the DAC Controller       */ 
+		NV_FM_DACC_IACCUM0_I, 
+		/* I accumulator associated with gain step 0 in the DAC Controller       */ 
+		NV_GPS_DACC_IACCUM0_I, 
+		/* I accumulator associated with gain step 1 in the DAC Controller       */ 
+		NV_CDMA_DACC_IACCUM1_I, 
+		/* I accumulator associated with gain step 1 in the DAC Controller       */ 
+		NV_PCS_DACC_IACCUM1_I, 
+		/* I accumulator associated with gain step 1 in the DAC Controller       */ 
+		NV_FM_DACC_IACCUM1_I, 
+		/* I accumulator associated with gain step 1 in the DAC Controller       */ 
+		NV_GPS_DACC_IACCUM1_I,                                                /*650*/ 
+		/* I accumulator associated with gain step 2 in the DAC Controller       */ 
+		NV_CDMA_DACC_IACCUM2_I,   
+		/* I accumulator associated with gain step 2 in the DAC Controller       */ 
+		NV_PCS_DACC_IACCUM2_I, 
+		/* I accumulator associated with gain step 2 in the DAC Controller       */ 
+		NV_FM_DACC_IACCUM2_I, 
+		/* I accumulator associated with gain step 2 in the DAC Controller       */ 
+		NV_GPS_DACC_IACCUM2_I, 
+		/* I accumulator associated with gain step 3 in the DAC Controller       */ 
+		NV_CDMA_DACC_IACCUM3_I, 
+		/* I accumulator associated with gain step 3 in the DAC Controller       */ 
+		NV_PCS_DACC_IACCUM3_I, 
+		/* I accumulator associated with gain step 3 in the DAC Controller       */ 
+		NV_FM_DACC_IACCUM3_I, 
+		/* I accumulator associated with gain step 3 in the DAC Controller       */ 
+		NV_GPS_DACC_IACCUM3_I, 
+		/* I accumulator associated with gain step 4 in the DAC Controller       */ 
+		NV_CDMA_DACC_IACCUM4_I, 
+		/* I accumulator associated with gain step 4 in the DAC Controller       */ 
+		NV_PCS_DACC_IACCUM4_I,                                                /*660*/ 
+		/* I accumulator associated with gain step 4 in the DAC Controller       */ 
+		NV_FM_DACC_IACCUM4_I,   
+		/* I accumulator associated with gain step 4 in the DAC Controller       */ 
+		NV_GPS_DACC_IACCUM4_I, 
+		/* Q accumulator associated with gain step 0 in the DAC Controller       */ 
+		NV_CDMA_DACC_QACCUM0_I, 
+		/* Q accumulator associated with gain step 0 in the DAC Controller       */ 
+		NV_PCS_DACC_QACCUM0_I, 
+		/* Q accumulator associated with gain step 0 in the DAC Controller       */ 
+		NV_FM_DACC_QACCUM0_I, 
+		/* Q accumulator associated with gain step 0 in the DAC Controller       */ 
+		NV_GPS_DACC_QACCUM0_I, 
+		/* Q accumulator associated with gain step 1 in the DAC Controller       */ 
+		NV_CDMA_DACC_QACCUM1_I, 
+		/* Q accumulator associated with gain step 1 in the DAC Controller       */ 
+		NV_PCS_DACC_QACCUM1_I, 
+		/* Q accumulator associated with gain step 1 in the DAC Controller       */ 
+		NV_FM_DACC_QACCUM1_I, 
+		/* Q accumulator associated with gain step 1 in the DAC Controller       */ 
+		NV_GPS_DACC_QACCUM1_I,                                                /*670*/ 
+		/* Q accumulator associated with gain step 2 in the DAC Controller       */ 
+		NV_CDMA_DACC_QACCUM2_I,   
+		/* Q accumulator associated with gain step 2 in the DAC Controller       */ 
+		NV_PCS_DACC_QACCUM2_I, 
+		/* Q accumulator associated with gain step 2 in the DAC Controller       */ 
+		NV_FM_DACC_QACCUM2_I, 
+		/* Q accumulator associated with gain step 2 in the DAC Controller       */ 
+		NV_GPS_DACC_QACCUM2_I, 
+		/* Q accumulator associated with gain step 3 in the DAC Controller       */ 
+		NV_CDMA_DACC_QACCUM3_I, 
+		/* Q accumulator associated with gain step 3 in the DAC Controller       */ 
+		NV_PCS_DACC_QACCUM3_I, 
+		/* Q accumulator associated with gain step 3 in the DAC Controller       */ 
+		NV_FM_DACC_QACCUM3_I, 
+		/* Q accumulator associated with gain step 3 in the DAC Controller       */ 
+		NV_GPS_DACC_QACCUM3_I, 
+		/* Q accumulator associated with gain step 4 in the DAC Controller       */ 
+		NV_CDMA_DACC_QACCUM4_I, 
+		/* Q accumulator associated with gain step 4 in the DAC Controller       */ 
+		NV_PCS_DACC_QACCUM4_I,                                                /*680*/ 
+		/* Q accumulator associated with gain step 4 in the DAC Controller       */ 
+		NV_FM_DACC_QACCUM4_I,   
+		/* Q accumulator associated with gain step 4 in the DAC Controller       */ 
+		NV_GPS_DACC_QACCUM4_I, 
+		/* Gain value used to scale the estimator accumulator by before updating */ 
+		NV_CDMA_DACC_GAIN_MULT_I, 
+		/* Gain value used to scale the estimator accumulator by before updating */ 
+		NV_PCS_DACC_GAIN_MULT_I, 
+		/* Gain value used to scale the estimator accumulator by before updating */ 
+		NV_FM_DACC_GAIN_MULT_I, 
+		/* Gain value used to scale the estimator accumulator by before updating */ 
+		NV_GPS_DACC_GAIN_MULT_I, 
+		/* IM2 cal items generated during RF Cal to be loaded into RFR6000       */ 
+		NV_CDMA_IM2_I_VALUE_I,    
+		/* IM2 cal items generated during RF Cal to be loaded into RFR6000       */ 
+		NV_PCS_IM2_I_VALUE_I,    
+		/* IM2 cal items generated during RF Cal to be loaded into RFR6000       */ 
+		NV_CDMA_IM2_Q_VALUE_I,    
+		/* IM2 cal items generated during RF Cal to be loaded into RFR6000       */ 
+		NV_PCS_IM2_Q_VALUE_I,                                                 /*690*/ 
+		/* To correct for the deviations in the 32,768Hz crystal oscillator freq */ 
+		NV_RTC_TIME_ADJUST_I,   
+		/* 13-bit two's complement integer for FM VGA gain offset                */ 
+		NV_FM_VGA_GAIN_OFFSET_I,  
+		/* 13-bit two's complement integer for CDMA VGA gain offset              */ 
+		NV_CDMA_VGA_GAIN_OFFSET_I,  
+		/* 13-bit two's complement integer for PCS VGA gain offset               */ 
+		NV_PCS_VGA_GAIN_OFFSET_I,  
+		/* FM VGA gain offset variations over the frequencies                    */ 
+		NV_FM_VGA_GAIN_OFFSET_VS_FREQ_I,  
+		/* CDMA VGA gain offset variations over the frequencies                  */ 
+		NV_CDMA_VGA_GAIN_OFFSET_VS_FREQ_I,  
+		/* PCS VGA gain offset variations over the frequencies                   */ 
+		NV_PCS_VGA_GAIN_OFFSET_VS_FREQ_I,  
+		/* FM VGA gain offset variations over the temperatures                   */ 
+		NV_FM_VGA_GAIN_OFFSET_VS_TEMP_I,  
+		/* CDMA VGA gain offset variations over the temperatures                 */ 
+		NV_CDMA_VGA_GAIN_OFFSET_VS_TEMP_I,  
+		/* PCS VGA gain offset variations over the temperatures                  */ 
+		NV_PCS_VGA_GAIN_OFFSET_VS_TEMP_I,                                     /*700*/ 
+		/* In-phase coefficient for mismatch compensation                        */ 
+		NV_FM_MIS_COMP_A_OFFSET_I,   
+		/* In-phase coefficient for mismatch compensation                        */ 
+		NV_DIGITAL_MIS_COMP_A_OFFSET_I,   
+		/* In-phase coefficient for mismatch compensation                        */ 
+		NV_GPS_MIS_COMP_A_OFFSET_I,   
+		/* In-phase coefficient for mismatch compensation                        */ 
+		NV_FM_MIS_COMP_B_OFFSET_I,   
+		/* In-phase coefficient for mismatch compensation                        */ 
+		NV_DIGITAL_MIS_COMP_B_OFFSET_I,   
+		/* In-phase coefficient for mismatch compensation                        */ 
+		NV_GPS_MIS_COMP_B_OFFSET_I,   
+		/* Send RRQ only if there was traffic since previous RRQ                 */ 
+		NV_DS_MIP_RRQ_IF_TFRK_I, 
+		/* Collocated HDR disallowed time                                        */ 
+		NV_COLLOC_DISALLOWED_TIME_I, 
+		/* Hold HDR time                                                         */ 
+		NV_HOLD_HDR_TIME_I, 
+		/* Number of times NV value updated via IIR filter                       */ 
+		NV_LO_BIAS_UPDATE_CNT_I,                                              /*710*/ 
+		/* Spare item for developer                                              */ 
+		NV_SPARE_3_I, 
+		/* Stores HDR Access Network Authentication Status.                      */ 
+		NV_HDRSCP_AN_AUTH_STATUS_I, 
+		/*Used to allow a user to Save an IMSI as an Index in NV */ 
+		NV_IMSI_INDEX_I,  
+		/* Enable or disable a user profile. Each element can be 1 or 0 indicating  
+		whether the profile is enabled or disabled respectively..              */ 
+		NV_DS_MIP_ENABLE_PROF_I,      
+		/*Contains 8-bit IM anti-jamming threshold data for the fourth  
+		stage in two 's complement format when the five-stage LNA is  
+		in its NONBYPASS_HOLD STATEs.*/ 
+		NV_PCS_IM_LEVEL3_I, 
+		/* contains 8-bit IM anti-jamming threshold data for the fifth 
+		stage in two 's complement format when the five-stage LNA is  
+		in NONBYPASS_HOLD STATEs. */ 
+		NV_PCS_IM_LEVEL4_I, 
+		/*provides the minimum power output from the AGC accumulator  
+		when AGC_VALUE_MIN_EN is enabled and the five-stage LNA is  
+		in its forth stage. */ 
+		NV_PCS_AGC_VALUE_3_MIN_I, 
+		/*provides the minimum power output from the AGC accumulator 
+		when AGC_VALUE_MIN_EN is enabled and the five-stage LNA is in 
+		its fifth stage. */  
+		NV_PCS_AGC_VALUE_4_MIN_I, 
+		 
+		/* SMP - Time at which keep alive timer was started                      */ 
+		NV_HDRSMPKA_START_TIME_I, 
+		 
+		/* SMP - Time at which keep alive message was last sent                  */ 
+		NV_HDRSMPKA_SENT_TIME_I,                                              /*720*/ 
+		 
+		/* Supplement item to the item NV_SMS_BC_SERVICE_TABLE_I */ 
+		NV_SMS_BC_SERVICE_TABLE_OPTIONS_I, 
+		 
+		/* Acquisition database                                                  */ 
+		NV_ACQ_DB_I,       
+		/* Acquisition List                                                      */ 
+		NV_ACQ_LIST_1_I, 
+		/* E-GSM ARFCNs used for GSM radio Rx/Tx frequency compensation          */ 
+		NV_GSM_CAL_ARFCN_I, 
+		/* E-GSM ARFCNs used for DCS radio Rx/Tx frequency compensation          */ 
+		NV_DCS_CAL_ARFCN_I, 
+		/* E-GSM frequency compensated Rx gain values for gain range 1           */ 
+		NV_GSM_RX_GAIN_RANGE_1_FREQ_COMP_I, 
+		/* E-GSM frequency compensated Rx gain values for gain range 2           */ 
+		NV_GSM_RX_GAIN_RANGE_2_FREQ_COMP_I, 
+		/* E-GSM frequency compensated Rx gain values for gain range 3           */ 
+		NV_GSM_RX_GAIN_RANGE_3_FREQ_COMP_I, 
+		/* E-GSM frequency compensated Rx gain values for gain range 4           */ 
+		NV_GSM_RX_GAIN_RANGE_4_FREQ_COMP_I, 
+		/* DCS frequency compensated Rx gain values for gain range 1             */ 
+		NV_DCS_RX_GAIN_RANGE_1_FREQ_COMP_I,                                   /*730*/ 
+		/* DCS frequency compensated Rx gain values for gain range 2             */ 
+		NV_DCS_RX_GAIN_RANGE_2_FREQ_COMP_I, 
+		/* DCS frequency compensated Rx gain values for gain range 3             */ 
+		NV_DCS_RX_GAIN_RANGE_3_FREQ_COMP_I, 
+		/* DCS frequency compensated Rx gain values for gain range 4             */ 
+		NV_DCS_RX_GAIN_RANGE_4_FREQ_COMP_I, 
+		/* Trial PDM value that results in 13MHz TCXO                            */ 
+		NV_GSM_TRK_LO_ADJ_PDM_INIT_VAL_I, 
+		/* Gain Slope for TCXO device in ppm/pdm units                           */ 
+		NV_GSM_TRK_LO_ADJ_PDM_GAIN_SLOPE_I, 
+		/* Calibrated standard deviation of this phone's doppler estimator in Hz */ 
+		NV_GPS_DOPP_SDEV_I, 
+		/* Acquisition List                                                      */ 
+		NV_ACQ_LIST_2_I, 
+		/* Acquisition List                                                      */ 
+		NV_ACQ_LIST_3_I, 
+		/* Acquisition List                                                      */ 
+		NV_ACQ_LIST_4_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_00_I,                                   /*740*/ 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_01_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_02_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_03_I,  
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_04_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_05_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_06_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_07_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_08_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_09_I,                                    
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_10_I,                                   /*750*/ 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_11_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_12_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_13_I,  
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_UP_INDEX_14_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_00_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_01_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_02_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_03_I,  
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_04_I,                                  
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_05_I,                                 /*760*/ 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_06_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_07_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_08_I,  
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_09_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_10_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_11_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_12_I, 
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_13_I,  
+		/* PA DAC value                                                          */ 
+		NV_GSM_TX_BURST_RAMP_DOWN_INDEX_14_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_00_I,                                   /*770*/ 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_01_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_02_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_03_I,  
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_04_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_05_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_06_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_07_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_08_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_09_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_10_I,                                   /*780*/ 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_11_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_12_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_13_I,  
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_14_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_UP_INDEX_15_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_00_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_01_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_02_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_03_I,  
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_04_I,                                 /*790*/ 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_05_I,                                  
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_06_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_07_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_08_I,  
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_09_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_10_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_11_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_12_I, 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_13_I,                                  
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_14_I,                                 /*800*/ 
+		/* PA DAC value                                                          */ 
+		NV_DCS_TX_BURST_RAMP_DOWN_INDEX_15_I, 
+		/* PA DAC counts per dB                                                  */ 
+		NV_GSM_PA_GAIN_SLOPE_I,                                                  
+		/* PA DAC counts per dB                                                  */ 
+		NV_DCS_PA_GAIN_SLOPE_I,     
+		/* 1/16 dB                                                               */ 
+		NV_GSM_TX_FREQ_COMP_I, 
+		/* 1/16 dB                                                               */ 
+		NV_DCS_TX_FREQ_COMP_I,  
+		/* 1/16 dB per volt                                                      */ 
+		NV_GSM_VBATT_HI_PA_COMP_I, 
+		/* 1/16 dB per volt                                                      */ 
+		NV_GSM_VBATT_LO_PA_COMP_I, 
+		/* 1/16 dB per volt                                                      */ 
+		NV_DCS_VBATT_HI_PA_COMP_I, 
+		/* 1/16 dB per volt                                                      */ 
+		NV_DCS_VBATT_LO_PA_COMP_I, 
+		/* PA DAC value                                                          */ 
+		NV_VBATT_3200_MV_ADC_I,                                               /*810*/ 
+		/* PA DAC value                                                          */ 
+		NV_VBATT_3700_MV_ADC_I, 
+		/* PA DAC value                                                          */ 
+		NV_VBATT_4200_MV_ADC_I,                                                
+		/* PA DAC value                                                          */ 
+		NV_GSM_PRECHARGE_I,  
+		/* PA DAC value                                                          */ 
+		NV_DCS_PRECHARGE_I,  
+		/* Quarter-symbol                                                        */ 
+		NV_GSM_PRECHARGE_DUR_I,  
+		/* Quarter-symbol                                                        */ 
+		NV_DCS_PRECHARGE_DUR_I,  
+		/* Timer value to wait until checking the state of LOCK_DET              */ 
+		NV_DIGITAL_PLL_LOCK_TIMER_I, 
+		/* HDR rx diversity control parameter                                    */ 
+		NV_HDR_RX_DIVERSITY_CTRL_I, 
+		/* Quarter-symbol                                                        */ 
+		NV_GSM_PA_START_TIME_OFFSET_I, 
+		/* Quarter-symbol                                                        */ 
+		NV_GSM_PA_STOP_TIME_OFFSET_I,                                         /*820*/ 
+		/* Quarter-symbol                                                        */ 
+		NV_DCS_PA_START_TIME_OFFSET_I, 
+		/* Quarter-symbol                                                        */ 
+		NV_DCS_PA_STOP_TIME_OFFSET_I, 
+		/* Position Location Privacy                                             */ 
+		NV_GPS1_PRIVACY_I, 
+		/* Position Location Network Access Control                              */ 
+		NV_GPS1_NET_ACCESS_I,   
+		/* Enables/Disables Cell Based Position Determination                    */ 
+		NV_GPS1_CELLBASED_SMS_I, 
+		/* Enables/Disables Cell Based Position Determination                    */ 
+		NV_GPS1_TELESERVICE_ID_I, 
+		/* HDR Search Parameters                                                 */ 
+		NV_HDRRUP_SRCH_PARAMS_I,   
+		/* Bypass timer value when LNA is in BYPASS_HOLD_STATE                   */ 
+		NV_DFM_LNA_BYPASS_TIMER_I, 
+		/* Bypass timer value when LNA is in NONBYPASS_HOLD_STATE                */ 
+		NV_DFM_LNA_NONBYPASS_TIMER_I, 
+		/* Storage for GSM/WCDMA SMS routing configuration                       */ 
+		NV_SMS_CFG_ROUTING_I,                                                 /*830*/ 
+		/* Data Burst Packet Size supported by this network                      */ 
+		NV_GPS1_NET_DBM_SIZE_I, 
+		/* Stop monitoring 1x page while in HDR data call                        */ 
+		NV_HDR_DO_NOT_DISTURB_I, 
+		/* Transmitter Gain Attenuation Limit                                    */ 
+		NV_CDMA_TX_GAIN_ATTEN_LIMIT_I, 
+		/* Transmitter Gain Attenuation Limit                                    */ 
+		NV_PCS_TX_GAIN_ATTEN_LIMIT_I, 
+		/* Transmitter Gain Attenuation Limit                                    */ 
+		NV_AMPS_TX_GAIN_ATTEN_LIMIT_I, 
+		/* Transmitter Gain Attenuation Limit                                    */ 
+		NV_GPS_TX_GAIN_ATTEN_LIMIT_I, 
+		/* ZIFRIC register value that controls IM2 transconductance              */ 
+		NV_CDMA_IM2_TRANSCONDUCTOR_VALUE_I, 
+		/* ZIFRIC register value that controls IM2 transconductance              */ 
+		NV_PCS_IM2_TRANSCONDUCTOR_VALUE_I, 
+		/* Bypass timer value                                                    */ 
+		NV_LNA_NON_BYPASS_TIMER_0_I, 
+		/* Bypass timer value                                                    */ 
+		NV_LNA_NON_BYPASS_TIMER_1_I,                                          /*840*/ 
+		/* Bypass timer value                                                    */ 
+		NV_LNA_NON_BYPASS_TIMER_2_I, 
+		/* Bypass timer value                                                    */ 
+		NV_LNA_NON_BYPASS_TIMER_3_I, 
+		/* Bypass timer value                                                    */ 
+		NV_LNA_BYPASS_TIMER_0_I, 
+		/* Bypass timer value                                                    */ 
+		NV_LNA_BYPASS_TIMER_1_I, 
+		/* Bypass timer value                                                    */ 
+		NV_LNA_BYPASS_TIMER_2_I, 
+		/* Bypass timer value                                                    */ 
+		NV_LNA_BYPASS_TIMER_3_I, 
+		/* CDMA SMS Parameters/templates                                         */ 
+		NV_SMS_CD_PARMS_I, 
+		/* Specifies the order of acquiring a GSM/WCDMA system                   */ 
+		NV_ACQ_ORDER_PREF_I, 
+		/* Indicates how a network should be selected, auto or manually          */ 
+		NV_NET_SEL_MODE_PREF_I, 
+		/* Indicates the type of service domain that should be acquired          */ 
+		NV_SERVICE_DOMAIN_PREF_I,                                             /*850*/ 
+		/* Authentication type                                                   */ 
+		NV_PPP_AUTHENTICATION_I, 
+		/* APN name to be used in the PDP-context activation procedure           */ 
+		NV_APN_NAME_I, 
+		/* List of equivalent PLMNs received from the RPLMN                      */ 
+		NV_EQUIVALENT_PLMN_LIST_I, 
+		/* Public Key Organization Identifier                                    */ 
+		NV_DS_MIP_DMU_PKOID_I, 
+		/* RTRE configuration                                                    */ 
+		NV_RTRE_CONFIG_I, 
+		/* RX AGC offset for each VGA gain                                       */ 
+		NV_WCDMA_VGA_GAIN_OFFSET_I, 
+		/* RX AGC offset for each VGA gain based on frequency                    */ 
+		NV_WCDMA_VGA_GAIN_OFFSET_VS_FREQ_I, 
+		/* RX AGC offset for each VGA gain based on temperature                  */ 
+		NV_WCDMA_VGA_GAIN_OFFSET_VS_TEMP_I, 
+		/* LNA threshold from mid to low state                                   */ 
+		NV_WCDMA_LNA_RANGE_RISE_2_I, 
+		/* Mixer threshold from high to low state                                */ 
+		NV_WCDMA_LNA_RANGE_RISE_3_I,                                          /*860*/ 
+		/* LNA threshold from low to mid state                                   */ 
+		NV_WCDMA_LNA_RANGE_FALL_2_I, 
+		/* Mixer threshold from low to high state                                */ 
+		NV_WCDMA_LNA_RANGE_FALL_3_I, 
+		/* IM threshold for LNA mid to low state                                 */ 
+		NV_WCDMA_IM_LEVEL_2_I, 
+		/* Mixer threshold for high to low state                                 */ 
+		NV_WCDMA_IM_LEVEL_3_I, 
+		/* LNA gain step from mid to low state                                   */ 
+		NV_WCDMA_LNA_RANGE_OFFSET_2_I, 
+		/* Mixer gain step from high to low state                                */ 
+		NV_WCDMA_LNA_RANGE_OFFSET_3_I, 
+		/* LNA gain step from mid to low state based on frequency                */ 
+		NV_WCDMA_LNA_OFFSET_VS_FREQ_2_I, 
+		/* Mixer gain step from high to low state based on frequency             */ 
+		NV_WCDMA_LNA_OFFSET_VS_FREQ_3_I, 
+		/* I cancellation value for lower in-band jammer                         */ 
+		NV_WCDMA_IM2_I_VALUE_I, 
+		/* Q cancellation value for lower in-band jammer                         */ 
+		NV_WCDMA_IM2_Q_VALUE_I,                                               /*870*/ 
+		/* Transconductor value for lower in-band jammer                         */ 
+		NV_WCDMA_IM2_TRANSCONDUCTOR_VALUE_I, 
+		/* Linearizer underflow for LNA low gain state and Mixer High gainstate  */ 
+		NV_WCDMA_RX_AGC_MIN_2_I, 
+		/* Linearizer underflow for LNA Low gain state and Mixer Low gain state  */ 
+		NV_WCDMA_RX_AGC_MIN_3_I, 
+		/* VBATT min and max voltage value                                       */ 
+		NV_WCDMA_VBATT_I, 
+		/* THERM min and max voltage value                                       */ 
+		NV_WCDMA_THERM_I, 
+		/* WCDMA UE Maximum TX power in dbm                                      */ 
+		NV_WCDMA_MAX_TX_POWER_I, 
+		/* The FM MAC level that the PA will switch from low to high gain        */ 
+		NV_FM_PA_MAC_HIGH_I, 
+		/* Selects dynamic range in Rx Front.                                    */ 
+		NV_CDMA_DYNAMIC_RANGE_I, 
+		/* Min Rx RSSI in 1/10 dB increments.                                    */ 
+		NV_CDMA_MIN_RX_RSSI_I, 
+		/* Enables Integrity Protection feature in the UE                        */ 
+		NV_RRC_INTEGRITY_ENABLED_I,                                           /*880*/ 
+		/* Enables Ciphering feature in the UE                                   */ 
+		NV_RRC_CIPHERING_ENABLED_I, 
+		/* Fake Security turned on/off in the UE                                 */ 
+		NV_RRC_FAKE_SECURITY_ENABLED_I, 
+		/* This NV item records the # of CDMA powerup registration performed.    */ 
+		NV_CDMA_POWERUP_REG_PERFORMED_I, 
+		/* Defines the Tx Warmup duration                                        */ 
+		NV_TX_WARMUP_I, 
+		/* Remember the amount of data call bytes transmitted                    */ 
+		NV_LAST_TX_DATA_COUNT_I, 
+		/* Remember the amount of data call bytes received                       */ 
+		NV_LAST_RX_DATA_COUNT_I, 
+		/* Remember the accumulated data call bytes transmitted                  */ 
+		NV_TOTAL_TX_DATA_COUNT_I, 
+		/* Remember the accumulated data call bytes received                     */ 
+		NV_TOTAL_RX_DATA_COUNT_I, 
+		/* Mobile Node Authenticator                                             */ 
+		NV_DS_MIP_DMU_MN_AUTH_I, 
+		/* Configurable USB product id offset                                    */ 
+		NV_USB_PRODUCT_ID_OFFSET_I,                                           /*890*/ 
+		/* Call duration                                                         */ 
+		NV_AVCD_CALL_DURATION_I, 
+		/* Time between calls                                                    */ 
+		NV_AVCD_TIME_BETWEEN_CALLS_I, 
+		/* Number of calls                                                       */ 
+		NV_AVCD_NUMBER_OF_CALLS_I, 
+		/* Service options                                                       */ 
+		NV_AVCD_SO_I, 
+		/* Minimum value before searcher declares  OUT_OF_SERVICE_AREA           */ 
+		NV_WCDMA_OUT_OF_SERVICE_THRESH_I, 
+		/* Indicates which class to use for the first UIM instruction.           */ 
+		NV_UIM_FIRST_INST_CLASS_I, 
+		/* HDR Set Management Parameters Override Allowed.                       */ 
+		NV_HDRRUP_OVERRIDE_ALLOWED_I, 
+		/* M511 mode setting                                                     */ 
+		NV_JCDMA_M511_MODE_I, 
+		/* M512 mode setting                                                     */ 
+		NV_JCDMA_M512_MODE_I, 
+		/* M513 mode setting                                                     */ 
+		NV_JCDMA_M513_MODE_I,                                                      /*900*/ 
+		/* Adjustments to PA rise and fall values during P1 data calls.          */ 
+		NV_CDMA_P1_RISE_FALL_OFF_I, 
+		/* Adjustments to PA rise and fall values during P1 data calls.          */ 
+		NV_PCS_P1_RISE_FALL_OFF_I, 
+		/* Simple IP PPP password.                                               */ 
+		NV_PPP_PASSWORD_I = 906, 
+		/* User ID for PPP authentication.                                       */ 
+		NV_PPP_USER_ID_I = 910, 
+		/* Indicates what the preferred UIM protocol is.                         */ 
+		NV_UIM_PREF_PROTOCOL_I    =     914, 
+		 
+		/* Comment to track factory non-compliant behavior                       */ 
+		NV_NON_COMPLIANCE_COMMENT_I  =  927, 
+		/* Defines the PZID hysterisis activation timer in seconds               */ 
+		NV_HYSTERISIS_ACTIVATION_TIMER_I = 928, 
+		/* Defines the PZID hysterisis timer in seconds                          */ 
+		NV_HYSTERISIS_TIMER_I        =  929, 
+		/* Table of VCO Coarse Tune Values                                       */ 
+		NV_VCO_COARSE_TUNE_TABLE_I   =  931, 
+		/* Bypass timer value when the LNA_CNTL state machine is at 0001         */ 
+		NV_PCS_LNA_BYPASS_TIMER_0_I  = 1195, 
+		/* Coefficients for Freq comp for CDMA Tx                                */ 
+		NV_CDMA_TX_CAL_CHAN_I        =  1307, 
+		/* Coefficients for Freq comp for CDMA Rx                                */ 
+		NV_CDMA_RX_CAL_CHAN_I        =  1308, 
+		/* Coefficients for Freq comp for PCS Rx                                 */ 
+		NV_PCS_RX_CAL_CHAN_I         =  1309, 
+		/* Coefficients for Freq comp for PCS Tx                                 */ 
+		NV_PCS_TX_CAL_CHAN_I         =  1310, 
+		 
+		NV_PA_R_MAP_I 				= 1875,	//zj added 2006-12-07 for QSC6030 
+ 
+		NV_MAX_I,                    /* Size of this enum, MUST be the last item */ 
+		/* (except for padding)                     */ 
+		/*-------------------------------------------------------------------------*/ 
+		 
+		NV_ITEMS_ENUM_PAD = 0x7FFF   /* Pad to 16 bits on ARM                    */ 
+		 
+	}nv_item_enum_type; 
+	//nv item end 
+	///////////////////////////////////////////////// 
+	 
+	/////////////////////////////////////////////////// 
+	/////////////////////////////////////////////////// 
+/////////////////////////////////////////////////// 
+#define CONS_SUB_SYS_ID     11 
+#define CONS_RF_MODE_ID     0 
+/////////////////////////////////////////////////// 
+	//Below is for DM 
+	typedef struct 
+	{ 
+		byte cmd_code; 
+		dword esn; 
+	} diag_esn_rsp_type; 
+	 
+	typedef struct 
+	{ 
+		byte cmd_code; 
+	}diag_esn_req_type; 
+	 
+	 
+	typedef  struct 
+	{ 
+		byte cmd_code;               
+	} diag_status_req_type; 
+	 
+	typedef  struct { 
+		dword   esn;                 
+		word    cdma_rx_state;       
+		word    entry_reason;            
+		word    curr_chan;     
+		byte	cdma_code_chan; 
+		word    pilot_base;              
+		word    sid;                     
+		word    nid;                     
+	} diag_status_rsp_type; 
+	 
+	typedef  struct { 
+		byte	cmd_code; 
+		word	mode;        
+	} diag_control_req_type; 
+	 
+	typedef struct 
+	{ 
+		byte cmd_code; 
+	} diag_sw_ver_req_type; 
+	 
+	typedef struct 
+	{ 
+		byte                cmd_code;  
+		word				item;			//nv_items_enum_type 
+        	byte				item_data[DIAG_NV_ITEM_SIZE]; 
+		word				nv_stat;		//nv_stat_enum_type 
+	} diag_nv_read_req_type; 
+	 
+	typedef struct 
+	{ 
+		byte                cmd_code;  
+		word				item; 
+		byte				item_data[DIAG_NV_ITEM_SIZE]; 
+		word				nv_stat; 
+	} diag_nv_write_req_type; 
+	 
+	typedef struct 
+	{ 
+		byte cmd_code; 
+	}diag_state_req_type; 
+	 
+	typedef struct 
+	{ 
+		byte cmd; 
+		byte phone_state; 
+		word event_count; 
+	}diag_state_rsp_type; 
+ 
+	typedef struct  
+	{ 
+		word id; 
+		int2 val; 
+	} test_id_val_type; 
+	typedef struct  
+	{ 
+		byte byte0; 
+		byte byte1; 
+		byte byte2; 
+	} test_byte_type; 
+ 
+	typedef	union 
+	{ 
+			word gen_w; /* Generic word */ 
+			byte gen_b; /* Generic byte */ 
+			dword gen_d; /* Generic dword */ 
+			word chan; /* For tuning to a specific channel */ 
+			boolean on_off; /* For anything with an on_off state*/ 
+			word mode; /* For Setting Phone operation mode */ 
+			word range; /* Set the LNA/PA range */ 
+			test_id_val_type id_value; /* Struc id and value both words */ 
+			test_byte_type byte_struct; 
+	} ftm_rf_data_type; 
+	/* union of RF commands data */ 
+	 
+	typedef struct 
+	{ 
+		word rf_sub_cmd; 
+		/* Rf sub-command from host */ 
+		ftm_rf_data_type ftm_rf_data; 
+	} ftm_rf_data_params_type; 
+ 
+	/////////////////////////////////////////////////////////// 
+	//Note:MSM6500 changed,different from before anymore 
+	//(command header is 75(not 59) and the cmd structure is different 
+	typedef struct 
+	{ 
+		byte sub_sys_id; 
+		word rf_mode_id; 
+		ftm_rf_data_params_type ftm_rf_data_paras; 
+	}diag_ftm_rf_req_type; 
+ 
+	typedef struct 
+	{ 
+		byte sub_sys_id; 
+		word rf_mode_id; 
+		ftm_rf_data_params_type ftm_rf_data_paras; 
+	}diag_ftm_rf_rsp_type; 
+ 
+	typedef struct 
+	{ 
+		byte cmd; 
+		diag_ftm_rf_req_type ftm_rf_req; 
+		//other cmd add here,such as acquire pilot,acquire sync channel etc. 
+	}diag_ftm_req_type; 
+	 
+	typedef struct 
+	{ 
+		byte cmd; 
+		diag_ftm_rf_rsp_type ftm_rf_rsp; 
+		//other cmd add here,such as acquire pilot,acquire sync channel etc. 
+	}diag_ftm_rsp_type; 
+	/////////////////////////////////////////////////////////// 
+ 
+	 
+	typedef  union 
+	{ 
+		byte						cmd_code; 
+		diag_esn_req_type			esn; 
+		//		diag_inp_req_type			inp; 
+		diag_status_req_type		stat; 
+		diag_nv_read_req_type		nv_read; 
+		diag_nv_write_req_type		nv_write; 
+		diag_control_req_type		cont; 
+		diag_sw_ver_req_type		sw_ver; 
+		diag_state_req_type		state; 
+		diag_ftm_req_type			ftm_req; 
+		//		diag_rx_tx_agc_req_type		rx_tx_req;	 
+		//		diag_adc_read_req_type		adc_read_req; 
+		//		diag_spc_req_type			spc_req; 
+		//		diag_password_req_type		password_req; 
+	} diag_req_type; 
+	 
+	 
+	 
+#define COMPI_DATE_STRLEN	12 
+#define COMPI_TIME_STRLEN	9 
+#define SW_VERSION_STRLEN	21 
+	typedef struct 
+	{ 
+		char sw_ver_str[ SW_VERSION_STRLEN ]; 
+		char comp_date[ COMPI_DATE_STRLEN ];      
+		char comp_time[ COMPI_TIME_STRLEN ];	 
+	} diag_sw_ver_rsp_type; 
+	 
+	typedef  union 
+	{ 
+		byte                      cmd_code; 
+		diag_esn_rsp_type		  esn; 
+		//diag_inp_rsp_type       inp; 
+		diag_state_rsp_type       state; 
+		diag_status_rsp_type      stat; 
+		diag_nv_read_req_type     nv_read;    
+		diag_nv_write_req_type    nv_write;   
+		diag_control_req_type     cont;   
+		diag_sw_ver_rsp_type      sw_ver; 
+		diag_ftm_rsp_type			ftm_rsp; 
+		//	diag_rf_item_rsp_type     rf_item_rsp; 
+		//	diag_rx_tx_agc_rsp_type	  rx_tx_rsp; 
+		//	diag_adc_read_rsp_type	  adc_read_rsp; 
+		//	diag_spc_rsp_type         spc_rsp; 
+		//	diag_password_rsp_type    password_rsp; 
+	} diag_rsp_type; 
+	 
+	//////////////////////////////////////////// 
+	//包括校验、结束标志的总命令请求/响应类型 
+	typedef struct 
+	{ 
+		diag_req_type        req;            
+		word                 crc;            
+		byte                 control_char;   
+	} diag_req_pkt_type; 
+	 
+	typedef struct 
+	{ 
+		diag_rsp_type rsp;    
+		word          crc;    
+		byte          control_char; 
+	} diag_rsp_pkt_type; 
+	//////////////////////////////////////////// 
+ 
+	/////////////////////////////////// 
+	//用于串口发送、接收的包格式 
+	typedef struct 
+	{ 
+		int length; 
+		BYTE buf[DIAG_MAX_RX_PKT_SIZ]; 
+	}rx_pkt_buf_type; 
+	 
+	typedef struct 
+	{ 
+		WORD length; 
+		BYTE buf[DIAG_MAX_TX_PKT_SIZ]; 
+	}tx_pkt_buf_type; 
+	/////////////////////////////////// 
+ 
+	typedef enum { 
+		 
+		TEST_SET_PDM=0,               
+			TEST_SET_PDM_CLOSE=1,         
+			TEST_SET_TX_ON=2,             
+			TEST_SET_TX_OFF=3,            
+			TEST_SET_MODE=7,              
+			TEST_SET_CHAN=8,              
+			TEST_GET_RSSI,              
+			TEST_GET_SYNTH_STATE=16,       
+			TEST_FM_TX_ST=37,             
+			TEST_CDMA_CW_WAVEFORM=50,     /*50 */ 
+			TEST_GET_CAGC_RX_AGC=53, 
+			TEST_SET_PA_RANGE=54, 
+			TEST_SET_LNA_RANGE=58, 
+			TEST_GET_ADC_VAL=59,         /* 59 */ 
+			TEST_SET_LNA_OFFSET=81,       /* 81*/ 
+			TEST_SET_DVGA_OFFSET=111,		   
+			TEST_GET_CDMA_IM2=114,             /* 114 */ 
+			TEST_SET_FREQUENCY_SENSE_GAIN=115, /* 115 */ 
+			TEST_TX_SWEEP_CAL=116,			  /* 116 */ 
+			TEST_GET_DVGA_OFFSET=117, 
+			TEST_GET_LNA_OFFSET=118, 
+			TEST_GET_HDET_FROM_TX_SWEEP_CAL=119, 
+			TEST_GET_FM_IQ=120, 
+			TEST_MAX                    
+	} test_id_type; 
+ 
+ 
+ 
+

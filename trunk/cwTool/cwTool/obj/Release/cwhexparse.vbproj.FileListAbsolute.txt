@@ -1,0 +1,10 @@
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwhexparse\cwhexparse\bin\Release\cwhexparse.exe
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwhexparse\cwhexparse\bin\Release\cwhexparse.pdb
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwhexparse\cwhexparse\bin\Release\cwhexparse.xml
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwhexparse\cwhexparse\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwhexparse\cwhexparse\obj\Release\WindowsApplication1.CdmaWorkshopNVdumpParser.resources
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwhexparse\cwhexparse\obj\Release\WindowsApplication1.Resources.resources
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwhexparse\cwhexparse\obj\Release\cwhexparse.vbproj.GenerateResource.Cache
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwhexparse\cwhexparse\obj\Release\cwhexparse.exe
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwhexparse\cwhexparse\obj\Release\cwhexparse.xml
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\cwhexparse\cwhexparse\obj\Release\cwhexparse.pdb

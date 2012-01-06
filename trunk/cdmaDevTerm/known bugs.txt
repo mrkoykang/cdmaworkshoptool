@@ -1,0 +1,97 @@
+=================================
+
+=================================
+CdmaDevTerm
+=================================
+
+=================================
+known bug 1: returned packets are not properly un-escaped 
+by ¿k?
+=================================
+good ex:
+02685 (0x0A7D)   -   Inactive item
+
+02686 (0x0A7E)   -   Inactive item
+
+bad ex:
+23933 (0x5D7D)   -   Inactive item
+
+24189 (0x5E7D)   -   Inactive item
+
+applies to item number and data (ie data is corrupted on any nv packet containing 7d=>5d7d or 7e=>5e7e
+
+needs:   under command.tx()
+         
+         ...
+
+         If bytesRxd.Count > 0 Then
+              unescapeBytesRxd(bytesRxd) 
+              Return True
+         End If
+
+
+=================================
+known bug 2: on sending any QC type command to an AT port, devTerm crashes fatally 
+by ¿k?
+=================================
+ex:
+connect u350, connect to AT port (the one not designated as samsung) send 0x00 identify command
+
+needs:
+unknown? worst cast scenario we could force the user to desinagte AT with a check box or something and fallback to System.IO.SerialPort(which I don't believe crashed in this case?) instead of winapicom.dll...but this sounds really painful (I don't recall if the decoders were different? may not matter for AT tho)
+
+=================================
+known bug 3: Only 1 QC command can have a data packet on the scripting screen 
+by ¿k?
+=================================
+ex:
+
+one could not write a script like: 
+
+ 
+16 digit password h:{ffffffffffffffff}
+spc write a:{000000} 
+
+because more than one packet would require use of the textbox associted with data
+
+needs:
+not sure, thinking a checkNextLineForData() method that would check if '{' char exists on the next line of commands for QC stlye and Qc.Nvwrite commands if so it determines if the data is a: ascii or h: hex and then forms the proper byte array in the New Command() constructor
+
+=================================
+known bug 4: efs tab is non functional by ¿k?
+=================================
+
+-could be derived from bitpim sources perhaps
+
+=================================
+known bug 5: ram scan(sanyo) is iffy? by ¿k?
+=================================
+
+-produces bin file, however is not unescaped and md5sum does not match file read by ws
+-writing the bin file produced in devterm back with ws could have dangerous and unpredictable results
+
+update, there is some unescaping code, however it may not be connected to ram scans yet. unclear
+
+=================================
+known bug 6: bad samsung codes by ¿k?
+=================================
+
+-any of the models listed in samsung tab with the code next to the model will send a different, usually wrong 16 digit code
+
+
+=================================
+known bug 7: stange nv numbers ¿k?
+=================================
+
+-Was previously using sent packet to determine nv number, that sometimes resulted in a mismatch (ie item 27 sent but the rx data associated was for item 26)
+-Now using rx packet which was more reliable... but:
+bad rx causes werid nv number ie:
+
+TEST TX: 261B00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001A037E
+
+TEST RX: 14261B00000000000000000000000000007BDC7E
+
+results in an item: 
+06950 (0x1B26)   -   Access denied
+
+update: may be solved in testing

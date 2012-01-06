@@ -1,0 +1,323 @@
+//
+// Novatel SDK APIs
+//
+
+
+#define MODE_RADIO_OFFLINE  ( 0x01 )
+#define MODE_RADIO_RESET    ( 0x02 )
+#define MODE_RADIO_ONLINE   ( 0x04 )
+#define MODE_RADIO_LOWPOWER ( 0x05 )
+
+#define DIAG_ERR_SUCCESS            ( 0x0000 )
+#define DIAG_ERR_FAIL               ( 0x0001 )
+#define DIAG_ERR_BAD_CMD            ( 0x0002 )
+#define DIAG_ERR_BAD_PARAM          ( 0x0003 )
+#define DIAG_ERR_BAD_LENGTH         ( 0x0004 )
+#define DIAG_ERR_BAD_SECURITY_MODE  ( 0x0005 )
+#define DIAG_ERR_BAD_REPLY_CMD      ( 0x000B )
+#define DIAG_ERR_BAD_SPC_MODE       ( 0x0015 )
+#define DIAG_ERR_BAD_MODE           ( 0x0020 )
+
+//
+// Diagnostics port commands
+//
+
+struct NVTL_CMD
+{
+	enum NvtlCmd
+	{
+		GET_SOFTWARE_VERSION    = 0x00,
+		LOG_PACKET              = 0x10,s
+		TAGRAPH_READ            = 0x19,
+		LOCK                    = 0x21,
+		NV_READ                 = 0x26,
+		NV_WRITE                = 0x27,
+		MODE_CHANGE             = 0x29,
+		CALL_ORIGINATION        = 0x35,
+		CALL_END                = 0x36,
+		DOWNLOAD_MODE           = 0x3A,
+		GET_PHONE_STATE         = 0x3F,
+		PILOT_OFFSET_READ       = 0x40,
+		SPC                     = 0x41,
+		PRL_READ                = 0x49,
+		SUBSYS_CMD              = 0x4B,
+		FER_READ                = 0x55,
+		EVENT_PACKET            = 0x60,
+		GET_STATUS_SNAPSHOT     = 0x63,
+		LOG_MASK                = 0x73,
+		EXT_BUILD_ID            = 0x7C,
+		PRL_WRITE               = 0x7E,
+
+		LAST_CMD
+	};
+};
+
+//
+// Subsystems, for use with NVTL_CMD::SUBSYS_CMD
+//
+// There exists a subsystem-specific command code following the subsystem ID.
+//
+//
+
+struct NVTL_SUBSYS
+{
+	enum NvtlSubsys
+	{
+		HDR              = 0x05,
+		SMS              = 0x0E,
+		CM               = 0x0F,
+		GPS              = 0x0D,
+		STORAGE          = 0x13,
+		OLD_CONTROL      = 0x32,
+		CONTROL          = 0xFA,
+
+		LAST_SUBSYS
+	};
+};
+
+//
+// Nonvolatile storage object index values.
+//
+// Most object have a single component, though some, such as PRI or Refurbish
+// have multiple subcomponents.
+//
+
+struct NVTL_NV
+{
+	enum NvtlNvObjectIndex
+	{
+		ESN                           = 0x0000,
+		SCM                           = 0x0004,
+		SLOT_CYCLE_INDEX              = 0x0005,
+		NAM_PREF_MODE                 = 0x000A,
+		NAM_CDMA_PREF_SERV            = 0x000B,
+		NAM_PCDMACH                   = 0x0014,
+		NAM_SCDMACH                   = 0x0015,
+		A_KEY                         = 0x0019,
+		NAM_MIN1_MIN2                 = 0x0021,
+		NAM_HSID_FLAG                 = 0x0022,
+		NAM_FSID_FLAG                 = 0x0023,
+		NAM_FNID_FLAG                 = 0x0024,
+		NAM_ACCOLC                    = 0x0025,
+		NAM_SID_NID                   = 0x0026,
+		MIN_CHECKSUM                  = 0x0027,
+		CURRENT_NAM                   = 0x0028,
+		AUTONAM_FLAG                  = 0x002A,
+		NAM_NAME                      = 0x002B,
+		LSTSID_1                      = 0x002D, // lstsid - dupe
+		LSTSID_2                      = 0x002E, // lstsid - dupe
+		LIFETIME_TIMER                = 0x0037,
+		EARPIECE_VOLUME               = 0x003E,
+		PHONE_BANNER                  = 0x0047,
+		AUTO_POWER                    = 0x0049,
+		AUTO_ANSWER                   = 0x004A,
+		AUTO_REDIAL                   = 0x004B,
+		AUTOHYPHEN_FLAG               = 0x004C,
+		BACK_LIGHT                    = 0x004D,
+		LOCK_FLAG                     = 0x0051,
+		AUTO_LOCK_FLAG                = 0x0053,
+		CALL_RSTRC                    = 0x0054,
+		SPC                           = 0x0055,
+		SPARE_1                       = 0x006B, // 2 bytes
+		SPARE_2                       = 0x006C, // 2 bytes
+		DATA_IO_MODE                  = 0x006E,
+		TIMESHOW_FLAG                 = 0x00A6,
+		NAM_MCC                       = 0x00B0,
+		NAM_11_12                     = 0x00B1,
+		NAM_DIRECTORY_NUMBER          = 0x00B2,
+		VOICE_PRIVACY                 = 0x00B3,
+		FSC                           = 0x00B8,
+		GLOBAL_LIFETIME_TIMER         = 0x00BF,
+		CALL_TIMER                    = 0x00C0,
+		WARRANTY_CODE                 = 0x00C5,
+		IMSI_ADDR_NUM                 = 0x00D1,
+		NAM_PCS_NUMBER                = 0x00D7,
+		NAM_MRU2_LIST                 = 0x00E7,
+		QNC_ENABLED_FLAG              = 0x00F0,
+		SERVICE_OPTION                = 0x00F1,
+		NAM_SID_NID_LOCK              = 0x00FF,
+		PRL_FLAG                      = 0x0100,
+		NAM_SYSTEM_PREF               = 0x0102,
+		NAM_HOME_SID_NID              = 0x0103,
+		NAM_OTAPA_ENABLED             = 0x0104,
+		NAM_LOCK_FLAG                 = 0x0105,
+		NAM_T_MCC                     = 0x0108,
+		NAM_T_11_12                   = 0x0109,
+		SMS_UTC_FLAG                  = 0x010D,
+		NAM_EVRC_FLAG                 = 0x011D,
+		SMS_AUTO_DELETE_FLAG          = 0x0122,
+		SPC_CHANGE_ENABLED_FLAG       = 0x0128,
+		MDR_MODE                      = 0x0129,
+		PKT_ORIG_STRING               = 0x012A,
+		AUTO_PKTDETECT_FLAG           = 0x012C,
+		SECURITY_CODE_RETRY_COUNT_OLD = 0x0130, // old firmware revision only
+		PAP_USERID                    = 0x013E,
+		PAP_PASSWORD                  = 0x013F,
+		GPS1_PDE_ADDRESS_1            = 0x0191, // gps1_pde_address - dupe
+		PREF_FOR_RC                   = 0x0195,
+		PRIMARY_DNS                   = 0x01A7,
+		SECONDARY_DNS                 = 0x01A8,
+		GPS1_PDE_PORT_1               = 0x01AA, // gps1_pde_port - dupe
+		SCRM_ENABLED_FLAG             = 0x01AD,
+		NAM_BAND_PREF_GET             = 0x01B9,
+		NAM_ROAM_PREF                 = 0x01BA,
+		GPS1_GPS_RF_LOSS              = 0x01C1,
+		DATA_TRTL_ENABLE_FLAG         = 0x01C2,
+		GPS1_LOCK                     = 0x01C4,
+		MIP_QCMIP                     = 0x01CB,
+		MIP_RETRIES                   = 0x01CC,
+		MIP_RETRY_INT                 = 0x01CD,
+		MIP_PRE_RE_RRQ_TIME           = 0x01CE,
+		MIP_NUM_PROF                  = 0x01CF,
+		MIP_ACTIVE_PROF               = 0x01D0,
+		MIP_GEN_USER_PROF             = 0x01D1,
+		MIP_SS_USER_PROF              = 0x01D2,
+		HDR_SRCH_PARAMS               = 0x01D6,
+		HDRAMP_ADDRESS_DATA           = 0x01D8,
+		HDRSCP_SESSION_STATUS         = 0x01DB,
+		HDRAMP_DUAL_EXPIRE_TIME       = 0x01DE,
+		MIP_MN_HA_TIME_DELTA          = 0x01EE,
+		MIP_QC_DRS_OPT                = 0x01EF,
+		MIP_BIS_MN_HA_AUTH            = 0x0222,
+		GPS1_LO_CAL                   = 0x022B,
+		HYBRID_PREF                   = 0x0232,
+		ASYNC_DIAL_STRING_OLD         = 0x0237, // old firmware revision only
+		MIP_RRQ_IF_TFRK               = 0x02C3,
+		MIP_ENABLE_PROF               = 0x02CA,
+		GPS1_DOPP_SDEV                = 0x02E0,
+		HDR_RX_DIVERSITY_CTRL         = 0x0332,
+		CDMA_RX_DIVERSITY_CTRL        = 0x03FA,
+		MIP_DMU_PKOID                 = 0x0356,
+		LAST_TX_DATA_COUNT            = 0x0375,
+		LAST_RX_DATA_COUNT            = 0x0376,
+		TOTAL_TX_DATA_COUNT           = 0x0377,
+		TOTAL_RX_DATA_COUNT           = 0x0378,
+		MIP_DMU_MN_AUTH               = 0x0379,
+		PPP_PASSWORD                  = 0x038A,
+		PPP_USER_ID                   = 0x038E,
+		HYSTERISIS_ACTIVATION_TIMER   = 0x03A0,
+		HYSTERISIS_TIMER              = 0x03A1,
+		PKT_DIAL_STRING               = 0x03A2,
+		PRI_OLD                       = 0x039F, // old firmware revision only
+		PS_DATA_ORIG_PREF             = 0x04A7,
+		HDR_AN_AUTH_PASSWD            = 0x04A8,
+		MIP_QC_HANDDOWN_TO_1X_OPT     = 0x04A9,
+		HDR_AN_AUTH_USER_ID           = 0x04AA,
+		PPP_CONFIGURE_DATA            = 0x04B6,
+		GPS1_BC1_RF_DELAY             = 0x0658,
+		GPS1_BC0_RF_DELAY             = 0x06B1,
+		PLATFORM_CODE                 = 0x07D1,
+		FID                           = 0x07D2,
+		TRM_CONFIG                    = 0x0D76,
+		HDRSCP_CUSTOM_CONFIG          = 0x0D82,
+		CDMA_RX_CHAIN_SEL_THRESHHOLD  = 0x0DBB,
+		GPS_NMEA_OUTPUT               = 0x1004,
+		FEATURE_MASK                  = 0x2710,
+		NW_PPP_AN_AUTH                = 0x2712,
+		NW_DATA_INACTIVITY_TIMER      = 0x2713,
+		NW_NW_DTC_SMS_SO              = 0x2714,
+		NW_VZW_SYS_SELECTION          = 0x2715,
+		SECURITY_CODE_RETRY_COUNT     = 0x2716,
+		ASYNC_DIAL_STRING             = 0x2717,
+		RECONDITION_STATUS            = 0x2718, // compound object
+		REFURBISH                     = 0x2719, // compound object
+		ACTIVATION_DATE               = 0x271A,
+		PRI                           = 0x271B, // compound object
+		NW_SPARE2                     = 0x271C, // 4 bytes
+		NW_MOBILE_MODEL_ID            = 0x271D,
+		NW_NETWORK_CARRIER_INFO       = 0x271E, // 64 bytes
+		NW_HDR_TEMP_VS_RRI_OFFSET     = 0x271F,
+		NW_MODEM_IDENTITY             = 0x2720,
+		GPS1_PDE_ADDRESS_2            = 0x2721, // gps1_pde_address - dupe
+		GPS1_PDE_PORT_2               = 0x2722, // gps1_pde_port - dupe
+		GPS1_CONTROL                  = 0x2723,
+		NW_THER_TEMP_SETTING          = 0x2724,
+
+		LAST_OBJIDX
+	};
+};
+
+
+
+/*
+
+Diag_Get_Software_Version                                                                                                                                                                          0000000010010F93   
+Diag_Mode_Change                                                                                                                                                                                   00000000100115B3   
+Diag_Lock                                                                                                                                                                                          00000000100117D4   
+Diag_SPC                                                                                                                                                                                           00000000100119E0   
+Diag_Event_Report                                                                                                                                                                                  0000000010011C1B   
+Diag_NV_Read                                                                                                                                                                                       0000000010011E08   
+Diag_NV_Write                                                                                                                                                                                      0000000010012057   
+Diag_Ext_Build_ID                                                                                                                                                                                  000000001001229A   
+Diag_SMS_Get_Message_List                                                                                                                                                                          00000000100125B0   
+Diag_SMS_Clear_All                                                                                                                                                                                 000000001001285C   
+Diag_SMS_Clear                                                                                                                                                                                     0000000010012A8A   
+Diag_SMS_Set_Message_Tag                                                                                                                                                                           0000000010012CBB   
+Diag_SMS_Send_Message                                                                                                                                                                              0000000010012EE5   
+Diag_SMS_Read_Msg                                                                                                                                                                                  0000000010013118   
+Diag_Set_Log_Mask                                                                                                                                                                                  00000000100134AD   
+Diag_Get_Log_Mask                                                                                                                                                                                  0000000010013B2C   
+Diag_PRL_Read                                                                                                                                                                                      0000000010013D5D   
+Diag_PRL_Write                                                                                                                                                                                     0000000010013FE3   
+Diag_Get_Phone_State                                                                                                                                                                               00000000100141FB   
+Diag_Get_Status_Snapshot                                                                                                                                                                           000000001001440A                                                                                                                                         0000000010014618   
+Diag_Get_New_Snapshot                                                                                                                                                                              0000000010014826   
+Diag_Download_Mode                                                                                                                                                                                 0000000010014AB5   
+Diag_Get_ERI                                                                                                                                                                                       0000000010014CA1   
+Diag_Read_PB_Entry                                                                                                                                                                                 0000000010014F61   
+Diag_Write_PB_Entry                                                                                                                                                                                0000000010015240   
+Diag_Clear_PB_Entry                                                                                                                                                                                00000000100154EB   
+Diag_Clear_All_PB_Entry                                                                                                                                                                            0000000010015768   
+Diag_Read_PB_List                                                                                                                                                                                  00000000100159DD   
+Diag_Clearlock_flag_set_All_PB_Entry                                                                                                                                                               0000000010015CB4   
+Diag_Get_Time                                                                                                                                                                                      0000000010015F6E   
+Diag_NV_Backup                                                                                                                                                                                     00000000100161DD   
+Diag_NV_Restore                                                                                                                                                                                    000000001001644F   
+Diag_Subsys_Get_CM_State_Info                                                                                                                                                                      00000000100166C1   
+Diag_Read_Device_Info                                                                                                                                                                              0000000010016928   
+Diag_Read_PRL_Version                                                                                                                                                                              0000000010016B97   
+Diag_ERI_Write                                                                                                                                                                                     0000000010016DFD   
+Diag_ERI_Read                                                                                                                                                                                      0000000010017359   
+Diag_ERI_Clear                                                                                                                                                                                     00000000100179CC   
+Diag_Call_Origination                                                                                                                                                                              0000000010017C41   
+Diag_Call_End                                                                                                                                                                                      0000000010017F09   
+Diag_Read_DMU_Entry                                                                                                                                                                                00000000100180F8   
+Diag_Write_DMU_Entry                                                                                                                                                                               00000000100183D7   
+Diag_Clear_DMU_Entry                                                                                                                                                                               0000000010018682   
+Diag_Clear_All_DMU_Entries                                                                                                                                                                         00000000100188FF   
+Diag_Read_DMU_List                                                                                                                                                                                 0000000010018B74   
+Diag_Read_CL_Entry                                                                                                                                                                                 0000000010018E4B   
+Diag_Clear_All_CL_Entries                                                                                                                                                                          00000000100190E9   
+Diag_Read_CL_List                                                                                                                                                                                  000000001001935E   
+Diag_Activate_Device                                                                                                                                                                               0000000010019647   
+Diag_Pilot_Offset_Read                                                                                                                                                                             0000000010019738   
+Diag_FER_Read                                                                                                                                                                                      0000000010019950   
+Diag_TAGraph_Read                                                                                                                                                                                  0000000010019B5E   
+Diag_Subsys_Get_HDR_State_Info                                                                                                                                                                     0000000010019D6C   
+Diag_EFS2_Open                                                                                                                                                                                     000000001001A7E2   
+Diag_EFS2_Close                                                                                                                                                                                    000000001001AAA1   
+Diag_EFS2_Read                                                                                                                                                                                     000000001001ACF2   
+Diag_EFS2_Write                                                                                                                                                                                    000000001001AFD5   
+Diag_EFS2_ReadDir                                                                                                                                                                                  000000001001B6E5   
+Diag_EFS2_CloseDir                                                                                                                                                                                 000000001001BA06   
+Diag_Custom_Clear_PB_Entry                                                                                                                                                                         000000001001BC61   
+Diag_NV_Factory_Backup                                                                                                                                                                             000000001001BEF7   
+Diag_NV_Factory_Restore                                                                                                                                                                            000000001001C169   
+Diag_DIP_Switch                                                                                                                                                                                    000000001001C3DB   
+Diag_Read_SSLC_Entry                                                                                                                                                                               000000001001C65B   
+Diag_Write_SSLC_Entry                                                                                                                                                                              000000001001C955   
+Diag_Clear_SSLC_Entry                                                                                                                                                                              000000001001CC1D   
+Diag_Clear_All_SSLC_Entries                                                                                                                                                                        000000001001CEC5   
+Diag_Read_SSLC_List                                                                                                                                                                                000000001001D143   
+Diag_IOTA                                                                                                                                                                                          000000001001D361   
+Diag_Set_MIP_Temp_NAI                                                                                                                                                                              000000001001E31F   
+Diag_Read_Internal_Backup_File                                                                                                                                                                     000000001001EFBB   
+Diag_Write_Internal_Backup_File                                                                                                                                                                    000000001001F2B8   
+Diag_Clear_Internal_Backup_File                                                                                                                                                                    000000001001F566   
+Diag_Read_MINLock_File                                                                                                                                                                             000000001001FE79   
+Diag_Write_MINLock_File                                                                                                                                                                            0000000010020176   
+Diag_Clear_MINLock_File                                                                                                                                                                            0000000010020424   
+Diag_Airsync_Info                                                                                                                                                                                  0000000010020AFF   
+Diag_NW_RSSI                                                                                                                                                                                       0000000010020D9F   
+
+*/

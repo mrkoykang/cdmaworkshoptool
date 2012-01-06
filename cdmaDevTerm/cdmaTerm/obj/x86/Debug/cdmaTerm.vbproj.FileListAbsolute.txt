@@ -1,0 +1,247 @@
+C:\Documents and Settings\Administrator\my documents\visual studio 2010\Projects\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\Documents and Settings\Administrator\my documents\visual studio 2010\Projects\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\Documents and Settings\Administrator\my documents\visual studio 2010\Projects\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\Documents and Settings\Administrator\my documents\visual studio 2010\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\my documents\visual studio 2010\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\Documents and Settings\Administrator\my documents\visual studio 2010\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\Documents and Settings\Administrator\my documents\visual studio 2010\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Documents and Settings\Administrator\my documents\visual studio 2010\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Documents and Settings\Administrator\my documents\visual studio 2010\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\Documents and Settings\Administrator\my documents\visual studio 2010\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\Documents and Settings\Administrator\my documents\visual studio 2010\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\Data\development\SNAPSHOT611\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\Data\development\SNAPSHOT611\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\Data\development\SNAPSHOT611\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\Data\development\SNAPSHOT611\Projects\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\Data\development\SNAPSHOT611\Projects\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\Data\development\SNAPSHOT611\Projects\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\Data\development\SNAPSHOT611\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Data\development\SNAPSHOT611\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\Data\development\SNAPSHOT611\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\Data\development\SNAPSHOT611\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Data\development\SNAPSHOT611\Projects\cdmaTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\data\cdmaTerm\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\data\cdmaTerm\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\data\cdmaTerm\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\data\cdmaTerm\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\data\cdmaTerm\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\data\cdmaTerm\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\data\cdmaTerm\cdmaTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\data\cdmaTerm\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\data\cdmaTerm\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\data\cdmaTerm\cdmaTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\data\cdmaTerm\cdmaTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Data\development\cTerm612\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\Data\development\cTerm612\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\Data\development\cTerm612\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\Data\development\cTerm612\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\Data\development\cTerm612\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\Data\development\cTerm612\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\Data\development\cTerm612\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Data\development\cTerm612\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\Data\development\cTerm612\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\Data\development\cTerm612\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Data\development\cTerm612\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\data\cdmaTerm\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\data\cdmaTerm\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\data\cdmaTerm\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\data\cdmaTerm\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\data\cdmaTerm\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\data\cdmaTerm\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\data\cdmaTerm\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\data\cdmaTerm\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\data\cdmaTerm\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\data\cdmaTerm\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\data\cdmaTerm\cdmaTermKEYPRESSES\cdmaTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Data\development\cdmaTerm613\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\Data\development\cdmaTerm613\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\Data\development\cdmaTerm613\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\Data\development\cdmaTerm613\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\Data\development\cdmaTerm613\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\Data\development\cdmaTerm613\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\Data\development\cdmaTerm613\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Data\development\cdmaTerm613\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\Data\development\cdmaTerm613\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\Data\development\cdmaTerm613\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Data\development\cdmaTerm613\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Data\development\cdmaTerm613\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaCommands.resources
+C:\data\cdmaTerm614am\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\data\cdmaTerm614am\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\data\cdmaTerm614am\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\data\cdmaTerm614am\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\data\cdmaTerm614am\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\data\cdmaTerm614am\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaCommands.resources
+C:\data\cdmaTerm614am\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\data\cdmaTerm614am\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\data\cdmaTerm614am\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\data\cdmaTerm614am\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\data\cdmaTerm614am\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\data\cdmaTerm614am\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\Data\development\cdmaTerm614pm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\Data\development\cdmaTerm614pm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\Data\development\cdmaTerm614pm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\Data\development\cdmaTerm614pm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\Data\development\cdmaTerm614pm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\Data\development\cdmaTerm614pm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\Data\development\cdmaTerm614pm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Data\development\cdmaTerm614pm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\Data\development\cdmaTerm614pm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaCommands.resources
+C:\Data\development\cdmaTerm614pm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\Data\development\cdmaTerm614pm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Data\development\cdmaTerm614pm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\data\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\data\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\data\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\data\cdmaTerm626pm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\data\cdmaTerm626pm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\data\cdmaTerm626pm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\data\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\data\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\data\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaCommands.resources
+C:\data\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\data\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\data\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaCommands.resources
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Data\development\cdmaTerm626pm\cdmaTerm626pm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaCommands.resources
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Data\development\cdmaDevTermCurrent\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaCommands.resources
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\data\dev\cdmaDevTermCurrents\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaCommands.resources
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\data\dev\cdmaDevTermX\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaCommands.resources
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\bin\Debug\winAPIcom.dll
+C:\Documents and Settings\mrflurb\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\bin\Debug\winAPIcom.dll
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe.config
+D:\d\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe.config
+D:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+D:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+D:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+D:\d\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+D:\d\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+D:\d\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+D:\d\cdmaDevTerm\cdmaTerm\bin\Debug\winAPIcom.dll
+D:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+D:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaCommands.resources
+D:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+D:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe.config
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\bin\Debug\winAPIcom.dll
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Toragua\Desktop\DevTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe.config
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\bin\Debug\winAPIcom.dll
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\d\devTerm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.NvEditor.resources
+C:\d\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe.config
+C:\d\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\d\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\d\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\d\cdmaDevTerm\cdmaTerm\bin\Debug\winAPIcom.dll
+C:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.NvEditor.resources
+C:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\d\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+C:\Documents and Settings\Administrator\My Documents\SVNREPOS\devterm\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.NvEditor.resources
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe.config
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\bin\Debug\winAPIcom.dll
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.NvEditor.resources
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb

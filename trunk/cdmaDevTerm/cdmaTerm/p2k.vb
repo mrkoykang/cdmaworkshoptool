@@ -1,5 +1,5 @@
 ﻿'' CDMA DEV TERM
-'' Copyright (c) Dillon Graham 2010-2011 Chromableed Studios
+'' Copyright (c) Dillon Graham 2010-2012 Chromableed Studios
 '' www.chromableedstudios.com
 '' chromableedstudios ( a t ) gmail ( d o t ) com
 ''     

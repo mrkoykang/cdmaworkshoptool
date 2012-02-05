@@ -245,3 +245,17 @@ D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateRes
 D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
 D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
 D:\DEV\DevTerm\devTermRepo12.2011\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.NvEditor.resources
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe.config
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\bin\Debug\winAPIcom.dll

@@ -23,8 +23,8 @@ Partial Class cdmaTerm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cdmaTerm))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("EFS Files")
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("/")
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("EFS Files")
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("/")
         Me.ATSendButton = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.TermSendBox = New System.Windows.Forms.TextBox()
@@ -73,7 +73,6 @@ Partial Class cdmaTerm
         Me.disconnectPortButton = New System.Windows.Forms.Button()
         Me.clearResultsButton = New System.Windows.Forms.Button()
         Me.AtReturnCmdBox = New System.Windows.Forms.TextBox()
-        Me.sendu35016digitcode = New System.Windows.Forms.Button()
         Me.select16digitCodeBox = New System.Windows.Forms.ComboBox()
         Me.testCRC_box_1 = New System.Windows.Forms.TextBox()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
@@ -288,6 +287,7 @@ Partial Class cdmaTerm
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.PictureBox7 = New System.Windows.Forms.PictureBox()
+        Me.ReadNamLockBtn = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -764,20 +764,10 @@ Partial Class cdmaTerm
         Me.AtReturnCmdBox.Size = New System.Drawing.Size(497, 150)
         Me.AtReturnCmdBox.TabIndex = 60
         '
-        'sendu35016digitcode
-        '
-        Me.sendu35016digitcode.Location = New System.Drawing.Point(528, 430)
-        Me.sendu35016digitcode.Name = "sendu35016digitcode"
-        Me.sendu35016digitcode.Size = New System.Drawing.Size(116, 26)
-        Me.sendu35016digitcode.TabIndex = 63
-        Me.sendu35016digitcode.Text = "u350 SP"
-        Me.sendu35016digitcode.UseVisualStyleBackColor = True
-        '
         'select16digitCodeBox
         '
         Me.select16digitCodeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple
         Me.select16digitCodeBox.FormattingEnabled = True
-        Me.select16digitCodeBox.Items.AddRange(New Object() {"MMA700", "SCHA130", "SCHA160", "SCHA310", "SCHA375", "SCHA410", "SCHA460", "SCHA460", "SCHA475", "SCHA530", "SCHA562", "SCHA563", "SCHA565", "SCHA565", "SCHA570", "SCHA595", "SCHA603", "SCHA605", "SCHA610", "SCHA612", "SCHA630", "SCHA633", "SCHA640", "SCHA650", "SCHA655", "SCHA656", "SCHA660", "SCHA670", "SCHA685", "SCHA690", "SCHA725", "SCHA770", "SCHA790", "SCHA815", "SCHA840", "SCHA850", "SCHA870", "SCHA880", "SCHA890", "SCHA895", "SCHA915", "SCHA930", "SCHA950", "SCHA970", "SCHA990", "SCHB239", "SCHB259", "SCHB279", "SCHB309", "SCHE159_Num1", "SCHE159_Num2", "SCHE170", "SCHE250", "SCHF359_Num1", "SCHF359_Num2", "SCHF509", "SCHF519", "SCHF679", "SCHI220", "SCHI600", "SCHI700", "SCHI730", "SCHI760", "SCHI770", "SCHI830", "SCHI910", "SCHL160", "SCHL210", "SCHL310", "SCHM450", "SCHN181", "SCHN191", "SCHN195", "SCHN255_Num1", "SCHN255_Num2", "SCHN345", "SCHN356_Num1", "SCHN356_Num2", "SCHN362", "SCHN375", "SCHN380", "SCHN392", "SCHN393", "SCHN395", "SCHN415", "SCHN480", "SCHN485", "SCHN500_Num1", "SCHN500_Num2", "SCHN530", "SCHR200", "SCHR210", "SCHR211", "SCHR300", "SCHR310", "SCHR311", "SCHR400", "SCHR410", "SCHR420", "SCHR430", "SCHR450", "SCHR460", "SCHR470", "SCHR500", "SCHR510", "SCHR550", "SCHR560", "SCHR561", "SCHR610", "SCHR800", "SCHR810", "SCHS109", "SCHS179", "SCHS229", "SCHS250_Num1", "SCHS250_Num2", "SCHS259", "SCHS269", "SCHS299", "SCHS350", "SCHS399", "SCHT191_Num1", "SCHT191_Num2", "SCHU340_Num1", "SCHU340_Num2", "SCHU350", "SCHU410", "SCHU430_Num1", "''SCHU430_Num2", "SCHU440", "SCHU450", "SCHU470", "SCHU510", "SCHU520", "SCHU540", "SCHU550", "SCHU620", "SCHU650", "SCHU700", "SCHU740", "SCHU750", "SCHU810", "SCHU900", "SCHU940", "SCHV122", "SCHV30", "''SCHV4246054E321F5577CC33", "''SCHV500461332241618886910", "''SCHV540461847000040007F01", "''SCHV74046002A02D1C26A002A", "''SCHV84046E9FD000000800100", "SCHW339", "''SCHX130460D00A0E120329FE5", "''SCHX137460D00A0E120329FE5", "''SCHX140460D00A0E120329FE5", "''SCHX210_Num1460D00A0E120329FE5", "''SCHX210_Num2460D00A0E120329FE5", "''SCHX250460D00A0E120329FE5", "''SCHX290_Num146540B000000600000", "''SCHX290_Num24608BC1847FFB5171C", "''SCHX420466810000000000000", "''SCHX140460D00A0E120329FE5", "SCHX430", "''SCHX460460D00A0E120329FE5", "''SCHX78046540B000000600000", "''SCHX82046540B000000000100", "''SCHX839462D4843532D303641", "SCHX979", "SPHA303", "SPHA460_Num1", "SPHA460_Num2", "SPHA460_Num3", "SPHA505", "SPHA523", "SPHA533", "SPHA560", "SPHA580", "SPHA600", "SPHA620", "SPHA640", "SPHA660", "SPHA680", "SPHA700_Num1", "SPHA700", "SPHA740_Num1", "SPHA740_Num2", "SPHA820", "SPHA840_Num1", "''SPHA840_Num2464E4F5649E4B44921", "SPHA880", "SPHA900", "SPHA940", "SPHA960", "''SPHI325_Num1462007041320080115", "''SPHI325_Num2461000F501184F4900", "SPHI500", "SPHM300", "SPHM320", "SPHM330", "SPHM500", "SPHM520", "SPHM540_Num1", "SPHM540_Num2", "SPHM550", "SPHM560", "SPHM600", "SPHM610", "SPHM620", "SPHM800", "SPHM810"})
         Me.select16digitCodeBox.Location = New System.Drawing.Point(152, 51)
         Me.select16digitCodeBox.Name = "select16digitCodeBox"
         Me.select16digitCodeBox.Size = New System.Drawing.Size(370, 405)
@@ -1475,6 +1465,7 @@ Partial Class cdmaTerm
         '
         'GroupBox19
         '
+        Me.GroupBox19.Controls.Add(Me.ReadNamLockBtn)
         Me.GroupBox19.Controls.Add(Me.WriteNamLockButton)
         Me.GroupBox19.Controls.Add(Me.NamLockCheckbox)
         Me.GroupBox19.Controls.Add(Me.NIDTextbox)
@@ -1505,7 +1496,7 @@ Partial Class cdmaTerm
         '
         'WriteNamLockButton
         '
-        Me.WriteNamLockButton.Location = New System.Drawing.Point(319, 74)
+        Me.WriteNamLockButton.Location = New System.Drawing.Point(319, 103)
         Me.WriteNamLockButton.Name = "WriteNamLockButton"
         Me.WriteNamLockButton.Size = New System.Drawing.Size(24, 23)
         Me.WriteNamLockButton.TabIndex = 117
@@ -1515,7 +1506,7 @@ Partial Class cdmaTerm
         'NamLockCheckbox
         '
         Me.NamLockCheckbox.AutoSize = True
-        Me.NamLockCheckbox.Location = New System.Drawing.Point(242, 78)
+        Me.NamLockCheckbox.Location = New System.Drawing.Point(242, 107)
         Me.NamLockCheckbox.Name = "NamLockCheckbox"
         Me.NamLockCheckbox.Size = New System.Drawing.Size(80, 17)
         Me.NamLockCheckbox.TabIndex = 116
@@ -2030,7 +2021,6 @@ Partial Class cdmaTerm
         Me.SecurityPasswordTab.Controls.Add(Me.Label10)
         Me.SecurityPasswordTab.Controls.Add(Me.ComboBox2)
         Me.SecurityPasswordTab.Controls.Add(Me.samsungAutoMagicButton)
-        Me.SecurityPasswordTab.Controls.Add(Me.sendu35016digitcode)
         Me.SecurityPasswordTab.Controls.Add(Me.Label4)
         Me.SecurityPasswordTab.Controls.Add(Me.select16digitCodeBox)
         Me.SecurityPasswordTab.Controls.Add(Me.Send16DigitCodeButton)
@@ -2801,9 +2791,9 @@ Partial Class cdmaTerm
         '
         Me.FileTreeView2.Location = New System.Drawing.Point(151, 90)
         Me.FileTreeView2.Name = "FileTreeView2"
-        TreeNode1.Name = "Node0"
-        TreeNode1.Text = "EFS Files"
-        Me.FileTreeView2.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode1})
+        TreeNode3.Name = "Node0"
+        TreeNode3.Text = "EFS Files"
+        Me.FileTreeView2.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3})
         Me.FileTreeView2.Size = New System.Drawing.Size(400, 394)
         Me.FileTreeView2.TabIndex = 1
         '
@@ -2811,9 +2801,9 @@ Partial Class cdmaTerm
         '
         Me.FolderTreeView1.Location = New System.Drawing.Point(3, 90)
         Me.FolderTreeView1.Name = "FolderTreeView1"
-        TreeNode2.Name = "Node0"
-        TreeNode2.Text = "/"
-        Me.FolderTreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode2})
+        TreeNode4.Name = "Node0"
+        TreeNode4.Text = "/"
+        Me.FolderTreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode4})
         Me.FolderTreeView1.Size = New System.Drawing.Size(142, 339)
         Me.FolderTreeView1.TabIndex = 0
         '
@@ -2939,7 +2929,7 @@ Partial Class cdmaTerm
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(220, 13)
         Me.Label9.TabIndex = 71
-        Me.Label9.Text = "(c) 2010-2011 www.chromableedstudios.com"
+        Me.Label9.Text = "(c) 2010-2012 www.chromableedstudios.com"
         '
         'PictureBox7
         '
@@ -2950,6 +2940,15 @@ Partial Class cdmaTerm
         Me.PictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox7.TabIndex = 72
         Me.PictureBox7.TabStop = False
+        '
+        'ReadNamLockBtn
+        '
+        Me.ReadNamLockBtn.Location = New System.Drawing.Point(242, 74)
+        Me.ReadNamLockBtn.Name = "ReadNamLockBtn"
+        Me.ReadNamLockBtn.Size = New System.Drawing.Size(101, 23)
+        Me.ReadNamLockBtn.TabIndex = 118
+        Me.ReadNamLockBtn.Text = "Read NAM Lock"
+        Me.ReadNamLockBtn.UseVisualStyleBackColor = True
         '
         'cdmaTerm
         '
@@ -2965,8 +2964,8 @@ Partial Class cdmaTerm
         Me.Controls.Add(Me.PictureBox7)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "cdmaTerm"
-        Me.Text = "CdmaDevTerm - 12.30.11 - www.chromableedstudios.com - by ¿kernelpanic? dg ajh - S" & _
-            "UPER BETA!!!"
+        Me.Text = "CdmaDevTerm - 02.05.12 - www.chromableedstudios.com - by ¿kernelpanic? dg ajh - S" & _
+    "UPER BETA!!!"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
@@ -3086,7 +3085,6 @@ Partial Class cdmaTerm
     Friend WithEvents disconnectPortButton As System.Windows.Forms.Button
     Friend WithEvents clearResultsButton As System.Windows.Forms.Button
     Friend WithEvents AtReturnCmdBox As System.Windows.Forms.TextBox
-    Friend WithEvents sendu35016digitcode As System.Windows.Forms.Button
     Friend WithEvents select16digitCodeBox As System.Windows.Forms.ComboBox
     Friend WithEvents testCRC_box_1 As System.Windows.Forms.TextBox
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
@@ -3301,5 +3299,6 @@ Partial Class cdmaTerm
     Friend WithEvents EfsPathTxtbox As System.Windows.Forms.TextBox
     Friend WithEvents ReadEFSButton As System.Windows.Forms.Button
     Friend WithEvents DeleteEFSButton As System.Windows.Forms.Button
+    Friend WithEvents ReadNamLockBtn As System.Windows.Forms.Button
 
 End Class

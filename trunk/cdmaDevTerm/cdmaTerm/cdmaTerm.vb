@@ -1,5 +1,5 @@
 ﻿'' CDMA DEV TERM
-'' Copyright (c) Dillon Graham 2010-2011 Chromableed Studios
+'' Copyright (c) Dillon Graham 2010-2012 Chromableed Studios
 '' www.chromableedstudios.com
 '' chromableedstudios ( a t ) gmail ( d o t ) com
 ''     
@@ -436,57 +436,65 @@ ends:
     ''coding koan: make it work, fix it later
     ''on form load
     Private Sub cdmaTerm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-        ''debugging?
-        If debugMode = False Then
-            TabControl1.Controls.Remove(TabPage4)
-            TabControl2.Controls.Remove(EFS)
-            TabControl2.Controls.Remove(CmdAndADB)
-            AutoFlashGroup.Visible = False
-
-        End If
-        
-
-        If selectPRLComboBox.Text.StartsWith("cricKet") Then
-
-            PictureBox1.Image = My.Resources.Resources.Cricket_Black1
-        ElseIf selectPRLComboBox.Text.StartsWith("metro") Then
-            PictureBox1.Image = My.Resources.Resources.Metro_Logo
-        End If
-
-
-        CheckForIllegalCrossThreadCalls = False
-
-        ''try and save testing time AUTOLOAD
-        ''run the check for coms and populate box sub
-        GetComs()
-
-
-        ''try and load the notes
-        ''
-
         Try
-            ''hm this is kinda cool.. might leave it like this actully
-            MotoWebBrowser1.Navigate(Application.StartupPath + "\moto\")
+            ''debugging?
+            If debugMode = False Then
+                TabControl1.Controls.Remove(TabPage4)
+                TabControl2.Controls.Remove(EFS)
+                TabControl2.Controls.Remove(CmdAndADB)
+                AutoFlashGroup.Visible = False
+
+            End If
 
 
-        Catch
+            If selectPRLComboBox.Text.StartsWith("cricKet") Then
+
+                PictureBox1.Image = My.Resources.Resources.Cricket_Black1
+            ElseIf selectPRLComboBox.Text.StartsWith("metro") Then
+                PictureBox1.Image = My.Resources.Resources.Metro_Logo
+            End If
+
+
+            CheckForIllegalCrossThreadCalls = False
+
+            ''try and save testing time AUTOLOAD
+            ''run the check for coms and populate box sub
+            GetComs()
+
+
+            If (System.IO.Directory.Exists(Application.StartupPath + "\moto\")) Then
+                MotoWebBrowser1.Navigate(Application.StartupPath + "\moto\")
+            End If
+
+            If (System.IO.Directory.Exists(Application.StartupPath + "\prl\")) Then
+
+            End If
+
+            If (System.IO.File.Exists(Application.StartupPath + "\16digitpass.txt")) Then
+                SixteenDigitCodes.set16DigitPasswords(New String(Application.StartupPath + "\16digitpass.txt"))
+                select16digitCodeBox.DataSource = New BindingSource(SixteenDigitCodes.get16DigitPasswords, Nothing)
+                select16digitCodeBox.DisplayMember = "Key"
+                select16digitCodeBox.ValueMember = "Value"
+
+            End If
+
+            qcCommandsCombo.DataSource = [Enum].GetValues(GetType(Qcdm.Cmd))
+            nvItemsCombo.DataSource = [Enum].GetValues(GetType(NvItems.NVItems))
+
+            ''set the default nv read mode
+            readSPCTypeCombo.SelectedIndex = 0
+            ''this stuff is good leave alone for now
+            Try
+                ''assign the box the first com found
+                ComNumBox1.Text = ComNumBox1.Items.Item(ComNumBox1.Items.Count - 1)
+            Catch
+                MessageBox.Show("no com devices found")
+            End Try
+
+        Catch ex As Exception
+            MessageBox.Show("Load error:" + e.ToString)
         End Try
 
-
-        qcCommandsCombo.DataSource = [Enum].GetValues(GetType(Qcdm.Cmd))
-        nvItemsCombo.DataSource = [Enum].GetValues(GetType(NvItems.NVItems))
-
-        ''set the default nv read mode
-        readSPCTypeCombo.SelectedIndex = 0
-        ''this stuff is good leave alone for now
-        Try
-            ''assign the box the first com found
-            ComNumBox1.Text = ComNumBox1.Items.Item(ComNumBox1.Items.Count - 1)
-
-        Catch
-            MessageBox.Show("no com devices found")
-        End Try
     End Sub
 
 
@@ -573,21 +581,30 @@ ends:
     Sub SendA16digitCodeSon()
         If Send16DigitCodeTextbox.Text = "" Then
             ''try out the textbox parser
-            ''no se? TODO 
+
             Dim MySixteenDigitCodes As New SixteenDigitCodes()
 
-            ''sends ascii codes for the hex, not the hex
-            dispatchQ.addCommandToQ(New Command(String_To_Bytes(MySixteenDigitCodes.SetModel(select16digitCodeBox.Text)), "samsung 16 codes"))
-            ''sendTermCommand2(String_To_Bytes(MySixteenDigitCodes.SetModel))
-            dispatchQ.executeCommandQ()
-        Else
-            ''haha
-            MessageBox.Show("untested! beware!")
-            dispatchQ.addCommandToQ(New Command(DIAG_PASSWORD_F, String_To_Bytes(Send16DigitCodeTextbox.Text), "Send custom 16 digit DIAG_PASSWORD_F"))
+            dispatchQ.addCommandToQ(
+                New Command(
+                    DIAG_PASSWORD_F,
+                    String_To_Bytes(SixteenDigitCodes.get16DigitPassword(select16digitCodeBox.Text)),
+                    "16 digit password"
+                    )
+                )
             dispatchQ.executeCommandQ()
 
-            ''send 16 digit ff's for test
-            ''sendTermCommand2(send16digitFs)
+        Else
+            If (Send16DigitCodeTextbox.Text.Length <= 16) Then
+
+                dispatchQ.addCommandToQ(
+                    New Command(
+                        DIAG_PASSWORD_F,
+                        String_To_Bytes(Send16DigitCodeTextbox.Text),
+                        "Send custom 16 digit DIAG_PASSWORD_F"
+                        )
+                    )
+                dispatchQ.executeCommandQ()
+            End If
         End If
 
     End Sub
@@ -881,7 +898,7 @@ ends:
 
     End Sub
 
-    Private Sub sendu35016digitcode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles sendu35016digitcode.Click
+    Private Sub sendu35016digitcode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         dispatchQ.clearCommandQ()
         dispatchQ.addCommandToQ(New Command(send16digitSchU350, "Send u350 16SP"))
         dispatchQ.executeCommandQ()
@@ -2877,4 +2894,7 @@ ends:
 
     End Sub
 
+    Private Sub ReadNamLockBtn_Click(sender As System.Object, e As System.EventArgs) Handles ReadNamLockBtn.Click
+        ReadSingleNv(NV_NAM_LOCK_I)
+    End Sub
 End Class

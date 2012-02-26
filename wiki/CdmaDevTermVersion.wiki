@@ -1,0 +1,10 @@
+#summary CdmaDevTerm version
+
+= CdmaDevTerm =
+
+The current version is: 12.30.11
+
+SuperBeta v .1
+
+
+

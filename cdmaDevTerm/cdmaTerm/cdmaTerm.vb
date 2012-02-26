@@ -440,8 +440,8 @@ ends:
             ''debugging?
             If debugMode = False Then
                 TabControl1.Controls.Remove(TabPage4)
-                TabControl2.Controls.Remove(EFS)
-                TabControl2.Controls.Remove(CmdAndADB)
+                LeftTabControl.Controls.Remove(EFS)
+                LeftTabControl.Controls.Remove(CmdAndADB)
                 AutoFlashGroup.Visible = False
 
             End If
@@ -2891,10 +2891,22 @@ ends:
             MessageBox.Show("Delete Error: " + ex.ToString)
         End Try
         
-
     End Sub
 
     Private Sub ReadNamLockBtn_Click(sender As System.Object, e As System.EventArgs) Handles ReadNamLockBtn.Click
         ReadSingleNv(NV_NAM_LOCK_I)
     End Sub
+
+    Private Sub LeftTabControl_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles LeftTabControl.SelectedIndexChanged
+        If LeftTabControl.SelectedTab.Text = "Check For Update" Then
+            Try
+                CheckUpdateWebBrowser.Navigate("http://code.google.com/p/cdmaworkshoptool/wiki/CdmaDevTermVersion")
+            Catch ex As Exception
+                MessageBox.Show("Check for update error: " + ex.ToString)
+            End Try
+
+        End If
+    End Sub
+
+
 End Class

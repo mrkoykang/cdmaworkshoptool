@@ -23,8 +23,8 @@ Partial Class cdmaTerm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cdmaTerm))
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("EFS Files")
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("/")
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("EFS Files")
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("/")
         Me.ATSendButton = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.TermSendBox = New System.Windows.Forms.TextBox()
@@ -134,11 +134,12 @@ Partial Class cdmaTerm
         Me.evdo_u1Textbox = New System.Windows.Forms.Button()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.convertToAsciiTextBox = New System.Windows.Forms.TextBox()
-        Me.TabControl2 = New System.Windows.Forms.TabControl()
+        Me.LeftTabControl = New System.Windows.Forms.TabControl()
         Me.NamAndDataTab = New System.Windows.Forms.TabPage()
         Me.ChromableedLogo = New System.Windows.Forms.PictureBox()
         Me.AdvancedNamGroup = New System.Windows.Forms.GroupBox()
         Me.GroupBox19 = New System.Windows.Forms.GroupBox()
+        Me.ReadNamLockBtn = New System.Windows.Forms.Button()
         Me.WriteNamLockButton = New System.Windows.Forms.Button()
         Me.NamLockCheckbox = New System.Windows.Forms.CheckBox()
         Me.NIDTextbox = New System.Windows.Forms.TextBox()
@@ -281,13 +282,14 @@ Partial Class cdmaTerm
         Me.IncludeAsciiInLogQChkbox = New System.Windows.Forms.CheckBox()
         Me.logQBox = New System.Windows.Forms.RichTextBox()
         Me.logAllBox = New System.Windows.Forms.TextBox()
+        Me.Update = New System.Windows.Forms.TabPage()
+        Me.CheckUpdateWebBrowser = New System.Windows.Forms.WebBrowser()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripProgressBar1 = New System.Windows.Forms.ToolStripProgressBar()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.PictureBox7 = New System.Windows.Forms.PictureBox()
-        Me.ReadNamLockBtn = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -301,7 +303,7 @@ Partial Class cdmaTerm
         Me.TabPage5.SuspendLayout()
         Me.TabPage6.SuspendLayout()
         Me.TabPage4.SuspendLayout()
-        Me.TabControl2.SuspendLayout()
+        Me.LeftTabControl.SuspendLayout()
         Me.NamAndDataTab.SuspendLayout()
         CType(Me.ChromableedLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.AdvancedNamGroup.SuspendLayout()
@@ -330,6 +332,7 @@ Partial Class cdmaTerm
         Me.MOTO.SuspendLayout()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.LogQ.SuspendLayout()
+        Me.Update.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -1403,34 +1406,35 @@ Partial Class cdmaTerm
         Me.convertToAsciiTextBox.Size = New System.Drawing.Size(497, 150)
         Me.convertToAsciiTextBox.TabIndex = 68
         '
-        'TabControl2
+        'LeftTabControl
         '
-        Me.TabControl2.Appearance = System.Windows.Forms.TabAppearance.FlatButtons
-        Me.TabControl2.Controls.Add(Me.NamAndDataTab)
-        Me.TabControl2.Controls.Add(Me.SecurityPasswordTab)
-        Me.TabControl2.Controls.Add(Me.TermAndATTab)
-        Me.TabControl2.Controls.Add(Me.CmdAndADB)
-        Me.TabControl2.Controls.Add(Me.RamAndNV)
-        Me.TabControl2.Controls.Add(Me.EFS)
-        Me.TabControl2.Controls.Add(Me.MOTO)
-        Me.TabControl2.Controls.Add(Me.LogQ)
-        Me.TabControl2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TabControl2.Location = New System.Drawing.Point(12, 6)
-        Me.TabControl2.Multiline = True
-        Me.TabControl2.Name = "TabControl2"
-        Me.TabControl2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.TabControl2.SelectedIndex = 0
-        Me.TabControl2.Size = New System.Drawing.Size(660, 526)
-        Me.TabControl2.TabIndex = 69
+        Me.LeftTabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons
+        Me.LeftTabControl.Controls.Add(Me.NamAndDataTab)
+        Me.LeftTabControl.Controls.Add(Me.SecurityPasswordTab)
+        Me.LeftTabControl.Controls.Add(Me.TermAndATTab)
+        Me.LeftTabControl.Controls.Add(Me.CmdAndADB)
+        Me.LeftTabControl.Controls.Add(Me.RamAndNV)
+        Me.LeftTabControl.Controls.Add(Me.EFS)
+        Me.LeftTabControl.Controls.Add(Me.MOTO)
+        Me.LeftTabControl.Controls.Add(Me.LogQ)
+        Me.LeftTabControl.Controls.Add(Me.Update)
+        Me.LeftTabControl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LeftTabControl.Location = New System.Drawing.Point(12, 6)
+        Me.LeftTabControl.Multiline = True
+        Me.LeftTabControl.Name = "LeftTabControl"
+        Me.LeftTabControl.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.LeftTabControl.SelectedIndex = 0
+        Me.LeftTabControl.Size = New System.Drawing.Size(660, 526)
+        Me.LeftTabControl.TabIndex = 69
         '
         'NamAndDataTab
         '
         Me.NamAndDataTab.Controls.Add(Me.ChromableedLogo)
         Me.NamAndDataTab.Controls.Add(Me.AdvancedNamGroup)
         Me.NamAndDataTab.Controls.Add(Me.AutoFlashGroup)
-        Me.NamAndDataTab.Location = New System.Drawing.Point(4, 25)
+        Me.NamAndDataTab.Location = New System.Drawing.Point(4, 49)
         Me.NamAndDataTab.Name = "NamAndDataTab"
-        Me.NamAndDataTab.Size = New System.Drawing.Size(652, 497)
+        Me.NamAndDataTab.Size = New System.Drawing.Size(652, 473)
         Me.NamAndDataTab.TabIndex = 3
         Me.NamAndDataTab.Text = "FLASH / NAM / DATA"
         Me.NamAndDataTab.UseVisualStyleBackColor = True
@@ -1493,6 +1497,15 @@ Partial Class cdmaTerm
         Me.GroupBox19.TabIndex = 98
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "NAM1"
+        '
+        'ReadNamLockBtn
+        '
+        Me.ReadNamLockBtn.Location = New System.Drawing.Point(242, 74)
+        Me.ReadNamLockBtn.Name = "ReadNamLockBtn"
+        Me.ReadNamLockBtn.Size = New System.Drawing.Size(101, 23)
+        Me.ReadNamLockBtn.TabIndex = 118
+        Me.ReadNamLockBtn.Text = "Read NAM Lock"
+        Me.ReadNamLockBtn.UseVisualStyleBackColor = True
         '
         'WriteNamLockButton
         '
@@ -2026,9 +2039,9 @@ Partial Class cdmaTerm
         Me.SecurityPasswordTab.Controls.Add(Me.Send16DigitCodeButton)
         Me.SecurityPasswordTab.Controls.Add(Me.Send16DigitCodeTextbox)
         Me.SecurityPasswordTab.Controls.Add(Me.PictureBox2)
-        Me.SecurityPasswordTab.Location = New System.Drawing.Point(4, 25)
+        Me.SecurityPasswordTab.Location = New System.Drawing.Point(4, 49)
         Me.SecurityPasswordTab.Name = "SecurityPasswordTab"
-        Me.SecurityPasswordTab.Size = New System.Drawing.Size(652, 497)
+        Me.SecurityPasswordTab.Size = New System.Drawing.Size(652, 473)
         Me.SecurityPasswordTab.TabIndex = 0
         Me.SecurityPasswordTab.Text = "SAMSUNG 16 SP"
         '
@@ -2078,9 +2091,9 @@ Partial Class cdmaTerm
         Me.TermAndATTab.Controls.Add(Me.GroupBox1)
         Me.TermAndATTab.Controls.Add(Me.clearResultsButton)
         Me.TermAndATTab.Controls.Add(Me.GroupBox2)
-        Me.TermAndATTab.Location = New System.Drawing.Point(4, 25)
+        Me.TermAndATTab.Location = New System.Drawing.Point(4, 49)
         Me.TermAndATTab.Name = "TermAndATTab"
-        Me.TermAndATTab.Size = New System.Drawing.Size(652, 497)
+        Me.TermAndATTab.Size = New System.Drawing.Size(652, 473)
         Me.TermAndATTab.TabIndex = 2
         Me.TermAndATTab.Text = "TERM / AT"
         Me.TermAndATTab.UseVisualStyleBackColor = True
@@ -2101,9 +2114,9 @@ Partial Class cdmaTerm
         Me.CmdAndADB.Controls.Add(Me.GroupBox5)
         Me.CmdAndADB.Controls.Add(Me.andoidReturnTextbox)
         Me.CmdAndADB.Controls.Add(Me.GroupBox6)
-        Me.CmdAndADB.Location = New System.Drawing.Point(4, 25)
+        Me.CmdAndADB.Location = New System.Drawing.Point(4, 49)
         Me.CmdAndADB.Name = "CmdAndADB"
-        Me.CmdAndADB.Size = New System.Drawing.Size(652, 497)
+        Me.CmdAndADB.Size = New System.Drawing.Size(652, 473)
         Me.CmdAndADB.TabIndex = 6
         Me.CmdAndADB.Text = "CMD / ADB*"
         Me.CmdAndADB.UseVisualStyleBackColor = True
@@ -2246,9 +2259,9 @@ Partial Class cdmaTerm
         Me.RamAndNV.Controls.Add(Me.GroupBox7)
         Me.RamAndNV.Controls.Add(Me.GroupBox4)
         Me.RamAndNV.Controls.Add(Me.PictureBox4)
-        Me.RamAndNV.Location = New System.Drawing.Point(4, 25)
+        Me.RamAndNV.Location = New System.Drawing.Point(4, 49)
         Me.RamAndNV.Name = "RamAndNV"
-        Me.RamAndNV.Size = New System.Drawing.Size(652, 497)
+        Me.RamAndNV.Size = New System.Drawing.Size(652, 473)
         Me.RamAndNV.TabIndex = 4
         Me.RamAndNV.Text = "RAM / NV"
         Me.RamAndNV.UseVisualStyleBackColor = True
@@ -2692,9 +2705,9 @@ Partial Class cdmaTerm
         Me.EFS.Controls.Add(Me.Button8)
         Me.EFS.Controls.Add(Me.FileTreeView2)
         Me.EFS.Controls.Add(Me.FolderTreeView1)
-        Me.EFS.Location = New System.Drawing.Point(4, 25)
+        Me.EFS.Location = New System.Drawing.Point(4, 49)
         Me.EFS.Name = "EFS"
-        Me.EFS.Size = New System.Drawing.Size(652, 497)
+        Me.EFS.Size = New System.Drawing.Size(652, 473)
         Me.EFS.TabIndex = 7
         Me.EFS.Text = "EFS*"
         Me.EFS.UseVisualStyleBackColor = True
@@ -2791,9 +2804,9 @@ Partial Class cdmaTerm
         '
         Me.FileTreeView2.Location = New System.Drawing.Point(151, 90)
         Me.FileTreeView2.Name = "FileTreeView2"
-        TreeNode3.Name = "Node0"
-        TreeNode3.Text = "EFS Files"
-        Me.FileTreeView2.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3})
+        TreeNode1.Name = "Node0"
+        TreeNode1.Text = "EFS Files"
+        Me.FileTreeView2.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode1})
         Me.FileTreeView2.Size = New System.Drawing.Size(400, 394)
         Me.FileTreeView2.TabIndex = 1
         '
@@ -2801,9 +2814,9 @@ Partial Class cdmaTerm
         '
         Me.FolderTreeView1.Location = New System.Drawing.Point(3, 90)
         Me.FolderTreeView1.Name = "FolderTreeView1"
-        TreeNode4.Name = "Node0"
-        TreeNode4.Text = "/"
-        Me.FolderTreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode4})
+        TreeNode2.Name = "Node0"
+        TreeNode2.Text = "/"
+        Me.FolderTreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode2})
         Me.FolderTreeView1.Size = New System.Drawing.Size(142, 339)
         Me.FolderTreeView1.TabIndex = 0
         '
@@ -2813,9 +2826,9 @@ Partial Class cdmaTerm
         Me.MOTO.Controls.Add(Me.motoHomeButton)
         Me.MOTO.Controls.Add(Me.MotoWebBrowser1)
         Me.MOTO.Controls.Add(Me.PictureBox6)
-        Me.MOTO.Location = New System.Drawing.Point(4, 25)
+        Me.MOTO.Location = New System.Drawing.Point(4, 49)
         Me.MOTO.Name = "MOTO"
-        Me.MOTO.Size = New System.Drawing.Size(652, 497)
+        Me.MOTO.Size = New System.Drawing.Size(652, 473)
         Me.MOTO.TabIndex = 8
         Me.MOTO.Text = "MOTO"
         Me.MOTO.UseVisualStyleBackColor = True
@@ -2861,9 +2874,9 @@ Partial Class cdmaTerm
         Me.LogQ.Controls.Add(Me.IncludeAsciiInLogQChkbox)
         Me.LogQ.Controls.Add(Me.logQBox)
         Me.LogQ.Controls.Add(Me.logAllBox)
-        Me.LogQ.Location = New System.Drawing.Point(4, 25)
+        Me.LogQ.Location = New System.Drawing.Point(4, 49)
         Me.LogQ.Name = "LogQ"
-        Me.LogQ.Size = New System.Drawing.Size(652, 497)
+        Me.LogQ.Size = New System.Drawing.Size(652, 473)
         Me.LogQ.TabIndex = 10
         Me.LogQ.Text = "LOG Q"
         Me.LogQ.UseVisualStyleBackColor = True
@@ -2896,6 +2909,24 @@ Partial Class cdmaTerm
         Me.logAllBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.logAllBox.Size = New System.Drawing.Size(645, 120)
         Me.logAllBox.TabIndex = 1
+        '
+        'Update
+        '
+        Me.Update.Controls.Add(Me.CheckUpdateWebBrowser)
+        Me.Update.Location = New System.Drawing.Point(4, 49)
+        Me.Update.Name = "Update"
+        Me.Update.Size = New System.Drawing.Size(652, 473)
+        Me.Update.TabIndex = 11
+        Me.Update.Text = "Check For Update"
+        Me.Update.UseVisualStyleBackColor = True
+        '
+        'CheckUpdateWebBrowser
+        '
+        Me.CheckUpdateWebBrowser.Location = New System.Drawing.Point(3, 3)
+        Me.CheckUpdateWebBrowser.MinimumSize = New System.Drawing.Size(20, 20)
+        Me.CheckUpdateWebBrowser.Name = "CheckUpdateWebBrowser"
+        Me.CheckUpdateWebBrowser.Size = New System.Drawing.Size(646, 467)
+        Me.CheckUpdateWebBrowser.TabIndex = 81
         '
         'StatusStrip1
         '
@@ -2941,15 +2972,6 @@ Partial Class cdmaTerm
         Me.PictureBox7.TabIndex = 72
         Me.PictureBox7.TabStop = False
         '
-        'ReadNamLockBtn
-        '
-        Me.ReadNamLockBtn.Location = New System.Drawing.Point(242, 74)
-        Me.ReadNamLockBtn.Name = "ReadNamLockBtn"
-        Me.ReadNamLockBtn.Size = New System.Drawing.Size(101, 23)
-        Me.ReadNamLockBtn.TabIndex = 118
-        Me.ReadNamLockBtn.Text = "Read NAM Lock"
-        Me.ReadNamLockBtn.UseVisualStyleBackColor = True
-        '
         'cdmaTerm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2959,12 +2981,12 @@ Partial Class cdmaTerm
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.TabControl1)
-        Me.Controls.Add(Me.TabControl2)
+        Me.Controls.Add(Me.LeftTabControl)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.PictureBox7)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "cdmaTerm"
-        Me.Text = "CdmaDevTerm - 02.05.12 - www.chromableedstudios.com - by ¿kernelpanic? dg ajh - S" & _
+        Me.Text = "CdmaDevTerm - 02.26.12 - www.chromableedstudios.com - by ¿kernelpanic? dg ajh - S" & _
     "UPER BETA!!!"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -2986,7 +3008,7 @@ Partial Class cdmaTerm
         Me.TabPage5.PerformLayout()
         Me.TabPage6.ResumeLayout(False)
         Me.TabPage4.ResumeLayout(False)
-        Me.TabControl2.ResumeLayout(False)
+        Me.LeftTabControl.ResumeLayout(False)
         Me.NamAndDataTab.ResumeLayout(False)
         CType(Me.ChromableedLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.AdvancedNamGroup.ResumeLayout(False)
@@ -3030,6 +3052,7 @@ Partial Class cdmaTerm
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
         Me.LogQ.ResumeLayout(False)
         Me.LogQ.PerformLayout()
+        Me.Update.ResumeLayout(False)
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
@@ -3097,7 +3120,7 @@ Partial Class cdmaTerm
     Friend WithEvents readNam0MdnButton As System.Windows.Forms.Button
     Friend WithEvents readChipsetButton As System.Windows.Forms.Button
     Friend WithEvents convertToAsciiTextBox As System.Windows.Forms.TextBox
-    Friend WithEvents TabControl2 As System.Windows.Forms.TabControl
+    Friend WithEvents LeftTabControl As System.Windows.Forms.TabControl
     Friend WithEvents TermAndATTab As System.Windows.Forms.TabPage
     Friend WithEvents NamAndDataTab As System.Windows.Forms.TabPage
     Friend WithEvents ModelComboBox As System.Windows.Forms.ComboBox
@@ -3300,5 +3323,7 @@ Partial Class cdmaTerm
     Friend WithEvents ReadEFSButton As System.Windows.Forms.Button
     Friend WithEvents DeleteEFSButton As System.Windows.Forms.Button
     Friend WithEvents ReadNamLockBtn As System.Windows.Forms.Button
+    Friend WithEvents Update As System.Windows.Forms.TabPage
+    Friend WithEvents CheckUpdateWebBrowser As System.Windows.Forms.WebBrowser
 
 End Class

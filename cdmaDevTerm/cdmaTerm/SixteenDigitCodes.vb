@@ -19,7 +19,7 @@
 
 Public Class SixteenDigitCodes
 
-    Shared runtime16DigitPass As Dictionary(Of String, String)
+    Private Shared runtime16DigitPass As Dictionary(Of String, String)
 
     Public Shared Function get16DigitPasswords() As Dictionary(Of String, String)
         Return runtime16DigitPass

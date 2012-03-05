@@ -94,6 +94,9 @@
     <Compile Include="Command.vb" />
     <Compile Include="COMPortInfo.vb" />
     <Compile Include="CSVReader.vb" />
+    <Compile Include="Data\Carrier.vb" />
+    <Compile Include="Data\DataTools.vb" />
+    <Compile Include="Data\Model.vb" />
     <Compile Include="dispatchQmanager.vb" />
     <Compile Include="DmPort.vb" />
     <Compile Include="esnConverter.vb" />

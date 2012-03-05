@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="windows-1252"?>
+	<carrier>
+		<name>cricket</name>
+		<prl>1030.prl</prl>
+		<variable>
+			<key>¿DOMAIN?</key>
+			<value>mycricket.com</value>
+		</variable>
+		<variable>
+			<key>¿PROXY?</key>
+			<value>wap.mycricket.com</value>
+		</variable>
+		<variable>
+			<key>¿PORT?</key>
+			<value>8080</value>
+		</variable>
+		<variable>
+			<key>¿PASSWORD?</key>
+			<value>cricket</value>
+		</variable>
+		<variable>
+			<key>¿USERNAME?</key>
+			<value>¿MDN?@¿DOMAIN?</value>
+		</variable>
+	</carrier>

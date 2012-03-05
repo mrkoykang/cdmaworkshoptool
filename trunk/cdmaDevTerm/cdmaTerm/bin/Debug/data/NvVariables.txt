@@ -1,0 +1,8 @@
+;these are the reserved system nv variables
+;redefining these names could cause unpredictable results
+;name:uniqueStringToReplace
+;
+MDN:¿MDN?
+MIN:¿MIN?
+
+

@@ -17,9 +17,9 @@
 ''
 ''cdmaDevTerm 
 ''build:
-''alphaalphaOrxMEID16MworkingTabbySecretDecoderSamsungAutoMagic(applyDirectlyToTheForehead)HalfBakedCRC_TastesOK!lilEVDOsauceSPEEDYspcMetCalcAT$QCDMG_LOGtXrX_NV_READinPRLsendin(woot!woot!)clean_n_leanNvEditorStyle_PostMortemCleanUp
+''alphaalphaOrxMEID16MworkingTabbySecretDecoderSamsungAutoMagic(applyDirectlyToTheForehead)HalfBakedCRC_TastesOK!lilEVDOsauceSPEEDYspcMetCalcAT$QCDMG_LOGtXrX_NV_READinPRLsendin(woot!woot!)clean_n_leanNvEditorStyle_PostMortemCleanUp_aNewData
 ''
-''10:56am - 12/30/2011
+''6:43am - 03/05/2011
 ''
 ''here goes nop
 Imports System
@@ -1846,45 +1846,45 @@ ends:
         MessageBox.Show("zero sent: mode reset suggested")
     End Sub
 
-    Private Sub zeroSPCPRLButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles zeroSPCPRLButton.Click
+    'Private Sub zeroSPCPRLButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles zeroSPCPRLButton.Click
 
-        If BrandComboBox.Text = "Samsung" Then
-            SAMSUNGmagicAPPLYDIRECTLYTOTHEFOREHEAD()
-        Else
-            If portIsOpen = False Then
-                ComNumBox1.Items.Clear()
-                scanAndListComs()
-                connectSub()
-            End If
-        
-
-            ''ajh7495 start 4
-            ''dispatchQ.addCommandToQ(New Command(readSpcFromPhone, "Read SPC From Phone")) 
-            '' possibly change command class to accept
-            readSpcFromPhone(readSPCTypeCombo.Text)
-
-            ''dispatchQ.addCommandToQ(New Command(sendAnySPC, "Send SPC (Uses SPC Box)")) 
-            '' possibly change command class to accept || accept response required
-            sendAnySPC(SPCTextbox.Text)
-
-            dispatchQ.addCommandToQ(New Command(writeSPC_DefMethod000000, "Write SPC Def Method 000000"))
-
-            ''dg try to fix method signature hell
-            dispatchQ.addCommandToQ(New Command(modeOfflineD, "Mode Offline D"))
-            '' requires response
-            dispatchQ.addCommandToQ(New Command(sendSPC_DefMethod000000, "Send SPC Def Method 000000"))
-            ''dispatchQ.addCommandToQ(New Command(sendPRL, "Send PRL (Uses PRL Box)")) 
-            '' possibly change command class to accept 
-
-            sendPRL(selectPRLComboBox.Text)
-            dispatchQ.executeCommandQ()
-            MessageBox.Show("zero/prl sent: mode reset suggested")
-            ''ajh7495 end 4
-        End If
+    '    If BrandComboBox.Text = "Samsung" Then
+    '        SAMSUNGmagicAPPLYDIRECTLYTOTHEFOREHEAD()
+    '    Else
+    '        If portIsOpen = False Then
+    '            ComNumBox1.Items.Clear()
+    '            scanAndListComs()
+    '            connectSub()
+    '        End If
 
 
+    '        ''ajh7495 start 4
+    '        ''dispatchQ.addCommandToQ(New Command(readSpcFromPhone, "Read SPC From Phone")) 
+    '        '' possibly change command class to accept
+    '        readSpcFromPhone(readSPCTypeCombo.Text)
 
-    End Sub
+    '        ''dispatchQ.addCommandToQ(New Command(sendAnySPC, "Send SPC (Uses SPC Box)")) 
+    '        '' possibly change command class to accept || accept response required
+    '        sendAnySPC(SPCTextbox.Text)
+
+    '        dispatchQ.addCommandToQ(New Command(writeSPC_DefMethod000000, "Write SPC Def Method 000000"))
+
+    '        ''dg try to fix method signature hell
+    '        dispatchQ.addCommandToQ(New Command(modeOfflineD, "Mode Offline D"))
+    '        '' requires response
+    '        dispatchQ.addCommandToQ(New Command(sendSPC_DefMethod000000, "Send SPC Def Method 000000"))
+    '        ''dispatchQ.addCommandToQ(New Command(sendPRL, "Send PRL (Uses PRL Box)")) 
+    '        '' possibly change command class to accept 
+
+    '        sendPRL(selectPRLComboBox.Text)
+    '        dispatchQ.executeCommandQ()
+    '        MessageBox.Show("zero/prl sent: mode reset suggested")
+    '        ''ajh7495 end 4
+    '    End If
+
+
+
+    'End Sub
 
     Private Sub convertToAsciiTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles convertToAsciiTextBox.TextChanged
 
@@ -1965,10 +1965,6 @@ ends:
         Catch
         End Try
     End Sub
-
-
-
-
 
     Private Sub ReadMIN1Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReadMIN1Button.Click
 
@@ -2113,30 +2109,30 @@ ends:
 
     End Sub
 
-    Private Sub BrandComboBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BrandComboBox.SelectedIndexChanged
+    Private Sub BrandComboBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-        If BrandComboBox.Text = "Samsung" Then
-            ModelComboBox.Visible = True
+        'If BrandComboBox.Text = "Samsung" Then
+        '    ModelComboBox.Visible = True
 
-            For Each s As String In select16digitCodeBox.Items
+        '    For Each s As String In select16digitCodeBox.Items
 
-                ModelComboBox.Items.Add(s)
+        '        ModelComboBox.Items.Add(s)
 
-            Next
+        '    Next
 
-        ElseIf BrandComboBox.Text = "LG" Then
-            readSPCTypeCombo.Text = "LG"
-            ModelComboBox.Visible = False
-        ElseIf BrandComboBox.Text = "HTC" Then
-            readSPCTypeCombo.Text = "HTC"
-            ModelComboBox.Visible = False
-        ElseIf BrandComboBox.Text = "MetroPCS SPC" Then
-            readSPCTypeCombo.Text = "MetroPCS"
-            ModelComboBox.Visible = False
-        ElseIf BrandComboBox.Text = "Default" Then
-            readSPCTypeCombo.Text = "NV"
-            ModelComboBox.Visible = False
-        End If
+        'ElseIf BrandComboBox.Text = "LG" Then
+        '    readSPCTypeCombo.Text = "LG"
+        '    ModelComboBox.Visible = False
+        'ElseIf BrandComboBox.Text = "HTC" Then
+        '    readSPCTypeCombo.Text = "HTC"
+        '    ModelComboBox.Visible = False
+        'ElseIf BrandComboBox.Text = "MetroPCS SPC" Then
+        '    readSPCTypeCombo.Text = "MetroPCS"
+        '    ModelComboBox.Visible = False
+        'ElseIf BrandComboBox.Text = "Default" Then
+        '    readSPCTypeCombo.Text = "NV"
+        '    ModelComboBox.Visible = False
+        'End If
 
 
 
@@ -2908,5 +2904,25 @@ ends:
         End If
     End Sub
 
+
+    Private Sub ReloadDataSetup_Click(sender As System.Object, e As System.EventArgs) Handles ReloadDataSetup.Click
+        Dim fd As New OpenFileDialog
+        fd.ShowDialog()
+        Dim CarrierXml As String = fd.FileName
+
+        fd.ShowDialog()
+        Dim ModelXml As String = fd.FileName
+        loadModel(ModelXml, loadCarrier(CarrierXml))
+    End Sub
+
+    Function loadCarrier(FileName As String) As Carrier
+        Dim myCarrier As New Carrier(FileName, DataMdnTxt.Text, DataMinTxt.Text)
+        MessageBox.Show("Loaded: " + myCarrier.Name + " " + myCarrier.Prl)
+        Return myCarrier
+    End Function
+    Function loadModel(FileName As String, Carrier As Carrier) As Model
+        Dim myModel As New Model(FileName, Carrier)
+        Return myModel
+    End Function
 
 End Class

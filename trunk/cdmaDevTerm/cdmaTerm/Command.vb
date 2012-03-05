@@ -55,6 +55,7 @@ Public Class Command
     Public inactiveNvRead As Boolean = False
     Public badSecurityNvRead As Boolean = False
 
+
     '' COMMAND OBJECT
     ''preferred command constructor for raw bytes
     '' Requires:
@@ -194,11 +195,15 @@ Public Class Command
 
     End Sub
 
+    
+
 
     '' Public fbld As New Font(cdmaTerm.logQBox.Font.FontFamily, cdmaTerm.logQBox.Font.Size + 1, FontStyle.Bold)
     '' Public fdef As New Font(cdmaTerm.logQBox.Font.FontFamily, cdmaTerm.logQBox.Font.Size, FontStyle.Regular)
     Public fbld As New Font("Arial", cdmaTerm.logQBox.Font.Size + 2, FontStyle.Bold)
     Public fdef As New Font("Arial", cdmaTerm.logQBox.Font.Size, FontStyle.Regular)
+
+    
 
 
     ''function to send a bite array returns tru if it works

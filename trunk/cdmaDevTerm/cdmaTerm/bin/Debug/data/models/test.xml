@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="windows-1252"?>
+	<model>
+		<name>Test 906 910</name>
+		<spc>16digit</spc>
+		<nvItem>
+			<number>906</number>
+			<data>¿PASSWORD?</data>
+		</nvItem>
+		<nvItem>
+			<number>910</number>
+			<data>¿USERNAME?</data>
+		</nvItem>
+	</model>
+	

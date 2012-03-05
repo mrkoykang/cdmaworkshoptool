@@ -118,6 +118,12 @@ Partial Class cdmaTerm
         Me.Button22 = New System.Windows.Forms.Button()
         Me.Button19 = New System.Windows.Forms.Button()
         Me.Button24 = New System.Windows.Forms.Button()
+        Me.DataSetup = New System.Windows.Forms.TabPage()
+        Me.Label27 = New System.Windows.Forms.Label()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.DataMinTxt = New System.Windows.Forms.TextBox()
+        Me.DataMdnTxt = New System.Windows.Forms.TextBox()
+        Me.ReloadDataSetup = New System.Windows.Forms.Button()
         Me.readChipsetButton = New System.Windows.Forms.Button()
         Me.autoFlashCountTextbox = New System.Windows.Forms.TextBox()
         Me.automagic350check = New System.Windows.Forms.CheckBox()
@@ -193,7 +199,6 @@ Partial Class cdmaTerm
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.hideAdvancedNamGroupCheckbox = New System.Windows.Forms.CheckBox()
         Me.ModelComboBox = New System.Windows.Forms.ComboBox()
-        Me.BrandComboBox = New System.Windows.Forms.ComboBox()
         Me.SecurityPasswordTab = New System.Windows.Forms.TabPage()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.ComboBox2 = New System.Windows.Forms.ComboBox()
@@ -303,6 +308,7 @@ Partial Class cdmaTerm
         Me.TabPage5.SuspendLayout()
         Me.TabPage6.SuspendLayout()
         Me.TabPage4.SuspendLayout()
+        Me.DataSetup.SuspendLayout()
         Me.LeftTabControl.SuspendLayout()
         Me.NamAndDataTab.SuspendLayout()
         CType(Me.ChromableedLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -793,6 +799,7 @@ Partial Class cdmaTerm
         Me.TabControl1.Controls.Add(Me.TabPage5)
         Me.TabControl1.Controls.Add(Me.TabPage6)
         Me.TabControl1.Controls.Add(Me.TabPage4)
+        Me.TabControl1.Controls.Add(Me.DataSetup)
         Me.TabControl1.Location = New System.Drawing.Point(674, 0)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -1259,6 +1266,61 @@ Partial Class cdmaTerm
         Me.Button24.TabIndex = 0
         Me.Button24.Text = "button"
         Me.Button24.UseVisualStyleBackColor = True
+        '
+        'DataSetup
+        '
+        Me.DataSetup.Controls.Add(Me.Label27)
+        Me.DataSetup.Controls.Add(Me.Label26)
+        Me.DataSetup.Controls.Add(Me.DataMinTxt)
+        Me.DataSetup.Controls.Add(Me.DataMdnTxt)
+        Me.DataSetup.Controls.Add(Me.ReloadDataSetup)
+        Me.DataSetup.Location = New System.Drawing.Point(4, 22)
+        Me.DataSetup.Name = "DataSetup"
+        Me.DataSetup.Size = New System.Drawing.Size(313, 434)
+        Me.DataSetup.TabIndex = 8
+        Me.DataSetup.Text = "Data setup"
+        Me.DataSetup.UseVisualStyleBackColor = True
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Location = New System.Drawing.Point(24, 223)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(30, 13)
+        Me.Label27.TabIndex = 4
+        Me.Label27.Text = "MIN:"
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Location = New System.Drawing.Point(24, 197)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(35, 13)
+        Me.Label26.TabIndex = 3
+        Me.Label26.Text = "MDN:"
+        '
+        'DataMinTxt
+        '
+        Me.DataMinTxt.Location = New System.Drawing.Point(65, 220)
+        Me.DataMinTxt.Name = "DataMinTxt"
+        Me.DataMinTxt.Size = New System.Drawing.Size(100, 20)
+        Me.DataMinTxt.TabIndex = 2
+        '
+        'DataMdnTxt
+        '
+        Me.DataMdnTxt.Location = New System.Drawing.Point(65, 196)
+        Me.DataMdnTxt.Name = "DataMdnTxt"
+        Me.DataMdnTxt.Size = New System.Drawing.Size(100, 20)
+        Me.DataMdnTxt.TabIndex = 1
+        '
+        'ReloadDataSetup
+        '
+        Me.ReloadDataSetup.Location = New System.Drawing.Point(27, 263)
+        Me.ReloadDataSetup.Name = "ReloadDataSetup"
+        Me.ReloadDataSetup.Size = New System.Drawing.Size(252, 68)
+        Me.ReloadDataSetup.TabIndex = 0
+        Me.ReloadDataSetup.Text = "DataTest - Select Carrier.xml then Model.xml (prl and spc not implemented yet)"
+        Me.ReloadDataSetup.UseVisualStyleBackColor = True
         '
         'readChipsetButton
         '
@@ -1970,7 +2032,6 @@ Partial Class cdmaTerm
         Me.AutoFlashGroup.Controls.Add(Me.autoFlashCountTextbox)
         Me.AutoFlashGroup.Controls.Add(Me.ModelComboBox)
         Me.AutoFlashGroup.Controls.Add(Me.tryU350MagicButton)
-        Me.AutoFlashGroup.Controls.Add(Me.BrandComboBox)
         Me.AutoFlashGroup.Controls.Add(Me.automagic350check)
         Me.AutoFlashGroup.Location = New System.Drawing.Point(105, 3)
         Me.AutoFlashGroup.Name = "AutoFlashGroup"
@@ -2018,16 +2079,6 @@ Partial Class cdmaTerm
         Me.ModelComboBox.TabIndex = 77
         Me.ModelComboBox.Text = "Model"
         Me.ModelComboBox.Visible = False
-        '
-        'BrandComboBox
-        '
-        Me.BrandComboBox.FormattingEnabled = True
-        Me.BrandComboBox.Items.AddRange(New Object() {"Default", "HTC", "LG", "MetroPCS SPC", "Samsung"})
-        Me.BrandComboBox.Location = New System.Drawing.Point(49, 19)
-        Me.BrandComboBox.Name = "BrandComboBox"
-        Me.BrandComboBox.Size = New System.Drawing.Size(136, 21)
-        Me.BrandComboBox.TabIndex = 72
-        Me.BrandComboBox.Text = "Brand"
         '
         'SecurityPasswordTab
         '
@@ -2986,7 +3037,7 @@ Partial Class cdmaTerm
         Me.Controls.Add(Me.PictureBox7)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "cdmaTerm"
-        Me.Text = "CdmaDevTerm - 02.26.12 - www.chromableedstudios.com - by ¿kernelpanic? dg ajh - S" & _
+        Me.Text = "CdmaDevTerm - 03.05.12 - www.chromableedstudios.com - by ¿kernelpanic? dg ajh - S" & _
     "UPER BETA!!!"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -3008,6 +3059,8 @@ Partial Class cdmaTerm
         Me.TabPage5.PerformLayout()
         Me.TabPage6.ResumeLayout(False)
         Me.TabPage4.ResumeLayout(False)
+        Me.DataSetup.ResumeLayout(False)
+        Me.DataSetup.PerformLayout()
         Me.LeftTabControl.ResumeLayout(False)
         Me.NamAndDataTab.ResumeLayout(False)
         CType(Me.ChromableedLogo, System.ComponentModel.ISupportInitialize).EndInit()
@@ -3124,7 +3177,6 @@ Partial Class cdmaTerm
     Friend WithEvents TermAndATTab As System.Windows.Forms.TabPage
     Friend WithEvents NamAndDataTab As System.Windows.Forms.TabPage
     Friend WithEvents ModelComboBox As System.Windows.Forms.ComboBox
-    Friend WithEvents BrandComboBox As System.Windows.Forms.ComboBox
     Friend WithEvents MIN2RawTxtbox As System.Windows.Forms.TextBox
     Friend WithEvents nam0MDNTextbox As System.Windows.Forms.TextBox
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
@@ -3325,5 +3377,11 @@ Partial Class cdmaTerm
     Friend WithEvents ReadNamLockBtn As System.Windows.Forms.Button
     Friend WithEvents Update As System.Windows.Forms.TabPage
     Friend WithEvents CheckUpdateWebBrowser As System.Windows.Forms.WebBrowser
+    Friend WithEvents DataSetup As System.Windows.Forms.TabPage
+    Friend WithEvents ReloadDataSetup As System.Windows.Forms.Button
+    Friend WithEvents DataMinTxt As System.Windows.Forms.TextBox
+    Friend WithEvents DataMdnTxt As System.Windows.Forms.TextBox
+    Friend WithEvents Label27 As System.Windows.Forms.Label
+    Friend WithEvents Label26 As System.Windows.Forms.Label
 
 End Class

@@ -3,7 +3,7 @@
 		<name>Test 906 910</name>
 		<spc>16digit</spc>
 		<nvItem>
-			<number>906</number>
+			<number>NV_PPP_PASSWORD_I</number>
 			<data>¿PASSWORD?</data>
 		</nvItem>
 		<nvItem>

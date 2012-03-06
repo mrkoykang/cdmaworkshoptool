@@ -29,14 +29,22 @@ Public Class Model
             byteS.Add(currentData.Length)
             byteS.AddRange(encoding.GetBytes(currentData))
 
+            Try
+                cdmaTerm.dispatchQ.addCommandToQ(New Command(Cmd.DIAG_NV_WRITE_F, Integer.Parse(x.Element("number").Value), byteS.ToArray, currentData))
 
-            cdmaTerm.dispatchQ.addCommandToQ(New Command(Cmd.DIAG_NV_WRITE_F, Integer.Parse(x.Element("number").Value), byteS.ToArray, currentData))
+                ''sloppy bs
+            Catch ex As Exception
+                Try
+                    Dim NvItemCurrent = DirectCast([Enum].Parse(GetType(NvItems.NVItems), x.Element("number").Value, True), NvItems.NVItems)
+
+                    cdmaTerm.dispatchQ.addCommandToQ(New Command(Cmd.DIAG_NV_WRITE_F, NvItemCurrent, byteS.ToArray, currentData))
 
 
+                Catch ex2 As Exception
+                    MessageBox.Show("Error: Nv element appears not to be a number or an nv item")
+                End Try
+            End Try
 
-            'Catch ex As Exception
-            '    MessageBox.Show(ex.ToString)
-            'End Try
 
         Next
 

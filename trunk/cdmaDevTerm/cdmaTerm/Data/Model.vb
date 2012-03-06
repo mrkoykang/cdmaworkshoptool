@@ -11,6 +11,8 @@ Public Class Model
                        Select name
         Name = New String(nameNode.Nodes.ElementAt(0).ToString)
 
+        sendCarrierPrl(Carrier)
+
         Dim cmdNodes = From nvItem In doc...<nvItem> _
                        Select nvItem
 
@@ -23,6 +25,8 @@ Public Class Model
             Dim currentData As String = Carrier.parseVar(x.Element("data").Value)
 
             MessageBox.Show("Model.new tes:" + currentData)
+
+
             Dim encoding As New System.Text.ASCIIEncoding()
 
             Dim byteS As New List(Of Byte)
@@ -49,6 +53,19 @@ Public Class Model
         Next
 
         cdmaTerm.dispatchQ.executeCommandQ()
+
+    End Sub
+
+    Sub sendCarrierPrl(Carrier As Carrier)
+        Try
+            Dim PrlFile As String
+            Dim myPlus As New Prl
+
+            PrlFile = Carrier.Prl
+            myPlus.UploadPRL(Application.StartupPath + "/data/prl/" + PrlFile)
+        Catch ex As Exception
+            MessageBox.Show("Data script prl error: " + ex.ToString)
+        End Try
 
     End Sub
 

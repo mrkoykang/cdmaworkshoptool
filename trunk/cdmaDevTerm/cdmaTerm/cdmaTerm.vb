@@ -2083,14 +2083,16 @@ ends:
     End Sub
 
     Sub SendAnyPrl()
-        ''TODO: think theres a way to check if the user cancels rather than fails
         Try
             Dim PrlFile As String
             Dim myPlus As New Prl
-            OpenFileDialog1.ShowDialog()
+            Dim result = OpenFileDialog1.ShowDialog()
 
-            PrlFile = OpenFileDialog1.FileName
-            myPlus.UploadPRL(PrlFile)
+            If result = Windows.Forms.DialogResult.OK Then
+                PrlFile = OpenFileDialog1.FileName
+                myPlus.UploadPRL(PrlFile)
+            End If
+
         Catch ex As Exception
             MessageBox.Show("Prl send err: " + ex.ToString)
         End Try

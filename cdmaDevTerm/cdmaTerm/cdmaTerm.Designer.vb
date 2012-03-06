@@ -23,8 +23,8 @@ Partial Class cdmaTerm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cdmaTerm))
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("EFS Files")
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("/")
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("EFS Files")
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("/")
         Me.ATSendButton = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.TermSendBox = New System.Windows.Forms.TextBox()
@@ -1319,7 +1319,7 @@ Partial Class cdmaTerm
         Me.ReloadDataSetup.Name = "ReloadDataSetup"
         Me.ReloadDataSetup.Size = New System.Drawing.Size(252, 68)
         Me.ReloadDataSetup.TabIndex = 0
-        Me.ReloadDataSetup.Text = "DataTest - Select Carrier.xml then Model.xml (prl and spc not implemented yet)"
+        Me.ReloadDataSetup.Text = "DataTest - Select Carrier.xml then Model.xml (spc not implemented yet)"
         Me.ReloadDataSetup.UseVisualStyleBackColor = True
         '
         'readChipsetButton
@@ -2855,9 +2855,9 @@ Partial Class cdmaTerm
         '
         Me.FileTreeView2.Location = New System.Drawing.Point(151, 90)
         Me.FileTreeView2.Name = "FileTreeView2"
-        TreeNode3.Name = "Node0"
-        TreeNode3.Text = "EFS Files"
-        Me.FileTreeView2.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3})
+        TreeNode5.Name = "Node0"
+        TreeNode5.Text = "EFS Files"
+        Me.FileTreeView2.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode5})
         Me.FileTreeView2.Size = New System.Drawing.Size(400, 394)
         Me.FileTreeView2.TabIndex = 1
         '
@@ -2865,9 +2865,9 @@ Partial Class cdmaTerm
         '
         Me.FolderTreeView1.Location = New System.Drawing.Point(3, 90)
         Me.FolderTreeView1.Name = "FolderTreeView1"
-        TreeNode4.Name = "Node0"
-        TreeNode4.Text = "/"
-        Me.FolderTreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode4})
+        TreeNode6.Name = "Node0"
+        TreeNode6.Text = "/"
+        Me.FolderTreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode6})
         Me.FolderTreeView1.Size = New System.Drawing.Size(142, 339)
         Me.FolderTreeView1.TabIndex = 0
         '

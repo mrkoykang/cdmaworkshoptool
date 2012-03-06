@@ -19,7 +19,7 @@
 ''build:
 ''alphaalphaOrxMEID16MworkingTabbySecretDecoderSamsungAutoMagic(applyDirectlyToTheForehead)HalfBakedCRC_TastesOK!lilEVDOsauceSPEEDYspcMetCalcAT$QCDMG_LOGtXrX_NV_READinPRLsendin(woot!woot!)clean_n_leanNvEditorStyle_PostMortemCleanUp_aNewData
 ''
-''6:43am - 03/05/2011
+''6:43am - 03/06/2011
 ''
 ''here goes nop
 Imports System
@@ -2906,13 +2906,28 @@ ends:
 
 
     Private Sub ReloadDataSetup_Click(sender As System.Object, e As System.EventArgs) Handles ReloadDataSetup.Click
+        Dim runScripts As Boolean = False
+
         Dim fd As New OpenFileDialog
-        fd.ShowDialog()
+
+        fd.Title = "Select a carrier .xml script"
+        Dim result = fd.ShowDialog()
+        If result = Windows.Forms.DialogResult.OK Then
+            runScripts = True
+        End If
         Dim CarrierXml As String = fd.FileName
 
-        fd.ShowDialog()
+        fd.Title = "Select a model .xml script"
+        result = fd.ShowDialog()
+        If result = Windows.Forms.DialogResult.OK Then
+            runScripts = runScripts And True
+        End If
         Dim ModelXml As String = fd.FileName
-        loadModel(ModelXml, loadCarrier(CarrierXml))
+
+        If runScripts Then
+            loadModel(ModelXml, loadCarrier(CarrierXml))
+        End If
+
     End Sub
 
     Function loadCarrier(FileName As String) As Carrier

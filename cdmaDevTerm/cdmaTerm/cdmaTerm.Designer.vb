@@ -23,8 +23,8 @@ Partial Class cdmaTerm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cdmaTerm))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("EFS Files")
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("/")
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("EFS Files")
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("/")
         Me.ATSendButton = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.TermSendBox = New System.Windows.Forms.TextBox()
@@ -2855,9 +2855,9 @@ Partial Class cdmaTerm
         '
         Me.FileTreeView2.Location = New System.Drawing.Point(151, 90)
         Me.FileTreeView2.Name = "FileTreeView2"
-        TreeNode1.Name = "Node0"
-        TreeNode1.Text = "EFS Files"
-        Me.FileTreeView2.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode1})
+        TreeNode3.Name = "Node0"
+        TreeNode3.Text = "EFS Files"
+        Me.FileTreeView2.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3})
         Me.FileTreeView2.Size = New System.Drawing.Size(400, 394)
         Me.FileTreeView2.TabIndex = 1
         '
@@ -2865,9 +2865,9 @@ Partial Class cdmaTerm
         '
         Me.FolderTreeView1.Location = New System.Drawing.Point(3, 90)
         Me.FolderTreeView1.Name = "FolderTreeView1"
-        TreeNode2.Name = "Node0"
-        TreeNode2.Text = "/"
-        Me.FolderTreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode2})
+        TreeNode4.Name = "Node0"
+        TreeNode4.Text = "/"
+        Me.FolderTreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode4})
         Me.FolderTreeView1.Size = New System.Drawing.Size(142, 339)
         Me.FolderTreeView1.TabIndex = 0
         '
@@ -3037,7 +3037,7 @@ Partial Class cdmaTerm
         Me.Controls.Add(Me.PictureBox7)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "cdmaTerm"
-        Me.Text = "CdmaDevTerm - 03.05.12 - www.chromableedstudios.com - by ¿kernelpanic? dg ajh - S" & _
+        Me.Text = "CdmaDevTerm - 03.06.12 - www.chromableedstudios.com - by ¿kernelpanic? dg ajh - S" & _
     "UPER BETA!!!"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()

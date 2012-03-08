@@ -119,17 +119,20 @@ Partial Class cdmaTerm
         Me.Button19 = New System.Windows.Forms.Button()
         Me.Button24 = New System.Windows.Forms.Button()
         Me.DataSetup = New System.Windows.Forms.TabPage()
+        Me.CarrierFlashCombo = New System.Windows.Forms.ComboBox()
+        Me.hideAdvancedNamGroupCheckbox = New System.Windows.Forms.CheckBox()
+        Me.autoFlashCountTextbox = New System.Windows.Forms.TextBox()
+        Me.zeroSPCPRLButton = New System.Windows.Forms.Button()
+        Me.tryU350MagicButton = New System.Windows.Forms.Button()
+        Me.automagic350check = New System.Windows.Forms.CheckBox()
+        Me.ModelComboBox = New System.Windows.Forms.ComboBox()
         Me.Label27 = New System.Windows.Forms.Label()
         Me.Label26 = New System.Windows.Forms.Label()
         Me.DataMinTxt = New System.Windows.Forms.TextBox()
         Me.DataMdnTxt = New System.Windows.Forms.TextBox()
         Me.ReloadDataSetup = New System.Windows.Forms.Button()
         Me.readChipsetButton = New System.Windows.Forms.Button()
-        Me.autoFlashCountTextbox = New System.Windows.Forms.TextBox()
-        Me.automagic350check = New System.Windows.Forms.CheckBox()
-        Me.tryU350MagicButton = New System.Windows.Forms.Button()
         Me.readNam0MdnButton = New System.Windows.Forms.Button()
-        Me.zeroSPCPRLButton = New System.Windows.Forms.Button()
         Me.evdo_p4Textbox = New System.Windows.Forms.Button()
         Me.evdo_u4Textbox = New System.Windows.Forms.Button()
         Me.evdo_p3Textbox = New System.Windows.Forms.Button()
@@ -195,10 +198,7 @@ Partial Class cdmaTerm
         Me.SendAllEvdoButton = New System.Windows.Forms.Button()
         Me.ReadAllEvdoButton = New System.Windows.Forms.Button()
         Me.AutoFlashGroup = New System.Windows.Forms.GroupBox()
-        Me.CarrierFlashCombo = New System.Windows.Forms.ComboBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.hideAdvancedNamGroupCheckbox = New System.Windows.Forms.CheckBox()
-        Me.ModelComboBox = New System.Windows.Forms.ComboBox()
         Me.SecurityPasswordTab = New System.Windows.Forms.TabPage()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.ComboBox2 = New System.Windows.Forms.ComboBox()
@@ -295,6 +295,7 @@ Partial Class cdmaTerm
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.PictureBox7 = New System.Windows.Forms.PictureBox()
+        Me.Label28 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -1114,6 +1115,7 @@ Partial Class cdmaTerm
         '
         'TabPage6
         '
+        Me.TabPage6.Controls.Add(Me.Label28)
         Me.TabPage6.Controls.Add(Me.Button23)
         Me.TabPage6.Controls.Add(Me.xmlScriptTreeView)
         Me.TabPage6.Controls.Add(Me.Button21)
@@ -1139,7 +1141,7 @@ Partial Class cdmaTerm
         '
         Me.xmlScriptTreeView.Location = New System.Drawing.Point(5, 6)
         Me.xmlScriptTreeView.Name = "xmlScriptTreeView"
-        Me.xmlScriptTreeView.Size = New System.Drawing.Size(303, 277)
+        Me.xmlScriptTreeView.Size = New System.Drawing.Size(303, 260)
         Me.xmlScriptTreeView.TabIndex = 3
         '
         'Button21
@@ -1269,11 +1271,13 @@ Partial Class cdmaTerm
         '
         'DataSetup
         '
-        Me.DataSetup.Controls.Add(Me.Label27)
-        Me.DataSetup.Controls.Add(Me.Label26)
-        Me.DataSetup.Controls.Add(Me.DataMinTxt)
-        Me.DataSetup.Controls.Add(Me.DataMdnTxt)
-        Me.DataSetup.Controls.Add(Me.ReloadDataSetup)
+        Me.DataSetup.Controls.Add(Me.CarrierFlashCombo)
+        Me.DataSetup.Controls.Add(Me.hideAdvancedNamGroupCheckbox)
+        Me.DataSetup.Controls.Add(Me.autoFlashCountTextbox)
+        Me.DataSetup.Controls.Add(Me.zeroSPCPRLButton)
+        Me.DataSetup.Controls.Add(Me.tryU350MagicButton)
+        Me.DataSetup.Controls.Add(Me.automagic350check)
+        Me.DataSetup.Controls.Add(Me.ModelComboBox)
         Me.DataSetup.Location = New System.Drawing.Point(4, 22)
         Me.DataSetup.Name = "DataSetup"
         Me.DataSetup.Size = New System.Drawing.Size(313, 434)
@@ -1281,10 +1285,81 @@ Partial Class cdmaTerm
         Me.DataSetup.Text = "Data setup"
         Me.DataSetup.UseVisualStyleBackColor = True
         '
+        'CarrierFlashCombo
+        '
+        Me.CarrierFlashCombo.FormattingEnabled = True
+        Me.CarrierFlashCombo.Items.AddRange(New Object() {"CricKet", "MetroPCS"})
+        Me.CarrierFlashCombo.Location = New System.Drawing.Point(97, 82)
+        Me.CarrierFlashCombo.Name = "CarrierFlashCombo"
+        Me.CarrierFlashCombo.Size = New System.Drawing.Size(135, 21)
+        Me.CarrierFlashCombo.TabIndex = 101
+        Me.CarrierFlashCombo.Text = "Carrier"
+        Me.CarrierFlashCombo.Visible = False
+        '
+        'hideAdvancedNamGroupCheckbox
+        '
+        Me.hideAdvancedNamGroupCheckbox.AutoSize = True
+        Me.hideAdvancedNamGroupCheckbox.Location = New System.Drawing.Point(12, 135)
+        Me.hideAdvancedNamGroupCheckbox.Name = "hideAdvancedNamGroupCheckbox"
+        Me.hideAdvancedNamGroupCheckbox.Size = New System.Drawing.Size(100, 17)
+        Me.hideAdvancedNamGroupCheckbox.TabIndex = 96
+        Me.hideAdvancedNamGroupCheckbox.Text = "Hide Advanced"
+        Me.hideAdvancedNamGroupCheckbox.UseVisualStyleBackColor = True
+        Me.hideAdvancedNamGroupCheckbox.Visible = False
+        '
+        'autoFlashCountTextbox
+        '
+        Me.autoFlashCountTextbox.Location = New System.Drawing.Point(267, 133)
+        Me.autoFlashCountTextbox.Name = "autoFlashCountTextbox"
+        Me.autoFlashCountTextbox.Size = New System.Drawing.Size(33, 20)
+        Me.autoFlashCountTextbox.TabIndex = 71
+        Me.autoFlashCountTextbox.Visible = False
+        '
+        'zeroSPCPRLButton
+        '
+        Me.zeroSPCPRLButton.Location = New System.Drawing.Point(65, 12)
+        Me.zeroSPCPRLButton.Name = "zeroSPCPRLButton"
+        Me.zeroSPCPRLButton.Size = New System.Drawing.Size(195, 29)
+        Me.zeroSPCPRLButton.TabIndex = 100
+        Me.zeroSPCPRLButton.Text = "Basic Flash 000000 SPC + PRL"
+        Me.zeroSPCPRLButton.UseVisualStyleBackColor = True
+        Me.zeroSPCPRLButton.Visible = False
+        '
+        'tryU350MagicButton
+        '
+        Me.tryU350MagicButton.Location = New System.Drawing.Point(168, 131)
+        Me.tryU350MagicButton.Name = "tryU350MagicButton"
+        Me.tryU350MagicButton.Size = New System.Drawing.Size(78, 23)
+        Me.tryU350MagicButton.TabIndex = 1
+        Me.tryU350MagicButton.Text = "Magic u350*"
+        Me.tryU350MagicButton.UseVisualStyleBackColor = True
+        Me.tryU350MagicButton.Visible = False
+        '
+        'automagic350check
+        '
+        Me.automagic350check.AutoSize = True
+        Me.automagic350check.Location = New System.Drawing.Point(252, 136)
+        Me.automagic350check.Name = "automagic350check"
+        Me.automagic350check.Size = New System.Drawing.Size(33, 17)
+        Me.automagic350check.TabIndex = 70
+        Me.automagic350check.Text = "A"
+        Me.automagic350check.UseVisualStyleBackColor = True
+        Me.automagic350check.Visible = False
+        '
+        'ModelComboBox
+        '
+        Me.ModelComboBox.FormattingEnabled = True
+        Me.ModelComboBox.Location = New System.Drawing.Point(97, 55)
+        Me.ModelComboBox.Name = "ModelComboBox"
+        Me.ModelComboBox.Size = New System.Drawing.Size(136, 21)
+        Me.ModelComboBox.TabIndex = 77
+        Me.ModelComboBox.Text = "Model"
+        Me.ModelComboBox.Visible = False
+        '
         'Label27
         '
         Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(24, 223)
+        Me.Label27.Location = New System.Drawing.Point(43, 50)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(30, 13)
         Me.Label27.TabIndex = 4
@@ -1293,7 +1368,7 @@ Partial Class cdmaTerm
         'Label26
         '
         Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(24, 197)
+        Me.Label26.Location = New System.Drawing.Point(43, 24)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(35, 13)
         Me.Label26.TabIndex = 3
@@ -1301,25 +1376,25 @@ Partial Class cdmaTerm
         '
         'DataMinTxt
         '
-        Me.DataMinTxt.Location = New System.Drawing.Point(65, 220)
+        Me.DataMinTxt.Location = New System.Drawing.Point(84, 47)
         Me.DataMinTxt.Name = "DataMinTxt"
         Me.DataMinTxt.Size = New System.Drawing.Size(100, 20)
         Me.DataMinTxt.TabIndex = 2
         '
         'DataMdnTxt
         '
-        Me.DataMdnTxt.Location = New System.Drawing.Point(65, 196)
+        Me.DataMdnTxt.Location = New System.Drawing.Point(84, 23)
         Me.DataMdnTxt.Name = "DataMdnTxt"
         Me.DataMdnTxt.Size = New System.Drawing.Size(100, 20)
         Me.DataMdnTxt.TabIndex = 1
         '
         'ReloadDataSetup
         '
-        Me.ReloadDataSetup.Location = New System.Drawing.Point(27, 263)
+        Me.ReloadDataSetup.Location = New System.Drawing.Point(203, 15)
         Me.ReloadDataSetup.Name = "ReloadDataSetup"
-        Me.ReloadDataSetup.Size = New System.Drawing.Size(252, 68)
+        Me.ReloadDataSetup.Size = New System.Drawing.Size(326, 68)
         Me.ReloadDataSetup.TabIndex = 0
-        Me.ReloadDataSetup.Text = "DataTest - Select Carrier.xml then Model.xml (spc not implemented yet)"
+        Me.ReloadDataSetup.Text = "DataTest - Select Carrier.xml then Model.xml"
         Me.ReloadDataSetup.UseVisualStyleBackColor = True
         '
         'readChipsetButton
@@ -1331,35 +1406,6 @@ Partial Class cdmaTerm
         Me.readChipsetButton.Text = "Read Build/Chip"
         Me.readChipsetButton.UseVisualStyleBackColor = True
         '
-        'autoFlashCountTextbox
-        '
-        Me.autoFlashCountTextbox.Location = New System.Drawing.Point(463, 54)
-        Me.autoFlashCountTextbox.Name = "autoFlashCountTextbox"
-        Me.autoFlashCountTextbox.Size = New System.Drawing.Size(33, 20)
-        Me.autoFlashCountTextbox.TabIndex = 71
-        Me.autoFlashCountTextbox.Visible = False
-        '
-        'automagic350check
-        '
-        Me.automagic350check.AutoSize = True
-        Me.automagic350check.Location = New System.Drawing.Point(448, 57)
-        Me.automagic350check.Name = "automagic350check"
-        Me.automagic350check.Size = New System.Drawing.Size(33, 17)
-        Me.automagic350check.TabIndex = 70
-        Me.automagic350check.Text = "A"
-        Me.automagic350check.UseVisualStyleBackColor = True
-        Me.automagic350check.Visible = False
-        '
-        'tryU350MagicButton
-        '
-        Me.tryU350MagicButton.Location = New System.Drawing.Point(364, 52)
-        Me.tryU350MagicButton.Name = "tryU350MagicButton"
-        Me.tryU350MagicButton.Size = New System.Drawing.Size(78, 23)
-        Me.tryU350MagicButton.TabIndex = 1
-        Me.tryU350MagicButton.Text = "Magic u350*"
-        Me.tryU350MagicButton.UseVisualStyleBackColor = True
-        Me.tryU350MagicButton.Visible = False
-        '
         'readNam0MdnButton
         '
         Me.readNam0MdnButton.Location = New System.Drawing.Point(112, 15)
@@ -1368,15 +1414,6 @@ Partial Class cdmaTerm
         Me.readNam0MdnButton.TabIndex = 63
         Me.readNam0MdnButton.Text = "Read MDN"
         Me.readNam0MdnButton.UseVisualStyleBackColor = True
-        '
-        'zeroSPCPRLButton
-        '
-        Me.zeroSPCPRLButton.Location = New System.Drawing.Point(334, 17)
-        Me.zeroSPCPRLButton.Name = "zeroSPCPRLButton"
-        Me.zeroSPCPRLButton.Size = New System.Drawing.Size(195, 29)
-        Me.zeroSPCPRLButton.TabIndex = 100
-        Me.zeroSPCPRLButton.Text = "Basic Flash 000000 SPC + PRL"
-        Me.zeroSPCPRLButton.UseVisualStyleBackColor = True
         '
         'evdo_p4Textbox
         '
@@ -2025,30 +2062,18 @@ Partial Class cdmaTerm
         '
         'AutoFlashGroup
         '
-        Me.AutoFlashGroup.Controls.Add(Me.CarrierFlashCombo)
-        Me.AutoFlashGroup.Controls.Add(Me.zeroSPCPRLButton)
         Me.AutoFlashGroup.Controls.Add(Me.PictureBox1)
-        Me.AutoFlashGroup.Controls.Add(Me.hideAdvancedNamGroupCheckbox)
-        Me.AutoFlashGroup.Controls.Add(Me.autoFlashCountTextbox)
-        Me.AutoFlashGroup.Controls.Add(Me.ModelComboBox)
-        Me.AutoFlashGroup.Controls.Add(Me.tryU350MagicButton)
-        Me.AutoFlashGroup.Controls.Add(Me.automagic350check)
+        Me.AutoFlashGroup.Controls.Add(Me.ReloadDataSetup)
+        Me.AutoFlashGroup.Controls.Add(Me.Label27)
+        Me.AutoFlashGroup.Controls.Add(Me.DataMinTxt)
+        Me.AutoFlashGroup.Controls.Add(Me.DataMdnTxt)
+        Me.AutoFlashGroup.Controls.Add(Me.Label26)
         Me.AutoFlashGroup.Location = New System.Drawing.Point(105, 3)
         Me.AutoFlashGroup.Name = "AutoFlashGroup"
         Me.AutoFlashGroup.Size = New System.Drawing.Size(541, 89)
         Me.AutoFlashGroup.TabIndex = 86
         Me.AutoFlashGroup.TabStop = False
         Me.AutoFlashGroup.Text = "Flash"
-        '
-        'CarrierFlashCombo
-        '
-        Me.CarrierFlashCombo.FormattingEnabled = True
-        Me.CarrierFlashCombo.Items.AddRange(New Object() {"CricKet", "MetroPCS"})
-        Me.CarrierFlashCombo.Location = New System.Drawing.Point(193, 19)
-        Me.CarrierFlashCombo.Name = "CarrierFlashCombo"
-        Me.CarrierFlashCombo.Size = New System.Drawing.Size(135, 21)
-        Me.CarrierFlashCombo.TabIndex = 101
-        Me.CarrierFlashCombo.Text = "Carrier"
         '
         'PictureBox1
         '
@@ -2059,26 +2084,7 @@ Partial Class cdmaTerm
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox1.TabIndex = 78
         Me.PictureBox1.TabStop = False
-        '
-        'hideAdvancedNamGroupCheckbox
-        '
-        Me.hideAdvancedNamGroupCheckbox.AutoSize = True
-        Me.hideAdvancedNamGroupCheckbox.Location = New System.Drawing.Point(208, 56)
-        Me.hideAdvancedNamGroupCheckbox.Name = "hideAdvancedNamGroupCheckbox"
-        Me.hideAdvancedNamGroupCheckbox.Size = New System.Drawing.Size(100, 17)
-        Me.hideAdvancedNamGroupCheckbox.TabIndex = 96
-        Me.hideAdvancedNamGroupCheckbox.Text = "Hide Advanced"
-        Me.hideAdvancedNamGroupCheckbox.UseVisualStyleBackColor = True
-        '
-        'ModelComboBox
-        '
-        Me.ModelComboBox.FormattingEnabled = True
-        Me.ModelComboBox.Location = New System.Drawing.Point(49, 54)
-        Me.ModelComboBox.Name = "ModelComboBox"
-        Me.ModelComboBox.Size = New System.Drawing.Size(136, 21)
-        Me.ModelComboBox.TabIndex = 77
-        Me.ModelComboBox.Text = "Model"
-        Me.ModelComboBox.Visible = False
+        Me.PictureBox1.Visible = False
         '
         'SecurityPasswordTab
         '
@@ -3023,6 +3029,15 @@ Partial Class cdmaTerm
         Me.PictureBox7.TabIndex = 72
         Me.PictureBox7.TabStop = False
         '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Location = New System.Drawing.Point(12, 270)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(227, 13)
+        Me.Label28.TabIndex = 6
+        Me.Label28.Text = "Qmat style xml script/binary only must have crc"
+        '
         'cdmaTerm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -3037,7 +3052,7 @@ Partial Class cdmaTerm
         Me.Controls.Add(Me.PictureBox7)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "cdmaTerm"
-        Me.Text = "CdmaDevTerm - 03.06.12 - www.chromableedstudios.com - by ¿kernelpanic? dg ajh - S" & _
+        Me.Text = "CdmaDevTerm - 03.07.12 - www.chromableedstudios.com - by ¿kernelpanic? dg ajh - S" & _
     "UPER BETA!!!"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -3058,6 +3073,7 @@ Partial Class cdmaTerm
         Me.TabPage5.ResumeLayout(False)
         Me.TabPage5.PerformLayout()
         Me.TabPage6.ResumeLayout(False)
+        Me.TabPage6.PerformLayout()
         Me.TabPage4.ResumeLayout(False)
         Me.DataSetup.ResumeLayout(False)
         Me.DataSetup.PerformLayout()
@@ -3383,5 +3399,6 @@ Partial Class cdmaTerm
     Friend WithEvents DataMdnTxt As System.Windows.Forms.TextBox
     Friend WithEvents Label27 As System.Windows.Forms.Label
     Friend WithEvents Label26 As System.Windows.Forms.Label
+    Friend WithEvents Label28 As System.Windows.Forms.Label
 
 End Class

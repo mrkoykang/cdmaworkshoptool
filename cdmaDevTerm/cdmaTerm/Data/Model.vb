@@ -18,15 +18,18 @@ Public Class Model
                        Select spc
         Spc = New String(spcNode.Nodes.ElementAt(0).ToString)
 
-        Dim writeSpcNode = From spc In doc...<spc> _
-                       Select spc
+        Dim writeSpcNode = From writespc In doc...<writeSpc> _
+                       Select writespc
         WriteSpc = New String(writeSpcNode.Nodes.ElementAt(0).ToString)
 
 
         cdmaTerm.modeSwitch("Offline")
-        If (Spc <> "16digit") Then
+
+
+        If (Spc <> "SP") Then
 
             cdmaTerm.readSpcFromPhone(Spc)
+            cdmaTerm.dispatchQ.executeCommandQ()
             cdmaTerm.sendAnySPC(cdmaTerm.SPCTextbox.Text)
         Else
             Dim sixteenDigitNode = From SP In doc...<SP> _
@@ -39,9 +42,10 @@ Public Class Model
                         "Send custom 16 digit DIAG_PASSWORD_F"
                         )
                     )
-
+            cdmaTerm.dispatchQ.executeCommandQ()
         End If
 
+        ''TODO: is this an old spc method? the code uses raw bytes... bleh
         cdmaTerm.writeAnySpc(WriteSpc)
 
         sendCarrierPrl(Carrier)

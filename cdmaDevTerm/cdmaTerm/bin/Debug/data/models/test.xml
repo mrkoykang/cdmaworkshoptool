@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="windows-1252"?>
 	<model>
 		<name>Test 906 910</name>
-		<spc>16digit</spc>
+		<spc>SP</spc>
+		<writeSpc>123456</writeSpc>
+		<SP>FFFFFFFFFFFFFFFF</SP>
 		<nvItem>
 			<number>NV_PPP_PASSWORD_I</number>
 			<data>¿PASSWORD?</data>
@@ -11,4 +13,3 @@
 			<data>¿USERNAME?</data>
 		</nvItem>
 	</model>
-	

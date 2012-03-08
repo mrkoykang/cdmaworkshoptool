@@ -19,7 +19,7 @@
 ''build:
 ''alphaalphaOrxMEID16MworkingTabbySecretDecoderSamsungAutoMagic(applyDirectlyToTheForehead)HalfBakedCRC_TastesOK!lilEVDOsauceSPEEDYspcMetCalcAT$QCDMG_LOGtXrX_NV_READinPRLsendin(woot!woot!)clean_n_leanNvEditorStyle_PostMortemCleanUp_aNewData
 ''
-''6:43am - 03/06/2011
+''8:40pm - 03/07/2011
 ''
 ''here goes nop
 Imports System
@@ -440,9 +440,10 @@ ends:
             ''debugging?
             If debugMode = False Then
                 TabControl1.Controls.Remove(TabPage4)
+                TabControl1.Controls.Remove(DataSetup)
+
                 LeftTabControl.Controls.Remove(EFS)
                 LeftTabControl.Controls.Remove(CmdAndADB)
-                AutoFlashGroup.Visible = False
 
             End If
 
@@ -578,7 +579,7 @@ ends:
     End Sub
 
     ''sub to try converting sp etc
-    Sub SendA16digitCodeSon()
+    Sub SendA16digitCode()
         If Send16DigitCodeTextbox.Text = "" Then
             ''try out the textbox parser
 
@@ -625,9 +626,9 @@ ends:
     Sub readSpcFromPhone(ByVal spcType As String)
         ''first check which read type then go
         If spcType = "NV" Then
-           
+
             dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_SEC_CODE_I, New Byte() {}, "readSPC DIAG_NV_READ_F NV_SEC_CODE_I"))
-   
+
 
         ElseIf spcType = "HTC" Then
 
@@ -750,7 +751,7 @@ ends:
 
         ''MessageBox.Show("Ports available: " + allTheNames)
 
-     
+
     End Sub
 
     Private Sub ATSendButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ATSendButton.Click
@@ -869,7 +870,7 @@ ends:
     End Sub
     ''samsung
     Private Sub Send16DigitCodeButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Send16DigitCodeButton.Click
-        SendA16digitCodeSon()
+        SendA16digitCode()
 
 
     End Sub
@@ -1299,7 +1300,7 @@ ends:
 
             ''sendTermCommand2(send16digitSchU350)
             ''Threading.Thread.Sleep(200)
-            SendA16digitCodeSon()
+            SendA16digitCode()
 
             dispatchQ.addCommandToQ(New Command(writeSPC_DefMethod000000, "SAMSUNGmagic.2 writeSPC_DefMethod000000"))
 
@@ -1995,7 +1996,7 @@ ends:
         sendATCommand("AT$LGDMGO")
     End Sub
 
-    Private Sub modeSwitch(ByVal mode As String)
+    Public Sub modeSwitch(ByVal mode As String)
 
         ''first check which read type then go
         If mode = "Offline" Then

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="windows-1252"?>
 	<model>
 		<name>Moto</name>
+		<spc>NV</spc>
 		<nvItem>
 			<number>NV_HDR_AN_AUTH_PASSWORD_I</number>
 			<data>¿PASSWORD?</data>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1252"?>
 	<carrier>
 		<name>cricket</name>
-		<prl>01030.prl</prl>
+		<prl>01040.prl</prl>
 		<variable>
 			<key>¿DOMAIN?</key>
 			<value>mycricket.com</value>

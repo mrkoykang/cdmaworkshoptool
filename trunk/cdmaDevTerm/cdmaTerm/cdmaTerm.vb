@@ -1,4 +1,4 @@
-﻿'' CDMA DEV TERM
+ '' CDMA DEV TERM
 '' Copyright (c) Dillon Graham 2010-2012 Chromableed Studios
 '' www.chromableedstudios.com
 '' chromableedstudios ( a t ) gmail ( d o t ) com
@@ -1029,7 +1029,7 @@ ends:
 
     Private Sub keyPressButtonStar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles keyPressButtonStar.Click
         dispatchQ.clearCommandQ()
-        dispatchQ.addCommandToQ(New Command(keyPress_Pound, "keyPress_Pound"))
+        dispatchQ.addCommandToQ(New Command(keyPress_Star, "keyPress_Star"))
         dispatchQ.executeCommandQ()
     End Sub
 

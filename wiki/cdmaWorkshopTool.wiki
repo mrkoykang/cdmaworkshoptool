@@ -1,0 +1,9 @@
+#summary cdmaworkshoptool wiki.
+
+Here you will find some wiki documentation about cdmaDevTerm and cwTool.
+
+
+= cdmaDevTerm =
+
+|| current version || v.2 ||
+|| status || beta ||

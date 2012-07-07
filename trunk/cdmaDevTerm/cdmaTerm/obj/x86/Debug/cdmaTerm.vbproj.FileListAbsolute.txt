@@ -259,3 +259,17 @@ D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
 D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
 D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
 D:\DEV\GoogleCodeCWRepo\cdmaDevTerm\cdmaTerm\bin\Debug\winAPIcom.dll
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe.config
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.exe
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.pdb
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\bin\Debug\cdmaTerm.xml
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\bin\Debug\winAPIcom.dll
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.cdmaTerm.resources
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.Resources.resources
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.NvEditor.resources
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.exe
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.xml
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevTerm\cdmaTerm\obj\x86\Debug\cdmaTerm.pdb

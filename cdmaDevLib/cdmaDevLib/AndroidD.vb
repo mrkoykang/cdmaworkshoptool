@@ -17,7 +17,7 @@
 ''
 Public Class AndroidD
 
-    Public Function CMDAutomate()
+    Public Function CMDAutomate(commandsList As List(Of String))
         Dim myprocess As New Process
         Dim StartInfo As New System.Diagnostics.ProcessStartInfo
         StartInfo.FileName = "cmd" 'starts cmd window
@@ -31,10 +31,10 @@ Public Class AndroidD
         Dim SW As System.IO.StreamWriter = myprocess.StandardInput
 
         ''loop through commands in list box and remove each item as it is run
-        While cdmaTerm.commandsListBox.Items.Count > 0
+        While commandsList.Count > 0
             ''run commands from list box then remove them after running
-            SW.WriteLine(cdmaTerm.commandsListBox.Items(0)) 'the command you wish to run.....
-            cdmaTerm.commandsListBox.Items.RemoveAt(0)
+            SW.WriteLine(commandsList(0)) 'the command you wish to run.....
+            commandsList.RemoveAt(0)
         End While
 
         SW.WriteLine("exit") 'exits command prompt window

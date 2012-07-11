@@ -198,15 +198,6 @@ Public Class Command
 
     
 
-
-    '' Public fbld As New Font(cdmaTerm.logQBox.Font.FontFamily, cdmaTerm.logQBox.Font.Size + 1, FontStyle.Bold)
-    '' Public fdef As New Font(cdmaTerm.logQBox.Font.FontFamily, cdmaTerm.logQBox.Font.Size, FontStyle.Regular)
-    Public fbld As New Font("Arial", cdmaTerm.logQBox.Font.Size + 2, FontStyle.Bold)
-    Public fdef As New Font("Arial", cdmaTerm.logQBox.Font.Size, FontStyle.Regular)
-
-    
-
-
     ''function to send a bite array returns tru if it works
     Public Function tx() As Boolean
         If cdmaTerm.portIsOpen = False Then
@@ -226,15 +217,15 @@ Public Class Command
                 ''untested fix for 7d/5e/5d return issue
                 ''
                 bytesRxd = testSend.unescapeReturnedBytes(bytesRxd)
-                cdmaTerm.logQBox.AppendText(vbNewLine + vbNewLine)
+                logger.addToLog(vbNewLine + vbNewLine)
                 ''Dim nameStart As Integer = cdmaTerm.logQBox.TextLength
-                cdmaTerm.logQBox.AppendText(debuggingText)
+                logger.addToLog(debuggingText)
                 ''Dim nameEnd As Integer = cdmaTerm.logQBox.TextLength
                 '' cdmaTerm.logQBox.[Select](nameStart, nameEnd - nameStart)
                 ''cdmaTerm.logQBox.SelectionFont = fbld
 
 
-                Dim bytesStart As Integer = cdmaTerm.logQBox.TextLength
+                '' Dim bytesStart As Integer = cdmaTerm.logQBox.TextLength
 
                 Dim appendString As String = vbNewLine + "TX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesToTx)) + vbNewLine + vbNewLine +
                             "RX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesRxd)) + vbNewLine
@@ -246,7 +237,7 @@ Public Class Command
 
 
 
-                cdmaTerm.logQBox.AppendText(appendString)
+                logger.addToLog(appendString)
 
                 'Dim bytesEnd As Integer = cdmaTerm.logQBox.TextLength
                 'cdmaTerm.logQBox.[Select](bytesStart, bytesEnd - bytesStart)
@@ -287,10 +278,5 @@ Public Class Command
     End Function
 
 
-    Public Class logQBox
-        ''todo: add logging?
-        Sub appendText(str As String)
-
-        End Sub
-    End Class
+    
 End Class

@@ -202,6 +202,9 @@ Public Class Qcdm
 
     End Enum
 
+    ''WARNING WARNING< all of the EFS code is buyer-beware not very tested code 
+    ''(somewhere between probably to possibly not working for any and all models, may even brick your phone--I warned you)
+
     Public Function ReadEfsFolderByName(ByVal folderName As String) As String
 
         cdmaTerm.dispatchQ.clearCommandQ()
@@ -296,10 +299,10 @@ Public Class Qcdm
         Dim openEfsHeader As Byte() = {&H2, &H0, &H41, &H2, &H0, &H0, &HB6, &H1, &H0, &H0}
         Dim OpenForWrite As New List(Of Byte)
         OpenForWrite.AddRange(openEfsHeader)
-
-        If cdmaTerm.EfsPathTxtbox.Text <> "/" Then
-            fileName = cdmaTerm.EfsPathTxtbox.Text + "/" + fileName
-        End If
+        ''todo: not needed in lib i think?
+        'If cdmaTerm.EfsPathTxtbox.Text <> "/" Then
+        '    fileName = cdmaTerm.EfsPathTxtbox.Text + "/" + fileName
+        'End If
 
         For Each c As Char In fileName
             OpenForWrite.Add(System.Convert.ToUInt32(c))
@@ -312,19 +315,18 @@ Public Class Qcdm
 
     End Sub
 
-    Public Sub DeleteFromEFS(ByVal fileName As String)
+    Public Sub DeleteFromEFS(ByVal fileName As String, path As String)
 
         Dim writeHeader As Byte() = {&H8, &H0}
         Dim efsPacket As New List(Of Byte)
 
         efsPacket.AddRange(writeHeader)
 
-        fileName = cdmaTerm.EfsPathTxtbox.Text + "/" + fileName
+        fileName = path + "/" + fileName
 
         For Each c As Char In fileName
             efsPacket.Add(System.Convert.ToUInt32(c))
         Next
-
 
         efsPacket.Add(&H0)
 
@@ -333,9 +335,7 @@ Public Class Qcdm
         Dim EfsDirectory As New List(Of Byte)
         EfsDirectory.AddRange(New Byte() {&HB, 0, 0, 0, 0})
 
-        Dim efspathtxtcontents = cdmaTerm.EfsPathTxtbox.Text
-
-        For Each c As Char In cdmaTerm.EfsPathTxtbox.Text
+        For Each c As Char In path
             EfsDirectory.Add(System.Convert.ToUInt32(c))
         Next
 

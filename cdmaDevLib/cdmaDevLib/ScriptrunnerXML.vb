@@ -107,19 +107,7 @@ Public Class ScriptrunnerXML
         Next
     End Sub
 
-    Public Function getMahVariable(ByVal incomingString As String) As String
 
-
-        If incomingString = "$_username" Then
-            Return cdmaTerm.evdo_usernameTextbox.Text
-        Else
-            Return "fail"
-        End If
-
-
-
-
-    End Function
 
 
 

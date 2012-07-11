@@ -1,13 +1,13 @@
-﻿Imports cdmaTerm
-Imports cdmaTerm.Qcdm
-Imports cdmaTerm.Qcdm.Cmd
+﻿Imports cdmaDevLib
+Imports cdmaDevLib.Qcdm
+Imports cdmaDevLib.Qcdm.Cmd
 Public Class Model
     Private _commands As New List(Of Command)
     Private _name As String
     Private _spcType As String
     Private _writeSpc As String
 
-    Sub New(FileName As String, Carrier As Carrier)
+    Sub New(FileName As String, Carrier As Carrier, prlFilePath As String)
         Dim doc As XDocument = XDocument.Load(FileName)
 
         Dim nameNode = From name In doc...<name> _
@@ -30,7 +30,7 @@ Public Class Model
 
             cdmaTerm.readSpcFromPhone(Spc)
             cdmaTerm.dispatchQ.executeCommandQ()
-            cdmaTerm.sendAnySPC(cdmaTerm.SPCTextbox.Text)
+            cdmaTerm.sendAnySPC(cdmaTerm.SPC)
         Else
             Dim sixteenDigitNode = From SP In doc...<SP> _
                        Select SP
@@ -48,7 +48,7 @@ Public Class Model
         ''TODO: is this an old spc method? the code uses raw bytes... bleh
         cdmaTerm.writeAnySpc(WriteSpc)
 
-        sendCarrierPrl(Carrier)
+        sendCarrierPrl(Carrier, prlFilePath)
 
         Dim cmdNodes = From nvItem In doc...<nvItem> _
                        Select nvItem
@@ -90,13 +90,13 @@ Public Class Model
 
     End Sub
 
-    Sub sendCarrierPrl(Carrier As Carrier)
+    Sub sendCarrierPrl(Carrier As Carrier, prlFilePath As String)
         Try
             Dim PrlFile As String
             Dim myPlus As New Prl
 
             PrlFile = Carrier.Prl
-            myPlus.UploadPRL(Application.StartupPath + "/data/prl/" + PrlFile)
+            myPlus.UploadPRL(prlFilePath + "/data/prl/" + PrlFile)
         Catch ex As Exception
             Throw New Exception("Data script prl error: " + ex.ToString)
         End Try

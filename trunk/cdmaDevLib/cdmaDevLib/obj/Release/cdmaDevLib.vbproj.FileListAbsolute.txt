@@ -2,3 +2,10 @@ C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\obj\Release\ResolveAsse
 C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\obj\Release\cdmaDevLib.Resources.resources
 C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\obj\Release\GenerateResource.read.1.tlog
 C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\obj\Release\GenerateResource.write.1.tlog
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\bin\Release\cdmaDevLib.dll
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\bin\Release\cdmaDevLib.pdb
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\bin\Release\cdmaDevLib.xml
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\bin\Release\winAPIcom.dll
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\obj\Release\cdmaDevLib.dll
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\obj\Release\cdmaDevLib.xml
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\obj\Release\cdmaDevLib.pdb

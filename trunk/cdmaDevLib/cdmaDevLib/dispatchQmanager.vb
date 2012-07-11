@@ -56,9 +56,7 @@ Public Class dispatchQmanager
 
     ''Returns true if all commands execute
     Public Function executeCommandQ() As Boolean
-        cdmaTerm.ToolStripProgressBar1.Maximum = mySynqdQ.Count
-        cdmaTerm.ToolStripProgressBar1.Minimum = 0
-        cdmaTerm.ToolStripProgressBar1.Value = 0
+        
         If cdmaTerm.portIsOpen = False Then
             Throw New Exception("Dispatch Queue Err: Port Not Open, Please Connect")
             silentInterruptCommandQ()
@@ -94,35 +92,35 @@ Public Class dispatchQmanager
 
                 If thisC.decoderString IsNot "" Then
 
-                    Dim superDecoderRing As New SecretDecoderRing
-                    If superDecoderRing.decoder(thisC) = True Then
-                        ''if it returns ok do nothing
-                    Else
-                        Throw New Exception("decoderString q decoder error")
-                        interruptCommandQ()
-                    End If
+                    'Dim superDecoderRing As New SecretDecoderRing
+                    'If superDecoderRing.decoder(thisC) = True Then
+                    '    ''if it returns ok do nothing
+                    'Else
+                    '    Throw New Exception("decoderString q decoder error")
+                    '    interruptCommandQ()
+                    'End If
 
 
                 ElseIf (thisC.currentQcdm.ToString.IndexOf("NOT_A_COMMAND") = -1 And thisC.currentNv.ToString.IndexOf("NOT_AN_NV_ITEM") = -1) Then
                     ''onRxCommand
                     Dim superDecoderRing As New SecretDecoderRing
 
-                    If superDecoderRing.decoder3(thisC) = True Then
-                        ''If superDecoderRing.decoder3(thisC.currentQcdm, thisC.currentNv) = True Then
-                        ''if it returns ok do nothing
-                    Else
-                        Throw New Exception("(thisC.currentQcdm, thisC.currentNv) q decoder error")
-                        interruptCommandQ()
-                    End If
+                    'If superDecoderRing.decoder3(thisC) = True Then
+                    '    ''If superDecoderRing.decoder3(thisC.currentQcdm, thisC.currentNv) = True Then
+                    '    ''if it returns ok do nothing
+                    'Else
+                    '    Throw New Exception("(thisC.currentQcdm, thisC.currentNv) q decoder error")
+                    '    interruptCommandQ()
+                    'End If
                 ElseIf thisC.currentQcdm.ToString.IndexOf("Cmd.NOT_A_COMMAND") = -1 Then
                     ''onRxCommand
-                    Dim superDecoderRing As New SecretDecoderRing
-                    If superDecoderRing.decoder3(thisC) = True Then
-                        ''if it returns ok do nothing
-                    Else
-                        Throw New Exception("thisC.currentQcdm q decoder error")
-                        interruptCommandQ()
-                    End If
+                    'Dim superDecoderRing As New SecretDecoderRing
+                    'If superDecoderRing.decoder3(thisC) = True Then
+                    '    ''if it returns ok do nothing
+                    'Else
+                    '    Throw New Exception("thisC.currentQcdm q decoder error")
+                    '    interruptCommandQ()
+                    'End If
 
                 Else
                     ''if no decoder needed do nothing
@@ -136,9 +134,8 @@ Public Class dispatchQmanager
                 ''TODO???
 
                 ''cdmaTerm.logAllBox += thisC.commandNameSent
-                cdmaTerm.logAllBox.AppendText(("-Q" + i.ToString + ": " + thisC.debuggingText & vbNewLine))
-                cdmaTerm.ToolStripProgressBar1.Value += 1
-
+                logger.addToLog("-Q" + i.ToString + ": " + thisC.debuggingText & vbNewLine)
+                
             Next
 
         End If

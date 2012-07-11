@@ -1405,55 +1405,55 @@ Public Class NvItems
     End Function
 
 
-    Function readNVItem(ByVal itemNumber As Integer, ByVal itemDebug As String) As Command
+    'Function readNVItem(ByVal itemNumber As Integer, ByVal itemDebug As String) As Command
 
-        ''build a command test evdo1
-        Dim bob As New BuilderBob
-        Dim result(2) As Byte
-
-
-
-        ''fix the order the hex is displayed in
-        Dim returnHex As String = fixNVItemNumber(itemNumber, 6)
-
-
-        ''Throw new Exception("return hex revd/:" + returnHex)
-
-        Dim prefix As Byte() = cdmaTerm.String_To_Bytes("26" + returnHex)
-        ''no se? test
-        '' cdmaTerm. dispatchQ.addCommandToQ(New Command((bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")))
-        ''
-
-        Dim fullCommand As New List(Of Byte)
-        For Each b As Byte In prefix
-            fullCommand.Add(b)
-        Next
-
-        While fullCommand.Count < 133
-            fullCommand.Add(&H0)
-        End While
-
-        Dim calcCrc() As Byte
-        calcCrc = cdmaTerm.gimmeCRC_AsByte_FromByte(fullCommand.ToArray)
-
-        fullCommand.Add(calcCrc(0))
-
-        fullCommand.Add(calcCrc(1))
-
-        fullCommand.Add(&H7E)
-
-
-        ''Throw new Exception("hex: " + returnHex + " prefix: " + cdmaTerm.biznytesToStrizings(prefix) + " whole command: " + cdmaTerm.biznytesToStrizings(fullCommand.ToArray))
+    '    ''build a command test evdo1
+    '    Dim bob As New BuilderBob
+    '    Dim result(2) As Byte
 
 
 
-        Dim returnTheCommand As New Command(fullCommand.ToArray, itemDebug)
+    '    ''fix the order the hex is displayed in
+    '    Dim returnHex As String = fixNVItemNumber(itemNumber, 6)
 
 
-        '' Dim returnTheCommand As New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), "Return the Command")
+    '    ''Throw new Exception("return hex revd/:" + returnHex)
 
-        Return returnTheCommand
-    End Function
+    '    Dim prefix As Byte() = cdmaTerm.String_To_Bytes("26" + returnHex)
+    '    ''no se? test
+    '    '' cdmaTerm. dispatchQ.addCommandToQ(New Command((bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")))
+    '    ''
+
+    '    Dim fullCommand As New List(Of Byte)
+    '    For Each b As Byte In prefix
+    '        fullCommand.Add(b)
+    '    Next
+
+    '    While fullCommand.Count < 133
+    '        fullCommand.Add(&H0)
+    '    End While
+
+    '    Dim calcCrc() As Byte
+    '    calcCrc = cdmaTerm.gimmeCRC_AsByte_FromByte(fullCommand.ToArray)
+
+    '    fullCommand.Add(calcCrc(0))
+
+    '    fullCommand.Add(calcCrc(1))
+
+    '    fullCommand.Add(&H7E)
+
+
+    '    ''Throw new Exception("hex: " + returnHex + " prefix: " + cdmaTerm.biznytesToStrizings(prefix) + " whole command: " + cdmaTerm.biznytesToStrizings(fullCommand.ToArray))
+
+
+
+    '    Dim returnTheCommand As New Command(fullCommand.ToArray, itemDebug)
+
+
+    '    '' Dim returnTheCommand As New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), "Return the Command")
+
+    '    Return returnTheCommand
+    'End Function
     Function readNVItemRange(ByVal startingItem As Integer, ByVal endItem As Integer) As Boolean
 
         Try
@@ -1485,7 +1485,7 @@ Public Class NvItems
 
     End Function
 
-
+    ''todo: this could be refactored out to a super/abstract class with subclasses for diff cdws versions if needed
     Function writeNVItemRange(ByVal fileName As String) As Integer
         ''this is what the file to write looks like
 
@@ -1536,7 +1536,7 @@ Public Class NvItems
                 nItemData = nItemData.Replace(" ", "")
                 ''Throw new Exception("NV Item: " + nItemNumber + " data: " + nItemData)
 
-                WriteNVItem(nItemNumber, nItemData)
+                WriteNVItem(nItemNumber, cdmaTerm.String_To_Bytes(nItemData))
 
                 i = i + 13
             Next
@@ -1563,33 +1563,37 @@ Public Class NvItems
     End Function
 
 
-    ''TODO: this probably needs clean up and i think the builder bob part should/could be replaced
-    Public Function WriteNVItem(ByVal item As Integer, ByVal value As String) As Boolean
-        Dim bob As New BuilderBob
-        Dim enc As New ASCIIEncoding
+    ' ''TODO: this probably needs clean up and i think the builder bob part should/could be replaced
+    'Public Function WriteNVItem(ByVal item As Integer, ByVal value As String) As Boolean
+    '    Dim bob As New BuilderBob
+    '    Dim enc As New ASCIIEncoding
 
 
-        Dim prefix As Byte() = cdmaTerm.String_To_Bytes("27" + fixNVItemNumber(item, 4) + (value))
-        Dim tempQ As New dispatchQmanager
+    '    Dim prefix As Byte() = cdmaTerm.String_To_Bytes("27" + fixNVItemNumber(item, 4) + (value))
+    '    Dim tempQ As New dispatchQmanager
 
-        '' Throw new Exception(cdmaTerm.biznytesToStrizings(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")))).ToString()
+    '    '' Throw new Exception(cdmaTerm.biznytesToStrizings(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")))).ToString()
 
-        ''Dim c As New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), ("nv"))
+    '    ''Dim c As New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), ("nv"))
 
-        ''Throw new Exception("prefix" + cdmaTerm.biznytesToStrizings(prefix))
-        ''TODO: Error
-        ''Throw new Exception("wr nv" + cdmaTerm.biznytesToStrizings(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + ""))))
+    '    ''Throw new Exception("prefix" + cdmaTerm.biznytesToStrizings(prefix))
+    '    ''TODO: Error
+    '    ''Throw new Exception("wr nv" + cdmaTerm.biznytesToStrizings(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + ""))))
 
-        tempQ.addCommandToQ(New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), ("nv#")))
+    '    tempQ.addCommandToQ(New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), ("nv#")))
 
-        tempQ.executeCommandQ()
-        Return True
+    '    tempQ.executeCommandQ()
+    '    Return True
 
-    End Function
+    'End Function
 
     Public Function WriteNVItem(ByVal item As Integer, ByVal data As Byte()) As Boolean
-        WriteNVItem(item, cdmaTerm.biznytesToStrizings(data))
-        Return True
+
+        Dim logMsg = "DIAG_NV_WRITE item: " + item.ToString
+
+        cdmaTerm.dispatchQ.addCommandToQ(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, data, logMsg))
+
+        Return cdmaTerm.dispatchQ.executeCommandQ
     End Function
     Dim oFile As System.IO.File
     Dim oRead As System.IO.StreamReader

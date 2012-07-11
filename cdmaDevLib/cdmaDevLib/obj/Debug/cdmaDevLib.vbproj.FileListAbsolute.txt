@@ -1,0 +1,4 @@
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\obj\Debug\ResolveAssemblyReference.cache
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\obj\Debug\cdmaDevLib.Resources.resources
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\obj\Debug\GenerateResource.read.1.tlog
+C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\obj\Debug\GenerateResource.write.1.tlog

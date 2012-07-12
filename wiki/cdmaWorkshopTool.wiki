@@ -7,3 +7,26 @@ Here you will find some wiki documentation about cdmaDevTerm and cwTool.
 
 || current version || v.2 ||
 || status || beta ||
+
+*FAQ*
+
+  * Could I please have the source code to cdmaDevTerm? of course, it is GPL v3 software. Click the source tab, and checkout from svn(I use tortoiseSvn personally)
+
+  * Why is the code so bad? lots of reasons. But it _is_ free and open.
+
+  * How can I help make cdmaDevTerm better? Many ways: report bugs, submit patches, make community content, write a walk-through, suggest features or changes
+
+  * Why is cdmaDevTerm free? I like making free software. I use alot of free software. 
+
+  * What features are experimental? If checked out from source and built with the debug flag set there are some features like efs which are _highly_ experimental and are really only recommended to use if you'd like to help develop these features. (if you would like a general purpose cdma program which does read efs check out bitpim or revskills)
+
+
+*Community content*
+
+LG Optimus V by mrrobertdeanjohnson
+
+<wiki:video url="http://www.youtube.com/watch?v=t_bSUGSnkak"/>
+
+Samsung Rant by pugetsoundelectronic
+
+<wiki:video url="http://www.youtube.com/watch?v=ZcsWBxl7I0s"/>

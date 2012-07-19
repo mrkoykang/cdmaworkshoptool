@@ -235,8 +235,7 @@ Public Class Command
                 '' appendString += vbNewLine
                 '' End If
 
-
-
+                thePhone.SerialData = appendString
                 logger.addToLog(appendString)
 
                 'Dim bytesEnd As Integer = cdmaTerm.logQBox.TextLength

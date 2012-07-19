@@ -46,6 +46,7 @@ Public Class cdmaTerm
     Public Shared dispatchQ As dispatchQmanager = New dispatchQmanager
     Public Shared nvReadQ As dispatchQmanager = New dispatchQmanager
     Public Shared RamReadQ As dispatchQmanager = New dispatchQmanager
+    Public Shared thePhone As Phone = New Phone
 
     ''this should probably be either refactored out due to 'blackberry'(winapicom) being standard now
     ''or turned into a fallback if winapicom.dll is not found
@@ -275,8 +276,7 @@ ends:
     ''fook dis
     Friend WithEvents mySerialPort As SerialPort = New SerialPort
 
-
-    Friend Shared mySerialPort2 As New SerialCom("\\.\COM3", 9600, IO.Ports.StopBits.One, IO.Ports.Parity.None, 8)
+    Public Shared mySerialPort2 As New SerialCom("\\.\COM3", 9600, IO.Ports.StopBits.One, IO.Ports.Parity.None, 8) ''actual winapi port
     ''this is the AT return changed
     ''think in a farther program the box can just be replaced with a string VAR?
 
@@ -376,7 +376,7 @@ ends:
     End Sub
 
 
-    Public Sub connectSub(portName As String)
+    Public Shared Sub connectSub(portName As String)
 
 
         Try
@@ -388,19 +388,19 @@ ends:
             ''todo: ok to nuke normal? i thinks
             If (serialportType = "normal") Then
 
-                ''setup com port
-                mySerialPort.BaudRate = &H2580
-                ''mySerialPort.BaudRate = &H38400
-                mySerialPort.DataBits = 8
-                mySerialPort.StopBits = StopBits.One
-                mySerialPort.PortName = portName
-                mySerialPort.ReadTimeout = -1
-                mySerialPort.WriteTimeout = -1
-                mySerialPort.ReceivedBytesThreshold = 1
-                mySerialPort.ParityReplace = &H3F
-                mySerialPort.NewLine = ChrW(10)
-                mySerialPort.ReadBufferSize = &H1000
-                mySerialPort.WriteBufferSize = &H800
+                ' ''setup com port
+                'mySerialPort.BaudRate = &H2580
+                ' ''mySerialPort.BaudRate = &H38400
+                'mySerialPort.DataBits = 8
+                'mySerialPort.StopBits = StopBits.One
+                'mySerialPort.PortName = portName
+                'mySerialPort.ReadTimeout = -1
+                'mySerialPort.WriteTimeout = -1
+                'mySerialPort.ReceivedBytesThreshold = 1
+                'mySerialPort.ParityReplace = &H3F
+                'mySerialPort.NewLine = ChrW(10)
+                'mySerialPort.ReadBufferSize = &H1000
+                'mySerialPort.WriteBufferSize = &H800
 
             ElseIf (serialportType = "blackberry") Then
 
@@ -408,7 +408,7 @@ ends:
 
 
 
-                mySerialPort2.SetPort("\\.\" + GetPlainPortNameFromFriendly(portName)) ''todo:untested?
+                mySerialPort2.SetPort("\\.\" + portName) ''todo:untested?
                 mySerialPort2.Open()
                 ''ToolStripStatusLabel1.Text = "connect ok || Type : WinApiCom.dll || " + ("\\.\" + GetPlainPortNameFromFriendly(ComNumBox1.Text))
                 portIsOpen = True
@@ -1110,7 +1110,7 @@ ends:
 
 
 
-   
+
 
 
 
@@ -1535,8 +1535,8 @@ ends:
         Try
             Dim PrlFile As String
             Dim myPlus As New Prl
-           
-                myPlus.UploadPRL(PrlFilePath)
+
+            myPlus.UploadPRL(PrlFilePath)
 
         Catch ex As Exception
             Throw New Exception("Prl send err: " + ex.ToString)
@@ -1637,7 +1637,7 @@ ends:
         Return 0
     End Function
 
-    Private Function GetPlainPortNameFromFriendly(ByVal FriendlyName As String) As String
+    Private Shared Function GetPlainPortNameFromFriendly(ByVal FriendlyName As String) As String
 
         Return FriendlyName.Split(" ")(0)
 
@@ -1714,17 +1714,17 @@ ends:
         Return mySDR.decode_NV_MIN1(MIN1Raw, MIN2Raw)
     End Function
 
-    Private Sub disconnectPort()
+    Public Shared Sub disconnectPort()
         Try
             If serialportType = "normal" Then
-                mySerialPort.Close()
-          
+                '' mySerialPort.Close()
+
             ElseIf serialportType = "blackberry" Then
                 mySerialPort2.Flush()
                 mySerialPort2.Dispose()
                 portIsOpen = False
 
-               
+
             End If
         Catch ex As Exception
             Throw New Exception("disconnect err" + ex.ToString)
@@ -2032,7 +2032,7 @@ ends:
 
     End Function
 
-    
+
 
     'Private Sub ReadFolder(ByVal folderName As String)
     '    Try

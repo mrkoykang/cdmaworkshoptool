@@ -1,4 +1,4 @@
-﻿'' CDMA DEV TERM
+ '' CDMA DEV TERM
 '' Copyright (c) Dillon Graham 2010-2012 Chromableed Studios
 '' www.chromableedstudios.com
 '' chromableedstudios ( a t ) gmail ( d o t ) com
@@ -14,6 +14,9 @@
 '' check out the GPL v3 for details
 '' http://www.gnu.org/copyleft/gpl.html
 ''-------------------------------------------------------------------------------------------------------------
+''
+''ref: http://dariosantarelli.wordpress.com/2010/10/18/c-how-to-programmatically-find-a-com-port-by-friendly-name/
+''
 Imports System.Management
 
 Public Class COMPortInfo

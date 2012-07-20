@@ -104,6 +104,7 @@ Public Class dispatchQmanager
                 ElseIf (thisC.currentQcdm.ToString.IndexOf("NOT_A_COMMAND") = -1 And thisC.currentNv.ToString.IndexOf("NOT_AN_NV_ITEM") = -1) Then
                     ''onRxCommand
                     Dim superDecoderRing As New SecretDecoderRing
+                    SecretDecoderRing.decoder3(thisC)
 
                     'If superDecoderRing.decoder3(thisC) = True Then
                     '    ''If superDecoderRing.decoder3(thisC.currentQcdm, thisC.currentNv) = True Then

@@ -90,7 +90,7 @@ Public Class SecretDecoderRing
 
     ''TODO: Add necesary fields to Command in order to call a nicer decoder
     '' Public Function decoder3(ByVal decoderSelect As Qcdm.Cmd, ByVal nvSelect As NvItems.NVItems) As Boolean
-    Public Function decoder3(ByVal cmd As Command) As Boolean
+    Public Shared Function decoder3(ByVal cmd As Command) As Boolean
         Try
             Select Case cmd.currentQcdm
 
@@ -146,7 +146,7 @@ Public Class SecretDecoderRing
     End Function
 
 
-    Private Sub decodeNvItem(ByVal cmd As Command)
+    Private Shared Sub decodeNvItem(ByVal cmd As Command)
         Select Case cmd.currentNv
             Case NvItems.NVItems.NV_MEID_I
                 ''Read MEID
@@ -232,7 +232,7 @@ Public Class SecretDecoderRing
 
     '    'End Sub
 
-    Sub decode_ReadMeid_NV(ByVal cmd As Command)
+    Shared Sub decode_ReadMeid_NV(ByVal cmd As Command)
 
 
         ''test decode meid
@@ -276,7 +276,7 @@ Public Class SecretDecoderRing
         End Try
 
     End Sub
-    Sub decode_ReadSPC_LG(ByVal cmd As Command)
+    Shared Sub decode_ReadSPC_LG(ByVal cmd As Command)
         ''test decode spc
         Try
 
@@ -306,7 +306,7 @@ Public Class SecretDecoderRing
         End Try
 
     End Sub
-    Sub decode_ReadSPC_NV(ByVal cmd As Command)
+    Shared Sub decode_ReadSPC_NV(ByVal cmd As Command)
         ''test decode spc
         Try
 
@@ -345,7 +345,7 @@ Public Class SecretDecoderRing
         End Try
 
     End Sub
-    Sub decode_ReadESN(ByVal cmd As Command)
+    Shared Sub decode_ReadESN(ByVal cmd As Command)
         ''test decode esn
         Try
 
@@ -377,7 +377,7 @@ Public Class SecretDecoderRing
     End Sub
 
 
-    Sub decode_NV_LOCK_CODE_I(ByVal cmd As Command)
+    Shared Sub decode_NV_LOCK_CODE_I(ByVal cmd As Command)
         ''test decode userlock
 
         Try
@@ -400,7 +400,7 @@ Public Class SecretDecoderRing
         End Try
 
     End Sub
-    Sub decode_ReadNam0MIN_Part2(ByVal cmd As Command)
+    Shared Sub decode_ReadNam0MIN_Part2(ByVal cmd As Command)
         ''test decode mdn
         Try
 
@@ -427,9 +427,9 @@ Public Class SecretDecoderRing
         End Try
 
     End Sub
-    Private MIN2Raw As String
+    Private Shared MIN2Raw As String
 
-    Sub decode_ReadNam0MIN_part1(ByVal cmd As Command)
+    Shared Sub decode_ReadNam0MIN_part1(ByVal cmd As Command)
         ''test decode mdn
         '' Try
 
@@ -471,7 +471,7 @@ Public Class SecretDecoderRing
         ''End Try
 
     End Sub
-    Sub decode_ReadNam0MDN(ByVal cmd As Command)
+    Shared Sub decode_ReadNam0MDN(ByVal cmd As Command)
         ''test decode mdn
         Try
 
@@ -646,7 +646,7 @@ Public Class SecretDecoderRing
 
     End Function
 
-    Private Sub decode_DIAG_SPC_F(ByVal cmd As Command)
+    Private Shared Sub decode_DIAG_SPC_F(ByVal cmd As Command)
 
         If cmd.bytesRxd(1) <> 1 Then
             logger.addToLog("Spc not accepted, don't send anything for 10 seconds (or devterm will crash)")
@@ -657,7 +657,7 @@ Public Class SecretDecoderRing
 
     End Sub
 
-    Private Sub decode_NV_MIN1(ByVal cmd As Command)
+    Private Shared Sub decode_NV_MIN1(ByVal cmd As Command)
         ' Throw new Exception("rxd: " + cdmaTerm.biznytesToStrizings(cmd.bytesRxd))
         'Throw new Exception("rxd: " + getAsciiStrings(cmd.bytesRxd))
 
@@ -691,14 +691,14 @@ Public Class SecretDecoderRing
 
     End Sub
 
-    Private Sub decode_NV_MIN2(ByVal cmd As Command)
+    Private Shared Sub decode_NV_MIN2(ByVal cmd As Command)
         ''this worked samsung but not lg
         ''cdmaTerm.MIN2Raw.Text = cdmaTerm.biznytesToStrizings(New Byte() {cmd.bytesRxd(4), cmd.bytesRxd(4)})
 
         cdmaTerm.MIN2Raw = cdmaTerm.biznytesToStrizings(New Byte() {cmd.bytesRxd(7), cmd.bytesRxd(6)})
     End Sub
 
-    Public Function decode_NV_MIN1(ByVal min1 As String, ByVal min2 As String) As String
+    Public Shared Function decode_NV_MIN1(ByVal min1 As String, ByVal min2 As String) As String
         Try
 
             Return decode_NV_MIN1(System.Convert.ToInt32(min1, 16), System.Convert.ToInt32(min2, 16))
@@ -709,7 +709,7 @@ Public Class SecretDecoderRing
         End Try
 
     End Function
-    Public Function decode_NV_MIN1(ByVal min1 As Long, ByVal min2 As Long) As String
+    Public Shared Function decode_NV_MIN1(ByVal min1 As Long, ByVal min2 As Long) As String
 
         min2 = (min2 + 1) Mod 10 + (((((min2 Mod 100) \ 10) + 1) Mod 10) * 10) + ((((min2 \ 100) + 1) Mod 10) * 100)
 
@@ -734,7 +734,7 @@ Public Class SecretDecoderRing
 
     End Function
 
-    Function encode_NV_MIN1(ByVal min1str As String) As String()
+    Shared Function encode_NV_MIN1(ByVal min1str As String) As String()
         Dim min1 As String = "Min1"
         Dim min2 As String = "Min2"
 
@@ -777,7 +777,7 @@ Public Class SecretDecoderRing
 
     '    End Sub
 
-    Private Sub decode_11055(ByVal bytesRxd As Byte())
+    Private Shared Sub decode_11055(ByVal bytesRxd As Byte())
         ''TODO untested
         ''System.Convert.ToInt32((bytesRxd(4)+bytesRxd(3)), 16) needed?
 
@@ -789,7 +789,7 @@ Public Class SecretDecoderRing
 
     End Sub
 
-    Private Sub decode_NV_HOME_SID_NID_I(ByVal bytesRxd As Byte())
+    Private Shared Sub decode_NV_HOME_SID_NID_I(ByVal bytesRxd As Byte())
         cdmaTerm.thePhone.Sid = System.Convert.ToInt32((bytesRxd(5).ToString("x2") + bytesRxd(4).ToString("x2")), 16).ToString
         cdmaTerm.thePhone.Nid = System.Convert.ToInt32((bytesRxd(7).ToString("x2") + bytesRxd(6).ToString("x2")), 16).ToString
     End Sub

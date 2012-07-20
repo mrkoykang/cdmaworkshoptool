@@ -60,7 +60,17 @@ Public Class cdmaTerm
     Public Shared sdr As New cdmaDevLib.SecretDecoderRing
     Public Shared SPC As String = ""
 
+    Public Enum SpcReadType
+        DefaultNv
+        HTC
+        LG
+        MetroPCS
+    End Enum
+
+
     Public debugMode = False
+
+
 
 #Region "Port Setup"
     ''some of this logic may still be needed but in a different way

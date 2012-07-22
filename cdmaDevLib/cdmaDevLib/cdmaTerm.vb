@@ -1887,13 +1887,19 @@ ends:
 
     End Sub
 
-    Private Sub ReadSingleNv(ByVal nv As NvItems.NVItems)
+    Public Shared Sub ReadSingleNv(ByVal nv As NvItems.NVItems)
         dispatchQ.clearCommandQ()
         dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, nv, New Byte() {}, nv.ToString))
         dispatchQ.executeCommandQ()
     End Sub
 
-    Private Sub ReadSingleQc(ByVal qc As Qcdm.Cmd)
+    Public Shared Sub WriteSingleNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
+        dispatchQ.clearCommandQ()
+        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, nv, writeData, "write:" & nv.ToString))
+        dispatchQ.executeCommandQ()
+    End Sub
+
+    Public Shared Sub ReadSingleQc(ByVal qc As Qcdm.Cmd)
         dispatchQ.clearCommandQ()
         dispatchQ.addCommandToQ(New Command(qc, qc.ToString))
         dispatchQ.executeCommandQ()

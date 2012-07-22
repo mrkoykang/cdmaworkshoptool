@@ -1,4 +1,6 @@
-﻿Public Class Phone
+﻿Imports System.Text
+
+Public Class Phone
     Implements System.ComponentModel.INotifyPropertyChanged
 
     Private _SerialData As String
@@ -26,7 +28,7 @@
         End Set
     End Property
 
-    Public Property Mdn() As String
+    Public Property Mdn(Optional ByVal Tx As Boolean = True) As String
         Get
             Return _Mdn
         End Get
@@ -34,6 +36,14 @@
             If value <> _Mdn Then
                 _Mdn = value
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("Mdn"))
+
+                If (Tx And value <> "") Then
+                    Dim mdnWriteData As New List(Of Byte)
+                    mdnWriteData.Add(&H0)
+                    mdnWriteData.AddRange(ASCIIEncoding.ASCII.GetBytes(Mdn))
+                    cdmaTerm.WriteSingleNv(NvItems.NVItems.NV_DIR_NUMBER_I, mdnWriteData.ToArray)
+                End If
+
             End If
         End Set
     End Property

@@ -1469,7 +1469,7 @@ ends:
 
     End Sub
 
-    Private Sub ReadMIN1()
+    Public Shared Sub ReadMIN1()
 
         dispatchQ.clearCommandQ()
         dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_MIN1_I, New Byte() {}, "DIAG_NV_READ_F NV_MIN1_I"))
@@ -1478,7 +1478,7 @@ ends:
         dispatchQ.executeCommandQ()
 
 
-        DecodeMin()
+        cdmaTerm.thePhone.Min = DecodeMin()
 
     End Sub
 
@@ -1673,7 +1673,7 @@ ends:
 
     Private Sub EncodeMIN(MIN1 As String)
 
-        Dim minStrings() As String = mySDR.encode_NV_MIN1(MIN1)
+        Dim minStrings() As String = SecretDecoderRing.encode_NV_MIN1(MIN1)
         MIN1Raw = minStrings(0)
         MIN2Raw = minStrings(1)
 
@@ -1720,8 +1720,8 @@ ends:
 
     End Sub
 
-    Function DecodeMin() As String
-        Return mySDR.decode_NV_MIN1(MIN1Raw, MIN2Raw)
+    Shared Function DecodeMin() As String
+        Return SecretDecoderRing.decode_NV_MIN1(MIN1Raw, MIN2Raw)
     End Function
 
     Public Shared Sub disconnectPort()

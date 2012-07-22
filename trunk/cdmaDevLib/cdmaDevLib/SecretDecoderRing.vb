@@ -685,7 +685,7 @@ Public Class SecretDecoderRing
         min1c = (min1 And &H3FF)
         min1c = (min1c + 1) Mod 10 + ((((min1c Mod 100 / 10) + 1) Mod 10) * 10) + ((((min1c / 100) + 1) Mod 10) * 100)
 
-        Throw New Exception("test Min Decode: " + "min2: " + min2 + "min1a: " + min1a + "min1b: " + min1b + "min1c: " + min1c)
+        logger.addToLog("test Min Decode: " + "min2: " + min2 + "min1a: " + min1a + "min1b: " + min1b + "min1c: " + min1c)
 
 
 

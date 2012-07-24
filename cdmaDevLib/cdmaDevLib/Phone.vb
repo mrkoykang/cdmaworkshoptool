@@ -15,6 +15,8 @@ Public Class Phone
     Private _UserLock As String
     Private _SpcReadType As cdmaTerm.SpcReadType
     Private _NamLock As Boolean
+    Private OperationCount As Integer = 0
+
 
     Public Property SerialData() As String
         Get
@@ -22,13 +24,14 @@ Public Class Phone
         End Get
         Set(value As String)
             If value <> _SerialData Then
-                _SerialData = value
+                OperationCount += 1
+                _SerialData = OperationCount.ToString & " " & value & _SerialData & Environment.NewLine & _SerialData
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("SerialData"))
             End If
         End Set
     End Property
 
-    Public Property Mdn(Optional ByVal Tx As Boolean = True) As String
+    Public Property Mdn() As String
         Get
             Return _Mdn
         End Get
@@ -37,12 +40,12 @@ Public Class Phone
                 _Mdn = value
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("Mdn"))
 
-                If (Tx And value <> "") Then
-                    Dim mdnWriteData As New List(Of Byte)
-                    mdnWriteData.Add(&H0)
-                    mdnWriteData.AddRange(ASCIIEncoding.ASCII.GetBytes(Mdn))
-                    cdmaTerm.WriteSingleNv(NvItems.NVItems.NV_DIR_NUMBER_I, mdnWriteData.ToArray)
-                End If
+                'If (value <> "") Then
+                '    Dim mdnWriteData As New List(Of Byte)
+                '    mdnWriteData.Add(&H0)
+                '    mdnWriteData.AddRange(ASCIIEncoding.ASCII.GetBytes(Mdn))
+                '    cdmaTerm.WriteSingleNv(NvItems.NVItems.NV_DIR_NUMBER_I, mdnWriteData.ToArray)
+                'End If
 
             End If
         End Set

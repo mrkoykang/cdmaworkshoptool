@@ -265,6 +265,7 @@ Public Class SecretDecoderRing
 
             Else
                 cdmaTerm.thePhone.Meid = thisIsTheMeid
+                cdmaTerm.thePhoneRxd.Meid = thisIsTheMeid
             End If
 
 
@@ -297,6 +298,7 @@ Public Class SecretDecoderRing
 
             'Else
             cdmaTerm.thePhone.Spc = thisIsTheSPC
+            cdmaTerm.thePhoneRxd.Spc = thisIsTheSPC
             ''End If
 
 
@@ -333,6 +335,7 @@ Public Class SecretDecoderRing
 
                 'Else
                 cdmaTerm.thePhone.Spc = thisIsTheSPC
+                cdmaTerm.thePhoneRxd.Spc = thisIsTheSPC
                 ''End If
 
             End If
@@ -363,7 +366,7 @@ Public Class SecretDecoderRing
 
 
             cdmaTerm.thePhone.Esn = DecodedString
-
+            cdmaTerm.thePhoneRxd.Esn = DecodedString
 
 
         Catch
@@ -393,7 +396,7 @@ Public Class SecretDecoderRing
 
 
             cdmaTerm.thePhone.UserLock = DecodedString
-
+            cdmaTerm.thePhoneRxd.UserLock = DecodedString
         Catch
             Throw New Exception("damn decoder ring: cant get decoded userlock")
 
@@ -462,6 +465,7 @@ Public Class SecretDecoderRing
         ''sprintf_s(buff, 0x30, "%03d %03d %d %03d",min2,min1a,min1b,min1c);  // result
 
         cdmaTerm.thePhone.Min = (min2.ToString + min1a.ToString + min1b.ToString + min1c.ToString)
+        cdmaTerm.thePhoneRxd.Min = (min2.ToString + min1a.ToString + min1b.ToString + min1c.ToString)
 
         '' cdmaTerm.nam0MDNTextbox.Text = (min2) Mod (&H3D).ToString + min1a Mod (&H3D).ToString + min1b Mod (&HD).ToString + min1c Mod (&H3D).ToString
 
@@ -487,8 +491,8 @@ Public Class SecretDecoderRing
             stringFromPacket(21) + stringFromPacket(23) & _
             stringFromPacket(25) + stringFromPacket(27)
 
-            cdmaTerm.thePhone.Mdn(False) = DecodedString
-
+            cdmaTerm.thePhone.Mdn() = DecodedString
+            cdmaTerm.thePhoneRxd.Mdn() = DecodedString
 
 
         Catch
@@ -784,14 +788,15 @@ Public Class SecretDecoderRing
         ''cdmaTerm.BbRegIdTextbox.Text = Integer.Parse(bytesRxd(4).ToString + bytesRxd(3).ToString).ToString
         ''cdmaTerm.BbRegIdTextbox.Text = System.Convert.ToInt32((bytesRxd(4).ToString + bytesRxd(3).ToString), 16).ToString
         cdmaTerm.thePhone.RegId = System.Convert.ToInt32((bytesRxd(4).ToString("x2") + bytesRxd(3).ToString("x2")), 16).ToString
-
-
+        cdmaTerm.thePhoneRxd.RegId = System.Convert.ToInt32((bytesRxd(4).ToString("x2") + bytesRxd(3).ToString("x2")), 16).ToString
 
     End Sub
 
     Private Shared Sub decode_NV_HOME_SID_NID_I(ByVal bytesRxd As Byte())
         cdmaTerm.thePhone.Sid = System.Convert.ToInt32((bytesRxd(5).ToString("x2") + bytesRxd(4).ToString("x2")), 16).ToString
         cdmaTerm.thePhone.Nid = System.Convert.ToInt32((bytesRxd(7).ToString("x2") + bytesRxd(6).ToString("x2")), 16).ToString
+        cdmaTerm.thePhoneRxd.Sid = System.Convert.ToInt32((bytesRxd(5).ToString("x2") + bytesRxd(4).ToString("x2")), 16).ToString
+        cdmaTerm.thePhoneRxd.Nid = System.Convert.ToInt32((bytesRxd(7).ToString("x2") + bytesRxd(6).ToString("x2")), 16).ToString
     End Sub
 
     '    Private Sub decode_DIAG_PEEKB_F(ByVal cmd As Command)
@@ -805,8 +810,10 @@ Public Class SecretDecoderRing
     Private Sub decode_NV_NAM_LOCK_I(ByVal bytesRxd As Byte())
         If bytesRxd(4) = 0 Then
             cdmaTerm.thePhone.NamLock = False
+            cdmaTerm.thePhoneRxd.NamLock = False
         ElseIf bytesRxd(4) = 1 Then
             cdmaTerm.thePhone.NamLock = True
+            cdmaTerm.thePhoneRxd.NamLock = True
         End If
 
     End Sub

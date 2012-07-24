@@ -47,7 +47,7 @@ Public Class cdmaTerm
     Public Shared nvReadQ As dispatchQmanager = New dispatchQmanager
     Public Shared RamReadQ As dispatchQmanager = New dispatchQmanager
     Public Shared thePhone As Phone = New Phone
-
+    Friend Shared thePhoneRxd As Phone = New Phone
     ''this should probably be either refactored out due to 'blackberry'(winapicom) being standard now
     ''or turned into a fallback if winapicom.dll is not found
     '' "normal" for standard serialPort ----- "blackberry"  for new serialport2 testing type whatchamakallitz
@@ -1479,7 +1479,7 @@ ends:
 
 
         cdmaTerm.thePhone.Min = DecodeMin()
-
+        cdmaTerm.thePhoneRxd.Min = DecodeMin()
     End Sub
 
     Public Shared Sub switchToP2K()
@@ -1671,7 +1671,7 @@ ends:
     End Sub
 
 
-    Private Sub EncodeMIN(MIN1 As String)
+    Private Shared Sub EncodeMIN(MIN1 As String)
 
         Dim minStrings() As String = SecretDecoderRing.encode_NV_MIN1(MIN1)
         MIN1Raw = minStrings(0)
@@ -1682,7 +1682,7 @@ ends:
 
     Public Shared MIN1Raw As New String("")
     Public Shared MIN2Raw As New String("")
-    Private Sub WriteMIN(MinNumber As String)
+    Private Shared Sub WriteMIN(MinNumber As String)
         EncodeMIN(MinNumber)
 
         Dim MIN1 As New List(Of Byte)
@@ -1714,9 +1714,7 @@ ends:
         dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray, "DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray"))
         dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray, "DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray"))
 
-
-
-        Throw New Exception("unplug now or face certian disaster")
+        logger.addToLog("min write attempted... unstable feature: warning")
 
     End Sub
 
@@ -1895,7 +1893,7 @@ ends:
 
     Public Shared Sub WriteSingleNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
         dispatchQ.clearCommandQ()
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, nv, writeData, "write:" & nv.ToString))
+        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, nv, writeData, "write:" & nv.ToString))
         dispatchQ.executeCommandQ()
     End Sub
 
@@ -2063,11 +2061,6 @@ ends:
     '    End Try
     'End Sub
 
-
-
-
-
-
     'Private Sub ReloadDataSetup_Click(sender As System.Object, e As System.EventArgs) Handles ReloadDataSetup.Click
     '    Dim runScripts As Boolean = False
 
@@ -2102,5 +2095,20 @@ ends:
         Dim myModel As New Model(FileName, Carrier, prlFilePath)
         Return myModel
     End Function
+
+    Public Shared Sub updatePhoneFromViewModel()
+        If (thePhone.Mdn <> thePhoneRxd.Mdn) Then
+            Dim WriteData As New List(Of Byte)
+            WriteData.Add(&H0)
+            WriteData.AddRange(ASCIIEncoding.ASCII.GetBytes(thePhone.Mdn))
+            cdmaTerm.WriteSingleNv(NvItems.NVItems.NV_DIR_NUMBER_I, WriteData.ToArray)
+        End If
+        If (thePhone.Min <> thePhoneRxd.Min) Then
+            cdmaTerm.WriteMIN(thePhone.Min)
+        End If
+
+    End Sub
+
+
 
 End Class

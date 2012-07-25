@@ -20,7 +20,7 @@ Imports System.Text
 Imports cdmaDevLib.cdmaTerm
 
 Public Class Command
-
+    Inherits ICommand
     ''outgoing byte array
     Public bytesToTx As Byte()
 
@@ -196,54 +196,34 @@ Public Class Command
 
     End Sub
 
-    
+    Overridable Sub decode()
+
+    End Sub
 
     ''function to send a bite array returns tru if it works
-    Public Function tx() As Boolean
+    Public Overrides Function tx() As Boolean
         If cdmaTerm.portIsOpen = False Then
             Throw New Exception("Port not open err, please connect.")
             cdmaTerm.dispatchQ.silentInterruptCommandQ()
         Else
             Try
                 Dim testSend As New DmPort
-
-
-
                 bytesRxd = testSend.WriteRead(bytesToTx)
-
-
 
 
                 ''untested fix for 7d/5e/5d return issue
                 ''
                 bytesRxd = testSend.unescapeReturnedBytes(bytesRxd)
                 logger.addToLog(vbNewLine + vbNewLine)
-                ''Dim nameStart As Integer = cdmaTerm.logQBox.TextLength
                 logger.addToLog(debuggingText)
-                ''Dim nameEnd As Integer = cdmaTerm.logQBox.TextLength
-                '' cdmaTerm.logQBox.[Select](nameStart, nameEnd - nameStart)
-                ''cdmaTerm.logQBox.SelectionFont = fbld
-
-
-                '' Dim bytesStart As Integer = cdmaTerm.logQBox.TextLength
-
-                Dim appendString As String = vbNewLine + "TX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesToTx)) + vbNewLine + vbNewLine +
+  
+                Dim appendString As String = vbNewLine + debuggingText + vbNewLine + "TX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesToTx)) + vbNewLine + vbNewLine +
                             "RX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesRxd)) + vbNewLine
-                ''If cdmaTerm.IncludeAsciiInLogQChkbox.Checked Then
                 appendString += vbNewLine + "RX(ascii): " + cdmaTerm.sdr.getAsciiStrings(bytesRxd) + vbNewLine + vbNewLine
-                '' Else
-                '' appendString += vbNewLine
-                '' End If
 
                 thePhone.SerialData = appendString
                 logger.addToLog(appendString)
-
-                'Dim bytesEnd As Integer = cdmaTerm.logQBox.TextLength
-                'cdmaTerm.logQBox.[Select](bytesStart, bytesEnd - bytesStart)
-                'cdmaTerm.logQBox.SelectionFont = fdef
-
-
-                'cdmaTerm.AtReturnCmdBox.Text = cdmaTerm.biznytesToStrizings(bytesRxd)
+                logger.addToByteLog(cdmaTerm.biznytesToStrizings(bytesRxd))
 
                 If bytesRxd.Count > 0 Then
                     Return True

@@ -306,9 +306,6 @@ Public Class DmPort
 
             Dim matches = Regex.Matches(enc.GetString(buffer__1), "[0-9][0-9][0-9][0-9][0-9][0-9]")
 
-
-
-
             If matches.Count > 0 Then
                 ''NotifyEvent(StatusTypes.Information, String.Format("{0} SPC candidate(s) found", matches.Count))
                 Throw New Exception((matches.Count + " SPC candidate(s) found"))

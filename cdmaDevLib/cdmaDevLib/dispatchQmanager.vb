@@ -35,21 +35,19 @@ Public Class dispatchQmanager
 
     Public Sub clearCommandQ()
 
-        ''catch all errors and rx type
         mySynqdQ.Clear()
 
     End Sub
     Public Sub interruptCommandQ()
 
         ''catch all errors and rx type
-        Throw New Exception("tx error in Q")
+        Throw New Exception("Transmit error in message queue")
         mySynqdQ.Clear()
 
     End Sub
     Public Sub silentInterruptCommandQ()
 
-        ''catch all errors and rx type
-        ''Throw new Exception("tx error in Q")
+        logger.addToLog("Message queue was silently cleared")
         mySynqdQ.Clear()
 
     End Sub
@@ -58,7 +56,7 @@ Public Class dispatchQmanager
     Public Function executeCommandQ() As Boolean
         
         If cdmaTerm.portIsOpen = False Then
-            Throw New Exception("Dispatch Queue Err: Port Not Open, Please Connect")
+            Throw New Exception("Dispatch Queue Error: Port Not Open, Please Connect")
             silentInterruptCommandQ()
         Else
 

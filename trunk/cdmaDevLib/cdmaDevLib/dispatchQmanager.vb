@@ -29,7 +29,7 @@ Public Class dispatchQmanager
     Public badItemCount As Integer = 0
     Public inturruptCommandQFlag As Boolean = False
 
-    Public Sub addCommandToQ(ByVal inCommand As Command)
+    Public Sub addCommandToQ(ByVal inCommand As ICommand)
         mySynqdQ.Enqueue(inCommand)
     End Sub
 
@@ -84,6 +84,7 @@ Public Class dispatchQmanager
                 thisC.tx()
 
                 ''send the command
+                thisC.decode()
 
 
 
@@ -101,8 +102,8 @@ Public Class dispatchQmanager
 
                 ElseIf (thisC.currentQcdm.ToString.IndexOf("NOT_A_COMMAND") = -1 And thisC.currentNv.ToString.IndexOf("NOT_AN_NV_ITEM") = -1) Then
                     ''onRxCommand
-                    Dim superDecoderRing As New SecretDecoderRing
-                    SecretDecoderRing.decoder3(thisC)
+                    '' Dim superDecoderRing As New SecretDecoderRing
+                    '' SecretDecoderRing.decoder3(thisC)
 
                     'If superDecoderRing.decoder3(thisC) = True Then
                     '    ''If superDecoderRing.decoder3(thisC.currentQcdm, thisC.currentNv) = True Then

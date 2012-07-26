@@ -69,6 +69,7 @@
     <Compile Include="Carrier.vb" />
     <Compile Include="cdmaCRC.vb" />
     <Compile Include="cdmaTerm.vb" />
+    <Compile Include="commands\Cmd_nv.vb" />
     <Compile Include="commands\Cmd_NV_DIR_NUMBER_I.vb" />
     <Compile Include="commands\Cmd_NV_MIN1_I.vb" />
     <Compile Include="commands\Cmd_NV_MIN2_I.vb" />
@@ -100,6 +101,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Phone.vb" />
+    <Compile Include="qcdm\Nv.vb" />
     <Compile Include="qcdm\NvEditor.vb" />
     <Compile Include="qcdm\NVItem.vb" />
     <Compile Include="qcdm\NvItemOLD.vb" />

@@ -1,4 +1,5 @@
 ﻿Imports System.Text
+Imports System.Collections.ObjectModel
 
 Public Class Phone
     Implements System.ComponentModel.INotifyPropertyChanged
@@ -16,7 +17,15 @@ Public Class Phone
     Private _SpcReadType As cdmaTerm.SpcReadType
     Private _NamLock As Boolean
     Private OperationCount As Integer = 0
-
+    Private _NvData As New ObservableCollection(Of Nv)
+    Public Property NvData() As ObservableCollection(Of Nv)
+        Get
+            Return _NvData
+        End Get
+        Set(value As ObservableCollection(Of Nv))
+            _NvData = value
+        End Set
+    End Property
 
     Public Property SerialData() As String
         Get

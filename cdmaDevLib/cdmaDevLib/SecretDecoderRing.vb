@@ -596,19 +596,19 @@ Public Class SecretDecoderRing
     '        End Try
     '    End Sub
 
-    '    Private Function trimFrontAndEndAscii(ByVal before As String) As String
-    '        Dim after As String = before
-    '        Return after.Substring(4, before.Length - 7)
+    Public Shared Function trimFrontAndEndAscii(ByVal before As String) As String
+        Dim after As String = before
+        Return after.Substring(4, before.Length - 7)
 
-    '    End Function
+    End Function
 
-    '    Private Function trimFrontAndEndAsciiSpecific(ByVal before As String, ByVal start As Integer, ByVal lengthMinus As Integer) As String
-    '        Dim after As String = before
-    '        Return after.Substring(start, before.Length - lengthMinus)
+    Public Shared Function trimFrontAndEndAsciiSpecific(ByVal before As String, ByVal start As Integer, ByVal lengthMinus As Integer) As String
+        Dim after As String = before
+        Return after.Substring(start, before.Length - lengthMinus)
 
-    '    End Function
+    End Function
 
-    Public Function getAsciiStrings(ByVal bytes As Byte()) As String
+    Public Shared Function getAsciiStrings(ByVal bytes As Byte()) As String
 
 
         Dim bString = cdmaTerm.biznytesToStrizings(bytes)

@@ -208,8 +208,8 @@ Public Class Command
         Else
             Try
                 Dim testSend As New DmPort
-                bytesRxd = testSend.WriteRead(bytesToTx)
 
+                bytesRxd = testSend.WriteRead(bytesToTx)
 
                 ''untested fix for 7d/5e/5d return issue
                 ''

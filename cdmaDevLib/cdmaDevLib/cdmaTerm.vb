@@ -1595,51 +1595,6 @@ ends:
     End Sub
 
 
-    'Sub runCustomQcScript()
-    '    dispatchQ.clearCommandQ()
-    '    For i As Integer = 0 To commandMacroListBox.Items.Count - 1
-
-
-    '        'Next
-
-
-    '        'For Each s As String In commandMacroListBox.Items
-    '        Dim currentQc As Qcdm.Cmd = CType(commandMacroListBox.Items(i), Qcdm.Cmd)
-    '        Dim debugInfo As String = "UserQcScrpit: " + currentQc.ToString
-    '        Dim data As Byte() = String_To_Bytes(qcMacroDataTextbox.Text)
-
-
-    '        ''test if qc type is nv read or write
-    '        If currentQc = DIAG_NV_READ_F Or currentQc = DIAG_NV_READ_F Then
-
-    '            '' Dim currentNV As NvItems.NVItems = [Enum].Parse(GetType(NvItems.NVItems), commandMacroListBox.Items(i + 1))
-
-    '            ''working
-    '            '' Dim currentNV As NvItems.NVItems = [Enum].Parse(GetType(NvItems.NVItems), nvItemsCombo.Text)
-    '            Dim currentNV As NvItems.NVItems = [Enum].Parse(GetType(NvItems.NVItems), commandMacroListBox.Items(i + 1))
-
-
-    '            ''not working
-    '            '' Dim currentNV As NvItems.NVItems = CType(commandMacroListBox.Items(i + 1), NvItems.NVItems)
-
-    '            dispatchQ.addCommandToQ(New Command(currentQc, currentNV, data, debugInfo))
-    '            ''increment counter for nv item
-    '            i += 1
-
-
-    '        Else
-    '            dispatchQ.addCommandToQ(New Command(currentQc, data, debugInfo))
-
-
-    '        End If
-
-
-
-
-    '    Next
-    '    dispatchQ.executeCommandQ()
-    'End Sub
-
     Function GetComFriendlyNames()
 
 
@@ -1887,19 +1842,19 @@ ends:
 
     Public Shared Sub ReadSingleNv(ByVal nv As NvItems.NVItems)
         dispatchQ.clearCommandQ()
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, nv, New Byte() {}, nv.ToString))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(nv))
         dispatchQ.executeCommandQ()
     End Sub
 
     Public Shared Sub WriteSingleNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
         dispatchQ.clearCommandQ()
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, nv, writeData, "write:" & nv.ToString))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(nv, True, writeData))
         dispatchQ.executeCommandQ()
     End Sub
 
     Public Shared Sub ReadSingleQc(ByVal qc As Qcdm.Cmd)
         dispatchQ.clearCommandQ()
-        dispatchQ.addCommandToQ(New Command(qc, qc.ToString))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(qc))
         dispatchQ.executeCommandQ()
     End Sub
 

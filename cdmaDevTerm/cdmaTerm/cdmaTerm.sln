@@ -14,6 +14,9 @@ Global
 		{4ACDA021-9434-4474-BF22-72150DD3ACFE}.Release|x86.ActiveCfg = Release|x86
 		{4ACDA021-9434-4474-BF22-72150DD3ACFE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = cdmaTerm.vbproj
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

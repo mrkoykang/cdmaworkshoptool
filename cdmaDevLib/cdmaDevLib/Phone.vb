@@ -18,6 +18,7 @@ Public Class Phone
     Private _NamLock As Boolean
     Private OperationCount As Integer = 0
     Private _NvData As New ObservableCollection(Of Nv)
+    Private _Qcmip As Qcdm.Qcmip
     Public Property NvData() As ObservableCollection(Of Nv)
         Get
             Return _NvData
@@ -174,7 +175,17 @@ Public Class Phone
         End Set
     End Property
 
-
+    Public Property Qcmip() As Qcdm.Qcmip
+        Get
+            Return _Qcmip
+        End Get
+        Set(value As Qcdm.Qcmip)
+            If value <> _Qcmip Then
+                _Qcmip = value
+                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("Qcmip"))
+            End If
+        End Set
+    End Property
     Public Event PropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs) Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
 
 

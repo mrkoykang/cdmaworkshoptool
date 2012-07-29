@@ -1472,11 +1472,9 @@ ends:
     Public Shared Sub ReadMIN1()
 
         dispatchQ.clearCommandQ()
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_MIN1_I, New Byte() {}, "DIAG_NV_READ_F NV_MIN1_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_MIN2_I, New Byte() {}, "DIAG_NV_READ_F NV_MIN2_I"))
-
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_MIN1_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_MIN2_I))
         dispatchQ.executeCommandQ()
-
 
         cdmaTerm.thePhone.Min = DecodeMin()
         cdmaTerm.thePhoneRxd.Min = DecodeMin()
@@ -1557,22 +1555,23 @@ ends:
 #End Region
 
 
+    Public Sub ReadAllEvdo()
+        dispatchQ.clearCommandQ()
+        AddAllEvdo()
+        dispatchQ.executeCommandQ()
+    End Sub
+    Public Sub AddAllEvdo()
 
-    Private Sub ReadAllEvdo()
-
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_PPP_USER_ID_I, New Byte() {}, "Evdo NV_PPP_USER_ID_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_PPP_PASSWORD_I, New Byte() {}, "Evdo NV_PPP_PASSWORD_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_PAP_USER_ID_I, New Byte() {}, "Evdo NV_PAP_USER_ID_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_PAP_PASSWORD_I, New Byte() {}, "Evdo NV_PAP_PASSWORD_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_HDR_AN_AUTH_USER_ID_LONG_I, New Byte() {}, "Evdo NV_HDR_AN_AUTH_USER_ID_LONG_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_HDR_AN_AUTH_PASSWORD_LONG_I, New Byte() {}, "Evdo NV_HDR_AN_AUTH_PASSWD_LONG"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_HDR_AN_AUTH_NAI_I, New Byte() {}, "Evdo NV_HDR_AN_AUTH_NAI_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_HDR_AN_AUTH_PASSWORD_I, New Byte() {}, "Evdo NV_HDR_AN_AUTH_PASSWORD_I"))
-
-        ''profiles
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_DS_MIP_NUM_PROF_I, New Byte() {}, "Evdo NV_DS_MIP_NUM_PROF_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_DS_MIP_ENABLE_PROF_I, New Byte() {}, "Evdo NV_DS_MIP_ENABLE_PROF_I"))
-
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PPP_USER_ID_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PPP_PASSWORD_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PAP_USER_ID_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PAP_PASSWORD_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_USER_ID_LONG_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_LONG_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_NAI_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_DS_MIP_NUM_PROF_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_DS_MIP_ENABLE_PROF_I))
 
     End Sub
 
@@ -1632,7 +1631,6 @@ ends:
         MIN1Raw = minStrings(0)
         MIN2Raw = minStrings(1)
 
-        '' MIN1Txtbox.Text = mySDR.decode_NV_MIN1(MIN1Raw, MIN2Raw.Text)
     End Sub
 
     Public Shared MIN1Raw As New String("")

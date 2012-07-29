@@ -163,7 +163,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\cyber2.jpg" />
     <None Include="Metro_Logo.png" />
     <None Include="Cricket Black.png" />
     <Content Include="k-64x64.ico" />

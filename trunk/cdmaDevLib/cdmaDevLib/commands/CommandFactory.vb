@@ -1,4 +1,5 @@
 ﻿Imports cdmaDevLib.NvItems.NVItems
+Imports cdmaDevLib.Qcdm.Cmd
 Public Class CommandFactory
 
     Public Shared Function GetCommand(nv As NvItems.NVItems) As ICommand
@@ -22,6 +23,32 @@ Public Class CommandFactory
                                         nv, _
                                         data, _
                                         qc.ToString() & " " & nv.ToString())
+            Case NV_MIN2_I
+                cmd = New Cmd_NV_MIN2_I(qc, _
+                                        nv, _
+                                        data, _
+                                        qc.ToString() & " " & nv.ToString())
+            Case NV_MEID_I
+                cmd = New Cmd_NV_MEID_I(qc, _
+                                        nv, _
+                                        data, _
+                                        qc.ToString() & " " & nv.ToString())
+            Case NV_HOME_SID_NID_I
+                cmd = New Cmd_NV_HOME_SID_NID_I(qc, _
+                                        nv, _
+                                        data, _
+                                        qc.ToString() & " " & nv.ToString())
+            Case NV_LOCK_CODE_I
+                cmd = New Cmd_NV_HOME_SID_NID_I(qc, _
+                                        nv, _
+                                        data, _
+                                        qc.ToString() & " " & nv.ToString())
+            Case NV_SEC_CODE_I
+                cmd = New Cmd_NV_SEC_CODE_I(qc, _
+                                        nv, _
+                                        data, _
+                                        qc.ToString() & " " & nv.ToString())
+
 
 
             Case Else
@@ -34,7 +61,20 @@ Public Class CommandFactory
         Return cmd
     End Function
     Public Shared Function GetCommand(qc As Qcdm.Cmd) As ICommand
-        Return New QcCommand(qc)
+        Dim cmd As ICommand
+
+        Select Case qc
+            Case DIAG_ESN_F
+                cmd = New Cmd_DIAG_ESN_F(qc, New Byte() {}, qc.ToString)
+            Case 2
+
+            Case Else
+                cmd = New QcCommand(qc)
+        End Select
+
+
+
+        Return cmd ''New QcCommand(qc)
     End Function
 
 End Class

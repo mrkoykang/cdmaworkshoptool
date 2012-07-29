@@ -451,5 +451,11 @@ Public Class Qcdm
         Return Nothing
     End Function
 
+    Public Enum Qcmip
+        simple
+        mobileAndSimple
+        mobile
+    End Enum
+
 End Class
 

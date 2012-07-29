@@ -151,23 +151,13 @@ Public Class SecretDecoderRing
             Case NvItems.NVItems.NV_MEID_I
                 ''Read MEID
                 decode_ReadMeid_NV(cmd)
-            Case NvItems.NVItems.NV_SEC_CODE_I
-                ''Read SPC Defualt NV
-                decode_ReadSPC_NV(cmd)
-            Case NvItems.NVItems.NV_LOCK_CODE_I
-                ''Read User Lock
-                decode_NV_LOCK_CODE_I(cmd)
-            Case NvItems.NVItems.NV_DIR_NUMBER_I
-                ''Read MDN
-                decode_ReadNam0MDN(cmd)
+      
 
                 ''Case NvItems.NVItems.NV_NAM_LOCK_I
                 ''Read nam lock
                 '' decode_NV_NAM_LOCK_I(cmd.bytesRxd)
 
-            Case NvItems.NVItems.NV_MIN2_I
-                ''Read min2
-                decode_NV_MIN2(cmd)
+
             Case NvItems.NVItems.NV_MIN1_I
                 ''Read min1
                 decode_NV_MIN1(cmd)
@@ -191,8 +181,7 @@ Public Class SecretDecoderRing
                 '    decode_NV_DS_QCMIP_I(cmd.bytesRxd)
             Case 11055 ''item 0x2b2f 11055 data 0x7d4 2004 bb reg id
                 decode_11055(cmd.bytesRxd)
-            Case NvItems.NVItems.NV_HOME_SID_NID_I
-                decode_NV_HOME_SID_NID_I(cmd.bytesRxd)
+           
                 'Case NvItems.NVItems.NV_DS_MIP_NUM_PROF_I ''number of profiles
                 '    decode_NV_DS_MIP_NUM_PROF_I(cmd.bytesRxd)
                 'Case NvItems.NVItems.NV_DS_MIP_ENABLE_PROF_I ''enabled profile
@@ -235,46 +224,7 @@ Public Class SecretDecoderRing
     Shared Sub decode_ReadMeid_NV(ByVal cmd As Command)
 
 
-        ''test decode meid
-        Try
-
-            '' Dim meidFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
-            Dim meidFromPacket As String = cdmaTerm.biznytesToStrizings(cmd.bytesRxd)
-
-
-            ''todo uh. this doesnt seem to work? wtf?
-            If meidFromPacket.StartsWith("4") Then
-                Throw New Exception("meid not returned, try sending 16 Digit SP / unlock code")
-            End If
-
-
-
-            Dim thisIsTheMeid As String = ""
-
-
-            thisIsTheMeid += meidFromPacket(18) + meidFromPacket(19) & _
-            meidFromPacket(16) + meidFromPacket(17) & _
-            meidFromPacket(14) + meidFromPacket(15) & _
-            meidFromPacket(12) + meidFromPacket(13) & _
-            meidFromPacket(10) + meidFromPacket(11) & _
-            meidFromPacket(8) + meidFromPacket(9) & _
-            meidFromPacket(6) + meidFromPacket(7)
-
-            If thisIsTheMeid = "00000000000000" Then
-                Throw New Exception("cant find meid 1")
-
-            Else
-                cdmaTerm.thePhone.Meid = thisIsTheMeid
-                cdmaTerm.thePhoneRxd.Meid = thisIsTheMeid
-            End If
-
-
-        Catch
-            Throw New Exception("cant find meid 2")
-        Finally
-            ''todo: esn convert here?
-
-        End Try
+       
 
     End Sub
     Shared Sub decode_ReadSPC_LG(ByVal cmd As Command)
@@ -308,46 +258,7 @@ Public Class SecretDecoderRing
         End Try
 
     End Sub
-    Shared Sub decode_ReadSPC_NV(ByVal cmd As Command)
-        ''test decode spc
-        Try
-
-            If cmd.bytesRxd(0) = &H42 Then
-                Throw New Exception("Spc not found (send spc or 16 SP required?)")
-
-            Else
-
-
-                '' Dim spcFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
-                Dim spcFromPacket As String = cdmaTerm.biznytesToStrizings(cmd.bytesRxd)
-
-
-
-                Dim thisIsTheSPC As String = ""
-
-
-                thisIsTheSPC += spcFromPacket(7) + spcFromPacket(9) & _
-                spcFromPacket(11) + spcFromPacket(13) & _
-                spcFromPacket(15) + spcFromPacket(17)
-
-                'If thisIsTheSPC = "000000" Then
-                '    Throw new Exception("cant find meid 1")
-
-                'Else
-                cdmaTerm.thePhone.Spc = thisIsTheSPC
-                cdmaTerm.thePhoneRxd.Spc = thisIsTheSPC
-                ''End If
-
-            End If
-
-
-
-        Catch
-            Throw New Exception("cant find spc_nv 1")
-
-        End Try
-
-    End Sub
+    
     Shared Sub decode_ReadESN(ByVal cmd As Command)
         ''test decode esn
         Try
@@ -380,29 +291,7 @@ Public Class SecretDecoderRing
     End Sub
 
 
-    Shared Sub decode_NV_LOCK_CODE_I(ByVal cmd As Command)
-        ''test decode userlock
 
-        Try
-
-            ''Dim stringFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
-            Dim stringFromPacket As String = cdmaTerm.biznytesToStrizings(cmd.bytesRxd)
-
-            Dim DecodedString As String = ""
-
-
-            DecodedString += stringFromPacket(7) + stringFromPacket(9) & _
-            stringFromPacket(11) + stringFromPacket(13)
-
-
-            cdmaTerm.thePhone.UserLock = DecodedString
-            cdmaTerm.thePhoneRxd.UserLock = DecodedString
-        Catch
-            Throw New Exception("damn decoder ring: cant get decoded userlock")
-
-        End Try
-
-    End Sub
     Shared Sub decode_ReadNam0MIN_Part2(ByVal cmd As Command)
         ''test decode mdn
         Try
@@ -475,32 +364,7 @@ Public Class SecretDecoderRing
         ''End Try
 
     End Sub
-    Shared Sub decode_ReadNam0MDN(ByVal cmd As Command)
-        ''test decode mdn
-        Try
 
-            ''Dim stringFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
-            Dim stringFromPacket As String = cdmaTerm.biznytesToStrizings(cmd.bytesRxd)
-
-            Dim DecodedString As String = ""
-
-
-            DecodedString += stringFromPacket(9) + stringFromPacket(11) & _
-            stringFromPacket(13) + stringFromPacket(15) & _
-            stringFromPacket(17) + stringFromPacket(19) & _
-            stringFromPacket(21) + stringFromPacket(23) & _
-            stringFromPacket(25) + stringFromPacket(27)
-
-            cdmaTerm.thePhone.Mdn() = DecodedString
-            cdmaTerm.thePhoneRxd.Mdn() = DecodedString
-
-
-        Catch
-            Throw New Exception("decoder err: cant get decoded mdn")
-
-        End Try
-
-    End Sub
 
     ''#End Region
 
@@ -695,12 +559,7 @@ Public Class SecretDecoderRing
 
     End Sub
 
-    Private Shared Sub decode_NV_MIN2(ByVal cmd As Command)
-        ''this worked samsung but not lg
-        ''cdmaTerm.MIN2Raw.Text = cdmaTerm.biznytesToStrizings(New Byte() {cmd.bytesRxd(4), cmd.bytesRxd(4)})
 
-        cdmaTerm.MIN2Raw = cdmaTerm.biznytesToStrizings(New Byte() {cmd.bytesRxd(7), cmd.bytesRxd(6)})
-    End Sub
 
     Public Shared Function decode_NV_MIN1(ByVal min1 As String, ByVal min2 As String) As String
         Try
@@ -770,16 +629,7 @@ Public Class SecretDecoderRing
         Return New String() {min1.ToUpper, min2.ToUpper}
     End Function
 
-    '    Private Sub decode_NV_DS_QCMIP_I(ByVal bytesRxd As Byte())
-    '        ''read evdo type
-    '        ''00 simple
-    '        ''01 mob+simple
-    '        ''02 mobile
-    '        Dim type As Integer = bytesRxd(3)
-    '        cdmaTerm.evdoModeCombo.SelectedIndex = type
-
-
-    '    End Sub
+  
 
     Private Shared Sub decode_11055(ByVal bytesRxd As Byte())
         ''TODO untested
@@ -792,12 +642,7 @@ Public Class SecretDecoderRing
 
     End Sub
 
-    Private Shared Sub decode_NV_HOME_SID_NID_I(ByVal bytesRxd As Byte())
-        cdmaTerm.thePhone.Sid = System.Convert.ToInt32((bytesRxd(5).ToString("x2") + bytesRxd(4).ToString("x2")), 16).ToString
-        cdmaTerm.thePhone.Nid = System.Convert.ToInt32((bytesRxd(7).ToString("x2") + bytesRxd(6).ToString("x2")), 16).ToString
-        cdmaTerm.thePhoneRxd.Sid = System.Convert.ToInt32((bytesRxd(5).ToString("x2") + bytesRxd(4).ToString("x2")), 16).ToString
-        cdmaTerm.thePhoneRxd.Nid = System.Convert.ToInt32((bytesRxd(7).ToString("x2") + bytesRxd(6).ToString("x2")), 16).ToString
-    End Sub
+ 
 
     '    Private Sub decode_DIAG_PEEKB_F(ByVal cmd As Command)
     '        ''unused.. could add test to see if read is bad
@@ -807,16 +652,7 @@ Public Class SecretDecoderRing
 
     '    End Sub
 
-    Private Sub decode_NV_NAM_LOCK_I(ByVal bytesRxd As Byte())
-        If bytesRxd(4) = 0 Then
-            cdmaTerm.thePhone.NamLock = False
-            cdmaTerm.thePhoneRxd.NamLock = False
-        ElseIf bytesRxd(4) = 1 Then
-            cdmaTerm.thePhone.NamLock = True
-            cdmaTerm.thePhoneRxd.NamLock = True
-        End If
 
-    End Sub
 
     '    Private Sub decode_NV_DS_MIP_NUM_PROF_I(ByVal bytesRxd As Byte())
 

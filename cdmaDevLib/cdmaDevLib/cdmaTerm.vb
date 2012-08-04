@@ -28,9 +28,7 @@ Imports System.IO
 Imports System.Text
 Imports System.Data.OleDb
 Imports System.Data
-''Imports System.Threading
 Imports System.Xml
-''test dll import for bb port
 Imports winAPIcom
 Imports System.Management
 Imports Microsoft.Win32
@@ -75,30 +73,14 @@ Public Class cdmaTerm
 #Region "Port Setup"
     ''some of this logic may still be needed but in a different way
     ''check for com devices and populate combobox
-    'Sub GetComs()
+    Public Shared Sub GetComs()
 
+        ' Get a list of serial port names.
+        Dim ports As String() = SerialPort.GetPortNames()
 
-    '    ' Get a list of serial port names.
-    '    Dim ports As String() = SerialPort.GetPortNames()
+        thePhone.AvailableComPorts = New List(Of String)(ports)
 
-    '    ' Display each port name to the console.
-    '    Dim port As String
-    '    For Each port In ports
-    '        Dim thisPortFound As Boolean = False
-    '        For Each s As String In ComNumBox1.Items
-    '            If s.Contains(port) Then
-    '                thisPortFound = True
-    '            End If
-    '        Next
-
-    '        If Not thisPortFound Then
-    '            ComNumBox1.Items.Add(port)
-    '        End If
-
-
-
-    '    Next (port)
-    'End Sub
+    End Sub
 
 
     ''no se
@@ -678,19 +660,19 @@ ends:
 
 
 
-    ''send a terminal command button
-    'Private Sub SendTermButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SendTermButton.Click
-    '    ''TODO add routine to stip " " blank spaces
-    '    ''which error right now
-    '    ''testing term send w/ string to byte()
+    'send a terminal command button
+    Public Sub SendTerminalCommand(terminalCommand As String)
+        ''TODO add routine to stip " " blank spaces
+        ''which error right now
+        ''testing term send w/ string to byte()
 
-    '    Dim TermCommandWithoutSpaces As String = TermSendBox.Text.Replace(" ", String.Empty)
-    '    ''sendTermCommand2(String_To_Bytes(TermCommandWithoutSpaces))
+        Dim TermCommandWithoutSpaces As String = terminalCommand.Replace(" ", String.Empty)
+        ''sendTermCommand2(String_To_Bytes(TermCommandWithoutSpaces))
 
-    '    dispatchQ.clearCommandQ()
-    '    dispatchQ.addCommandToQ(New Command(String_To_Bytes(TermCommandWithoutSpaces), "Terminal"))
-    '    dispatchQ.executeCommandQ()
-    'End Sub
+        dispatchQ.clearCommandQ()
+        dispatchQ.addCommandToQ(New Command(String_To_Bytes(TermCommandWithoutSpaces), "Terminal: " & terminalCommand))
+        dispatchQ.executeCommandQ()
+    End Sub
 
 
 
@@ -738,35 +720,9 @@ ends:
 
     'End Sub
 
-    Shared Sub sendATCommand(ByVal atCommand As String)
+    Public Shared Sub sendATCommand(ByVal atCommand As String)
         Try
             '            ''SEND AN AT COMMAND
-            '            'When Tx button clicked
-            '            'Clear buffer
-            '            rxBuff = ""
-
-            '            'If port is closed, then open it
-            '            If mySerialPort.IsOpen = False Then mySerialPort.Open()
-
-            '            'Write this data to port
-            '            mySerialPort.Write(atCommand & vbCr)
-
-            '            'Pause for 800ms
-            '            System.Threading.Thread.Sleep(200)
-
-            '            'If the port is open, then close it
-            '            If mySerialPort.IsOpen = True Then mySerialPort.Close()
-
-            '            'If the buffer is still empty then no data. End sub
-            '            If rxBuff = "" Then GoTo ends
-
-            '            'Else display the recieved data in the RichTextBox
-            '            logger.addToByteLog(rxBuff)
-            '        Catch
-            '            Throw new Exception("Cant Open AT Port")
-            '        End Try
-            'ends:
-
             Dim myDm As New DmPort
             Dim atCmd As New List(Of Byte)
             For Each c As Char In atCommand
@@ -778,17 +734,9 @@ ends:
 
             logger.addToByteLog(biznytesToStrizings(myDm.WriteRead(atCmd.ToArray)))
 
-            ''Pause for 200ms
-            'System.Threading.Thread.Sleep(200)
-            'Try
-            '    AtReturnCmdBox.AppendText(mySerialPort2.ReadString(&H1000))
-            'Catch
-            '    Throw new Exception("no more b")
-            'End Try
         Catch
             Throw New Exception("Cant Open AT Port")
         End Try
-
 
 
     End Sub
@@ -953,19 +901,6 @@ ends:
     Public Shared ReadOnly sendPRL_1001_PartE() As Byte = {&H48, &HE, &H1, &H0, &HC0, &H3, &HD8, &H4E, &H0, &H1, &H3, &HCE, &H60, &H22, &H38, &H44, &H53, &H81, &H11, &HC0, &H1D, &H18, &H6, &H8E, &H7, &HA8, &HC0, &H34, &H70, &H88, &HC6, &H1, &HA3, &H84, &H3E, &H30, &HD, &H1C, &H22, &H1, &H80, &H68, &HE1, &HE, &HCC, &H4, &H47, &H30, &HD2, &H40, &H0, &H9, &H26, &HD3, &H0, &H0, &H4C, &H87, &H98, &H0, &H2, &H46, &H14, &HE0, &H0, &H10, &H9, &HE6, &H2, &H23, &H82, &H11, &H30, &H5, &H1C, &H10, &H89, &H80, &H48, &HE1, &H76, &HCC, &H4, &H47, &HB, &HAA, &H60, &H22, &H38, &H21, &H13, &H1, &H11, &HC0, &H30, &H9C, &H8, &H8E, &H1, &H70, &HC0, &H34, &H70, &HD, &HC6, &H1, &HA3, &H84, &H46, &H30, &HD, &H1C, &H39, &H9, &H0, &H88, &HE3, &H1, &HE, &H3, &H47, &HE, &H4C, &H60, &H1A, &H38, &H76, &HAC, &H7E}
     Public Shared ReadOnly sendPRL_1001_PartF() As Byte = {&H48, &HF, &H0, &H0, &H10, &H1, &H11, &HC3, &H0, &HD1, &HC3, &H90, &H18, &H6, &H8E, &H1C, &H88, &HC0, &H34, &H70, &HE4, &H66, &H2, &H23, &H84, &H2D, &H20, &H11, &H1C, &H25, &H41, &H0, &H68, &HE1, &H70, &H48, &H4, &H47, &HE3, &H3F, &H80, &H68, &HE1, &HE, &HCC, &H4, &H47, &H30, &HD2, &H40, &H0, &H9, &H26, &HD3, &H0, &H0, &H4C, &H87, &H98, &H0, &H2, &H46, &H14, &HE0, &H0, &H10, &H9, &HE6, &H2, &H23, &H82, &H11, &H30, &H5, &H1C, &H10, &H89, &H80, &H48, &HE1, &H76, &HCC, &H4, &H47, &HB, &HAA, &H60, &H22, &H38, &H21, &H13, &H1, &H11, &HC0, &H30, &H9C, &H8, &H8E, &H1, &H70, &HC0, &H34, &H70, &HD, &HC6, &H1, &HA3, &H84, &H46, &H30, &HD, &H1C, &H39, &H9, &H0, &H88, &HE3, &H1, &HE, &H3, &H47, &HE, &H4C, &H60, &H1A, &H38, &HB0, &H41, &H7E}
 
-    ''send prl 1050
-    Dim sendPRL_1050_Part1() As Byte
-    Dim sendPRL_1050_Part2() As Byte
-    Dim sendPRL_1050_Part3() As Byte
-    Dim sendPRL_1050_Part4() As Byte
-    Dim sendPRL_1050_Part5() As Byte
-    Dim sendPRL_1050_Part6() As Byte
-    Dim sendPRL_1050_Part7() As Byte
-    Dim sendPRL_1050_Part8() As Byte
-    Dim sendPRL_1050_Part9() As Byte
-    Dim sendPRL_1050_PartA() As Byte
-
-
 
     ''blank arrays
     Public empty_cmd_133() As Byte = {&H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0}
@@ -976,86 +911,7 @@ ends:
 
 #End Region
 
-#Region "BadTestCode"
-    ''drop it here, trim it when the idea/function it deals wit works
-
-
-
-
-
-
-
-#End Region
-
-#Region "AutoMagic"
-
-
-    'Sub u350magicAPPLYDIRECTLYTOTHEFOREHEAD()
-    '    '' ''sham-wow!
-    '    Try
-    '        scanAndListComs()
-    '        connectSub()
-    '        dispatchQ.clearCommandQ()
-    '        dispatchQ.addCommandToQ(New Command(modeOfflineD, "u350m.1 mode offline"))
-    '        dispatchQ.executeCommandQ()
-    '        Threading.Thread.Sleep(300)
-    '        dispatchQ.addCommandToQ(New Command(send16digitSchU350, "u350m.2 16sp"))
-    '        dispatchQ.addCommandToQ(New Command(writeSPC_DefMethod000000, "u350m.3 write spc 000000"))
-    '        dispatchQ.addCommandToQ(New Command(sendSPC_DefMethod000000, "u350m.4 send spc 000000"))
-
-    '        sendPRL(selectPRLComboBox.Text)
-    '        dispatchQ.addCommandToQ(New Command(modeReset, "u350m.5 mode reset"))
-
-
-    '        dispatchQ.executeCommandQ()
-    '        mySerialPort.Close()
-    '        Throw New Exception("u350 flash magic! bam! ohhh by ¿k? ajh and ws.six")
-
-    '    Catch ex As Exception
-    '        Throw New Exception("u350 automagic error, broken magic wand?")
-    '    End Try
-
-
-    'End Sub
-    'Sub SAMSUNGmagicAPPLYDIRECTLYTOTHEFOREHEAD()
-    '    '' ''sham-wow!
-    '    Try
-
-    '        If portIsOpen = False Then
-    '            ComNumBox1.Items.Clear()
-    '            scanAndListComs()
-    '            connectSub()
-    '        End If
-
-    '        ''TODO: FIX SHIT
-    '        dispatchQ.addCommandToQ(New Command(modeOfflineD, "SAMSUNGmagic.1 modeOfflineD"))
-    '        dispatchQ.executeCommandQ()
-    '        Threading.Thread.Sleep(300)
-
-    '        ''sendTermCommand2(send16digitSchU350)
-    '        ''Threading.Thread.Sleep(200)
-    '        SendA16digitCode()
-
-    '        dispatchQ.addCommandToQ(New Command(writeSPC_DefMethod000000, "SAMSUNGmagic.2 writeSPC_DefMethod000000"))
-
-
-    '        dispatchQ.addCommandToQ(New Command(sendSPC_DefMethod000000, "SAMSUNGmagic.3 sendSPC_DefMethod000000"))
-
-
-    '        sendPRL(selectPRLComboBox.Text)
-
-    '        dispatchQ.addCommandToQ(New Command(modeReset, "SAMSUNGmagic.4 modeReset"))
-    '        dispatchQ.executeCommandQ()
-
-    '        disconnectPort()
-    '        Throw New Exception("sumsung flash magic! bam! ohhh! by ¿k? ajh and ws.six")
-
-    '    Catch ex As Exception
-    '        Throw New Exception("sumsung automagic error, broken magic wand?")
-    '    End Try
-
-
-    'End Sub
+#Region "WM_COMMNOTIFY"
 
     Private WM_DEVICECHANGE As Integer = &H219
     Private WM_COMMNOTIFY As Integer = &H44
@@ -1116,53 +972,9 @@ ends:
 
 #End Region
 
-#Region "crcTestCode"
-
-
-
-
-
-
-
-
-    'Shared Function gimmeCRC_AsByte_FromByte(ByVal incomingBytes As Byte()) As Byte()
-    '    ''read in string as bytes
-    '    ''Dim ffff_crc_Step1 As Byte()
-    '    Dim flipper As New calculateCRC
-    '    Dim crc_ccitt As New cdmaCRC(InitialCrcValue.NonZero1)
-    '    Dim aTermCommandWithoutSpaces As String = TextBox5.Text.Replace(" ", String.Empty)
-
-
-    '    ''testCRC_box_pt5.Text = biznytesToStrizings(String_To_Bytes(aTermCommandWithoutSpaces))
-    '    ''testCRC_box_1.Text = biznytesToStrizings(flipper.FLiPallBytesInByteArray(String_To_Bytes(aTermCommandWithoutSpaces)))
-    '    ''testCRC_box_2.Text = biznytesToStrizings(crc_ccitt.ComputeChecksumBytes(flipper.FLiPallBytesInByteArray(String_To_Bytes(aTermCommandWithoutSpaces))))
-    '    ''testCRC_box_3.Text = biznytesToStrizings(flipper.doStep3theInvert(crc_ccitt.ComputeChecksumBytes(flipper.FLiPallBytesInByteArray(String_To_Bytes(aTermCommandWithoutSpaces)))))
-    '    Return flipper.FLiPallBytesInByteArray(flipper.doStep3theInvert(crc_ccitt.ComputeChecksumBytes(flipper.FLiPallBytesInByteArray(incomingBytes))))
-
-    'End Function
-    'Function gimmeCRC_AsString_FromString(ByVal incomingString As String) As String
-    '    ''read in string as bytes
-    '    ''Dim ffff_crc_Step1 As Byte()
-    '    Dim flipper As New calculateCRC
-    '    Dim crc_ccitt As New cdmaCRC(InitialCrcValue.NonZero1)
-    '    Dim aTermCommandWithoutSpaces As String = TextBox5.Text.Replace(" ", String.Empty)
-
-
-    '    ''testCRC_box_pt5.Text = biznytesToStrizings(String_To_Bytes(aTermCommandWithoutSpaces))
-    '    ''testCRC_box_1.Text = biznytesToStrizings(flipper.FLiPallBytesInByteArray(String_To_Bytes(aTermCommandWithoutSpaces)))
-    '    ''testCRC_box_2.Text = biznytesToStrizings(crc_ccitt.ComputeChecksumBytes(flipper.FLiPallBytesInByteArray(String_To_Bytes(aTermCommandWithoutSpaces))))
-    '    ''testCRC_box_3.Text = biznytesToStrizings(flipper.doStep3theInvert(crc_ccitt.ComputeChecksumBytes(flipper.FLiPallBytesInByteArray(String_To_Bytes(aTermCommandWithoutSpaces)))))
-    '    Return biznytesToStrizings(flipper.FLiPallBytesInByteArray(flipper.doStep3theInvert(crc_ccitt.ComputeChecksumBytes(flipper.FLiPallBytesInByteArray(String_To_Bytes(incomingString))))))
-
-
-    'End Function
-
-
-#End Region
-
 #Region "evdoTestCode"
 
-    Sub sendAllEVDO(evdo_username As String, evdo_password As String)
+    Public Shared Sub sendAllEVDO(evdo_username As String, evdo_password As String)
 
         ''untested evdo now, potential loss of function
 
@@ -1181,31 +993,14 @@ ends:
         Dim evdoUser As Byte() = countedEvdoUser.ToArray
         Dim evdoPass As Byte() = countedEvdoPass.ToArray
 
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_PPP_USER_ID_I, evdoUser, "Evdo write PPP_USER_ID_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_PPP_PASSWORD_I, evdoPass, "Evdo write PPP_PASSWORD_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_PAP_USER_ID_I, evdoUser, "Evdo write PAP_USER_ID_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_PAP_PASSWORD_I, evdoPass, "Evdo write PAP_PASSWORD_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_HDR_AN_AUTH_USER_ID_LONG_I, evdoUser, "Evdo write HDR_AN_AUTH_USER_ID_LONG"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_HDR_AN_AUTH_PASSWORD_LONG_I, evdoPass, "Evdo write HDR_AN_AUTH_PASSWD_LONG"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_HDR_AN_AUTH_NAI_I, evdoUser, "Evdo write HDR_AN_AUTH_NAI_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_HDR_AN_AUTH_PASSWORD_I, evdoPass, "Evdo write HDR_AN_AUTH_PASSWORD_I"))
-
-
-        'sendEVDO_u1()
-
-        'sendEVDO_p1()
-
-        'sendEVDO_u2()
-
-        'sendEVDO_p2()
-
-        'sendEVDO_u3()
-
-        'sendEVDO_p3()
-
-        'sendEVDO_u4()
-
-        'sendEVDO_p4()
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PPP_USER_ID_I, True, evdoUser))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PPP_PASSWORD_I, True, evdoPass))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PAP_USER_ID_I, True, evdoUser))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PAP_PASSWORD_I, True, evdoPass))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_USER_ID_LONG_I, True, evdoUser))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_LONG_I, True, evdoPass))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_NAI_I, True, evdoUser))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_I, True, evdoPass))
 
     End Sub
 
@@ -1233,83 +1028,8 @@ ends:
         Return evdoPass
     End Function
 
-    Sub sendEVDO_u1(evdo_username As String)
-        ''build a command test evdo1
-        'Dim bob As New BuilderBob
-        'Dim prefix As Byte() = {&H27, &H8E, &H3, &H1B}
-
-        'dispatchQ.addCommandToQ(New Command(bob.buildATerminalCommand(empty_cmd_133, prefix, bob.buildDataArray("0" + evdo_usernameTextbox.Text)), "sendEVDO_u1"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_PPP_USER_ID_I, getEvdoUser(evdo_username), "Evdo write PPP_USER_ID_I"))
-
-    End Sub
-    Sub sendEVDO_p1(EvdoPass As String)
-        ''build a command test evdo1
-        'Dim bob As New BuilderBob
-        'Dim prefix As Byte() = {&H27, &H8A, &H3, &H8}
-
-        'dispatchQ.addCommandToQ(New Command(bob.buildATerminalCommand(empty_cmd_133, prefix, bob.buildDataArray("0" + evdo_passwordTextbox.Text)), "sendEVDO_p1"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_PPP_PASSWORD_I, getEvdoPass(EvdoPass), "Evdo write PPP_PASSWORD_I"))
-
-    End Sub
-    Sub sendEVDO_u2(evdo_username As String)
-        ''build a command test evdo1
-        'Dim bob As New BuilderBob
-        'Dim prefix As Byte() = {&H27, &H3E, &H1, &H1B}
-
-        'dispatchQ.addCommandToQ(New Command(bob.buildATerminalCommand(empty_cmd_133, prefix, bob.buildDataArray("0" + evdo_usernameTextbox.Text)), "sendEVDO_u2"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_PAP_USER_ID_I, getEvdoUser(evdo_username), "Evdo write PAP_USER_ID_I"))
-
-    End Sub
-    Sub sendEVDO_p2(evdo_password As String)
-        ''build a command test evdo1
-        'Dim bob As New BuilderBob
-        'Dim prefix As Byte() = {&H27, &H3F, &H1, &H8}
-
-        'dispatchQ.addCommandToQ(New Command(bob.buildATerminalCommand(empty_cmd_133, prefix, bob.buildDataArray("0" + evdo_passwordTextbox.Text)), "sendEVDO_p2"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_PAP_PASSWORD_I, getEvdoPass(evdo_password), "Evdo write PAP_PASSWORD_I"))
-
-    End Sub
-    Sub sendEVDO_u3(evdo_username As String)
-        ''build a command test evdo1
-        'Dim bob As New BuilderBob
-        'Dim prefix As Byte() = {&H27, &HAA, &H4, &H1B}
-
-        'dispatchQ.addCommandToQ(New Command(bob.buildATerminalCommand(empty_cmd_133, prefix, bob.buildDataArray("0" + evdo_usernameTextbox.Text)), "sendEVDO_u3"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_HDR_AN_AUTH_USER_ID_LONG_I, getEvdoUser(evdo_username), "Evdo write HDR_AN_AUTH_USER_ID_LONG"))
-
-    End Sub
-    Sub sendEVDO_p3(evdo_password As String)
-        ''build a command test evdo1
-        'Dim bob As New BuilderBob
-        'Dim prefix As Byte() = {&H27, &HA8, &H4, &H8}
-
-        'dispatchQ.addCommandToQ(New Command(bob.buildATerminalCommand(empty_cmd_133, prefix, bob.buildDataArray("0" + evdo_passwordTextbox.Text)), "sendEVDO_p3"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_HDR_AN_AUTH_PASSWORD_LONG_I, getEvdoPass(evdo_password), "Evdo write HDR_AN_AUTH_PASSWD_LONG"))
-
-    End Sub
-    Sub sendEVDO_u4(evdo_username As String)
-        ''build a command test evdo1
-        'Dim bob As New BuilderBob
-        'Dim prefix As Byte() = {&H27, &H43, &H2, &H1C}
-
-        'dispatchQ.addCommandToQ(New Command(bob.buildATerminalCommand(empty_cmd_133, prefix, bob.buildDataArray("0" + evdo_usernameTextbox.Text)), "sendEVDO_u4"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_HDR_AN_AUTH_NAI_I, getEvdoUser(evdo_username), "Evdo write HDR_AN_AUTH_NAI_I"))
-
-    End Sub
-    Sub sendEVDO_p4(evdo_password As String)
-        ''build a command test evdo1
-        'Dim bob As New BuilderBob
-        'Dim prefix As Byte() = {&H27, &H44, &H2, &H8}
-
-        'dispatchQ.addCommandToQ(New Command(bob.buildATerminalCommand(empty_cmd_133, prefix, bob.buildDataArray("0" + evdo_passwordTextbox.Text)), "sendEVDO_p4"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_HDR_AN_AUTH_PASSWORD_I, getEvdoPass(evdo_password), "Evdo write HDR_AN_AUTH_PASSWORD_I"))
-
-    End Sub
-
-
 
 #End Region
-
 
 #Region "prlTestCode"
 
@@ -1555,12 +1275,12 @@ ends:
 #End Region
 
 
-    Public Sub ReadAllEvdo()
+    Public Shared Sub ReadAllEvdo()
         dispatchQ.clearCommandQ()
         AddAllEvdo()
         dispatchQ.executeCommandQ()
     End Sub
-    Public Sub AddAllEvdo()
+    Public Shared Sub AddAllEvdo()
 
         dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PPP_USER_ID_I))
         dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PPP_PASSWORD_I))
@@ -1597,7 +1317,7 @@ ends:
     Function GetComFriendlyNames()
 
 
-        ''  Dim m_oFriendlyNameMap As Hashtable = BuildPortNameHash(System.IO.Ports.SerialPort.GetPortNames())
+        'Dim m_oFriendlyNameMap As Hashtable = PortName.BuildPortNameHash(System.IO.Ports.SerialPort.GetPortNames())
         Return 0
     End Function
 
@@ -1820,17 +1540,17 @@ ends:
 
     End Sub
 
-    Private Sub ReadAllNam()
+    Public Shared Sub ReadAllNam()
 
         dispatchQ.clearCommandQ()
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_NAM_LOCK_I, New Byte() {}, "DIAG_NV_READ_F NV_NAM_LOCK_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_DIR_NUMBER_I, New Byte() {}, "DIAG_NV_READ_F NV_DIR_NUMBER_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_MIN1_I, New Byte() {}, "DIAG_NV_READ_F NV_MIN1_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_MIN2_I, New Byte() {}, "DIAG_NV_READ_F NV_MIN2_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_HOME_SID_NID_I, New Byte() {}, "DIAG_NV_READ_F NV_HOME_SID_NID_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_MEID_I, New Byte() {}, "DIAG_NV_READ_F NV_MEID_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_LOCK_CODE_I, New Byte() {}, "DIAG_NV_READ_F NV_LOCK_CODE_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_VERNO_F, New Byte() {}, "DIAG_VERNO_F"))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_NAM_LOCK_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_DIR_NUMBER_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_MIN1_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_MIN2_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HOME_SID_NID_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_MEID_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_LOCK_CODE_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(DIAG_VERNO_F))
 
         dispatchQ.executeCommandQ()
 
@@ -1945,30 +1665,30 @@ ends:
 
     End Sub
 
-    Private Sub ReadAll()
+    Public Shared Sub ReadAllPhone()
         dispatchQ.clearCommandQ()
         ''evdo
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_PPP_USER_ID_I, New Byte() {}, "Evdo NV_PPP_USER_ID_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_PPP_PASSWORD_I, New Byte() {}, "Evdo NV_PPP_PASSWORD_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_PAP_USER_ID_I, New Byte() {}, "Evdo NV_PAP_USER_ID_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_PAP_PASSWORD_I, New Byte() {}, "Evdo NV_PAP_PASSWORD_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_HDR_AN_AUTH_USER_ID_LONG_I, New Byte() {}, "Evdo NV_HDR_AN_AUTH_USER_ID_LONG_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_HDR_AN_AUTH_PASSWORD_LONG_I, New Byte() {}, "Evdo NV_HDR_AN_AUTH_PASSWD_LONG"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_HDR_AN_AUTH_NAI_I, New Byte() {}, "Evdo NV_HDR_AN_AUTH_NAI_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_HDR_AN_AUTH_PASSWORD_I, New Byte() {}, "Evdo NV_HDR_AN_AUTH_PASSWORD_I"))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PPP_USER_ID_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PPP_PASSWORD_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PAP_USER_ID_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_PAP_PASSWORD_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_USER_ID_LONG_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_LONG_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_NAI_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_I))
         ''evdo profiles/mode
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_DS_QCMIP_I, New Byte() {}, "Evdo NV_DS_QCMIP_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_DS_MIP_NUM_PROF_I, New Byte() {}, "Evdo NV_DS_MIP_NUM_PROF_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_DS_MIP_ENABLE_PROF_I, New Byte() {}, "Evdo NV_DS_MIP_ENABLE_PROF_I"))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_DS_QCMIP_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_DS_MIP_NUM_PROF_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_DS_MIP_ENABLE_PROF_I))
         ''nam1
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_NAM_LOCK_I, New Byte() {}, "DIAG_NV_READ_F NV_NAM_LOCK_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_DIR_NUMBER_I, New Byte() {}, "DIAG_NV_READ_F NV_DIR_NUMBER_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_MIN1_I, New Byte() {}, "DIAG_NV_READ_F NV_MIN1_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_MIN2_I, New Byte() {}, "DIAG_NV_READ_F NV_MIN2_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_HOME_SID_NID_I, New Byte() {}, "DIAG_NV_READ_F NV_HOME_SID_NID_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_MEID_I, New Byte() {}, "DIAG_NV_READ_F NV_MEID_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_LOCK_CODE_I, New Byte() {}, "DIAG_NV_READ_F NV_LOCK_CODE_I"))
-        dispatchQ.addCommandToQ(New Command(DIAG_VERNO_F, New Byte() {}, "DIAG_VERNO_F"))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_NAM_LOCK_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_DIR_NUMBER_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_MIN1_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_MIN2_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_HOME_SID_NID_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_MEID_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_LOCK_CODE_I))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(DIAG_VERNO_F))
 
         dispatchQ.executeCommandQ()
 

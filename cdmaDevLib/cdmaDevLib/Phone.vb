@@ -19,6 +19,8 @@ Public Class Phone
     Private OperationCount As Integer = 0
     Private _NvData As New ObservableCollection(Of Nv)
     Private _Qcmip As Qcdm.Qcmip
+    Private _AvailableComPorts As New List(Of String)
+
     Public Property NvData() As ObservableCollection(Of Nv)
         Get
             Return _NvData
@@ -172,6 +174,21 @@ Public Class Phone
                 _SpcReadType = value
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("SpcReadType"))
             End If
+        End Set
+    End Property
+
+    Public ReadOnly Property SpcReadTypeValues() As IEnumerable(Of cdmaTerm.SpcReadType)
+        Get
+            Return [Enum].GetValues(GetType(cdmaTerm.SpcReadType)).Cast(Of cdmaTerm.SpcReadType)()
+        End Get
+    End Property
+    Public Property AvailableComPorts() As List(Of String)
+        Get
+            Return _AvailableComPorts
+        End Get
+        Set(value As List(Of String))
+            _AvailableComPorts = value
+            RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("AvailableComPorts"))
         End Set
     End Property
 

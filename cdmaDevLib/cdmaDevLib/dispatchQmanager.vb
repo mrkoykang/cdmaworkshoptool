@@ -86,46 +86,6 @@ Public Class dispatchQmanager
                 ''send the command
                 thisC.decode()
 
-
-
-
-                If thisC.decoderString IsNot "" Then
-
-                    'Dim superDecoderRing As New SecretDecoderRing
-                    'If superDecoderRing.decoder(thisC) = True Then
-                    '    ''if it returns ok do nothing
-                    'Else
-                    '    Throw New Exception("decoderString q decoder error")
-                    '    interruptCommandQ()
-                    'End If
-
-
-                ElseIf (thisC.currentQcdm.ToString.IndexOf("NOT_A_COMMAND") = -1 And thisC.currentNv.ToString.IndexOf("NOT_AN_NV_ITEM") = -1) Then
-                    ''onRxCommand
-                    '' Dim superDecoderRing As New SecretDecoderRing
-                    '' SecretDecoderRing.decoder3(thisC)
-
-                    'If superDecoderRing.decoder3(thisC) = True Then
-                    '    ''If superDecoderRing.decoder3(thisC.currentQcdm, thisC.currentNv) = True Then
-                    '    ''if it returns ok do nothing
-                    'Else
-                    '    Throw New Exception("(thisC.currentQcdm, thisC.currentNv) q decoder error")
-                    '    interruptCommandQ()
-                    'End If
-                ElseIf thisC.currentQcdm.ToString.IndexOf("Cmd.NOT_A_COMMAND") = -1 Then
-                    ''onRxCommand
-                    'Dim superDecoderRing As New SecretDecoderRing
-                    'If superDecoderRing.decoder3(thisC) = True Then
-                    '    ''if it returns ok do nothing
-                    'Else
-                    '    Throw New Exception("thisC.currentQcdm q decoder error")
-                    '    interruptCommandQ()
-                    'End If
-
-                Else
-                    ''if no decoder needed do nothing
-                End If
-
                 If thisC.commandSuccess = False Then
                     interruptCommandQ()
                     Return False

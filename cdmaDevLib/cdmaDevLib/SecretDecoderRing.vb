@@ -52,7 +52,7 @@ Public Class SecretDecoderRing
     '            Dim decoderSelect As String = cmd.decoderString
     '            If decoderSelect = "" Then
     '                ''do nothing
-    '                Throw New Exception("damn decoder ring: sdr not defined")
+    '                logger.addToLog("damn decoder ring: sdr not defined")
 
     '            ElseIf decoderSelect = "ReadMeid_NV" Then
     '                decode_ReadMeid_NV(cmd)
@@ -79,7 +79,7 @@ Public Class SecretDecoderRing
     '                cdmaTerm.logAllBox.AppendText("damn decoder ring: thing fell apart?")
     '            End If
     '        Catch
-    '            Throw New Exception("damn decoder ring: gen err")
+    '            logger.addToLog("damn decoder ring: gen err")
     '            Return False
     '        Finally
     '            cdmaTerm.newCommandRxd = False
@@ -94,9 +94,7 @@ Public Class SecretDecoderRing
         Try
             Select Case cmd.currentQcdm
 
-                Case Qcdm.Cmd.DIAG_ESN_F
-                    ''Read ESN
-                    decode_ReadESN(cmd)
+
                 Case Qcdm.Cmd.DIAG_SPC_F
                     ''Read ESN
                     decode_DIAG_SPC_F(cmd)
@@ -138,7 +136,7 @@ Public Class SecretDecoderRing
             End Select
 
         Catch ex As Exception
-            Throw New Exception("decoder err: " + ex.ToString)
+            logger.addToLog("decoder err: " + ex.ToString)
             Return False
 
         End Try
@@ -151,7 +149,7 @@ Public Class SecretDecoderRing
             Case NvItems.NVItems.NV_MEID_I
                 ''Read MEID
                 decode_ReadMeid_NV(cmd)
-      
+
 
                 ''Case NvItems.NVItems.NV_NAM_LOCK_I
                 ''Read nam lock
@@ -181,7 +179,7 @@ Public Class SecretDecoderRing
                 '    decode_NV_DS_QCMIP_I(cmd.bytesRxd)
             Case 11055 ''item 0x2b2f 11055 data 0x7d4 2004 bb reg id
                 decode_11055(cmd.bytesRxd)
-           
+
                 'Case NvItems.NVItems.NV_DS_MIP_NUM_PROF_I ''number of profiles
                 '    decode_NV_DS_MIP_NUM_PROF_I(cmd.bytesRxd)
                 'Case NvItems.NVItems.NV_DS_MIP_ENABLE_PROF_I ''enabled profile
@@ -215,7 +213,7 @@ Public Class SecretDecoderRing
 
 
     '    '    Catch
-    '    '        Throw new Exception("cheap decoder ring: cant get generic decoded string")
+    '    '        logger.addToLog("cheap decoder ring: cant get generic decoded string")
 
     '    '    End Try
 
@@ -224,7 +222,7 @@ Public Class SecretDecoderRing
     Shared Sub decode_ReadMeid_NV(ByVal cmd As Command)
 
 
-       
+
 
     End Sub
     Shared Sub decode_ReadSPC_LG(ByVal cmd As Command)
@@ -244,7 +242,7 @@ Public Class SecretDecoderRing
             spcFromPacket(17) + spcFromPacket(19)
 
             'If thisIsTheSPC = "000000" Then
-            '    Throw new Exception("cant find meid 1")
+            '    logger.addToLog("cant find meid 1")
 
             'Else
             cdmaTerm.thePhone.Spc = thisIsTheSPC
@@ -253,42 +251,13 @@ Public Class SecretDecoderRing
 
 
         Catch
-            Throw New Exception("cant find spc_lg 1")
+            logger.addToLog("cant find spc_lg 1")
 
         End Try
 
     End Sub
-    
-    Shared Sub decode_ReadESN(ByVal cmd As Command)
-        ''test decode esn
-        Try
 
-            ''Dim stringFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
-            Dim stringFromPacket As String = cdmaTerm.biznytesToStrizings(cmd.bytesRxd)
-
-            Dim DecodedString As String = ""
-
-
-            DecodedString += stringFromPacket(8) + stringFromPacket(9) & _
-            stringFromPacket(6) + stringFromPacket(7) & _
-            stringFromPacket(4) + stringFromPacket(5) & _
-            stringFromPacket(2) + stringFromPacket(3)
-
-
-
-            cdmaTerm.thePhone.Esn = DecodedString
-            cdmaTerm.thePhoneRxd.Esn = DecodedString
-
-
-        Catch
-            Throw New Exception("decoder err: cant get decoded esn")
-
-        Finally
-
-
-
-        End Try
-    End Sub
+  
 
 
 
@@ -314,7 +283,7 @@ Public Class SecretDecoderRing
 
 
         Catch
-            Throw New Exception("damn decoder ring: cant get decoded min2")
+            logger.addToLog("damn decoder ring: cant get decoded min2")
 
         End Try
 
@@ -359,7 +328,7 @@ Public Class SecretDecoderRing
         '' cdmaTerm.nam0MDNTextbox.Text = (min2) Mod (&H3D).ToString + min1a Mod (&H3D).ToString + min1b Mod (&HD).ToString + min1c Mod (&H3D).ToString
 
         '' Catch
-        '' Throw new Exception("damn decoder ring: cant get decoded min1")
+        '' logger.addToLog("damn decoder ring: cant get decoded min1")
 
         ''End Try
 
@@ -381,7 +350,7 @@ Public Class SecretDecoderRing
 
 
     '        Catch
-    '            Throw New Exception("damn decoder ring: decode_NV_PPP_USER_ID_I")
+    '            logger.addToLog("damn decoder ring: decode_NV_PPP_USER_ID_I")
 
     '        End Try
     '    End Sub
@@ -395,7 +364,7 @@ Public Class SecretDecoderRing
     '            cdmaTerm.evdo_passwordTextbox.Text = trimFrontAndEndAscii(DecodedString)
 
     '        Catch
-    '            Throw New Exception("damn decoder ring: decode_NV_PPP_PASSWORD_I")
+    '            logger.addToLog("damn decoder ring: decode_NV_PPP_PASSWORD_I")
 
     '        End Try
     '    End Sub
@@ -405,7 +374,7 @@ Public Class SecretDecoderRing
     '            Dim DecodedString As String = getAsciiStrings(bytesRxd)
     '            cdmaTerm.txtBoxNV_PAP_USER_ID_I.Text = trimFrontAndEndAscii(DecodedString)
     '        Catch
-    '            Throw New Exception("damn decoder ring: decode_NV_PAP_USER_ID_I")
+    '            logger.addToLog("damn decoder ring: decode_NV_PAP_USER_ID_I")
 
     '        End Try
     '    End Sub
@@ -415,7 +384,7 @@ Public Class SecretDecoderRing
     '            Dim DecodedString As String = getAsciiStrings(bytesRxd)
     '            cdmaTerm.txtBoxNV_PAP_PASSWORD_I.Text = trimFrontAndEndAscii(DecodedString)
     '        Catch
-    '            Throw New Exception("damn decoder ring: decode_NV_PAP_PASSWORD_I")
+    '            logger.addToLog("damn decoder ring: decode_NV_PAP_PASSWORD_I")
 
     '        End Try
     '    End Sub
@@ -425,7 +394,7 @@ Public Class SecretDecoderRing
     '            Dim DecodedString As String = getAsciiStrings(bytesRxd)
     '            cdmaTerm.txtBoxNV_HDR_AN_AUTH_USER_ID_LONG.Text = trimFrontAndEndAscii(DecodedString)
     '        Catch
-    '            Throw New Exception("damn decoder ring:  decode_NV_HDR_AN_AUTH_USER_ID_LONG")
+    '            logger.addToLog("damn decoder ring:  decode_NV_HDR_AN_AUTH_USER_ID_LONG")
 
     '        End Try
     '    End Sub
@@ -435,7 +404,7 @@ Public Class SecretDecoderRing
     '            Dim DecodedString As String = getAsciiStrings(bytesRxd)
     '            cdmaTerm.txtBoxNV_HDR_AN_AUTH_PASSWD_LONG.Text = trimFrontAndEndAscii(DecodedString)
     '        Catch
-    '            Throw New Exception("damn decoder ring:decode_NV_HDR_AN_AUTH_PASSWD_LONG")
+    '            logger.addToLog("damn decoder ring:decode_NV_HDR_AN_AUTH_PASSWD_LONG")
 
     '        End Try
     '    End Sub
@@ -445,7 +414,7 @@ Public Class SecretDecoderRing
     '            Dim DecodedString As String = getAsciiStrings(bytesRxd)
     '            cdmaTerm.txtBoxNV_HDR_AN_AUTH_NAI_I.Text = trimFrontAndEndAscii(DecodedString)
     '        Catch
-    '            Throw New Exception("damn decoder ring: decode_NV_RSVD_ITEM_579_I")
+    '            logger.addToLog("damn decoder ring: decode_NV_RSVD_ITEM_579_I")
 
     '        End Try
     '    End Sub
@@ -455,7 +424,7 @@ Public Class SecretDecoderRing
     '            Dim DecodedString As String = getAsciiStrings(bytesRxd)
     '            cdmaTerm.txtBoxNV_HDR_AN_AUTH_PASSWORD_I.Text = trimFrontAndEndAscii(DecodedString)
     '        Catch
-    '            Throw New Exception("damn decoder ring: decode_NV_RSVD_ITEM_580_I")
+    '            logger.addToLog("damn decoder ring: decode_NV_RSVD_ITEM_580_I")
 
     '        End Try
     '    End Sub
@@ -526,8 +495,8 @@ Public Class SecretDecoderRing
     End Sub
 
     Private Shared Sub decode_NV_MIN1(ByVal cmd As Command)
-        ' Throw new Exception("rxd: " + cdmaTerm.biznytesToStrizings(cmd.bytesRxd))
-        'Throw new Exception("rxd: " + getAsciiStrings(cmd.bytesRxd))
+        ' logger.addToLog("rxd: " + cdmaTerm.biznytesToStrizings(cmd.bytesRxd))
+        'logger.addToLog("rxd: " + getAsciiStrings(cmd.bytesRxd))
 
         'cdmaTerm.MIN1Raw = cdmaTerm.biznytesToStrizings(New Byte() {cmd.bytesRxd(7), cmd.bytesRxd(6), cmd.bytesRxd(5), cmd.bytesRxd(4)})
 
@@ -567,7 +536,7 @@ Public Class SecretDecoderRing
             Return decode_NV_MIN1(System.Convert.ToInt32(min1, 16), System.Convert.ToInt32(min2, 16))
 
         Catch ex As Exception
-            Throw New Exception("decode_NV_MIN1 string string err: " + ex.ToString)
+            logger.addToLog("decode_NV_MIN1 string string err: " + ex.ToString)
             Return ""
         End Try
 
@@ -629,7 +598,7 @@ Public Class SecretDecoderRing
         Return New String() {min1.ToUpper, min2.ToUpper}
     End Function
 
-  
+
 
     Private Shared Sub decode_11055(ByVal bytesRxd As Byte())
         ''TODO untested
@@ -642,7 +611,7 @@ Public Class SecretDecoderRing
 
     End Sub
 
- 
+
 
     '    Private Sub decode_DIAG_PEEKB_F(ByVal cmd As Command)
     '        ''unused.. could add test to see if read is bad
@@ -675,10 +644,10 @@ Public Class SecretDecoderRing
     '            '    cdmaTerm.EfsQc.LastEfsWorked = True
     '            'End If
     '            ''  Dim strM As String = "Keep Reading Folders?" + cdmaTerm.biznytesToStrizings(cmd.bytesRxd)
-    '            '' Dim continueEfs As Boolean = Throw new Exception(strM, "Keep Reading?", MessageBoxButtons.OKCancel)
+    '            '' Dim continueEfs As Boolean = logger.addToLog(strM, "Keep Reading?", MessageBoxButtons.OKCancel)
     '            ''Dim continueEfs As Boolean
 
-    '            'If Throw new Exception(strM, "Keep Reading?", MessageBoxButtons.OKCancel, _
+    '            'If logger.addToLog(strM, "Keep Reading?", MessageBoxButtons.OKCancel, _
     '            '  Nothing, MessageBoxDefaultButton.Button1) = DialogResult.OK Then
     '            '    continueEfs = True
 

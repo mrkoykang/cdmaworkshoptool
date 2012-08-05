@@ -62,7 +62,7 @@
 
 
 
-                ''Throw new Exception("current: " + current + "Start offset: " + startOffset.ToString + " EndOffset: " + endOffset.ToString + " Length: " + current.Length.ToString)
+                ''logger.addToLog("current: " + current + "Start offset: " + startOffset.ToString + " EndOffset: " + endOffset.ToString + " Length: " + current.Length.ToString)
                 ''case to handle two vars?
                 If startOffset = 0 Then
                     current = parseVar(current.Substring(startOffset, endOffset)) + current.Substring(endOffset)

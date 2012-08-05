@@ -40,7 +40,7 @@ Imports cdmaDevLib.Qcdm
 
 Public Class cdmaTerm
 
-    ''im WithEvents mySerialPort As SerialPort = New SerialPort
+    ''Dim WithEvents mySerialPort As SerialPort = New SerialPort
     Public Shared dispatchQ As dispatchQmanager = New dispatchQmanager
     Public Shared nvReadQ As dispatchQmanager = New dispatchQmanager
     Public Shared RamReadQ As dispatchQmanager = New dispatchQmanager
@@ -124,7 +124,7 @@ Public Class cdmaTerm
             newCommandRxd = True
 
         Catch
-            Throw New Exception("read error 1: rec data thread")
+            logger.addToLog("read error 1: rec data thread")
 
         End Try
 
@@ -147,7 +147,9 @@ Public Class cdmaTerm
                 ''If port is closed, then open it
                 If mySerialPort.IsOpen = False Then mySerialPort.Open()
             Catch e As Exception
-                Throw New Exception(mySerialPort.PortName + " err cant open the port: " + e.Message)
+
+
+                logger.addToLog(mySerialPort.PortName + " err cant open the port: " + e.Message)
             End Try
         ElseIf serialportType = "blackberry" Then
             ''do nothin?
@@ -184,7 +186,7 @@ Public Class cdmaTerm
 
             End If
         Catch e As Exception
-            Throw New Exception("com error: device does not rx: " + e.Message)
+            logger.addToLog("com error: device does not rx: " + e.Message)
         End Try
 
         'Pause for 800ms
@@ -214,7 +216,7 @@ ends:
 
 
         Catch
-            Throw New Exception("cant open the port")
+            logger.addToLog("cant open the port")
             Return False
         End Try
         Try
@@ -225,7 +227,7 @@ ends:
                 mySerialPort.Write(byteArrayToTransmit, 0, byteArrayToTransmit.Length)
 
             ElseIf (serialportType = "blackberry") Then
-                Throw New Exception("bb transmit?")
+                logger.addToLog("bb transmit?")
                 logger.addToLog("TX2: " + biznytesToStrizings(byteArrayToTransmit) + vbNewLine + vbNewLine)
                 mySerialPort2.Write(byteArrayToTransmit)
 
@@ -248,7 +250,7 @@ ends:
 
 
         Catch
-            Throw New Exception("com error: device does not rx1")
+            logger.addToLog("com error: device does not rx1")
             Return False
         End Try
 
@@ -328,7 +330,7 @@ ends:
 
     '        ' Show what we just converted
 
-    '        ''Throw new Exception(StrValue)
+    '        ''logger.addToLog(StrValue)
 
     '        convertToAsciiTextBox.Text = StrValue
 
@@ -407,7 +409,7 @@ ends:
             End If
 
         Catch
-            Throw New Exception("shootin blanks")
+            logger.addToLog("shootin blanks")
         End Try
     End Sub
 
@@ -471,11 +473,11 @@ ends:
     '            ''assign the box the first com found
     '            ComNumBox1.Text = ComNumBox1.Items.Item(ComNumBox1.Items.Count - 1)
     '        Catch
-    '            Throw New Exception("no com devices found")
+    '            logger.addToLog("no com devices found")
     '        End Try
 
     '    Catch ex As Exception
-    '        Throw New Exception("Load error:" + e.ToString)
+    '        logger.addToLog("Load error:" + e.ToString)
     '    End Try
 
     'End Sub
@@ -521,7 +523,7 @@ ends:
             ' return the finished byte array of decimal values
             Return bytes
         Catch ex As Exception
-            Throw New Exception("HexString to Byte() Conversion Error: Try Removing Spaces: " + ex.ToString)
+            logger.addToLog("HexString to Byte() Conversion Error: Try Removing Spaces: " + ex.ToString)
 
             Return Diag01
         End Try
@@ -537,7 +539,7 @@ ends:
             Next
 
         Catch ex As Exception
-            Throw New Exception("biz err: " + ex.ToString)
+            logger.addToLog("biz err: " + ex.ToString)
         End Try
         ''returns "" if try catch fails
         Return (returnStr)
@@ -548,59 +550,58 @@ ends:
 #End Region
 
 #Region "selectionRoutinesAndSelectors"
-    Function scanAndListComs() As String
-        ''run the check for coms 
-        ' GetComs()
-
-    End Function
+ 
 
     ''sub to try converting sp etc
-    Sub SendA16digitCode(Send16DigitCodeTextbox As String, select16digitCodeBox As String)
-        If Send16DigitCodeTextbox = "" Then
-            ''try out the textbox parser
+    Public Shared Sub SendA16digitCode(Send16DigitSP As String)
+        ' If Send16DigitCodeTextbox = "" Then
+        ''try out the textbox parser
 
-            Dim MySixteenDigitCodes As New SixteenDigitCodes()
+        'Dim MySixteenDigitCodes As New SixteenDigitCodes()
+
+        'dispatchQ.addCommandToQ(
+        '    New Command(
+        '        DIAG_PASSWORD_F,
+        '        String_To_Bytes(SixteenDigitCodes.get16DigitPassword(select16digitCodeBox)),
+        '        "16 digit password"
+        '        )
+        '    )
+        'dispatchQ.executeCommandQ()
+
+        ' Else
+        If (Send16DigitSP.Length = 16) Then
 
             dispatchQ.addCommandToQ(
                 New Command(
                     DIAG_PASSWORD_F,
-                    String_To_Bytes(SixteenDigitCodes.get16DigitPassword(select16digitCodeBox)),
-                    "16 digit password"
+                    String_To_Bytes(Send16DigitSP),
+                    "Send custom 16 digit DIAG_PASSWORD_F"
                     )
                 )
             dispatchQ.executeCommandQ()
-
         Else
-            If (Send16DigitCodeTextbox.Length <= 16) Then
-
-                dispatchQ.addCommandToQ(
-                    New Command(
-                        DIAG_PASSWORD_F,
-                        String_To_Bytes(Send16DigitCodeTextbox),
-                        "Send custom 16 digit DIAG_PASSWORD_F"
-                        )
-                    )
-                dispatchQ.executeCommandQ()
-            End If
+            logger.addToLog("16 digit SP is not 16 digits", logger.logType.err)
         End If
+
+
 
     End Sub
 
-
-    Shared Sub readSpcFromPhone(ByVal spcType As String)
+    ''TODO: use factory
+    Shared Sub readSpcFromPhone(ByVal spcType As cdmaTerm.SpcReadType)
         ''first check which read type then go
-        If spcType = "NV" Then
+        If spcType = cdmaTerm.SpcReadType.DefaultNv Then
 
-            dispatchQ.addCommandToQ(New Command(DIAG_NV_READ_F, NV_SEC_CODE_I, New Byte() {}, "readSPC DIAG_NV_READ_F NV_SEC_CODE_I"))
+            dispatchQ.addCommandToQ(CommandFactory.GetCommand(NvItems.NVItems.NV_SEC_CODE_I))
 
 
-        ElseIf spcType = "HTC" Then
+        ElseIf spcType = cdmaTerm.SpcReadType.HTC Then
 
             dispatchQ.addCommandToQ(New Command(unlockHtcSuperSPC, "unlockHtcSuperSPC byte array method"))
             dispatchQ.addCommandToQ(New Command(readSPC_HTCMethod, "readSPC_HTCMethod byte array method"))
-            dispatchQ.addCommandToQ(New Command(readSPC_nvMethod, "ReadSPC_NV", "readSPC_nvMethod byte array method"))
+            dispatchQ.addCommandToQ(CommandFactory.GetCommand(NvItems.NVItems.NV_SEC_CODE_I))
 
-        ElseIf spcType = "LG" Then
+        ElseIf spcType = cdmaTerm.SpcReadType.LG Then
 
             ''ajh7495 start 3
             dispatchQ.addCommandToQ(New Command(unlockLgNvMemory, "Unlock LG NV Memory"))
@@ -610,42 +611,42 @@ ends:
 
 
         ElseIf spcType = "Samsung1" Then
-            ''Throw new Exception("s1 method not here yet")
+            ''logger.addToLog("s1 method not here yet")
             ''TODO: Find sample, make decoder
             dispatchQ.addCommandToQ(New Command(readSPC_Samsung1Method, "ReadSPC_NV", "readSPC_Samsung1Method byte array method"))
 
 
         ElseIf spcType = "Samsung2" Then
-            ''Throw new Exception("s2 method")
+            ''logger.addToLog("s2 method")
             ''TODO: Find sample, make decoder
             dispatchQ.addCommandToQ(New Command(readSPC_Samsung2Method, "ReadSPC_NV", "readSPC_Samsung2Method byte array method"))
 
 
         ElseIf spcType = "Kyocera" Then
-            ''Throw new Exception("kyocera method")
+            ''logger.addToLog("kyocera method")
             ''TODO: Find sample, make decoder
             dispatchQ.addCommandToQ(New Command(readSPC_Kyocera, "ReadSPC_NV", "readSPC_Kyocera byte array method"))
 
 
         ElseIf spcType = "EFS" Then
-            '' Throw new Exception("efs method")
+            '' logger.addToLog("efs method")
 
             dispatchQ.addCommandToQ(New Command(readSPC_EFSMethod_SubsytemCmd, "readSPC_EFSMethod_SubsytemCmd byte array method"))
             dispatchQ.addCommandToQ(New Command(readSPC_EFSMethod_EfsCmd, "readSPC_EFSMethod_EfsCmd byte array method"))
 
             ''insert decoder
-        ElseIf spcType = "MetroPCS" Then
+        ElseIf spcType = cdmaTerm.SpcReadType.MetroPCS Then
 
-            dispatchQ.addCommandToQ(New Command(DIAG_ESN_F, "Read Esn For MetroCalc"))
+            dispatchQ.addCommandToQ(CommandFactory.GetCommand(DIAG_ESN_F))
             dispatchQ.executeCommandQ()
 
 
             Try
                 Dim ajhBlackMagic As New metroCalc
                 ''get esn from gui
-                ''SPCTextbox.Text = ajhBlackMagic.MetroSPCcalc(ResultsListBox.Items(3))''todo: what to do with result in this design?
+                thePhone.Spc = ajhBlackMagic.MetroSPCcalc(thePhone.Esn) ''todo: what to do with result in this design?
             Catch
-                Throw New Exception("metro spc error")
+                logger.addToLog("metro spc error")
             End Try
 
         End If
@@ -687,7 +688,7 @@ ends:
     '    Next
     '    scanAndListComs()
 
-    '    ''Throw new Exception("Ports available: " + allTheNames)
+    '    ''logger.addToLog("Ports available: " + allTheNames)
 
 
     'End Sub
@@ -712,10 +713,10 @@ ends:
     '        'Try
     '        '    AtReturnCmdBox.AppendText(mySerialPort2.ReadString(&H1000))
     '        'Catch
-    '        '    Throw new Exception("no more b")
+    '        '    logger.addToLog("no more b")
     '        'End Try
     '    Catch
-    '        Throw New Exception("Cant Open AT Port")
+    '        logger.addToLog("Cant Open AT Port")
     '    End Try
 
     'End Sub
@@ -735,7 +736,7 @@ ends:
             logger.addToByteLog(biznytesToStrizings(myDm.WriteRead(atCmd.ToArray)))
 
         Catch
-            Throw New Exception("Cant Open AT Port")
+            logger.addToLog("Cant Open AT Port")
         End Try
 
 
@@ -761,9 +762,9 @@ ends:
 
     '            ConnectButton.Enabled = True
     '            disconnectPortButton.Enabled = False
-    '            Throw New Exception("Phone has been reset, port has been disconnected. Reconnect when the phone powers back on")
+    '            logger.addToLog("Phone has been reset, port has been disconnected. Reconnect when the phone powers back on")
     '        Catch ex As Exception
-    '            Throw New Exception("Mode reset disconnect err: " + ex.ToString)
+    '            logger.addToLog("Mode reset disconnect err: " + ex.ToString)
     '        End Try
     '    End If
 
@@ -935,7 +936,7 @@ ends:
     ''was used to notify when a device is plugged in, not needed?
     'Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
     '    If m.Msg = WM_COMMNOTIFY Then
-    '        Throw New Exception("WM_COMMNOTIFY Triggered")
+    '        logger.addToLog("WM_COMMNOTIFY Triggered")
     '        ''mySerialPort2.Read(
     '    End If
     '    If m.Msg = WM_DEVICECHANGE Then
@@ -951,7 +952,7 @@ ends:
     '                            ''TODO FIX WHEN FIXING BULK FLASH
     '                            autoFlashCountTextbox.Text = "0"
     '                            u350magicAPPLYDIRECTLYTOTHEFOREHEAD()
-    '                            '' Throw new Exception("connect next phone")
+    '                            '' logger.addToLog("connect next phone")
     '                            ''autoFlashCountTextbox.Text = Val(autoFlashCountTextbox.Text) - 1  ajh was here - hello world
     '                            '' System.Threading.Thread.Sleep(5000)
     '                        End If
@@ -1153,7 +1154,7 @@ ends:
 
     '        sendPRL(selectPRLComboBox.Text)
     '        dispatchQ.executeCommandQ()
-    '        Throw new Exception("zero/prl sent: mode reset suggested")
+    '        logger.addToLog("zero/prl sent: mode reset suggested")
     '        ''ajh7495 end 4
     '    End If
 
@@ -1261,13 +1262,12 @@ ends:
 
     Sub SendAnyPrl(PrlFilePath As String)
         Try
-            Dim PrlFile As String
             Dim myPlus As New Prl
 
             myPlus.UploadPRL(PrlFilePath)
 
         Catch ex As Exception
-            Throw New Exception("Prl send err: " + ex.ToString)
+            logger.addToLog("Prl send err: " + ex.ToString)
         End Try
 
     End Sub
@@ -1325,7 +1325,6 @@ ends:
 
         Return FriendlyName.Split(" ")(0)
 
-        ''Throw New NotImplementedException
     End Function
 
 
@@ -1336,11 +1335,10 @@ ends:
     End Sub
 
 
-    Sub WriteEvdoMode(evdoMode As Integer)
+    Public Shared Sub WriteEvdoMode(evdoMode As Integer)
 
         Dim type As Byte() = {evdoMode}
-
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_DS_QCMIP_I, type, "DIAG_NV_READ_F,NV_DS_QCMIP_I Read EVDO mode"))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_DS_QCMIP_I, True, type))
 
     End Sub
 
@@ -1408,7 +1406,7 @@ ends:
 
             End If
         Catch ex As Exception
-            Throw New Exception("disconnect err" + ex.ToString)
+            logger.addToLog("disconnect err" + ex.ToString)
         End Try
     End Sub
 
@@ -1441,7 +1439,7 @@ ends:
             WriteBBRegId(String_To_Bytes(Integer.Parse(regId).ToString("x4")))
             dispatchQ.executeCommandQ()
         Catch ex As Exception
-            Throw New Exception("Write Bb reg err: " + ex.ToString)
+            logger.addToLog("Write Bb reg err: " + ex.ToString)
         End Try
 
     End Sub
@@ -1486,7 +1484,7 @@ ends:
             SearchBin(outFileName)
         End If
 
-        Throw New Exception("Ram Read Complete")
+        logger.addToLog("Ram Read Complete")
     End Sub
 
 
@@ -1517,7 +1515,7 @@ ends:
                     Dim d4 = m.Groups(4)
                     Dim d5 = m.Groups(5)
                     Dim d6 = m.Groups(6)
-                    '' Throw new Exception("( " + d1.ToString() + d2.ToString() + d3.ToString() + d4.ToString() + d5.ToString() + d6.ToString() + " )")
+                    '' logger.addToLog("( " + d1.ToString() + d2.ToString() + d3.ToString() + d4.ToString() + d5.ToString() + d6.ToString() + " )")
 
 
                     Dim possibleSpc As String = d1.ToString() + d2.ToString() + d3.ToString() + d4.ToString() + d5.ToString() + d6.ToString()
@@ -1530,7 +1528,7 @@ ends:
 
             Loop
 
-            Throw New Exception("Search Bin For SPC Done")
+            logger.addToLog("Search Bin For SPC Done")
         Else
 
             MsgBox("File Does Not Exist")
@@ -1576,14 +1574,14 @@ ends:
         dispatchQ.executeCommandQ()
     End Sub
 
-    Private Sub WriteNamLock(lockNam As Boolean)
+    Public Shared Sub WriteNamLock(lockNam As Boolean)
         Dim namLock(1) As Byte
         If lockNam Then
             namLock(1) = 1
         End If
 
         dispatchQ.clearCommandQ()
-        dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_NAM_LOCK_I, namLock, "NV_NAM_LOCK_I"))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(NV_NAM_LOCK_I, True, namLock))
         dispatchQ.executeCommandQ()
     End Sub
 
@@ -1595,7 +1593,7 @@ ends:
             nvReadQ.generateNvReadReport(fileName)
             logger.addToLog("NV Read Complete")
         Catch ex As Exception
-            Throw New Exception("Read nv list err: " + ex.ToString)
+            logger.addToLog("Read nv list err: " + ex.ToString)
 
         End Try
 
@@ -1628,7 +1626,7 @@ ends:
             logger.addToLog("Reading NV List - This may take a while, do not unplug..")
             nvReadQ.checkNvQForBadItems()
         Catch ex As Exception
-            Throw New Exception("Read NV Item Range Err: " + ex.ToString)
+            logger.addToLog("Read NV Item Range Err: " + ex.ToString)
         End Try
 
 
@@ -1730,7 +1728,7 @@ ends:
 
     '        EfsQc.ReadEfsFolderByName(folderName)
     '    Catch ex As Exception
-    '        Throw New Exception("Efs read err 2: " + ex.ToString)
+    '        logger.addToLog("Efs read err 2: " + ex.ToString)
     '    End Try
     'End Sub
 
@@ -1761,7 +1759,7 @@ ends:
 
     Function loadCarrier(FileName As String, dataMdn As String, dataMin As String) As Carrier
         Dim myCarrier As New Carrier(FileName, dataMdn, dataMin)
-        Throw New Exception("Loaded: " + myCarrier.Name + " " + myCarrier.Prl)
+        logger.addToLog("Loaded: " + myCarrier.Name + " " + myCarrier.Prl)
         Return myCarrier
     End Function
     Function loadModel(FileName As String, Carrier As Carrier, prlFilePath As String) As Model

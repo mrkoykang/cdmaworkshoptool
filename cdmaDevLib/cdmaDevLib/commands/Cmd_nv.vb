@@ -10,7 +10,7 @@
             cdmaTerm.thePhone.NvData.Add(New Nv(Me.currentNv, SecretDecoderRing.trimFrontAndEndAscii(SecretDecoderRing.getAsciiStrings(bytesRxd))))
 
         Catch ex As Exception
-            Throw New Exception("decode err:" + ex.ToString)
+            logger.addToLog("decode err:" + ex.ToString)
 
         End Try
     End Sub

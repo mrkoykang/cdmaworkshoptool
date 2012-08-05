@@ -5,6 +5,7 @@ Public Class Phone
     Implements System.ComponentModel.INotifyPropertyChanged
 
     Private _SerialData As String
+    Private _LogData As String
     Private _Mdn As String
     Private _Min As String
     Private _Spc As String
@@ -20,6 +21,8 @@ Public Class Phone
     Private _NvData As New ObservableCollection(Of Nv)
     Private _Qcmip As Qcdm.Qcmip
     Private _AvailableComPorts As New List(Of String)
+    Private _ComPortName As String
+    Private _SixteenDigitSP As String
 
     Public Property NvData() As ObservableCollection(Of Nv)
         Get
@@ -37,8 +40,21 @@ Public Class Phone
         Set(value As String)
             If value <> _SerialData Then
                 OperationCount += 1
-                _SerialData = OperationCount.ToString & " " & value & _SerialData & Environment.NewLine & _SerialData
+                _SerialData = OperationCount.ToString + " " + value + Environment.NewLine + _SerialData
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("SerialData"))
+            End If
+        End Set
+    End Property
+
+    Public Property LogData() As String
+        Get
+            Return _LogData
+        End Get
+        Set(value As String)
+            If value <> _LogData Then
+                OperationCount += 1
+                _LogData = value + Environment.NewLine + _LogData
+                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("LogData"))
             End If
         End Set
     End Property
@@ -117,6 +133,19 @@ Public Class Phone
             End If
         End Set
     End Property
+
+    Public Property SixteenDigitSP() As String
+        Get
+            Return _SixteenDigitSP
+        End Get
+        Set(value As String)
+            If value <> _SixteenDigitSP Then
+                _SixteenDigitSP = value
+                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("SixteenDigitSP"))
+            End If
+        End Set
+    End Property
+
     Public Property Esn() As String
         Get
             Return _Esn
@@ -161,6 +190,18 @@ Public Class Phone
             If value <> _NamLock Then
                 _NamLock = value
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("NamLock"))
+            End If
+        End Set
+    End Property
+
+    Public Property ComPortName() As String
+        Get
+            Return _ComPortName
+        End Get
+        Set(value As String)
+            If value <> _ComPortName Then
+                _ComPortName = value
+                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("ComPortName"))
             End If
         End Set
     End Property

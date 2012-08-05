@@ -1373,7 +1373,7 @@ Public Class NvItems
         End If
 
         ''debug:looks ok
-        '' Throw new Exception("post length fix?: " + chex)
+        '' logger.addToLog("post length fix?: " + chex)
 
         ''fix the order the hex is displayed in
 
@@ -1389,12 +1389,12 @@ Public Class NvItems
         returnHex += chex(0)
         returnHex += chex(1)
 
-        ''Throw new Exception("return hex revd/:" + returnHex)
+        ''logger.addToLog("return hex revd/:" + returnHex)
         Return returnHex
     End Function
     Function fixNVItemNumberHalfway(ByVal itemLong As String) As String
 
-        ''Throw new Exception(itemLong)
+        ''logger.addToLog(itemLong)
 
         Dim tempStr As String = ""
         For i As Integer = 0 To (itemLong.IndexOf("(") - 1)
@@ -1417,7 +1417,7 @@ Public Class NvItems
     '    Dim returnHex As String = fixNVItemNumber(itemNumber, 6)
 
 
-    '    ''Throw new Exception("return hex revd/:" + returnHex)
+    '    ''logger.addToLog("return hex revd/:" + returnHex)
 
     '    Dim prefix As Byte() = cdmaTerm.String_To_Bytes("26" + returnHex)
     '    ''no se? test
@@ -1443,7 +1443,7 @@ Public Class NvItems
     '    fullCommand.Add(&H7E)
 
 
-    '    ''Throw new Exception("hex: " + returnHex + " prefix: " + cdmaTerm.biznytesToStrizings(prefix) + " whole command: " + cdmaTerm.biznytesToStrizings(fullCommand.ToArray))
+    '    ''logger.addToLog("hex: " + returnHex + " prefix: " + cdmaTerm.biznytesToStrizings(prefix) + " whole command: " + cdmaTerm.biznytesToStrizings(fullCommand.ToArray))
 
 
 
@@ -1465,7 +1465,7 @@ Public Class NvItems
             'End If
 
             For i = startingItem To (count + startingItem)
-                '' Throw new Exception("inside loop")
+                '' logger.addToLog("inside loop")
                 ''Dim debugString As String = "NVread Item " + i.ToString
                 Dim debugString As String = "readNVItemRange Qcdm.Cmd.DIAG_NV_READ_F " + i.ToString
 
@@ -1479,7 +1479,7 @@ Public Class NvItems
 
             Return True
         Catch ex As Exception
-            Throw New Exception("err:" + ex.ToString)
+            logger.addToLog("err:" + ex.ToString)
         End Try
         Return False
 
@@ -1514,7 +1514,7 @@ Public Class NvItems
         ''if file does not start with [NV Items] then fail
         If (fileTxt.Item(0) = ("[NV Items]")) Then
 
-            '' Throw new Exception("NV Item File Found")
+            '' logger.addToLog("NV Item File Found")
             For i As Integer = 3 To fileTxt.Count
 
                 Dim nItemNumber As String = ""
@@ -1534,7 +1534,7 @@ Public Class NvItems
 
 
                 nItemData = nItemData.Replace(" ", "")
-                ''Throw new Exception("NV Item: " + nItemNumber + " data: " + nItemData)
+                ''logger.addToLog("NV Item: " + nItemNumber + " data: " + nItemData)
 
                 WriteNVItem(nItemNumber, cdmaTerm.String_To_Bytes(nItemData))
 
@@ -1543,7 +1543,7 @@ Public Class NvItems
 
 
         Else
-            Throw New Exception("err: Bad nv file?")
+            logger.addToLog("err: Bad nv file?")
         End If
 
         ''determine 3.5/2.7 - not sure if this will matter with our engine?
@@ -1572,13 +1572,13 @@ Public Class NvItems
     '    Dim prefix As Byte() = cdmaTerm.String_To_Bytes("27" + fixNVItemNumber(item, 4) + (value))
     '    Dim tempQ As New dispatchQmanager
 
-    '    '' Throw new Exception(cdmaTerm.biznytesToStrizings(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")))).ToString()
+    '    '' logger.addToLog(cdmaTerm.biznytesToStrizings(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")))).ToString()
 
     '    ''Dim c As New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), ("nv"))
 
-    '    ''Throw new Exception("prefix" + cdmaTerm.biznytesToStrizings(prefix))
+    '    ''logger.addToLog("prefix" + cdmaTerm.biznytesToStrizings(prefix))
     '    ''TODO: Error
-    '    ''Throw new Exception("wr nv" + cdmaTerm.biznytesToStrizings(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + ""))))
+    '    ''logger.addToLog("wr nv" + cdmaTerm.biznytesToStrizings(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + ""))))
 
     '    tempQ.addCommandToQ(New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), ("nv#")))
 

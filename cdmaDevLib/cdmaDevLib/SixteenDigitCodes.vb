@@ -49,7 +49,7 @@ Public Class SixteenDigitCodes
             Try
                 runtime16DigitPass.Add(sLine.Substring(0, seperator), sLine.Substring(seperator + 1, 16))
             Catch ex As Exception
-                Throw New Exception("Error in 16 digit pass line: " + sLine + " error:" + ex.ToString)
+                logger.addToLog("Error in 16 digit pass line: " + sLine + " error:" + ex.ToString)
             End Try
         Next
 

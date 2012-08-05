@@ -88,7 +88,7 @@ Public Class calculateCRC
         ''dosbytes is out as byte array
 
         Return dosBytes
-        ''Throw new Exception("test6: " + cdmaTerm.biznytesToStrizings(dosBytes))
+        ''logger.addToLog("test6: " + cdmaTerm.biznytesToStrizings(dosBytes))
 
     End Function
 
@@ -116,7 +116,7 @@ Public Class calculateCRC
             Return cdmaTerm.String_To_Bytes(buildABearBuildAString)
 
         Catch
-            Throw New Exception("calculateCRC.FLiPallBytesInByteArray error")
+            logger.addToLog("calculateCRC.FLiPallBytesInByteArray error")
 
             Return testArray
 

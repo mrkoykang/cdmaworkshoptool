@@ -41,7 +41,7 @@ Public Class dispatchQmanager
     Public Sub interruptCommandQ()
 
         ''catch all errors and rx type
-        Throw New Exception("Transmit error in message queue")
+        logger.addToLog("Transmit error in message queue")
         mySynqdQ.Clear()
 
     End Sub
@@ -54,9 +54,9 @@ Public Class dispatchQmanager
 
     ''Returns true if all commands execute
     Public Function executeCommandQ() As Boolean
-        
+
         If cdmaTerm.portIsOpen = False Then
-            Throw New Exception("Dispatch Queue Error: Port Not Open, Please Connect")
+            logger.addToLog("Dispatch Queue Error: Port Not Open, Please Connect")
             silentInterruptCommandQ()
         Else
 
@@ -79,7 +79,7 @@ Public Class dispatchQmanager
                 'worker.Start()
                 'If Not worker.Join(TimeSpan.FromSeconds(2)) Then
                 '    worker.Abort()
-                '    Throw new Exception("Timedout! ERR")
+                '    logger.addToLog("Timedout! ERR")
                 'End If
                 thisC.tx()
 
@@ -95,7 +95,7 @@ Public Class dispatchQmanager
 
                 ''cdmaTerm.logAllBox += thisC.commandNameSent
                 logger.addToLog("-Q" + i.ToString + ": " + thisC.debuggingText & vbNewLine)
-                
+
             Next
 
         End If
@@ -141,7 +141,7 @@ Public Class dispatchQmanager
             Next
 
         Catch ex As Exception
-            Throw New Exception("nv check err: " + ex.ToString)
+            logger.addToLog("nv check err: " + ex.ToString)
         End Try
 
     End Sub
@@ -179,7 +179,7 @@ Public Class dispatchQmanager
 
             myFileStream.Close()
         Catch ex As Exception
-            Throw New Exception("Ram read err: " + ex.ToString)
+            logger.addToLog("Ram read err: " + ex.ToString)
         End Try
 
 
@@ -227,7 +227,7 @@ Public Class dispatchQmanager
 
 
         Catch ex As Exception
-            Throw New Exception("Ram scan err: " + ex.ToString)
+            logger.addToLog("Ram scan err: " + ex.ToString)
         End Try
 
         Return Ranges
@@ -282,7 +282,7 @@ Public Class dispatchQmanager
 
         For Each c As Command In mySynqdQ
 
-            '' Throw new Exception("rxd: " + cdmaTerm.biznytesToStrizings(c.bytesRxd))
+            '' logger.addToLog("rxd: " + cdmaTerm.biznytesToStrizings(c.bytesRxd))
             Dim nvOutputArray As New List(Of String)
             ''20 38 25 bad response length 20 results in arg out of range
             ''
@@ -336,8 +336,8 @@ Public Class dispatchQmanager
                 Dim itemString As String = decL.ToString("d5") + " (0x" + hexString + ")   -   OK"
 
 
-                '' Throw new Exception("nvItemNumberS: " + nvItemNumberS + " itemString: " + itemString)
-                ''Throw new Exception("num " + nvItemNumberS + " rxd: " + nvData)
+                '' logger.addToLog("nvItemNumberS: " + nvItemNumberS + " itemString: " + itemString)
+                ''logger.addToLog("num " + nvItemNumberS + " rxd: " + nvData)
 
                 SaveTextToFile(itemString, fileName)
                 SaveTextToFile(vbCrLf, fileName)

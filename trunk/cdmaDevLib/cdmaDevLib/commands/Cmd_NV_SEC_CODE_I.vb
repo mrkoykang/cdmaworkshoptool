@@ -8,7 +8,7 @@
         Try
 
             If Me.bytesRxd(0) = &H42 Then
-                Throw New Exception("Spc not found (send spc or 16 SP required?)")
+                logger.addToLog("Spc not found (send spc or 16 SP required?)")
 
             Else
 
@@ -26,7 +26,7 @@
                 spcFromPacket(15) + spcFromPacket(17)
 
                 'If thisIsTheSPC = "000000" Then
-                '    Throw new Exception("cant find meid 1")
+                '    logger.addToLog("cant find meid 1")
 
                 'Else
                 cdmaTerm.thePhone.Spc = thisIsTheSPC
@@ -38,7 +38,7 @@
 
 
         Catch
-            Throw New Exception("cant find spc_nv 1")
+            logger.addToLog("cant find spc_nv 1")
 
         End Try
     End Sub

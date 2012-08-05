@@ -203,7 +203,7 @@ Public Class Command
     ''function to send a bite array returns tru if it works
     Public Overrides Function tx() As Boolean
         If cdmaTerm.portIsOpen = False Then
-            Throw New Exception("Port not open err, please connect.")
+            logger.addToLog("Port not open err, please connect.")
             cdmaTerm.dispatchQ.silentInterruptCommandQ()
         Else
             Try
@@ -216,10 +216,10 @@ Public Class Command
                 bytesRxd = testSend.unescapeReturnedBytes(bytesRxd)
                 logger.addToLog(vbNewLine + vbNewLine)
                 logger.addToLog(debuggingText)
-  
+
                 Dim appendString As String = vbNewLine + debuggingText + vbNewLine + "TX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesToTx)) + vbNewLine + vbNewLine +
                             "RX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesRxd)) + vbNewLine
-                appendString += vbNewLine + "RX(ascii): " + cdmaTerm.sdr.getAsciiStrings(bytesRxd) + vbNewLine + vbNewLine
+                appendString += vbNewLine + "RX(ascii): " + SecretDecoderRing.getAsciiStrings(bytesRxd) + vbNewLine + vbNewLine
 
                 thePhone.SerialData = appendString
                 logger.addToLog(appendString)
@@ -230,7 +230,7 @@ Public Class Command
                 End If
 
             Catch ex As Exception
-                Throw New Exception("Command.tx err: " + ex.ToString)
+                logger.addToLog("Command.tx err: " + ex.ToString)
                 cdmaTerm.dispatchQ.interruptCommandQ()
             End Try
         End If

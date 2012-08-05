@@ -117,7 +117,7 @@ Public Class DmPort
 
             '' Return txBuffer.ToArray(Of Byte)()
         Catch ex As Exception
-            Throw New Exception("Crc err:" + ex.ToString)
+            logger.addToLog("Crc err:" + ex.ToString)
             Return (txBuffer.ToArray)
         End Try
 
@@ -146,7 +146,7 @@ Public Class DmPort
             ''GC.SuppressFinalize(cdmaTerm.mySerialPort.BaseStream)
 
         Catch ex As Exception
-            Throw New Exception("DmPort Wr err:" + ex.ToString)
+            logger.addToLog("DmPort Wr err:" + ex.ToString)
         End Try
         Try
             ''Dim txBuffer = cdmaTerm.gimmeCRC_AsByte_FromByte(data)
@@ -200,7 +200,7 @@ Public Class DmPort
 
         Catch ex As Exception
 
-            Throw New Exception("DmPort Tx Err: " + ex.ToString)
+            logger.addToLog("DmPort Tx Err: " + ex.ToString)
         Finally
         End Try
 
@@ -215,7 +215,7 @@ Public Class DmPort
             ''GC.SuppressFinalize(cdmaTerm.mySerialPort.BaseStream)
 
         Catch ex As Exception
-            Throw New Exception("DmPort Wr err:" + ex.ToString)
+            logger.addToLog("DmPort Wr err:" + ex.ToString)
         End Try
         Try
             ''Dim txBuffer = cdmaTerm.gimmeCRC_AsByte_FromByte(data)
@@ -269,7 +269,7 @@ Public Class DmPort
 
         Catch ex As Exception
 
-            Throw New Exception("DmPort Tx Err: " + ex.ToString)
+            logger.addToLog("DmPort Tx Err: " + ex.ToString)
         Finally
         End Try
 
@@ -308,11 +308,11 @@ Public Class DmPort
 
             If matches.Count > 0 Then
                 ''NotifyEvent(StatusTypes.Information, String.Format("{0} SPC candidate(s) found", matches.Count))
-                Throw New Exception((matches.Count + " SPC candidate(s) found"))
+                logger.addToLog((matches.Count + " SPC candidate(s) found"))
                 '' Return (From m In matches).ToArray(Of String)()
 
             Else
-                Throw New Exception("No SPC candidate found in this iteration")
+                logger.addToLog("No SPC candidate found in this iteration")
                 ''NotifyEvent(StatusTypes.Information, "No SPC candidate found in this iteration")
             End If
         Next
@@ -457,7 +457,7 @@ Public Class DmPort
             Next
 
         Catch ex As Exception
-            Throw New Exception("unescape err: " + ex.ToString)
+            logger.addToLog("unescape err: " + ex.ToString)
         End Try
         Return fixedBytes.ToArray
     End Function

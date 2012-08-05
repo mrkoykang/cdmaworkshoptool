@@ -109,7 +109,6 @@
     </Compile>
     <Compile Include="Phone.vb" />
     <Compile Include="qcdm\Nv.vb" />
-    <Compile Include="qcdm\NvEditor.vb" />
     <Compile Include="qcdm\NVItem.vb" />
     <Compile Include="qcdm\NvItemOLD.vb" />
     <Compile Include="qcdm\NVItems.vb" />

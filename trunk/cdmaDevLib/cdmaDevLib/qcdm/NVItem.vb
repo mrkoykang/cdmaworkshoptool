@@ -55,7 +55,7 @@
             End If
         Catch ex As Exception
 
-            Throw New Exception("Nv item parse err: " + ex.ToString)
+            logger.addToLog("Nv item parse err: " + ex.ToString)
         End Try
 
 
@@ -67,7 +67,6 @@
     End Function
 
     Public Function getItemName() As String
-        '' Return [Enum].Parse(GetType(NvItems.NVItems), ItemNumber)
         Return [Enum].GetName(GetType(NvItems.NVItems), ItemNumber)
     End Function
 

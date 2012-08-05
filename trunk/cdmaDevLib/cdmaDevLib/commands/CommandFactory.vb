@@ -66,7 +66,7 @@ Public Class CommandFactory
         Select Case qc
             Case DIAG_ESN_F
                 cmd = New Cmd_DIAG_ESN_F(qc, New Byte() {}, qc.ToString)
-            Case 2
+            Case False
 
             Case Else
                 cmd = New QcCommand(qc)

@@ -54,12 +54,12 @@ Public Class Model
                        Select nvItem
 
         For Each x As XElement In cmdNodes
-            ''Throw new Exception(x.Element("number").Value)
+            ''logger.addToLog(x.Element("number").Value)
             ' Try
 
             Dim currentData As String = Carrier.parseVar(x.Element("data").Value)
 
-            Throw New Exception("Model.new data after var replace: " + currentData)
+            logger.addToLog("Model.new data after var replace: " + currentData)
 
             Dim encoding As New System.Text.ASCIIEncoding()
 
@@ -78,7 +78,7 @@ Public Class Model
                     cdmaTerm.dispatchQ.addCommandToQ(New Command(Cmd.DIAG_NV_WRITE_F, NvItemCurrent, byteS.ToArray, currentData))
 
                 Catch ex2 As Exception
-                    Throw New Exception("Error: Nv element appears not to be a number or an nv item")
+                    logger.addToLog("Error: Nv element appears not to be a number or an nv item")
                 End Try
             End Try
         Next
@@ -98,7 +98,7 @@ Public Class Model
             PrlFile = Carrier.Prl
             myPlus.UploadPRL(prlFilePath + "/data/prl/" + PrlFile)
         Catch ex As Exception
-            Throw New Exception("Data script prl error: " + ex.ToString)
+            logger.addToLog("Data script prl error: " + ex.ToString)
         End Try
 
     End Sub

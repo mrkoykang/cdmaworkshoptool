@@ -19,7 +19,7 @@
             cdmaTerm.thePhone.UserLock = DecodedString
             cdmaTerm.thePhoneRxd.UserLock = DecodedString
         Catch
-            Throw New Exception("decoder err: cant get decoded userlock")
+            logger.addToLog("decoder err: cant get decoded userlock")
 
         End Try
     End Sub

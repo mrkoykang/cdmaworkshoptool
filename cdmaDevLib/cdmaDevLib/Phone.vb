@@ -26,6 +26,8 @@ Public Class Phone
     Private _NvItems As New Dictionary(Of NvItems.NVItems, Nv)
     Private _SpSixteenDigit As New Dictionary(Of String, String)
     Private _TermCommand As String
+    Private _Username As String
+    Private _Password As String
 
     Public Property SpSixteenDigit() As Dictionary(Of String, String)
         Get
@@ -47,15 +49,6 @@ Public Class Phone
         End Set
     End Property
 
-
-    'Public Property NvData() As ObservableCollection(Of Nv)
-    '    Get
-    '        Return _NvData
-    '    End Get
-    '    Set(value As ObservableCollection(Of Nv))
-    '        _NvData = value
-    '    End Set
-    'End Property
 
     Public Property SerialData() As String
         Get
@@ -122,6 +115,28 @@ Public Class Phone
             If value <> _Min Then
                 _Min = value
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("Min"))
+            End If
+        End Set
+    End Property
+    Public Property Username() As String
+        Get
+            Return _Username
+        End Get
+        Set(value As String)
+            If value <> _Username Then
+                _Username = value
+                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("Username"))
+            End If
+        End Set
+    End Property
+    Public Property Password() As String
+        Get
+            Return _Password
+        End Get
+        Set(value As String)
+            If value <> _Password Then
+                _Password = value
+                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("Password"))
             End If
         End Set
     End Property

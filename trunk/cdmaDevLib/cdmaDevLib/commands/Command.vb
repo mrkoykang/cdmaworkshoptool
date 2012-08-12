@@ -19,6 +19,8 @@ Imports System.Threading
 Imports System.Text
 Imports cdmaDevLib.cdmaTerm
 
+''Possibly the constructors in here will all be internal to the commandFactory only for decoding purposes
+
 Public Class Command
     Inherits ICommand
     ''outgoing byte array
@@ -58,7 +60,7 @@ Public Class Command
 
 
     '' COMMAND OBJECT
-    ''preferred command constructor for raw bytes
+    ''not preferred command constructor for raw bytes (factory is better-might get decoded that way)
     '' Requires:
     '' New ( Byte(), String, String )
     '' New ( Command, decoderType, loggingTxt )
@@ -84,14 +86,7 @@ Public Class Command
         Dim qcdmArray As Byte() = {Byte.Parse(qcdm)}
         bytesToTx = cdmaTerm.myD.GetBufferWithCRC(qcdmArray)
 
-        '' Dim qcdmArrayCrc As Byte() = cdmaTerm.gimmeCRC_AsByte_FromByte(qcdmArray)
-
-        '' bytesToTx = New Byte() {qcdmArray(0), qcdmArrayCrc(0), qcdmArrayCrc(1), &H7E}
-
-
-        '', cdmaTerm.gimmeCRC_AsByte_FromByte(New Byte()( Byte.Parse(qcdm))), &H7E}
         debuggingText = debuggingTextIn + " / new crc1"
-        ''requiresDecoder = False
     End Sub
 
     Public Sub New(ByVal qcdm As Qcdm.Cmd, ByVal qcData As Byte(), ByVal debuggingTextIn As String)

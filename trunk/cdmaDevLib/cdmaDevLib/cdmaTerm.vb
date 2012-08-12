@@ -419,49 +419,13 @@ ends:
 #Region "onFormOpenAndOnFormClose"
     ''coding koan: make it work, fix it later
     ' ''on form load
-    'Private Sub cdmaTerm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-    '    Try
-    '        ''debugging?
-    '        If debugMode = False Then
-    '            TabControl1.Controls.Remove(TabPage4)
-    '            TabControl1.Controls.Remove(DataSetup)
 
-    '            LeftTabControl.Controls.Remove(EFS)
-    '            LeftTabControl.Controls.Remove(CmdAndADB)
-
-    '        End If
-
-
-    '        If selectPRLComboBox.Text.StartsWith("cricKet") Then
-
-    '            PictureBox1.Image = My.Resources.Resources.Cricket_Black1
-    '        ElseIf selectPRLComboBox.Text.StartsWith("metro") Then
-    '            PictureBox1.Image = My.Resources.Resources.Metro_Logo
-    '        End If
-
-
-    '        CheckForIllegalCrossThreadCalls = False
-
-    '        ''try and save testing time AUTOLOAD
-    '        ''run the check for coms and populate box sub
-    '        GetComs()
-
-
-    '        If (System.IO.Directory.Exists(Application.StartupPath + "\moto\")) Then
-    '            MotoWebBrowser1.Navigate(Application.StartupPath + "\moto\")
-    '        End If
-
-    '        If (System.IO.Directory.Exists(Application.StartupPath + "\prl\")) Then
-
-    '        End If
-
-    '        If (System.IO.File.Exists(Application.StartupPath + "\16digitpass.txt")) Then
-    '            SixteenDigitCodes.set16DigitPasswords(New String(Application.StartupPath + "\16digitpass.txt"))
-    '            select16digitCodeBox.DataSource = New BindingSource(SixteenDigitCodes.get16DigitPasswords, Nothing)
-    '            select16digitCodeBox.DisplayMember = "Key"
-    '            select16digitCodeBox.ValueMember = "Value"
-
-    '        End If
+    Public Shared Sub initSixteenDigitCodes(spFilePath As String)
+        If (System.IO.File.Exists(spFilePath)) Then
+            SixteenDigitCodes.set16DigitPasswords(spFilePath)
+            cdmaTerm.thePhone.SpSixteenDigit = cdmaTerm.thePhone.SpSixteenDigit
+        End If
+    End Sub
 
     '        qcCommandsCombo.DataSource = [Enum].GetValues(GetType(Qcdm.Cmd))
     '        nvItemsCombo.DataSource = [Enum].GetValues(GetType(NvItems.NVItems))
@@ -610,31 +574,31 @@ ends:
             ''dispatchQ.executeCommandQ()
 
 
-        ElseIf spcType = "Samsung1" Then
-            ''logger.addToLog("s1 method not here yet")
-            ''TODO: Find sample, make decoder
-            dispatchQ.addCommandToQ(New Command(readSPC_Samsung1Method, "ReadSPC_NV", "readSPC_Samsung1Method byte array method"))
+            'ElseIf spcType = "Samsung1" Then
+            '    ''logger.addToLog("s1 method not here yet")
+            '    ''TODO: Find sample, make decoder
+            '    dispatchQ.addCommandToQ(New Command(readSPC_Samsung1Method, "ReadSPC_NV", "readSPC_Samsung1Method byte array method"))
 
 
-        ElseIf spcType = "Samsung2" Then
-            ''logger.addToLog("s2 method")
-            ''TODO: Find sample, make decoder
-            dispatchQ.addCommandToQ(New Command(readSPC_Samsung2Method, "ReadSPC_NV", "readSPC_Samsung2Method byte array method"))
+            'ElseIf spcType = "Samsung2" Then
+            '    ''logger.addToLog("s2 method")
+            '    ''TODO: Find sample, make decoder
+            '    dispatchQ.addCommandToQ(New Command(readSPC_Samsung2Method, "ReadSPC_NV", "readSPC_Samsung2Method byte array method"))
 
 
-        ElseIf spcType = "Kyocera" Then
-            ''logger.addToLog("kyocera method")
-            ''TODO: Find sample, make decoder
-            dispatchQ.addCommandToQ(New Command(readSPC_Kyocera, "ReadSPC_NV", "readSPC_Kyocera byte array method"))
+            'ElseIf spcType = "Kyocera" Then
+            '    ''logger.addToLog("kyocera method")
+            '    ''TODO: Find sample, make decoder
+            '    dispatchQ.addCommandToQ(New Command(readSPC_Kyocera, "ReadSPC_NV", "readSPC_Kyocera byte array method"))
 
 
-        ElseIf spcType = "EFS" Then
-            '' logger.addToLog("efs method")
+            'ElseIf spcType = "EFS" Then
+            '    '' logger.addToLog("efs method")
 
-            dispatchQ.addCommandToQ(New Command(readSPC_EFSMethod_SubsytemCmd, "readSPC_EFSMethod_SubsytemCmd byte array method"))
-            dispatchQ.addCommandToQ(New Command(readSPC_EFSMethod_EfsCmd, "readSPC_EFSMethod_EfsCmd byte array method"))
+            '    dispatchQ.addCommandToQ(New Command(readSPC_EFSMethod_SubsytemCmd, "readSPC_EFSMethod_SubsytemCmd byte array method"))
+            '    dispatchQ.addCommandToQ(New Command(readSPC_EFSMethod_EfsCmd, "readSPC_EFSMethod_EfsCmd byte array method"))
 
-            ''insert decoder
+            '    ''insert decoder
         ElseIf spcType = cdmaTerm.SpcReadType.MetroPCS Then
 
             dispatchQ.addCommandToQ(CommandFactory.GetCommand(DIAG_ESN_F))
@@ -645,8 +609,8 @@ ends:
                 Dim ajhBlackMagic As New metroCalc
                 ''get esn from gui
                 thePhone.Spc = ajhBlackMagic.MetroSPCcalc(thePhone.Esn) ''todo: what to do with result in this design?
-            Catch
-                logger.addToLog("metro spc error")
+            Catch ex As Exception
+                logger.addToLog("metro spc error: " + ex.ToString)
             End Try
 
         End If
@@ -656,22 +620,10 @@ ends:
 
 #End Region
 
-    ''All the Buttons
-#Region "Button Handlers"
 
-
-
-    'send a terminal command button
-    Public Sub SendTerminalCommand(terminalCommand As String)
-        ''TODO add routine to stip " " blank spaces
-        ''which error right now
-        ''testing term send w/ string to byte()
-
-        Dim TermCommandWithoutSpaces As String = terminalCommand.Replace(" ", String.Empty)
-        ''sendTermCommand2(String_To_Bytes(TermCommandWithoutSpaces))
-
+    Public Shared Sub SendTerminalCommand(terminalCommand As String)
         dispatchQ.clearCommandQ()
-        dispatchQ.addCommandToQ(New Command(String_To_Bytes(TermCommandWithoutSpaces), "Terminal: " & terminalCommand))
+        dispatchQ.addCommandToQ(CommandFactory.GetCommand(terminalCommand))
         dispatchQ.executeCommandQ()
     End Sub
 
@@ -771,9 +723,6 @@ ends:
     'End Sub
 
 
-
-
-#End Region
     ''All the commands
 #Region "CommandsAsByteArrays"
 
@@ -1572,6 +1521,28 @@ ends:
         dispatchQ.clearCommandQ()
         dispatchQ.addCommandToQ(CommandFactory.GetCommand(qc))
         dispatchQ.executeCommandQ()
+    End Sub
+
+    Public Enum phoneKeys
+        One = &H31
+        Two = &H32
+        Three = &H33
+        Four = &H34
+        Five = &H35
+        Six = &H36
+        Seven = &H37
+        Eight = &H38
+        Nine = &H39
+        Zero = &H30
+        Pound = &H23
+        Star = &H2A
+    End Enum
+
+
+    Public Shared Sub KeyPress(k As phoneKeys)
+        cdmaTerm.dispatchQ.clearCommandQ()
+        cdmaTerm.dispatchQ.addCommandToQ(CommandFactory.GetCommand(DIAG_HS_KEY_F, New Byte() {0, k}))
+        cdmaTerm.dispatchQ.executeCommandQ()
     End Sub
 
     Public Shared Sub WriteNamLock(lockNam As Boolean)

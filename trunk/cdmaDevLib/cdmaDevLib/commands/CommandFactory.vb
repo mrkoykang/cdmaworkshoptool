@@ -39,7 +39,7 @@ Public Class CommandFactory
                                         data, _
                                         qc.ToString() & " " & nv.ToString())
             Case NV_LOCK_CODE_I
-                cmd = New Cmd_NV_HOME_SID_NID_I(qc, _
+                cmd = New Cmd_NV_LOCK_CODE_I(qc, _
                                         nv, _
                                         data, _
                                         qc.ToString() & " " & nv.ToString())
@@ -72,9 +72,41 @@ Public Class CommandFactory
                 cmd = New QcCommand(qc)
         End Select
 
-
-
         Return cmd ''New QcCommand(qc)
     End Function
 
+    Shared Function GetCommand(qc As Qcdm.Cmd, data As Byte()) As ICommand
+        Dim cmd As ICommand
+        cmd = New Command(qc, data, qc.ToString)
+        Return cmd
+    End Function
+    ''TODO: untested entirely
+    Shared Function GetCommand(str As String) As ICommand
+        Dim cmd As ICommand
+        Dim bytes As Byte() = cdmaDevLib.cdmaTerm.String_To_Bytes(str)
+
+        Try
+            Dim qc As Qcdm.Cmd = CType(bytes(0), Qcdm.Cmd)
+            If qc = DIAG_NV_READ_F Then
+
+                Dim numS As String = bytes(2).ToString("X2") + bytes(1).ToString("X2")
+                Dim num = Integer.Parse(numS)
+                Dim nv As Qcdm.Cmd = CType(num, NvItems.NVItems)
+                cmd = CommandFactory.GetCommand(nv)
+            ElseIf qc = DIAG_NV_WRITE_F Then
+                Dim numS As String = bytes(2).ToString("X2") + bytes(1).ToString("X2")
+                Dim num = Integer.Parse(numS)
+                Dim nv As Qcdm.Cmd = CType(num, NvItems.NVItems)
+                cmd = CommandFactory.GetCommand(nv, True, cdmaTerm.String_To_Bytes(str.Substring(6)))
+            Else
+                cmd = New Command(cdmaTerm.String_To_Bytes(str.Replace(" ", String.Empty)), "Raw bytes")
+            End If
+
+        Catch ex As Exception
+            cmd = New Command(cdmaTerm.String_To_Bytes(str.Replace(" ", String.Empty)), "Raw bytes")
+
+        End Try
+
+        Return cmd
+    End Function
 End Class

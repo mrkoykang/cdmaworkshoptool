@@ -19,15 +19,7 @@
 
 Public Class SixteenDigitCodes
 
-    Private Shared runtime16DigitPass As Dictionary(Of String, String)
-
-    Public Shared Function get16DigitPasswords() As Dictionary(Of String, String)
-        Return runtime16DigitPass
-    End Function
-
     Public Shared Sub set16DigitPasswords(path As String)
-
-        runtime16DigitPass = New Dictionary(Of String, String)
 
         Dim objReader As New StreamReader(path)
         Dim sLine As String = ""
@@ -47,7 +39,7 @@ Public Class SixteenDigitCodes
             Dim seperator As Int16 = sLine.IndexOf(":")
 
             Try
-                runtime16DigitPass.Add(sLine.Substring(0, seperator), sLine.Substring(seperator + 1, 16))
+                cdmaTerm.thePhone.SpSixteenDigit.Add(sLine.Substring(0, seperator), sLine.Substring(seperator + 1, 16))
             Catch ex As Exception
                 logger.addToLog("Error in 16 digit pass line: " + sLine + " error:" + ex.ToString)
             End Try
@@ -56,8 +48,7 @@ Public Class SixteenDigitCodes
     End Sub
 
     Public Shared Function get16DigitPassword(model As String) As String
-        Return runtime16DigitPass.Item(model)
+        Return cdmaTerm.thePhone.SpSixteenDigit.Item(model)
     End Function
-
 
 End Class

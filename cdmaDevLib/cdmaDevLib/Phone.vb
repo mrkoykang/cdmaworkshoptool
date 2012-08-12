@@ -18,20 +18,44 @@ Public Class Phone
     Private _SpcReadType As cdmaTerm.SpcReadType
     Private _NamLock As Boolean
     Private OperationCount As Integer = 0
-    Private _NvData As New ObservableCollection(Of Nv)
+    'Private _NvData As New ObservableCollection(Of Nv)
     Private _Qcmip As Qcdm.Qcmip
     Private _AvailableComPorts As New List(Of String)
     Private _ComPortName As String
     Private _SixteenDigitSP As String
+    Private _NvItems As New Dictionary(Of NvItems.NVItems, Nv)
+    Private _SpSixteenDigit As New Dictionary(Of String, String)
+    Private _TermCommand As String
 
-    Public Property NvData() As ObservableCollection(Of Nv)
+    Public Property SpSixteenDigit() As Dictionary(Of String, String)
         Get
-            Return _NvData
+            Return _SpSixteenDigit
         End Get
-        Set(value As ObservableCollection(Of Nv))
-            _NvData = value
+        Set(value As Dictionary(Of String, String))
+            _SpSixteenDigit = value
+            RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("SpSixteenDigit"))
         End Set
     End Property
+
+    Public Property NvItems() As Dictionary(Of NvItems.NVItems, Nv)
+        Get
+            Return _NvItems
+        End Get
+        Set(value As Dictionary(Of NvItems.NVItems, Nv))
+            _NvItems = value
+            RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("NvItems"))
+        End Set
+    End Property
+
+
+    'Public Property NvData() As ObservableCollection(Of Nv)
+    '    Get
+    '        Return _NvData
+    '    End Get
+    '    Set(value As ObservableCollection(Of Nv))
+    '        _NvData = value
+    '    End Set
+    'End Property
 
     Public Property SerialData() As String
         Get
@@ -39,6 +63,12 @@ Public Class Phone
         End Get
         Set(value As String)
             If value <> _SerialData Then
+                If value = "" Then
+                    _SerialData = ""
+                    OperationCount += 1
+                    RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("SerialData"))
+                End If
+
                 OperationCount += 1
                 _SerialData = OperationCount.ToString + " " + value + Environment.NewLine + _SerialData
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("SerialData"))
@@ -52,6 +82,12 @@ Public Class Phone
         End Get
         Set(value As String)
             If value <> _LogData Then
+                If value = "" Then
+                    _LogData = ""
+                    OperationCount += 1
+                    RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("LogData"))
+                End If
+
                 OperationCount += 1
                 _LogData = value + Environment.NewLine + _LogData
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("LogData"))
@@ -86,6 +122,17 @@ Public Class Phone
             If value <> _Min Then
                 _Min = value
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("Min"))
+            End If
+        End Set
+    End Property
+    Public Property TermCommand() As String
+        Get
+            Return _TermCommand
+        End Get
+        Set(value As String)
+            If value <> _TermCommand Then
+                _TermCommand = value
+                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("TermCommand"))
             End If
         End Set
     End Property

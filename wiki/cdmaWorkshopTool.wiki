@@ -19,6 +19,8 @@ Here you will find some wiki documentation about cdmaDevTerm and cwTool.
   * Why is cdmaDevTerm free? I like making free software. I use alot of free software. 
 
   * What features are experimental? If checked out from source and built with the debug flag set there are some features like efs which are _highly_ experimental and are really only recommended to use if you'd like to help develop these features. (if you would like a general purpose cdma program which does read efs check out bitpim or revskills)
+  
+  * Can I donate to cdmaDevTerm? For now at least there is no way to donate directly to support development effort, however, if you would like to make a donation to a charitable organization and email something we can post here it would probably help motivate programmers to work for free
 
 
 *Community content*

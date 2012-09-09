@@ -8,6 +8,10 @@ Here you will find some wiki documentation about cdmaDevTerm and cwTool.
 || current version || v.2 ||
 || status || beta ||
 
+*Guides*
+
+http://www.chromableedstudios.com/techninjutsu/howtowritemdnminwithcdmadevterm
+
 *FAQ*
 
   * Could I please have the source code to cdmaDevTerm? of course, it is GPL v3 software. Click the source tab, and checkout from svn(I use tortoiseSvn personally)

@@ -14,6 +14,8 @@ http://www.chromableedstudios.com/techninjutsu/howtowritemdnminwithcdmadevterm
 
 *FAQ*
 
+  * Whats cdmaDevLib vs cdmaDevTerm? cdmaDevLib is a library which enables the functions in cdmaDevTerm
+
   * Could I please have the source code to cdmaDevTerm? of course, it is GPL v3 software. Click the source tab, and checkout from svn(I use tortoiseSvn personally)
 
   * Why is the code so bad? lots of reasons. But it _is_ free and open.

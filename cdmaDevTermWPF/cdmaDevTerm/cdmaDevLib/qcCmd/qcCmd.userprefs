@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="qcCmd/Program.cs">
+    <Files>
+      <File FileName="qcCmd/Program.cs" Line="63" Column="19" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/media/7EA268B4A2687297/data/dev/repos/cdmaworkshoptool/cdmaDevLib/cdmaDevLib/qcCmd/qcCmd/Program.cs" line="18" />
+      <Breakpoint file="/media/7EA268B4A2687297/data/dev/repos/cdmaworkshoptool/cdmaDevLib/cdmaDevLib/qcCmd/qcCmd/Program.cs" line="83" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

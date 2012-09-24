@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="cdmaDevTerm.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ThemeType" Type="Elysium.Theme.ThemeType" Scope="Application">
+      <Value Profile="(Default)">Light</Value>
+    </Setting>
+    <Setting Name="Accent" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Lime</Value>
+    </Setting>
+    <Setting Name="AutoModeOffline" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

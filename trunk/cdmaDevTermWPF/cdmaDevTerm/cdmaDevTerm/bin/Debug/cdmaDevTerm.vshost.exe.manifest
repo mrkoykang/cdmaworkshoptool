@@ -70,19 +70,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>FIGOz5sFrByifACrJhJw1P/9dmI=</dsig:DigestValue>
+        <dsig:DigestValue>r0MrmVCBH8iYT6YRLGQKAp9IQcY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="47616">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="48640">
       <assemblyIdentity name="cdmaDevTerm" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Xh93FavzovF5HGtHUEF8vtOUIwg=</dsig:DigestValue>
+        <dsig:DigestValue>YzViU3Ty0mjEq2uWJlJcHSlMNto=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -99,14 +99,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="winAPIcom.dll" size="8704">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="winAPIcom.dll" size="9216">
       <assemblyIdentity name="winAPIcom" version="1.0.2.1" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>fDMzm/OIxXoQNabEgyPe2ToeDXE=</dsig:DigestValue>
+        <dsig:DigestValue>ieHirMaOKKnYClNxFZ+CVOsLs3U=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

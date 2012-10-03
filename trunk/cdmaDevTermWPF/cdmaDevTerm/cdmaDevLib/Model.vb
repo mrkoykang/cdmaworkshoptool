@@ -1,4 +1,6 @@
-﻿Imports cdmaDevLib
+﻿''Copyright 2012 Dillon Graham
+''GPL v3 
+Imports cdmaDevLib
 Imports cdmaDevLib.Qcdm
 Imports cdmaDevLib.Qcdm.Cmd
 Public Class Model

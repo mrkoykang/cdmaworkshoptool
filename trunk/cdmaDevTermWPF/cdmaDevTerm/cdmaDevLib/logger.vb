@@ -1,4 +1,6 @@
-﻿Public Class logger
+﻿''Copyright 2012 Dillon Graham
+''GPL v3 
+Public Class logger
     Enum logType
         info
         warn

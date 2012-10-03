@@ -1,4 +1,7 @@
-﻿using System;
+﻿//Copyright 2012 Dillon Graham
+//GPL v3 
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -80,7 +83,7 @@ namespace cdmaDevTerm
 
             this.DataContext = cdmaTerm.thePhone;
             cdmaTerm.initSixteenDigitCodes(AppDomain.CurrentDomain.BaseDirectory + "16digitpass.txt");
-
+            cdmaTerm.GetComs();
         }
 
         private void Connect_Click(object sender, RoutedEventArgs e)
@@ -101,6 +104,7 @@ namespace cdmaDevTerm
             cdmaTerm.ReadSingleNv(NvItems.NVItems.NV_SEC_CODE_I);
             cdmaTerm.ReadSingleNv(NvItems.NVItems.NV_LOCK_CODE_I);
             cdmaTerm.ReadSingleNv(NvItems.NVItems.NV_HOME_SID_NID_I);
+            cdmaTerm.ReadSingleNv(NvItems.NVItems.NV_NAM_LOCK_I);
             cdmaTerm.dispatchQ.executeCommandQ();
             cdmaTerm.ReadMIN1();
 
@@ -182,6 +186,15 @@ namespace cdmaDevTerm
             {
                 cdmaTerm.KeyPress(cdmaTerm.phoneKeys.Pound);
             }
+            private void keySend_Click(object sender, RoutedEventArgs e)
+            {
+                cdmaTerm.KeyPress(cdmaTerm.phoneKeys.SendKey);
+            }
+
+            private void keyEnd_Click(object sender, RoutedEventArgs e)
+            {
+                cdmaTerm.KeyPress(cdmaTerm.phoneKeys.EndKey);
+            }
         #endregion
 
             private void sendSpc_Click(object sender, RoutedEventArgs e)
@@ -255,7 +268,6 @@ namespace cdmaDevTerm
                 cdmaTerm.dispatchQ.clearCommandQ();
                 cdmaTerm.updatePhoneFromViewModel();
             }
-
 
     }
 }

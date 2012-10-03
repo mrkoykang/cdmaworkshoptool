@@ -1,6 +1,4 @@
-﻿Imports System.IO
-
-' '' CDMA DEV TERM
+﻿' '' CDMA DEV TERM
 ' '' Copyright (c) Dillon Graham 2010-2012 Chromableed Studios
 ' '' www.chromableedstudios.com
 ' '' chromableedstudios ( a t ) gmail ( d o t ) com
@@ -16,7 +14,7 @@
 ' '' check out the GPL v3 for details
 ' '' http://www.gnu.org/copyleft/gpl.html
 ' ''-------------------------------------------------------------------------------------------------------------
-
+Imports System.IO
 Public Class SixteenDigitCodes
 
     Public Shared Sub set16DigitPasswords(path As String)

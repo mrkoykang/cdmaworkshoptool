@@ -1,4 +1,5 @@
-﻿<metro:Window x:Class="cdmaDevTerm.MainWindow"
+﻿
+    <metro:Window x:Class="cdmaDevTerm.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:metro="http://schemas.codeplex.com/elysium/theme"
@@ -84,12 +85,14 @@
 
                                 <StackPanel Margin="2"  Orientation="Horizontal">
                                     <TextBlock Margin="5" Text="MDN"  HorizontalAlignment="Left"  Name="MdnLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
-                                    <TextBox   Text="{Binding Path=Mdn,   PresentationTraceSources.TraceLevel=High}" HorizontalAlignment="Left" MinWidth="94" VerticalAlignment="Bottom" >
+                                    <TextBox   Text="{Binding Path=Mdn,   PresentationTraceSources.TraceLevel=High}" HorizontalAlignment="Left" MinWidth="94" VerticalAlignment="Bottom" MaxLength="10">
                                         
                                     </TextBox>
                                     <TextBlock Margin="5" Text="MIN"  HorizontalAlignment="Left" Name="MinLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
-                                    <TextBox   Text="{Binding Path=Min}" HorizontalAlignment="Right" MinWidth="94"  VerticalAlignment="Bottom" />
-                                   
+                                    <TextBox   Text="{Binding Path=Min}" HorizontalAlignment="Right" MinWidth="94"  VerticalAlignment="Bottom" MaxLength="10"/>
+                                    <TextBlock Margin="5" Text="NAM LOCK"  HorizontalAlignment="Left" Name="NamLock" VerticalAlignment="Top" FontFamily="Segoe UI" />
+
+                                    <CheckBox x:Name="NamLockCheckbox" IsChecked="{Binding Path=NamLock}"></CheckBox>
                                 </StackPanel>
                                 
                                 <StackPanel Margin="2" Orientation="Horizontal">
@@ -107,14 +110,14 @@
                                         </StackPanel>
                                         <Button.ToolTip>
                                             <ToolTip>
-                                                <TextBlock Text="write: mdn, min, userlock, sid, nid"/>
+                                                <TextBlock Text="write: mdn, min, namLock, userlock, sid, nid"/>
                                             </ToolTip>
                                         </Button.ToolTip>
                                     </Button>
                                 
                                 <StackPanel Margin="2" Orientation="Horizontal">
                                     <TextBlock Margin="5" Text="SPC" HorizontalAlignment="Left" Name="SpcLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
-                                    <TextBox HorizontalAlignment="Left"  Text="{Binding Path=Spc}" MinWidth="94"/>
+                                    <TextBox HorizontalAlignment="Left"  Text="{Binding Path=Spc}" MinWidth="94" MaxLength="6"/>
                                     <Button  Margin="5,0,0,0" HorizontalAlignment="Left" Name="sendSpc" Width="63" Click="sendSpc_Click">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="Resources/upload.png" Stretch="Uniform" Height="20" Width="20" />
@@ -325,6 +328,10 @@
                                     <Button Content="*" Margin="5" MinHeight="70" MinWidth="70" FontSize="28" Name="keyStar" Click="keyStar_Click" />
                                     <Button Content="0" Margin="5" MinHeight="70" MinWidth="70" FontSize="28" Name="key0" Click="key0_Click" />
                                     <Button Content="#" Margin="5" MinHeight="70" MinWidth="70" FontSize="28" Name="keyPound" Click="keyPound_Click" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="call" Margin="5" MinHeight="70" MinWidth="70" FontSize="28" Name="keySend" Click="keySend_Click" />
+                                    <Button Content="end" Margin="5" MinHeight="70" MinWidth="70" FontSize="28" Name="keyEnd" Click="keyEnd_Click"  />
                                 </StackPanel>
                             </StackPanel>
                         </Grid>

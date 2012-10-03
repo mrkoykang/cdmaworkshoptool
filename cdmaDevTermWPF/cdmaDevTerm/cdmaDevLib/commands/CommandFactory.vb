@@ -48,9 +48,11 @@ Public Class CommandFactory
                                         nv, _
                                         data, _
                                         qc.ToString() & " " & nv.ToString())
-
-
-
+            Case NV_NAM_LOCK_I
+                cmd = New Cmd_NV_NAM_LOCK_I(qc, _
+                                        nv, _
+                                        data, _
+                                        qc.ToString() & " " & nv.ToString())
             Case Else
                 cmd = New Cmd_nv(qc, _
                                   nv, _

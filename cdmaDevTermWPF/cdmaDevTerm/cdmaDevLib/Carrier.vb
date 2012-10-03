@@ -1,18 +1,21 @@
-﻿Public Class Carrier
+﻿''Copyright 2012 Dillon Graham
+''GPL v3 
+Public Class Carrier
 
     Private _name As String
     Private _prl As String
     Public Vars As New Dictionary(Of String, String)
 
-    Sub initVars(doc As XDocument, mdn As String, min As String)
+    Sub initVars(doc As XDocument)
         Dim Nodes = From variable In doc...<variable> _
                        Select variable
         For Each node In Nodes
             Vars.Add(node.Element("key").Value.ToString, node.Element("value").Value.ToString)
         Next
 
-        Vars.Add("¿MDN?", mdn)
-        Vars.Add("¿MIN?", min)
+        Vars.Add("¿MDN?", cdmaTerm.thePhone.Mdn)
+        Vars.Add("¿MIN?", cdmaTerm.thePhone.Min)
+        '' Vars.Add("¿SPC?", cdmaTerm.thePhone.Spc)''todo: does this help for metro?
         ''Name = New String(nameNode.Nodes.ElementAt(0).ToString)
 
     End Sub
@@ -28,7 +31,7 @@
                        Select prl
         Prl = New String(prlNode.Nodes.ElementAt(0).ToString)
 
-        initVars(doc, mdn, min)
+        initVars(doc)
     End Sub
 
     Public Property Name As String
@@ -84,5 +87,5 @@
 
     End Function
 
-    
+
 End Class

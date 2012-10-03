@@ -1362,6 +1362,8 @@ ends:
         Zero = &H30
         Pound = &H23
         Star = &H2A
+        SendKey = &H50
+        EndKey = &H51
     End Enum
 
 
@@ -1581,7 +1583,9 @@ ends:
         If (thePhone.Sid <> thePhoneRxd.Sid Or thePhone.Nid <> thePhoneRxd.Nid) Then
             cdmaTerm.WriteSidAndNid(thePhone.Sid, thePhone.Nid)
         End If
-       
+        If (thePhone.NamLock <> thePhoneRxd.NamLock) Then
+            cdmaTerm.WriteNamLock(thePhone.NamLock)
+        End If
 
     End Sub
 

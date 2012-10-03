@@ -1,4 +1,6 @@
-﻿Imports System.Text
+﻿''Copyright 2012 Dillon Graham
+''GPL v3 
+Imports System.Text
 Imports System.Collections.ObjectModel
 
 Public Class Phone
@@ -84,7 +86,7 @@ Public Class Phone
                 End If
 
                 OperationCount += 1
-                _LogData = value + Environment.NewLine + _LogData
+                _LogData = value + Environment.NewLine + _LogData ''TODO: awkward and not needed, strange bugs probably(impossible to delete middle of log and append ha!?)
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("LogData"))
             End If
         End Set

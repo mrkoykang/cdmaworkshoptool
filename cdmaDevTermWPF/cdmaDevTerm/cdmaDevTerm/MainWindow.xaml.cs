@@ -88,26 +88,29 @@ namespace cdmaDevTerm
 
         private void Connect_Click(object sender, RoutedEventArgs e)
         {
+            Boolean result = true;
             cdmaTerm.connectSub(cdmaTerm.thePhone.ComPortName);
 
             if (Properties.Settings.Default.AutoModeOffline)
             {
                 cdmaTerm.dispatchQ.clearCommandQ();
                 cdmaTerm.dispatchQ.add(new Command(cdmaTerm.modeOfflineD, "Offline"));
-                cdmaTerm.dispatchQ.executeCommandQ();
+                result = cdmaTerm.dispatchQ.executeCommandQ();
             }
-
-            cdmaTerm.ReadAllEvdo();
-            cdmaTerm.ReadSingleNv(NvItems.NVItems.NV_MEID_I);
-            cdmaTerm.ReadSingleQc(Qcdm.Cmd.DIAG_ESN_F);
-            cdmaTerm.ReadSingleNv(NvItems.NVItems.NV_DIR_NUMBER_I);
-            cdmaTerm.ReadSingleNv(NvItems.NVItems.NV_SEC_CODE_I);
-            cdmaTerm.ReadSingleNv(NvItems.NVItems.NV_LOCK_CODE_I);
-            cdmaTerm.ReadSingleNv(NvItems.NVItems.NV_HOME_SID_NID_I);
-            cdmaTerm.ReadSingleNv(NvItems.NVItems.NV_NAM_LOCK_I);
-            cdmaTerm.dispatchQ.executeCommandQ();
-            cdmaTerm.ReadMIN1();
-
+            if (result)
+            {
+                cdmaTerm.AddAllEvdo();
+                cdmaTerm.AddNv(NvItems.NVItems.NV_MEID_I);
+                cdmaTerm.AddQc(Qcdm.Cmd.DIAG_ESN_F);
+                cdmaTerm.AddNv(NvItems.NVItems.NV_DIR_NUMBER_I);
+                cdmaTerm.AddNv(NvItems.NVItems.NV_SEC_CODE_I);
+                cdmaTerm.AddNv(NvItems.NVItems.NV_LOCK_CODE_I);
+                cdmaTerm.AddNv(NvItems.NVItems.NV_HOME_SID_NID_I);
+                cdmaTerm.AddNv(NvItems.NVItems.NV_NAM_LOCK_I);
+                result = result && cdmaTerm.dispatchQ.executeCommandQ();
+                if(result)
+                cdmaTerm.ReadMIN1();
+            }
         }
 
         private void Scan_Click(object sender, RoutedEventArgs e)

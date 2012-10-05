@@ -19,7 +19,7 @@
 ''build:
 ''alphaalphaOrxMEID16MworkingTabbySecretDecoderSamsungAutoMagic(applyDirectlyToTheForehead)HalfBakedCRC_TastesOK!lilEVDOsauceSPEEDYspcMetCalcAT$QCDMG_LOGtXrX_NV_READinPRLsendin(woot!woot!)clean_n_leanNvEditorStyle_PostMortemCleanUp_aNewData
 ''
-''8:40pm - 03/07/2011
+''11pm - 10/04/2012
 ''
 ''here goes nop
 Imports System
@@ -1092,7 +1092,7 @@ ends:
         dispatchQ.executeCommandQ()
 
 
-        ReadSingleNv(NV_DIR_NUMBER_I)
+        ReadNv(NV_DIR_NUMBER_I)
 
     End Sub
 
@@ -1331,22 +1331,30 @@ ends:
 
     End Sub
 
-    Public Shared Sub ReadSingleNv(ByVal nv As NvItems.NVItems)
+    Public Shared Sub ReadNv(ByVal nv As NvItems.NVItems)
         dispatchQ.clearCommandQ()
+        AddNv(nv)
+        dispatchQ.executeCommandQ()
+    End Sub
+    Public Shared Sub AddNv(ByVal nv As NvItems.NVItems)
         dispatchQ.add(CommandFactory.GetCommand(nv))
-        dispatchQ.executeCommandQ()
     End Sub
 
-    Public Shared Sub WriteSingleNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
+    Public Shared Sub WriteNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
         dispatchQ.clearCommandQ()
+        AddWriteNv(nv, writeData)
+        dispatchQ.executeCommandQ()
+    End Sub
+    Public Shared Sub AddWriteNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
         dispatchQ.add(CommandFactory.GetCommand(nv, True, writeData))
+    End Sub
+    Public Shared Sub ReadQc(ByVal qc As Qcdm.Cmd)
+        dispatchQ.clearCommandQ()
+        AddQc(qc)
         dispatchQ.executeCommandQ()
     End Sub
-
-    Public Shared Sub ReadSingleQc(ByVal qc As Qcdm.Cmd)
-        dispatchQ.clearCommandQ()
+    Public Shared Sub AddQc(ByVal qc As Qcdm.Cmd)
         dispatchQ.add(CommandFactory.GetCommand(qc))
-        dispatchQ.executeCommandQ()
     End Sub
 
     Public Enum phoneKeys
@@ -1571,14 +1579,14 @@ ends:
             Dim WriteData As New List(Of Byte)
             WriteData.Add(&H0)
             WriteData.AddRange(ASCIIEncoding.ASCII.GetBytes(thePhone.Mdn))
-            cdmaTerm.WriteSingleNv(NvItems.NVItems.NV_DIR_NUMBER_I, WriteData.ToArray)
+            cdmaTerm.WriteNv(NvItems.NVItems.NV_DIR_NUMBER_I, WriteData.ToArray)
         End If
         If (thePhone.Min <> thePhoneRxd.Min) Then
             cdmaTerm.WriteMIN(thePhone.Min)
             dispatchQ.executeCommandQ()
         End If
         If (thePhone.UserLock <> thePhoneRxd.UserLock) Then
-            cdmaTerm.WriteSingleNv(NV_LOCK_CODE_I, ASCIIEncoding.ASCII.GetBytes(thePhone.UserLock))
+            cdmaTerm.WriteNv(NV_LOCK_CODE_I, ASCIIEncoding.ASCII.GetBytes(thePhone.UserLock))
         End If
         If (thePhone.Sid <> thePhoneRxd.Sid Or thePhone.Nid <> thePhoneRxd.Nid) Then
             cdmaTerm.WriteSidAndNid(thePhone.Sid, thePhone.Nid)

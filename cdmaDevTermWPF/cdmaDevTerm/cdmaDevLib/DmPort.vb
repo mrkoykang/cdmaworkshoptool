@@ -224,8 +224,8 @@ Public Class DmPort
             ''cdmaTerm.mySerialPort.DiscardOutBuffer()
             '' cdmaTerm.mySerialPort.DiscardInBuffer()
 
-
-            cdmaTerm.mySerialPort2.Write(txBuffer)
+            Dim winApiRxCount As Integer
+            winApiRxCount = cdmaTerm.mySerialPort2.Write(txBuffer)
 
             '' Dim buffer = New Byte(cdmaTerm.mySerialPort2.ReadBufferSize - 1) {}
             Dim buffer = New Byte(&H1000) {}
@@ -241,13 +241,9 @@ Public Class DmPort
 
             readCount = cdmaTerm.mySerialPort2.Read(buffer)
 
-            ''Test for late response
-            If readCount = 0 Then
-                Thread.Sleep(150)
 
-                readCount = cdmaTerm.mySerialPort2.Read(buffer)
-            ElseIf ((buffer(0) = &H26) And readCount < 136) Then
-                readCount = cdmaTerm.mySerialPort2.Read(buffer)
+            If ((buffer(0) = &H26) And readCount < 136) Then
+
                 ''test
                 ''resend command for only half of response recieved
                 Dim buffer2 = New Byte(&H1000) {}
@@ -257,8 +253,7 @@ Public Class DmPort
             End If
             ''Test for REALLY late response
             If readCount = 0 Then
-                Thread.Sleep(100)
-                readCount = cdmaTerm.mySerialPort2.Read(buffer)
+                Throw New Exception("No Response.. tx:" + Environment.NewLine + cdmaTerm.biznytesToStrizings(data))
             Else
                 For i As Integer = 0 To readCount - 1
                     responseList.Add(buffer(i))
@@ -270,6 +265,7 @@ Public Class DmPort
         Catch ex As Exception
 
             logger.addToLog("DmPort Tx Err: " + ex.ToString)
+            Throw ex
         Finally
         End Try
 

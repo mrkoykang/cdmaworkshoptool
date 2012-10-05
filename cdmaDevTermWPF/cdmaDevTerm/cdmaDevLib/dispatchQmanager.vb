@@ -81,7 +81,7 @@ Public Class dispatchQmanager
                 '    worker.Abort()
                 '    logger.addToLog("Timedout! ERR")
                 'End If
-                thisC.tx()
+                thisC.commandSuccess = thisC.tx()
 
                 ''send the command
                 thisC.decode()

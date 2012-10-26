@@ -25,7 +25,7 @@ namespace cdmaDevTerm.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Light")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dark")]
         public global::Elysium.Theme.ThemeType ThemeType {
             get {
                 return ((global::Elysium.Theme.ThemeType)(this["ThemeType"]));
@@ -34,7 +34,7 @@ namespace cdmaDevTerm.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Lime")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
         public string Accent {
             get {
                 return ((string)(this["Accent"]));

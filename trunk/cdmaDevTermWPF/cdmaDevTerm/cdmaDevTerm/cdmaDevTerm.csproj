@@ -68,10 +68,6 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cdmaDevLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\cdmaDevLib.dll</HintPath>
-    </Reference>
     <Reference Include="Elysium.Theme, Version=1.2.257.1, Culture=neutral, PublicKeyToken=774478744bbf1dcc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\Elysium.Theme.dll</HintPath>
@@ -193,6 +189,10 @@
     <Resource Include="Resources\folder.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\cdmaDevLib\cdmaDevLib.vbproj">
+      <Project>{a978054d-108e-47e3-86c6-c6b326bf7d3c}</Project>
+      <Name>cdmaDevLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\winApiCom\winAPIcom.csproj">
       <Project>{46fbfa98-1410-4c54-9e6f-1fb2442429e1}</Project>
       <Name>winAPIcom</Name>

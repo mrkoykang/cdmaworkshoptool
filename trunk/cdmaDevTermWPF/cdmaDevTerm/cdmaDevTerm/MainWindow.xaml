@@ -3,8 +3,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:metro="http://schemas.codeplex.com/elysium/theme"
-              Title="CdmaDevTerm .2.7.alpha (c) 09.12 dg chromableedstudios.com"
-              Height="575" Width="554" 
+              Title="CdmaDevTerm .2.8.alpha (c) 09.12 dg chromableedstudios.com"
+              Height="625" Width="554" 
               AllowsTransparency="False" WindowStyle="ThreeDBorderWindow">
     <Grid>
         <StackPanel Margin="2" HorizontalAlignment="Right"  Orientation="Horizontal">
@@ -68,11 +68,29 @@
                         </Button>
             </StackPanel>
         </StackPanel>
-       
-         
-        
-       
-            <TabControl HorizontalAlignment="Stretch" Margin="0,0,0,0" Name="tabControl1" VerticalAlignment="Stretch" MinWidth="475" TabStripPlacement="Top" UseLayoutRounding="False" SelectionChanged="tabControl1_SelectionChanged_1">
+                <StackPanel>
+                    <StackPanel Margin="2" Orientation="Horizontal" HorizontalAlignment="Right">
+
+                        <Button  Margin="5,0,20,0" HorizontalAlignment="Left"  Name="writeNam" Click="writeNam_Click"  MinWidth="60" >
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Resources/edit.png" Stretch="Uniform" Height="20" Width="20" />
+
+                            </StackPanel>
+
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <TextBlock Text="write: mdn, min, namLock, userlock, sid, nid and NV"/>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
+                        
+                    </StackPanel>
+                    
+
+                </StackPanel>
+                
+
+                <TabControl HorizontalAlignment="Stretch" Margin="0,0,0,0" Name="tabControl1" VerticalAlignment="Stretch" MinWidth="475" TabStripPlacement="Top" UseLayoutRounding="False" SelectionChanged="tabControl1_SelectionChanged_1">
                     <TabControl.Resources>
                         <Style TargetType="{x:Type TabPanel}">
                             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -103,17 +121,7 @@
                                     <TextBlock Margin="5" Text="NID"  HorizontalAlignment="Left" Name="NidLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
                                     <TextBox   Text="{Binding Path=Nid}" HorizontalAlignment="Right" MinWidth="94"  VerticalAlignment="Bottom" />
                                 </StackPanel>
-                                    <Button  Margin="5,2,3,10" HorizontalAlignment="Stretch" Name="writeNam" Click="writeNam_Click"  >
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="Resources/edit.png" Stretch="Uniform" Height="20" Width="20" />
-
-                                        </StackPanel>
-                                        <Button.ToolTip>
-                                            <ToolTip>
-                                                <TextBlock Text="write: mdn, min, namLock, userlock, sid, nid"/>
-                                            </ToolTip>
-                                        </Button.ToolTip>
-                                    </Button>
+                                    
                                 
                                 <StackPanel Margin="2" Orientation="Horizontal">
                                     <TextBlock Margin="5" Text="SPC" HorizontalAlignment="Left" Name="SpcLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
@@ -203,7 +211,7 @@
                                     <TextBlock Margin="5" Text="PRL" HorizontalAlignment="Left" Name="PrlLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
                                     <TextBox HorizontalAlignment="Left"  Text="{Binding Path=PrlFilename}" MinWidth="160"/>
 
-                                    <Button  Margin="5,0,0,0" HorizontalAlignment="Left" Name="sendPrl" Width="63" Click="sendPrl_Click" >
+                                    <Button  Margin="5,0,0,0" HorizontalAlignment="Left" Name="sendPrl2" Width="63" Click="sendPrl_Click" >
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="Resources/edit.png" Stretch="Uniform" Height="20" Width="20" />
 
@@ -234,7 +242,11 @@
                     </TabItem>
                     <TabItem Header="NV" Name="NV">
                     <Grid >
-                            <ListBox x:Name="NvList" HorizontalContentAlignment="Stretch" ItemsSource="{Binding NvItems}" Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70*"/>
+                                <ColumnDefinition Width="183*"/>
+                            </Grid.ColumnDefinitions>
+                            <ListBox x:Name="NvList" HorizontalContentAlignment="Stretch" ItemsSource="{Binding NvItems}" Margin="0,0,0,0" Grid.ColumnSpan="2">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid >

@@ -60,43 +60,18 @@ Public Class dispatchQmanager
             silentInterruptCommandQ()
         Else
 
-            Dim whileWaiting As Boolean
-            whileWaiting = False
-            ''for i to q.lengh
-            For i = 0 To (mySynqdQ.Count - 1)
+            While mySynqdQ.Count <> 0
 
-                ''check for empty queue
-                If mySynqdQ.Count = 0 Then
-                    Exit For
-                End If
-
-                ''dequeue current command into 
-                ''command object to be used for this loop
                 Dim thisC As Command = mySynqdQ.Dequeue()
-
-
-                'Dim worker As New Thread(AddressOf thisC.tx)
-                'worker.Start()
-                'If Not worker.Join(TimeSpan.FromSeconds(2)) Then
-                '    worker.Abort()
-                '    logger.addToLog("Timedout! ERR")
-                'End If
                 thisC.commandSuccess = thisC.tx()
-
-                ''send the command
-                thisC.decode()
-
                 If thisC.commandSuccess = False Then
                     interruptCommandQ()
                     Return False
                 End If
+                thisC.decode()
+                logger.addToLog("q count: " + mySynqdQ.Count.ToString + Environment.NewLine + thisC.debuggingText & Environment.NewLine)
 
-                ''TODO???
-
-                ''cdmaTerm.logAllBox += thisC.commandNameSent
-                logger.addToLog("-Q" + i.ToString + ": " + thisC.debuggingText & vbNewLine)
-
-            Next
+            End While
 
         End If
         Return True

@@ -26,13 +26,39 @@ Public Class Phone
     Private _AvailableComPorts As New List(Of String)
     Private _ComPortName As String
     Private _SixteenDigitSP As String
-    Private _NvItems As New Dictionary(Of NvItems.NVItems, Nv)
+    Private _NvItems As Dictionary(Of NvItems.NVItems, Nv)
     Private _SpSixteenDigit As New Dictionary(Of String, String)
     Private _TermCommand As String
     Private _Username As String
     Private _Password As String
     Private _PrlFilename As String
 
+    Public Sub New()
+
+        Me.SerialData = ""
+        Me.LogData = ""
+        Me.Mdn = ""
+        Me.Min = ""
+        Me.Spc = ""
+        Me.Sid = ""
+        Me.Nid = ""
+        Me.RegId = ""
+        Me.Meid = ""
+        Me.Esn = ""
+        Me.UserLock = ""
+        Me.NamLock = False
+        Me.OperationCount = 0
+        Me.ComPortName = ""
+        Me.SixteenDigitSP = ""
+        Me.NvItems = New Dictionary(Of NvItems.NVItems, Nv)
+        Me.TermCommand = ""
+        Me.Username = ""
+        Me.Password = ""
+        Me.PrlFilename = ""
+
+
+        '' _NvItems = New Dictionary(Of NvItems.NVItems, Nv)
+    End Sub
     Public Property SpSixteenDigit() As Dictionary(Of String, String)
         Get
             Return _SpSixteenDigit
@@ -79,7 +105,7 @@ Public Class Phone
         End Get
         Set(value As String)
             If value <> _LogData Then
-                If value = "" Then
+                If value = "" Then ''todo:wtf
                     _LogData = ""
                     OperationCount += 1
                     RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("LogData"))
@@ -338,7 +364,5 @@ Public Class Phone
         End Set
     End Property
     Public Event PropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs) Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
-
-
 
 End Class

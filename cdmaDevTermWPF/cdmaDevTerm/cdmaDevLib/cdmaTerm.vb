@@ -89,49 +89,9 @@ Public Class cdmaTerm
 
     Dim rxBuff As String
 
-    ''ajh7495 start 2
-    ''called by myserialport event handler
-    Private Sub ReceiveData()
-        Try
-
-
-            'Sub to Receive Data from the Serial Port, Will Run in a Thread
-            ''Dim lstItem As ListViewItem
-            Dim bRead As Integer
-            Dim nRead As Integer
-            Dim returnStr As String = ""
-            Dim ascStr As String = ""
-
-            ''Number of Bytes to read
-            bRead = mySerialPort.BytesToRead
-            Dim cData(bRead - 1) As Byte
-
-            mySerialPort.Encoding = Encoding.GetEncoding(65001)
-
-            ''Reading the Data
-            nRead = mySerialPort.Read(cData, 0, bRead)
-            For Each b As Byte In cData
-                ''Ascii String
-                ascStr += Chr(b)
-                ''Hex String (Modified Padding, to intake compulsory 2 chars, mainly in case of 0)
-                returnStr += Hex(b).PadLeft(2, "0")
-            Next
-
-            ''kludgy byte log
-            logger.addToLog("RX: " + returnStr + vbNewLine + vbNewLine)
-
-            logger.addToByteLog(returnStr)
-            newCommandRxd = True
-
-        Catch
-            logger.addToLog("read error 1: rec data thread")
-
-        End Try
-
-    End Sub
+    
 
     Dim mySDR As New SecretDecoderRing
-
 
     ''This is the one that works!
     '' MAKE THIS RECIEVE AN ARRAY AS BYTE AND TX TO PORT
@@ -141,50 +101,24 @@ Public Class cdmaTerm
         ''When send button clicked Clear the rx buffer
         rxBuff = ""
 
-
-        If serialportType = "normal" Then
-            Try
-                ''If port is closed, then open it
-                If mySerialPort.IsOpen = False Then mySerialPort.Open()
-            Catch e As Exception
-
-
-                logger.addToLog(mySerialPort.PortName + " err cant open the port: " + e.Message)
-            End Try
-        ElseIf serialportType = "blackberry" Then
-            ''do nothin?
-
-        End If
-
-
         Try
-            ''kludgy byte log
 
-            If (serialportType = "normal") Then
+            logger.addToLog("TX2: " + biznytesToStrizings(byteArrayToTransmit) + vbNewLine + vbNewLine)
+            mySerialPort2.Write(byteArrayToTransmit)
 
-                logger.addToLog("TX1: " + biznytesToStrizings(byteArrayToTransmit) + vbNewLine + vbNewLine)
-                mySerialPort.Write(byteArrayToTransmit, 0, byteArrayToTransmit.Length)
+            Dim rBuff(4000) As Byte
+            Dim rxBuff(mySerialPort2.Read(rBuff)) As Byte
 
-            ElseIf (serialportType = "blackberry") Then
+            For Each b As Byte In rxBuff
+                rxBuff(b) = rBuff(b)
+            Next
 
-                logger.addToLog("TX2: " + biznytesToStrizings(byteArrayToTransmit) + vbNewLine + vbNewLine)
-                mySerialPort2.Write(byteArrayToTransmit)
+            Dim returnStr As String = biznytesToStrizings(rxBuff)
+            logger.addToLog("RX: " + returnStr + vbNewLine + vbNewLine)
 
-                Dim rBuff(4000) As Byte
-                Dim rxBuff(mySerialPort2.Read(rBuff)) As Byte
+            logger.addToByteLog(returnStr)
+            newCommandRxd = True
 
-                For Each b As Byte In rxBuff
-                    rxBuff(b) = rBuff(b)
-                Next
-
-                Dim returnStr As String = biznytesToStrizings(rxBuff)
-                logger.addToLog("RX: " + returnStr + vbNewLine + vbNewLine)
-
-                logger.addToByteLog(returnStr)
-                newCommandRxd = True
-
-
-            End If
         Catch e As Exception
             logger.addToLog("com error: device does not rx: " + e.Message)
         End Try
@@ -198,77 +132,6 @@ Public Class cdmaTerm
 ends:
     End Sub
 
-    ''TODO: not needed?
-    Public Function sendTermCommand3(ByVal byteArrayToTransmit() As Byte) As Boolean
-
-        ''When send button clicked Clear the rx buffer
-        rxBuff = ""
-        Try
-
-            If serialportType = "normal" Then
-                ''If port is closed, then open it
-                If mySerialPort.IsOpen = False Then mySerialPort.Open()
-            ElseIf serialportType = "blackberry" Then
-                ''do nothin?
-
-            End If
-
-
-
-        Catch
-            logger.addToLog("cant open the port")
-            Return False
-        End Try
-        Try
-            ''kludgy byte log
-            If (serialportType = "normal") Then
-
-                logger.addToLog("TX1: " + biznytesToStrizings(byteArrayToTransmit) + vbNewLine + vbNewLine)
-                mySerialPort.Write(byteArrayToTransmit, 0, byteArrayToTransmit.Length)
-
-            ElseIf (serialportType = "blackberry") Then
-                logger.addToLog("bb transmit?")
-                logger.addToLog("TX2: " + biznytesToStrizings(byteArrayToTransmit) + vbNewLine + vbNewLine)
-                mySerialPort2.Write(byteArrayToTransmit)
-
-                Dim rBuff(4000) As Byte
-                Dim rxBuff(mySerialPort2.Read(rBuff)) As Byte
-
-                For Each b As Byte In rxBuff
-                    rxBuff(b) = rBuff(b)
-                Next
-
-                Dim returnStr As String = biznytesToStrizings(rxBuff)
-                logger.addToLog("RX: " + returnStr + vbNewLine + vbNewLine)
-
-                logger.addToByteLog(returnStr)
-                newCommandRxd = True
-
-
-            End If
-
-
-
-        Catch
-            logger.addToLog("com error: device does not rx1")
-            Return False
-        End Try
-
-        'Pause for 800ms
-        System.Threading.Thread.Sleep(200)
-
-        'If the buffer is still empty then no data. End sub
-        If rxBuff = "" Then GoTo ends
-
-ends:
-        Return True
-    End Function
-
-
-    ''uh.... no fckin clue
-    '' events? wtf
-    ''fook dis
-    Friend WithEvents mySerialPort As SerialPort = New SerialPort
 
     Public Shared mySerialPort2 As New SerialCom("\\.\COM3", 9600, IO.Ports.StopBits.One, IO.Ports.Parity.None, 8) ''actual winapi port
     ''this is the AT return changed
@@ -348,27 +211,6 @@ ends:
 
 
 
-    ''ajh7495 start 1
-    ''event handler calls the receive data threaded sub
-    Private Sub mySerialPort_DataReceived(ByVal sender As Object, ByVal e As System.IO.Ports.SerialDataReceivedEventArgs) Handles mySerialPort.DataReceived
-        'This event will Receive the data from the selected COM port..
-        'If e.EventType = SerialData.Chars Then
-        '    Dim thRec As New Thread(AddressOf ReceiveData)
-        '    thRec.IsBackground = True
-        '    thRec.Priority = ThreadPriority.Highest
-        '    thRec.Start()
-        '    Thread.Sleep(2)
-        'End If
-
-
-
-
-        If e.EventType = SerialData.Chars Then
-
-            ReceiveData()
-        End If
-    End Sub
-
 
     Public Shared Sub connectSub(portName As String)
 
@@ -379,28 +221,8 @@ ends:
 
             serialportType = "blackberry" ''aka winApiCom
 
-            ''todo: ok to nuke normal? i thinks
-            If (serialportType = "normal") Then
 
-                ' ''setup com port
-                'mySerialPort.BaudRate = &H2580
-                ' ''mySerialPort.BaudRate = &H38400
-                'mySerialPort.DataBits = 8
-                'mySerialPort.StopBits = StopBits.One
-                'mySerialPort.PortName = portName
-                'mySerialPort.ReadTimeout = -1
-                'mySerialPort.WriteTimeout = -1
-                'mySerialPort.ReceivedBytesThreshold = 1
-                'mySerialPort.ParityReplace = &H3F
-                'mySerialPort.NewLine = ChrW(10)
-                'mySerialPort.ReadBufferSize = &H1000
-                'mySerialPort.WriteBufferSize = &H800
-
-            ElseIf (serialportType = "blackberry") Then
-
-                ''start blackberry com port
-
-
+            If (portIsOpen = False) Then
 
                 mySerialPort2.SetPort("\\.\" + portName) ''todo:untested?
                 mySerialPort2.Open()
@@ -1170,16 +992,9 @@ ends:
 
     Public Shared Sub disconnectPort()
         Try
-            If serialportType = "normal" Then
-                '' mySerialPort.Close()
-
-            ElseIf serialportType = "blackberry" Then
-                mySerialPort2.Flush()
-                mySerialPort2.Dispose()
-                portIsOpen = False
-
-
-            End If
+            mySerialPort2.Flush()
+            mySerialPort2.Dispose()
+            portIsOpen = False
         Catch ex As Exception
             logger.addToLog("disconnect err" + ex.ToString)
         End Try
@@ -1340,10 +1155,26 @@ ends:
         dispatchQ.add(CommandFactory.GetCommand(nv))
     End Sub
 
+    Public Shared Sub WriteNv(ByVal nv As NvItems.NVItems, writeData As String)
+        dispatchQ.clearCommandQ()
+        AddWriteNv(nv, writeData)
+        dispatchQ.executeCommandQ()
+    End Sub
+
     Public Shared Sub WriteNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
         dispatchQ.clearCommandQ()
         AddWriteNv(nv, writeData)
         dispatchQ.executeCommandQ()
+    End Sub
+
+    Public Shared Sub AddWriteNv(ByVal nv As NvItems.NVItems, writeData As String)
+        Dim encoding As New System.Text.ASCIIEncoding()
+        Dim data As Byte() = encoding.GetBytes(writeData)
+        Dim writeDataList As New List(Of Byte)
+        writeDataList.Add(data.Count)
+        writeDataList.AddRange(data)
+
+        AddWriteNv(nv, writeDataList.ToArray)
     End Sub
     Public Shared Sub AddWriteNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
         dispatchQ.add(CommandFactory.GetCommand(nv, True, writeData))
@@ -1407,14 +1238,9 @@ ends:
     End Sub
 
     Public Sub ReadNvItemList(ByVal nvItemList As String())
-
-
-
         Try
             logger.addToLog("Reading NV List - This may take a while, do not unplug.")
             nvReadQ.clearCommandQ()
-
-
             For i = 0 To nvItemList.Count - 1
 
                 If nvItemList(i).Contains("-") Then
@@ -1435,8 +1261,6 @@ ends:
         Catch ex As Exception
             logger.addToLog("Read NV Item Range Err: " + ex.ToString)
         End Try
-
-
     End Sub
 
     Function ScanForReadableRam(ScanRamStart As String, ScanRamEnd As String) As List(Of String)
@@ -1594,9 +1418,25 @@ ends:
         If (thePhone.NamLock <> thePhoneRxd.NamLock) Then
             cdmaTerm.WriteNamLock(thePhone.NamLock)
         End If
-
+        updateNvItemsFromViewModel()
     End Sub
 
+    Public Shared Sub updateNvItemsFromViewModel()
+        dispatchQ.clearCommandQ()
+        ''For i As Integer = 0 To cdmaTerm.thePhone.NvItems.Count
+        '' If (kvp.Value.Data <> cdmaTerm.thePhoneRxd.NvItems.Item(kvp.Key).Data) Then
+        ''cdmaTerm.WriteNv(cdmaTerm.thePhone.NvItems, kvp.Value.Data)
+        ''End If
+        ''Next
+        Dim listIterator As New Dictionary(Of NvItems.NVItems, Nv)(cdmaTerm.thePhone.NvItems)
+
+        For Each kvp As KeyValuePair(Of NvItems.NVItems, Nv) In listIterator
+            If (kvp.Value.Data <> cdmaTerm.thePhoneRxd.NvItems.Item(kvp.Key).Data) Then
+                cdmaTerm.WriteNv(kvp.Key, kvp.Value.Data)
+            End If
+        Next
+        dispatchQ.executeCommandQ()
+    End Sub
 
 
 End Class

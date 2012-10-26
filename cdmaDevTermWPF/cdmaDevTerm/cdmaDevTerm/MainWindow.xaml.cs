@@ -113,6 +113,14 @@ namespace cdmaDevTerm
             }
         }
 
+        private void tabControl1_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            if (Wiki.IsSelected)
+            {
+                wikiWebBrowser.Navigate(new Uri("http://code.google.com/p/cdmaworkshoptool/wiki/cdmaWorkshopTool?tm=6"));
+            }
+        }
+
         private void Scan_Click(object sender, RoutedEventArgs e)
         {
             cdmaTerm.GetComs();
@@ -236,14 +244,6 @@ namespace cdmaDevTerm
                 cdmaTerm.dispatchQ.clearCommandQ();
                 cdmaTerm.modeSwitch(cdmaTerm.thePhone.ModeChangeType);
                 cdmaTerm.dispatchQ.executeCommandQ();
-            }
-
-            private void tabControl1_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-            {
-                if (Wiki.IsSelected)
-                {
-                    wikiWebBrowser.Navigate(new Uri("http://code.google.com/p/cdmaworkshoptool/wiki/cdmaWorkshopTool?tm=6"));
-                }
             }
 
             private void sendPrl_Click(object sender, RoutedEventArgs e)

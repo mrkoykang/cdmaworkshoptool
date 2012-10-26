@@ -8,8 +8,9 @@
         Try
 
             cdmaTerm.thePhoneRxd.NvItems(Me.currentNv) = New Nv(Me.currentNv, SecretDecoderRing.trimFrontAndEndAscii(SecretDecoderRing.getAsciiStrings(bytesRxd)))
-            cdmaTerm.thePhone.NvItems = Nothing ''clear the ref in order to triger the prop changed
-            cdmaTerm.thePhone.NvItems = cdmaTerm.thePhoneRxd.NvItems
+
+            cdmaTerm.thePhone.NvItems(Me.currentNv) = New Nv(Me.currentNv, SecretDecoderRing.trimFrontAndEndAscii(SecretDecoderRing.getAsciiStrings(bytesRxd)))
+
         Catch ex As Exception
             logger.addToLog("decode err:" + ex.ToString)
 

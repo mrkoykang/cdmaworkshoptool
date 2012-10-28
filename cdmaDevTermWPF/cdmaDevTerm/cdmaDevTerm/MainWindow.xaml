@@ -237,7 +237,7 @@
                                     </Button>
                                 </StackPanel>
                             </StackPanel>
-
+                            
                         </Grid>
                     </TabItem>
                     <TabItem Header="NV" Name="NV">
@@ -353,19 +353,17 @@
                         <TextBox Text="{Binding Path=LogData}" TextWrapping="Wrap" Height="300" VerticalScrollBarVisibility="Visible" VerticalAlignment="Bottom" />
                     </Grid>
                 </TabItem>
-                <TabItem Header="Bytes" Name="ByteLog">
-                    <Grid >
-                        <TextBox Text="{Binding Path=SerialData}" TextWrapping="Wrap" Height="300" VerticalAlignment="Bottom" VerticalScrollBarVisibility="Visible" UseLayoutRounding="False" />
-                    </Grid>
-
-                </TabItem>
+               
                     <TabItem Header="Wiki" Name="Wiki">
                         
                             <WebBrowser x:Name="wikiWebBrowser" HorizontalAlignment="Center" DockPanel.Dock="Top"  MinHeight="350"/>
                        
                     </TabItem>
                 </TabControl>
-        </StackPanel>
+                <Grid >
+                    <TextBox Text="{Binding Path=Msg}" TextWrapping="Wrap" MinHeight="40" MaxHeight="200" VerticalScrollBarVisibility="Visible" VerticalAlignment="Bottom" />
+                </Grid>
+            </StackPanel>
     </Grid>
     </Grid>
 </metro:Window>

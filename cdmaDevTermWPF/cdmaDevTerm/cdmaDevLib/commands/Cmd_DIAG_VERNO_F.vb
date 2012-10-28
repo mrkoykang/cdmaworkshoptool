@@ -16,8 +16,8 @@
     Public Overrides Sub decode()
         Try
 
-        Catch
-            logger.addToLog("decoder err: cant get diag verno f", logger.logType.err)
+        Catch ex As Exception
+            logger.addToLog("err in diag verno f decode: " + ex.ToString(), logger.logType.msg)
 
         End Try
     End Sub

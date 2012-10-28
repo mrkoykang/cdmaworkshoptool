@@ -6,8 +6,8 @@ Imports System.Collections.ObjectModel
 Public Class Phone
     Implements System.ComponentModel.INotifyPropertyChanged
 
-    Private _SerialData As String
-    Private _LogData As String
+    Private _Msg As String ''window messages
+    Private _LogData As String ''byte log
     Private _Mdn As String
     Private _Min As String
     Private _Spc As String
@@ -35,7 +35,6 @@ Public Class Phone
 
     Public Sub New()
 
-        Me.SerialData = ""
         Me.LogData = ""
         Me.Mdn = ""
         Me.Min = ""
@@ -56,8 +55,29 @@ Public Class Phone
         Me.Password = ""
         Me.PrlFilename = ""
 
-
         '' _NvItems = New Dictionary(Of NvItems.NVItems, Nv)
+    End Sub
+    Public Sub clearViewModel()
+        Me.LogData = ""
+        Me.Mdn = ""
+        Me.Min = ""
+        Me.Spc = ""
+        Me.Sid = ""
+        Me.Nid = ""
+        Me.RegId = ""
+        Me.Meid = ""
+        Me.Esn = ""
+        Me.UserLock = ""
+        Me.NamLock = False
+        Me.OperationCount = 0
+        Me.ComPortName = ""
+        Me.SixteenDigitSP = ""
+        Me.NvItems = New Dictionary(Of NvItems.NVItems, Nv)
+        Me.TermCommand = ""
+        Me.Username = ""
+        Me.Password = ""
+        Me.PrlFilename = ""
+
     End Sub
     Public Property SpSixteenDigit() As Dictionary(Of String, String)
         Get
@@ -79,22 +99,20 @@ Public Class Phone
         End Set
     End Property
 
-
-    Public Property SerialData() As String
+    Public Property Msg() As String
         Get
-            Return _SerialData
+            Return _Msg
         End Get
         Set(value As String)
-            If value <> _SerialData Then
-                If value = "" Then
-                    _SerialData = ""
+            If value <> _Msg Then
+                If value = "" Then ''todo:wtf
+                    _Msg = ""
                     OperationCount += 1
-                    RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("SerialData"))
+                    RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("Msg"))
                 End If
-
                 OperationCount += 1
-                _SerialData = OperationCount.ToString + " " + value + Environment.NewLine + _SerialData
-                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("SerialData"))
+                _Msg = value
+                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("Msg"))
             End If
         End Set
     End Property
@@ -110,9 +128,8 @@ Public Class Phone
                     OperationCount += 1
                     RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("LogData"))
                 End If
-
                 OperationCount += 1
-                _LogData = value + Environment.NewLine + _LogData ''TODO: awkward and not needed, strange bugs probably(impossible to delete middle of log and append ha!?)
+                _LogData = value
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("LogData"))
             End If
         End Set

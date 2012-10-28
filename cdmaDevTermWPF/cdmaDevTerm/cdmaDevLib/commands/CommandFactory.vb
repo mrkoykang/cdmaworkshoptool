@@ -84,18 +84,23 @@ Public Class CommandFactory
         Select Case qc
             Case DIAG_ESN_F
                 cmd = New Cmd_DIAG_ESN_F(qc, New Byte() {}, qc.ToString)
-            Case False
-
+           
             Case Else
                 cmd = New QcCommand(qc)
         End Select
 
-        Return cmd ''New QcCommand(qc)
+        Return cmd
     End Function
 
     Shared Function GetCommand(qc As Qcdm.Cmd, data As Byte()) As ICommand
         Dim cmd As ICommand
-        cmd = New Command(qc, data, qc.ToString)
+        Select Case qc
+            Case DIAG_SPC_F
+                cmd = New Cmd_DIAG_SPC_F(qc, data, qc.ToString)
+            Case Else
+                cmd = New Command(qc, data, qc.ToString)
+        End Select
+
         Return cmd
     End Function
     ''TODO: untested entirely

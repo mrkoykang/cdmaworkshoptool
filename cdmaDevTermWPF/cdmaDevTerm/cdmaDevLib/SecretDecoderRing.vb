@@ -429,9 +429,14 @@ Public Class SecretDecoderRing
     '        End Try
     '    End Sub
 
-    Public Shared Function trimFrontAndEndAscii(ByVal before As String) As String
-        Dim after As String = before
-        Return after.Substring(4, before.Length - 7)
+    Public Shared Function trimFrontAndEndAscii(ByVal str As String) As String
+
+        If (str.Length - 7) <= 0 Then
+            logger.addToLog("No ascii response to command l: " + str.Length.ToString)
+            Return ""
+        End If
+
+        Return str.Substring(4, str.Length - 7)
 
     End Function
 

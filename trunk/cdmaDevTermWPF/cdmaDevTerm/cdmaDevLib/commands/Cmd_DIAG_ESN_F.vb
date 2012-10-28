@@ -24,7 +24,7 @@
 
 
         Catch
-            logger.addToLog("decoder err: cant get decoded esn",logger.logType.err)
+            logger.addToLog("No esn(diag_esn_f) found", logger.logType.msg)
 
         End Try
     End Sub

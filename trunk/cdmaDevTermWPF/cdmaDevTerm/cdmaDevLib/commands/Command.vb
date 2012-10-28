@@ -23,41 +23,20 @@ Imports cdmaDevLib.cdmaTerm
 
 Public Class Command
     Inherits ICommand
-    ''outgoing byte array
-    Public bytesToTx As Byte()
 
-    ''incoming byte array
-    Public bytesRxd As Byte()
-
-    ''should the crc+7e be added
-    Public appendCRC As Boolean = True
-
-    ''is the command a fixed length or varied with data packet
-    Public fixedLength As Boolean
-
-    ''length of byte response
-    Public length As Double
-
-    ''string to be passed to the decoder
-    Public decoderString As String = ""
-
-    ''tracks whether the command was successfull (needed?)
-    Public commandSuccess As Boolean = True
-
-    ''string to define command for logging purposes
-    Public debuggingText As String
-
-    ''current qcdm command
-    Public currentQcdm As Qcdm.Cmd = Qcdm.Cmd.NOT_A_COMMAND
-
-    ''current nv item
-    Public currentNv As NvItems.NVItems = NvItems.NVItems.NOT_AN_NV_ITEM
-
-
+    Public bytesToTx As Byte() ''outgoing byte array
+    Public bytesRxd As Byte() ''incoming byte array
+    Public appendCRC As Boolean = True ''should the crc+7e be added
+    Public fixedLength As Boolean ''is the command a fixed length or varied with data packet
+    Public length As Double ''length of byte response
+    Public decoderString As String = "" ''string to be passed to the decoder
+    Public commandSuccess As Boolean = True ''tracks whether the command was successfull (needed?)
+    Public debuggingText As String ''string to define command for logging purposes
+    Public currentQcdm As Qcdm.Cmd = Qcdm.Cmd.NOT_A_COMMAND ''current qcdm command
+    Public currentNv As NvItems.NVItems = NvItems.NVItems.NOT_AN_NV_ITEM ''current nv item
     Public badNvRead As Boolean = False
     Public inactiveNvRead As Boolean = False
     Public badSecurityNvRead As Boolean = False
-
 
     '' COMMAND OBJECT
     ''not preferred command constructor for raw bytes (factory is better-might get decoded that way)
@@ -190,7 +169,7 @@ Public Class Command
         debuggingText = debuggingTextIn + " / new crc4"
 
     End Sub
-
+    
     Overridable Sub decode()
 
     End Sub
@@ -212,13 +191,13 @@ Public Class Command
                 logger.addToLog(vbNewLine + vbNewLine)
                 logger.addToLog(debuggingText)
 
-                Dim appendString As String = vbNewLine + debuggingText + vbNewLine + "TX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesToTx)) + vbNewLine + vbNewLine +
+                Dim appendString As String = vbNewLine + debuggingText +
+                    vbNewLine + "TX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesToTx)) + vbNewLine + vbNewLine +
                             "RX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesRxd)) + vbNewLine
                 appendString += vbNewLine + "RX(ascii): " + SecretDecoderRing.getAsciiStrings(bytesRxd) + vbNewLine + vbNewLine
 
-                thePhone.SerialData = appendString
+                '' thePhone.SerialData = appendString
                 logger.addToLog(appendString)
-                logger.addToByteLog(cdmaTerm.biznytesToStrizings(bytesRxd))
 
                 If bytesRxd.Count > 0 Then
                     Return True
@@ -232,10 +211,6 @@ Public Class Command
 
         Return False
     End Function
-
-
-
-
 
     Private Function hexSpace(ByVal hexString As String) As String
         Dim sb As New System.Text.StringBuilder

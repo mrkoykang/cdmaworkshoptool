@@ -116,7 +116,6 @@ Public Class cdmaTerm
             Dim returnStr As String = biznytesToStrizings(rxBuff)
             logger.addToLog("RX: " + returnStr + vbNewLine + vbNewLine)
 
-            logger.addToByteLog(returnStr)
             newCommandRxd = True
 
         Catch e As Exception
@@ -366,7 +365,7 @@ ends:
                 )
             dispatchQ.executeCommandQ()
         Else
-            logger.addToLog("16 digit SP is not 16 digits", logger.logType.err)
+            logger.addToLog("16 digit SP is not 16 digits", logger.logType.msg)
         End If
 
 
@@ -507,10 +506,11 @@ ends:
             atCmd.Add(&HD)
             atCmd.Add(&HA)
 
-            logger.addToByteLog(biznytesToStrizings(myDm.WriteRead(atCmd.ToArray)))
+            logger.addToLog(biznytesToStrizings(myDm.WriteRead(atCmd.ToArray)), logger.logType.infoAndMsg)
 
         Catch
-            logger.addToLog("Cant Open AT Port")
+
+            logger.addToLog("Cant Open AT Port", logger.logType.infoAndMsg)
         End Try
 
 
@@ -757,7 +757,7 @@ ends:
 
     Shared Sub sendAnySPC(ByVal customSPC As String)
         ''dg qc send spc
-        dispatchQ.add(New Command(DIAG_SPC_F, ASCIIEncoding.ASCII.GetBytes(customSPC), "DIAG_SPC_F customSPC Sent"))
+        dispatchQ.add(CommandFactory.GetCommand(DIAG_SPC_F, ASCIIEncoding.ASCII.GetBytes(customSPC)))
 
     End Sub
 

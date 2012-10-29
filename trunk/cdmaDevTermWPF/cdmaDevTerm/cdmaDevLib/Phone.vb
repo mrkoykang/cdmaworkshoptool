@@ -58,7 +58,7 @@ Public Class Phone
         '' _NvItems = New Dictionary(Of NvItems.NVItems, Nv)
     End Sub
     Public Sub clearViewModel()
-        Me.LogData = ""
+        '' Me.LogData = ""
         Me.Mdn = ""
         Me.Min = ""
         Me.Spc = ""

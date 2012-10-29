@@ -25,7 +25,7 @@ namespace cdmaDevTerm.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Dark")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Light")]
         public global::Elysium.Theme.ThemeType ThemeType {
             get {
                 return ((global::Elysium.Theme.ThemeType)(this["ThemeType"]));

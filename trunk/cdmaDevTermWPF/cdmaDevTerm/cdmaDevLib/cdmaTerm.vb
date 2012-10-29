@@ -992,6 +992,8 @@ ends:
 
     Public Shared Sub disconnectPort()
         Try
+            cdmaTerm.thePhone.clearViewModel()
+            cdmaTerm.thePhoneRxd.clearViewModel()
             mySerialPort2.Flush()
             mySerialPort2.Dispose()
             portIsOpen = False
@@ -1169,10 +1171,17 @@ ends:
 
     Public Shared Sub AddWriteNv(ByVal nv As NvItems.NVItems, writeData As String)
         Dim encoding As New System.Text.ASCIIEncoding()
-        Dim data As Byte() = encoding.GetBytes(writeData)
+        Dim data() As Byte
         Dim writeDataList As New List(Of Byte)
-        writeDataList.Add(data.Count)
-        writeDataList.AddRange(data)
+        If (writeData.StartsWith("0x")) Then
+            writeDataList.AddRange(String_To_Bytes(writeData.Substring(2)))
+        Else
+            data = encoding.GetBytes(writeData)
+            writeDataList.Add(data.Count)
+            writeDataList.AddRange(data)
+        End If
+
+       
 
         AddWriteNv(nv, writeDataList.ToArray)
     End Sub

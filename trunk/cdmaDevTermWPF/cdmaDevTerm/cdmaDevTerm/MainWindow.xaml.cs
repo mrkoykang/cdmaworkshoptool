@@ -272,5 +272,12 @@ namespace cdmaDevTerm
                 cdmaTerm.updatePhoneFromViewModel();
             }
 
+            private void readPrl_Click(object sender, RoutedEventArgs e)
+            {
+                var p = new cdmaDevLib.Prl();
+                p.DownloadPrl("prl.prl");
+                cdmaTerm.dispatchQ.executeCommandQ();
+            }
+
     }
 }

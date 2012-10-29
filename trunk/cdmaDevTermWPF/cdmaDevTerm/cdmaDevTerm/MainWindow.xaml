@@ -235,6 +235,17 @@
                                             </ToolTip>
                                         </Button.ToolTip>
                                     </Button>
+                                    <Button  Margin="5,0,0,0"  HorizontalAlignment="Left" Name="readPrl" Width="63" Click="readPrl_Click"  >
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="Resources/download.png" Stretch="Uniform" Height="20" Width="20" />
+
+                                        </StackPanel>
+                                        <Button.ToolTip>
+                                            <ToolTip>
+                                                <TextBlock Text="read"/>
+                                            </ToolTip>
+                                        </Button.ToolTip>
+                                    </Button>
                                 </StackPanel>
                             </StackPanel>
                             

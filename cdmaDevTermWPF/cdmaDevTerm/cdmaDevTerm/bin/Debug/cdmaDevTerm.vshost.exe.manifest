@@ -70,19 +70,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>OD0M6EYqUD5W3ROsKIYtDX53b9k=</dsig:DigestValue>
+        <dsig:DigestValue>2meP4Xb8+IxE6BiqhOLiLpPlwEY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="49152">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="49664">
       <assemblyIdentity name="cdmaDevTerm" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>6INApwkOugGcl6hNF1z8DMrucfo=</dsig:DigestValue>
+        <dsig:DigestValue>D+661sv/SWZ78IyJLlIVoMxymPQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -110,13 +110,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="cdmaDevTerm.exe.config" size="1053">
+  <file name="cdmaDevTerm.exe.config" size="1054">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>HUSRq9nUvm3IxYcvvwWThAYyr4c=</dsig:DigestValue>
+      <dsig:DigestValue>DhApVG6jn+xk4wABo9NePs8xcEU=</dsig:DigestValue>
     </hash>
   </file>
   <file name="k-64x64.ico" size="5694">

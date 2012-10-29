@@ -18,14 +18,15 @@
 Imports System.Text
 Imports System.Array
 Imports System.IO
+Imports cdmaDevLib.Qcdm.Cmd
 
 Public Class Prl
 
     Public PRLPacketSize As Integer = 120
 
-    Public Function UploadPRL(ByVal prlData As Byte()) As Boolean
+    Public Function UploadPrl(ByVal prlData As Byte()) As Boolean
         Dim request As Byte() = New Byte(125) {}
-        request(0) = 72
+        request(0) = DIAG_PR_LIST_WR_F
 
         Dim frameCount As Integer = Convert.ToInt32(prlData.Length) / PRLPacketSize
         If frameCount * PRLPacketSize < prlData.Length Then
@@ -62,6 +63,23 @@ Public Class Prl
         Return True
 
     End Function
+
+    Public Function DownloadPrl(ByVal filename As String) As Boolean
+        Dim prlData As New Byte()
+        Dim request As Byte() = New Byte(125) {}
+        request(0) = DIAG_PR_LIST_RD_F
+
+        Dim frameCount As Integer = 0
+      
+
+        For i As Integer = 1 To 40 ''todo: actually check byte
+            cdmaTerm.dispatchQ.add(CommandFactory.GetCommand(DIAG_PR_LIST_RD_F, New Byte() {frameCount, 1})) ''todo: what is the actual packet
+            frameCount += 1
+        Next
+        Return True
+
+    End Function
+
 
     Sub UploadPRL(ByVal PrlFile As String)
         UploadPRL(ReadPrlFile(PrlFile))

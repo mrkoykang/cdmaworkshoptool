@@ -34,7 +34,7 @@ namespace cdmaDevTerm.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Lime")]
         public string Accent {
             get {
                 return ((string)(this["Accent"]));

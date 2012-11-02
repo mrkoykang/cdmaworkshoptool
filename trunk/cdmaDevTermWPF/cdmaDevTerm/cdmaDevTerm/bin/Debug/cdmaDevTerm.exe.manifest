@@ -70,19 +70,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>2meP4Xb8+IxE6BiqhOLiLpPlwEY=</dsig:DigestValue>
+        <dsig:DigestValue>pItCBpiPPNufHWe2ky7yErycPpM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="49664">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="50176">
       <assemblyIdentity name="cdmaDevTerm" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>D+661sv/SWZ78IyJLlIVoMxymPQ=</dsig:DigestValue>
+        <dsig:DigestValue>WMLOIzrs1UIU0VA0C0+DIzNycsA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -106,7 +106,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>gTV9dGIxfwgIj3toCejumyUIYvM=</dsig:DigestValue>
+        <dsig:DigestValue>QbiQbbHGxE4Ac6x214JYvPnb4LQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -116,7 +116,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>DhApVG6jn+xk4wABo9NePs8xcEU=</dsig:DigestValue>
+      <dsig:DigestValue>v3IW8b5vthxbZGHva6pyadEib5o=</dsig:DigestValue>
     </hash>
   </file>
   <file name="k-64x64.ico" size="5694">

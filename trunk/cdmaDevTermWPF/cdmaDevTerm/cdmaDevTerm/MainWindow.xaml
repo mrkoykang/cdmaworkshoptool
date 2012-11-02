@@ -3,8 +3,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:metro="http://schemas.codeplex.com/elysium/theme"
-              Title="CdmaDevTerm .2.8.alpha (c) 09.12 dg chromableedstudios.com"
-              Height="625" Width="554" 
+              Title="CdmaDevTerm .2.8.alpha (c) 10.12 dg chromableedstudios.com"
+              Height="650" Width="554" 
               AllowsTransparency="False" WindowStyle="ThreeDBorderWindow">
     <Grid>
         <StackPanel Margin="2" HorizontalAlignment="Right"  Orientation="Horizontal">
@@ -33,7 +33,7 @@
                 <ComboBox  HorizontalAlignment="Left" Margin="2" Name="comBox" VerticalAlignment="Top" MinWidth="275"
                              SelectedItem="{Binding ComPortName}"
                               ItemsSource="{Binding AvailableComPorts}"  />
-                <Button Margin="2" HorizontalAlignment="Left"  Name="Send" VerticalAlignment="Top" MinWidth="60" Click="Scan_Click" >
+                        <Button Margin="2" HorizontalAlignment="Left"  Name="Send" VerticalAlignment="Top" Width="60" Click="Scan_Click" >
                     <StackPanel Orientation="Horizontal">
                         <Image Source="Resources/refresh.png" Stretch="Uniform" Height="20" Width="20" />
                         
@@ -44,7 +44,7 @@
                                 </ToolTip>
                             </Button.ToolTip>
                         </Button>
-                        <Button  Margin="2" HorizontalAlignment="Left" Name="Connect" VerticalAlignment="Bottom" MinWidth="60" Click="Connect_Click" >
+                        <Button  Margin="2" HorizontalAlignment="Left" Name="Connect" VerticalAlignment="Bottom" Width="60" Click="Connect_Click" >
                     <StackPanel Orientation="Horizontal">
                         <Image Source="Resources/check.png" Stretch="Uniform" Height="20" Width="20" />
                     </StackPanel>
@@ -56,7 +56,7 @@
 
                         </Button>
 
-                <Button  Margin="2" HorizontalAlignment="Left" Name="Disconnect" VerticalAlignment="Top" MinWidth="60" Click="button1_Click_1" >
+                <Button  Margin="2" HorizontalAlignment="Left" Name="Disconnect" VerticalAlignment="Top" Width="60" Click="button1_Click_1" >
                     <StackPanel Orientation="Horizontal">
                         <Image Source="Resources/cancel.png" Stretch="Uniform" Height="20" Width="20" />
                     </StackPanel>
@@ -69,9 +69,20 @@
             </StackPanel>
         </StackPanel>
                 <StackPanel>
-                    <StackPanel Margin="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <StackPanel Margin="2,2,20,2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button  Margin="2" HorizontalAlignment="Left"  Name="readPhone"  Width="60" Click="readPhone_Click" >
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Resources/download.png" Stretch="Uniform" Height="20" Width="20" />
 
-                        <Button  Margin="5,0,20,0" HorizontalAlignment="Left"  Name="writeNam" Click="writeNam_Click"  MinWidth="60" >
+                            </StackPanel>
+
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <TextBlock Text="read phone"/>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
+                        <Button  Margin="2" HorizontalAlignment="Left"  Name="writeNam" Click="writeNam_Click"  Width="60" >
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Resources/edit.png" Stretch="Uniform" Height="20" Width="20" />
 
@@ -371,7 +382,7 @@
                        
                     </TabItem>
                 </TabControl>
-                <Grid >
+                <Grid Margin="0,5,0,2">
                     <TextBox Text="{Binding Path=Msg}" TextWrapping="Wrap" MinHeight="40" MaxHeight="200" VerticalScrollBarVisibility="Visible" VerticalAlignment="Bottom" />
                 </Grid>
             </StackPanel>

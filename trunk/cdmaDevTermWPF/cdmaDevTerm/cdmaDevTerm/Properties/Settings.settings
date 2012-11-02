@@ -6,7 +6,7 @@
       <Value Profile="(Default)">Light</Value>
     </Setting>
     <Setting Name="Accent" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Blue</Value>
+      <Value Profile="(Default)">Lime</Value>
     </Setting>
     <Setting Name="AutoModeOffline" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>

@@ -224,13 +224,22 @@ ends:
             If (portIsOpen = False) Then
 
                 mySerialPort2.SetPort("\\.\" + portName) ''todo:untested?
-                mySerialPort2.Open()
+                Dim result = mySerialPort2.Open()
                 ''ToolStripStatusLabel1.Text = "connect ok || Type : WinApiCom.dll || " + ("\\.\" + GetPlainPortNameFromFriendly(ComNumBox1.Text))
-                portIsOpen = True
+                If (result) Then
+                    portIsOpen = True
+                    logger.addToLog("portIsOpen = true - port opened")
+                Else
+                    logger.addToLog("can't connect")
+                End If
+
+            Else
+                logger.addToLog("portIsOpen == true - can't connect")
             End If
 
-        Catch
-            logger.addToLog("shootin blanks")
+        Catch ex As Exception
+            logger.addToLog("ex: " + ex.ToString)
+
         End Try
     End Sub
 
@@ -997,6 +1006,7 @@ ends:
             mySerialPort2.Flush()
             mySerialPort2.Dispose()
             portIsOpen = False
+            logger.addToLog("disconnected")
         Catch ex As Exception
             logger.addToLog("disconnect err" + ex.ToString)
         End Try
@@ -1180,9 +1190,6 @@ ends:
             writeDataList.Add(data.Count)
             writeDataList.AddRange(data)
         End If
-
-       
-
         AddWriteNv(nv, writeDataList.ToArray)
     End Sub
     Public Shared Sub AddWriteNv(ByVal nv As NvItems.NVItems, writeData() As Byte)

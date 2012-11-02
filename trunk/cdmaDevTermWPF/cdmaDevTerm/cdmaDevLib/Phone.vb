@@ -58,7 +58,6 @@ Public Class Phone
         '' _NvItems = New Dictionary(Of NvItems.NVItems, Nv)
     End Sub
     Public Sub clearViewModel()
-        '' Me.LogData = ""
         Me.Mdn = ""
         Me.Min = ""
         Me.Spc = ""
@@ -70,14 +69,12 @@ Public Class Phone
         Me.UserLock = ""
         Me.NamLock = False
         Me.OperationCount = 0
-        Me.ComPortName = ""
         Me.SixteenDigitSP = ""
         Me.NvItems = New Dictionary(Of NvItems.NVItems, Nv)
         Me.TermCommand = ""
         Me.Username = ""
         Me.Password = ""
         Me.PrlFilename = ""
-
     End Sub
     Public Property SpSixteenDigit() As Dictionary(Of String, String)
         Get

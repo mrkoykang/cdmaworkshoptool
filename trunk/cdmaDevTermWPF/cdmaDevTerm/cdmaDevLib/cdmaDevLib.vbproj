@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidD.vb" />
-    <Compile Include="calculateCRC.vb" />
     <Compile Include="Carrier.vb" />
     <Compile Include="cdmaCRC.vb" />
     <Compile Include="cdmaTerm.vb" />

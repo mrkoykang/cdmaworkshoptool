@@ -22,34 +22,29 @@ Imports System.Threading
 
 Public Class dispatchQmanager
 
-
     Private myQ As New Queue
     ''sync wrapper for queue
     Public mySynqdQ As Queue = Queue.Synchronized(myQ)
     Public badItemCount As Integer = 0
     Public inturruptCommandQFlag As Boolean = False
 
-    Public Sub add(ByVal inCommand As ICommand)
+    Public Sub add(ByRef inCommand As Command)
         mySynqdQ.Enqueue(inCommand)
     End Sub
 
     Public Sub clearCommandQ()
-
         mySynqdQ.Clear()
-
     End Sub
-    Public Sub interruptCommandQ()
 
+    Public Sub interruptCommandQ()
         ''catch all errors and rx type
         logger.addToLog("Transmit error in message queue")
         mySynqdQ.Clear()
-
     End Sub
-    Public Sub silentInterruptCommandQ()
 
+    Public Sub silentInterruptCommandQ()
         logger.addToLog("Message queue was silently cleared")
         mySynqdQ.Clear()
-
     End Sub
 
     ''Returns true if all commands execute

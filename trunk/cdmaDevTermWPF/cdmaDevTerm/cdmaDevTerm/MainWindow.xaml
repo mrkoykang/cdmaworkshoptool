@@ -136,7 +136,16 @@
                                 
                                 <StackPanel Margin="2" Orientation="Horizontal">
                                     <TextBlock Margin="5" Text="SPC" HorizontalAlignment="Left" Name="SpcLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
-                                    <TextBox HorizontalAlignment="Left"  Text="{Binding Path=Spc}" MinWidth="94" MaxLength="6"/>
+                                    <TextBox HorizontalAlignment="Left"  Text="{Binding Path=Spc}" MinWidth="94" MaxLength="6">
+                                        <ContextMenuService.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Name="SendSpcZerosMenuItem" Header="Send 000000" Click="SendSpcZerosMenuItem_Click_1"/>
+                                                <MenuItem Name="WriteSpcZerosMenuItem" Header="Write 000000" Click="WriteSpcZerosMenuItem_Click_1"/>
+                                                <MenuItem Header="Copy" Command="Copy"></MenuItem>
+                                                <MenuItem Header="Paste" Command="Paste"></MenuItem>
+                                            </ContextMenu>
+                                        </ContextMenuService.ContextMenu>
+                                    </TextBox>
                                     <Button  Margin="5,0,0,0" HorizontalAlignment="Left" Name="sendSpc" Width="63" Click="sendSpc_Click">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="Resources/upload.png" Stretch="Uniform" Height="20" Width="20" />
@@ -246,7 +255,7 @@
                                             </ToolTip>
                                         </Button.ToolTip>
                                     </Button>
-                                    <Button  Margin="5,0,0,0"  HorizontalAlignment="Left" Name="readPrl" Width="63" Click="readPrl_Click"  >
+                                    <Button  Margin="5,0,0,0"  HorizontalAlignment="Left" Name="readPrl" Width="63" Click="readPrl_Click" Visibility="Visible" >
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="Resources/download.png" Stretch="Uniform" Height="20" Width="20" />
 
@@ -263,6 +272,7 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="NV" Name="NV">
+                        
                     <Grid >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>

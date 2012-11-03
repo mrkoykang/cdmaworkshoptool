@@ -65,17 +65,53 @@ Public Class Prl
     End Function
 
     Public Function DownloadPrl(ByVal filename As String) As Boolean
-        Dim prlData As New Byte()
+        ''OUT
+        ''typedef struct
+        ''{
+        ''    byte cmd_code;                      /* Command code */
+        ''    byte seq_num;                       /* Sequence number */
+        ''    byte nam;                           /* PR_LIST for this NAM */
+        ''} ''diag_pr_list_rd_req_type;
+
+        ''IN
+        ''DIAG_RL_RD_OK         0     /* No error */
+        ''DIAG_RL_RD_NV_ERR     1     /* NV error */
+
+        ''#define DIAG_PR_LIST_BLOCK_SIZE 120   /* Size in bytes of the PR_LIST block */
+        ''typedef struct
+        ''{
+        ''    byte cmd_code;                               /* Command code */
+        ''    byte rl_status;                              /* Status of block, as above */
+        ''    nv_stat_enum_type nv_stat;                   /* Status returned by NV */
+        ''    byte seq_num;                                /* Sequence number */
+        ''    byte more;                                   /* More to come? */
+        ''    WORD num_bits;                               /* Number of valid data bits */
+        ''    byte pr_list_data[DIAG_PR_LIST_BLOCK_SIZE];  /* The block of PR_LIST */
+        ''} diag_pr_list_rd_rsp_type;
+        Dim prlData As New List(Of Byte)
         Dim request As Byte() = New Byte(125) {}
         request(0) = DIAG_PR_LIST_RD_F
 
         Dim frameCount As Integer = 0
       
-
         For i As Integer = 1 To 40 ''todo: actually check byte
-            cdmaTerm.dispatchQ.add(CommandFactory.GetCommand(DIAG_PR_LIST_RD_F, New Byte() {frameCount, 1})) ''todo: what is the actual packet
+            Dim cmd As Command = CommandFactory.GetCommand(DIAG_PR_LIST_RD_F, New Byte() {frameCount, 1})
+
+            cdmaTerm.dispatchQ.add(cmd) ''todo: what is the actual packet
+            cdmaTerm.dispatchQ.executeCommandQ()
+            If (cmd.bytesRxd IsNot Nothing) Then
+
+                If (cmd.bytesRxd(0) = 0) Then
+                    Exit For
+                End If
+
+                Dim b = cmd.bytesRxdLessHdlc()
+                prlData.AddRange(b)
+            End If
             frameCount += 1
         Next
+
+        System.IO.File.WriteAllBytes(filename, prlData.ToArray)
         Return True
 
     End Function

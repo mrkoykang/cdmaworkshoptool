@@ -226,6 +226,13 @@ Public Class Command
         Return sb.ToString
     End Function
 
-
+    Public Function bytesRxdLessHdlc() As Byte()
+        If (bytesRxd.Count < 9) Then
+            Return New Byte() {}
+        End If
+        Dim output As Byte() = New Byte(bytesRxd.Count - 10) {}
+        Buffer.BlockCopy(bytesRxd, 6, output, 0, bytesRxd.Count - 9) ''todo: skip more than 2?
+        Return output
+    End Function
     
 End Class

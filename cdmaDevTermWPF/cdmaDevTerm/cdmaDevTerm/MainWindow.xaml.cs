@@ -94,8 +94,7 @@ namespace cdmaDevTerm
             if (Properties.Settings.Default.AutoModeOffline)
             {
                 cdmaTerm.dispatchQ.clearCommandQ();
-                var v = new Command(cdmaTerm.modeOfflineD, "Offline");
-                cdmaTerm.dispatchQ.add(ref v);
+                cdmaTerm.modeSwitch(Qcdm.Mode.MODE_RADIO_OFFLINE);
                 result = cdmaTerm.dispatchQ.executeCommandQ();
             }
             if (result)
@@ -295,6 +294,20 @@ namespace cdmaDevTerm
                 if (result)
                     cdmaTerm.ReadMIN1();
             }
+
+            private void SendSpcZerosMenuItem_Click_1(object sender, RoutedEventArgs e)
+            {
+                cdmaTerm.sendAnySPC("000000");
+                cdmaTerm.dispatchQ.executeCommandQ();
+            }
+
+            private void WriteSpcZerosMenuItem_Click_1(object sender, RoutedEventArgs e)
+            {
+                cdmaTerm.writeAnySpc("000000");
+                cdmaTerm.dispatchQ.executeCommandQ();
+            }
+
+
 
     }
 }

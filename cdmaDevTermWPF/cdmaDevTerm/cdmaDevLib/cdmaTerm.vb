@@ -828,22 +828,17 @@ ends:
     End Sub
 
     Public Shared Sub modeSwitch(ByVal mode As Qcdm.Mode)
-        ''TODO: refactor to actually pass qc enum
+
         ''first check which read type then go
         If mode = Qcdm.Mode.MODE_RADIO_OFFLINE Then
-            dispatchQ.add(New Command(modeOfflineD, "mode offline"))
-
+            dispatchQ.add(New Command(modeOfflineD, "mode offline")) ''TODO: refactor to actually pass qc enum
         ElseIf mode = Qcdm.Mode.MODE_RADIO_ONLINE Then
             dispatchQ.add(New Command(modeReset, "no mode online(reset sent)"))
-
         ElseIf mode = Qcdm.Mode.MODE_RADIO_LOWPOWER Then
             dispatchQ.add(New Command(modeOfflineD, "no mode low(offd sent)"))
-
         ElseIf mode = Qcdm.Mode.MODE_RADIO_RESET Then
             dispatchQ.add(New Command(modeReset, "mode reset"))
-
         ElseIf mode = "P2K" Then
-
             switchToP2K()
         End If
 
@@ -863,13 +858,9 @@ ends:
         logger.addToLog("NV Read Complete")
     End Sub
 
-    Private Sub NVItemWrite(WriteFromFile As Boolean, strFileName As String, NVItemNumber As String, NVItemValue As Byte())
+    Public Shared Sub WriteNvItemInt(i As Integer, NVItemValue As Byte())
         Dim nv As New NvItems()
-        If WriteFromFile = True Then
-            nv.writeNVItemRange(strFileName)
-        Else
-            nv.WriteNVItem(Integer.Parse(NVItemNumber), NVItemValue)
-        End If
+        nv.WriteNVItem(i, NVItemValue)
     End Sub
 
     Public Shared EfsQc As New Qcdm
@@ -877,13 +868,10 @@ ends:
     Public Shared Sub SendPrlFile(PrlFilePath As String)
         Try
             Dim myPlus As New Prl
-
-            myPlus.UploadPRL(PrlFilePath)
-
+            myPlus.UploadPrl(PrlFilePath)
         Catch ex As Exception
             logger.addToLog("Prl send err: " + ex.ToString)
         End Try
-
     End Sub
 
 #End Region
@@ -909,37 +897,15 @@ ends:
 
     End Sub
 
-    Private Sub writeNam0MdnButton_Click(mdn As String)
-        dispatchQ.clearCommandQ()
-        Dim s As String = "WriteMdn: " + mdn
-        Dim mdnWriteData As New List(Of Byte)
-        mdnWriteData.Add(&H0)
-        mdnWriteData.AddRange(ASCIIEncoding.ASCII.GetBytes(mdn))
-
-        Dim s2 As String = mdn
-        dispatchQ.add(New Command(DIAG_NV_WRITE_F, NV_DIR_NUMBER_I, mdnWriteData.ToArray, s))
-        ''dispatchQ.addCommandToQ(New Command(DIAG_NV_WRITE_F, NV_BANNER_I, ASCIIEncoding.ASCII.GetBytes(nam0MDNTextbox.Text), s))
-
-        dispatchQ.executeCommandQ()
-
-
-        ReadNv(NV_DIR_NUMBER_I)
-
-    End Sub
-
-
     Public Shared Function GetComFriendlyNames()
         Return COMPortInfo.COMPortInfo.GetCOMPortsInfo()
     End Function
 
-
-
-    Private Sub ReadEvdoMode()
+    Public Shared Sub ReadEvdoMode()
 
         dispatchQ.add(New Command(DIAG_NV_READ_F, NV_DS_QCMIP_I, New Byte() {}, "NV_DS_QCMIP_I Read EVDO mode"))
 
     End Sub
-
 
     Public Shared Sub WriteEvdoMode(evdoMode As Integer)
 
@@ -947,7 +913,6 @@ ends:
         dispatchQ.add(CommandFactory.GetCommand(NV_DS_QCMIP_I, True, type))
 
     End Sub
-
 
     Private Shared Sub EncodeMIN(MIN1 As String)
 
@@ -1012,30 +977,24 @@ ends:
         End Try
     End Sub
 
-
     ''hm.. two items?
     ''requestnvitemidwrite 11055 0xD4 0x07
     ''requestnvitemidwrite 11089 0x01 0xD4 0x07
-
     ''http://www.mobile-files.com/forum/archive/index.php/t-584.html
-    Private Sub ReadBBRegId()
-        dispatchQ.add(New Command(DIAG_NV_READ_F, 11055, New Byte() {}, "Read Bb reg id"))
+    Public Shared Sub ReadBBRegId()
+        dispatchQ.add(New Command(DIAG_NV_READ_F, 11055, New Byte() {}, "Read Bb reg id")) ''todo command factory and decoders?
         dispatchQ.add(New Command(DIAG_NV_READ_F, 11089, New Byte() {}, "Read Bb reg id 2"))
 
     End Sub
 
-    Private Sub WriteBBRegId(ByVal bbRegId As Byte())
-
+    Public Shared Sub WriteBBRegId(ByVal bbRegId As Byte())
         dispatchQ.add(New Command(DIAG_NV_WRITE_F, 11055, New Byte() {bbRegId(1), bbRegId(0)}, "Read Bb reg id"))
-
         '' 26 51 2B 01 D4 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF
         Dim regId2 As Byte() = {&H1, bbRegId(1), bbRegId(0), &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &HFF}
         dispatchQ.add(New Command(DIAG_NV_WRITE_F, 11089, regId2, "Read Bb reg id 2"))
-
     End Sub
 
-
-    Private Sub WriteBbRegId(regId As String)
+    Public Shared Sub WriteBbRegId(regId As String)
         Try
             dispatchQ.clearCommandQ()
             WriteBBRegId(String_To_Bytes(Integer.Parse(regId).ToString("x4")))
@@ -1043,7 +1002,6 @@ ends:
         Catch ex As Exception
             logger.addToLog("Write Bb reg err: " + ex.ToString)
         End Try
-
     End Sub
 
     Private Shared Sub WriteSidAndNid(sid As String, nid As String)
@@ -1055,29 +1013,25 @@ ends:
     Private Shared Sub WriteSidAndNid(ByVal sid As Byte(), ByVal nid As Byte())
         Dim SidNid As New List(Of Byte)
         SidNid.Add(0)
-
         SidNid.Add(sid(1))
         SidNid.Add(sid(0))
         SidNid.Add(nid(1))
         SidNid.Add(nid(0))
 
         dispatchQ.add(New Command(DIAG_NV_WRITE_F, NV_HOME_SID_NID_I, SidNid.ToArray, "Write SID/NID"))
-
     End Sub
 
     Public Shared ReadingRamToFile = False
     Public Shared ReadingRamFile As String
 
-    Private Sub ReadRam(RamStartAddress As String, RamStartOffset As String, RamEndAddress As String, RamEndOffset As String, outFileName As String, search As Boolean)
+    Public Shared Sub ReadRam(RamStartAddress As String, RamStartOffset As String, RamEndAddress As String, RamEndOffset As String, outFileName As String, search As Boolean)
 
         ReadingRamToFile = True
         RamReadQ.clearCommandQ()
-
         dispatchQ.clearCommandQ()
         ''myD.ReadRam(Integer.Parse(ReadRamStartAddressTextbox.Text), Integer.Parse(ReadRamEndAddressTextbox.Text), False)
 
         myD.ReadRam2(RamStartAddress + RamStartOffset, RamEndAddress + RamEndOffset)
-
         dispatchQ.executeCommandQ()
 
         RamReadQ.generateRamReadReport(outFileName)
@@ -1085,29 +1039,22 @@ ends:
         If search Then
             SearchBin(outFileName)
         End If
-
-        logger.addToLog("Ram Read Complete")
+        logger.addToLog("Ram Read Complete", logger.logType.infoAndMsg)
     End Sub
 
-
-    Private Sub SearchBin(ByVal fileName As String)
+    Private Shared Function SearchBin(ByVal fileName As String) As List(Of String)
         Dim ResultsList As New List(Of String)
         If System.IO.File.Exists(fileName) = True Then
-
             Dim objReader1 As New System.IO.StreamReader(fileName)
-
             Dim NextRegexLine As String ''= "623456"
             Do While objReader1.Peek() <> -1
-
                 NextRegexLine = objReader1.ReadLine()
-
                 Dim re1 As String = "(\d)"    'Any Single Digit 1
                 Dim re2 As String = "(\d)"    'Any Single Digit 2
                 Dim re3 As String = "(\d)"    'Any Single Digit 3
                 Dim re4 As String = "(\d)"    'Any Single Digit 4
                 Dim re5 As String = "(\d)"    'Any Single Digit 5
                 Dim re6 As String = "(\d)"    'Any Single Digit 6
-
                 Dim r As Regex = New Regex(re1 + re2 + re3 + re4 + re5 + re6, RegexOptions.IgnoreCase Or RegexOptions.Singleline)
                 Dim m As Match = r.Match(NextRegexLine)
                 If (m.Success) Then
@@ -1118,30 +1065,22 @@ ends:
                     Dim d5 = m.Groups(5)
                     Dim d6 = m.Groups(6)
                     '' logger.addToLog("( " + d1.ToString() + d2.ToString() + d3.ToString() + d4.ToString() + d5.ToString() + d6.ToString() + " )")
-
-
                     Dim possibleSpc As String = d1.ToString() + d2.ToString() + d3.ToString() + d4.ToString() + d5.ToString() + d6.ToString()
                     If ResultsList.Contains(possibleSpc) = False Then
                         ResultsList.Add(possibleSpc)
                     End If
-
                     ''ResultsListBox1.Items.Add(d1.ToString() + d2.ToString() + d3.ToString() + d4.ToString() + d5.ToString() + d6.ToString())
                 End If
-
             Loop
-
-            logger.addToLog("Search Bin For SPC Done")
+            logger.addToLog("Search Bin For SPC Done", logger.logType.infoAndMsg)
         Else
-
-            MsgBox("File Does Not Exist")
-
+            logger.addToLog("File Does Not Exist", logger.logType.infoAndMsg)
         End If
 
-
-    End Sub
+        Return ResultsList
+    End Function
 
     Public Shared Sub ReadAllNam()
-
         dispatchQ.clearCommandQ()
         dispatchQ.add(CommandFactory.GetCommand(NV_NAM_LOCK_I))
         dispatchQ.add(CommandFactory.GetCommand(NV_DIR_NUMBER_I))
@@ -1155,7 +1094,6 @@ ends:
         dispatchQ.executeCommandQ()
 
         DecodeMin()
-
     End Sub
 
     Public Shared Sub ReadNv(ByVal nv As NvItems.NVItems)
@@ -1239,7 +1177,7 @@ ends:
         dispatchQ.executeCommandQ()
     End Sub
 
-    Private Sub readNVList(ReadNvList As String, fileName As String)
+    Public Shared Sub readNVList(ReadNvList As String, fileName As String)
         Try
             Dim nvItemList As String() = ReadNvList.Replace(",", "").Split(" ")
             ReadNvItemList(nvItemList)
@@ -1253,23 +1191,19 @@ ends:
 
     End Sub
 
-    Public Sub ReadNvItemList(ByVal nvItemList As String())
+    Public Shared Sub ReadNvItemList(ByVal nvItemList As String())
         Try
             logger.addToLog("Reading NV List - This may take a while, do not unplug.")
             nvReadQ.clearCommandQ()
             For i = 0 To nvItemList.Count - 1
-
                 If nvItemList(i).Contains("-") Then
                     Dim nv As New NvItems
                     Dim subNvRange As String() = nvItemList(i).Split("-")
                     nv.readNVItemRange(subNvRange(0), subNvRange(1))
                 ElseIf True Then
                     Dim debugString As String = "readNVItemList DIAG_NV_READ_F " + nvItemList(i)
-
                     dispatchQ.add(New Command(Qcdm.Cmd.DIAG_NV_READ_F, Integer.Parse(nvItemList(i)), New Byte() {}, debugString))
-
                 End If
-
             Next
             dispatchQ.executeCommandQ()
             logger.addToLog("Reading NV List - This may take a while, do not unplug..")
@@ -1281,16 +1215,11 @@ ends:
 
     Function ScanForReadableRam(ScanRamStart As String, ScanRamEnd As String) As List(Of String)
         Dim RamScanResultList As New List(Of String)
-
         ReadingRamToFile = True
         RamReadQ.clearCommandQ()
-
         dispatchQ.clearCommandQ()
-
         myD.ScanRam2(ScanRamStart + "0000", ScanRamEnd + "0000")
-
         dispatchQ.executeCommandQ()
-
         Dim R As List(Of String) = RamReadQ.generateRamScanReport()
 
         For Each s As String In R

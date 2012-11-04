@@ -23,7 +23,7 @@ Public Class Phone
     Private OperationCount As Integer = 0
     'Private _NvData As New ObservableCollection(Of Nv)
     Private _Qcmip As Qcdm.Qcmip
-    Private _AvailableComPorts As New List(Of String)
+    Private _AvailableComPorts As New List(Of COMPortInfo.COMPortInfo)
     Private _ComPortName As String
     Private _SixteenDigitSP As String
     Private _NvItems As Dictionary(Of NvItems.NVItems, Nv)
@@ -356,11 +356,11 @@ Public Class Phone
         End Get
     End Property
 
-    Public Property AvailableComPorts() As List(Of String)
+    Public Property AvailableComPorts() As List(Of COMPortInfo.COMPortInfo)
         Get
             Return _AvailableComPorts
         End Get
-        Set(value As List(Of String))
+        Set(value As List(Of COMPortInfo.COMPortInfo))
             _AvailableComPorts = value
             RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("AvailableComPorts"))
         End Set

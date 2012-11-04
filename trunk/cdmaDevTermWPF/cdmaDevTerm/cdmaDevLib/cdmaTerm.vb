@@ -77,8 +77,8 @@ Public Class cdmaTerm
 
         ' Get a list of serial port names.
         Dim ports As String() = SerialPort.GetPortNames()
-
-        thePhone.AvailableComPorts = New List(Of String)(ports)
+        thePhone.AvailableComPorts = COMPortInfo.COMPortInfo.GetCOMPortsInfo()
+        '' thePhone.AvailableComPorts = New List(Of String)(ports)
 
     End Sub
 
@@ -217,6 +217,9 @@ ends:
         Try
             ''ajh dg change 1 - need to check for port being opened already /
             '' dg added checkbox to test bb winapi dll
+
+            portName = thePhone.AvailableComPorts.Find(Function(f) f.Description = portName).Name
+
 
             serialportType = "blackberry" ''aka winApiCom
 

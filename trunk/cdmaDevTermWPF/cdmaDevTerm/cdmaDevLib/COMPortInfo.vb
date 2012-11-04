@@ -74,6 +74,13 @@ Public Class COMPortInfo
                     End If
                 Next
             End Using
+            ''find AT ports and ports above code misses
+            Dim stdLibPorts = System.IO.Ports.SerialPort.GetPortNames
+            For Each port As String In stdLibPorts
+                If (comPortInfoList.Exists(Function(c) c.Name = port) = False) Then
+                    comPortInfoList.Add(New COMPortInfo() With {.Name = port, .Description = port})
+                End If
+            Next
 
             Return comPortInfoList
         End Function

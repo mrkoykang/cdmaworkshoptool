@@ -30,9 +30,11 @@
 
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
             <StackPanel Margin="2"  Orientation="Horizontal">
-                <ComboBox  HorizontalAlignment="Left" Margin="2" Name="comBox" VerticalAlignment="Top" MinWidth="275"
-                             SelectedItem="{Binding ComPortName}"
-                              ItemsSource="{Binding AvailableComPorts}"  />
+                        <ComboBox  HorizontalAlignment="Left" Margin="2" Name="comBox" VerticalAlignment="Top" Width="275"
+                            SelectedItem="{Binding ComPortName}"
+                              ItemsSource="{Binding AvailableComPorts}" >
+                           
+                        </ComboBox>
                         <Button Margin="2" HorizontalAlignment="Left"  Name="Send" VerticalAlignment="Top" Width="60" Click="Scan_Click" >
                     <StackPanel Orientation="Horizontal">
                         <Image Source="Resources/refresh.png" Stretch="Uniform" Height="20" Width="20" />

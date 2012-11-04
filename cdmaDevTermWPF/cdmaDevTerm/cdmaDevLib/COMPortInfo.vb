@@ -21,7 +21,9 @@ Imports System.Management
 
 Public Class COMPortInfo
     Public Class COMPortInfo
-
+        Public Overrides Function ToString() As String
+            Return Description
+        End Function
         Public Property Name() As String
             Get
                 Return m_Name

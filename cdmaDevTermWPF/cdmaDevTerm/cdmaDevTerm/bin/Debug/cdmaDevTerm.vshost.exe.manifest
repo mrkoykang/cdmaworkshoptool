@@ -63,14 +63,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevLib.dll" size="147456">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevLib.dll" size="147968">
       <assemblyIdentity name="cdmaDevLib" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>jFii3Dao7Oi3wJlSZ07vQv1B0UY=</dsig:DigestValue>
+        <dsig:DigestValue>qoLwW2EUZkeyweOdxPFFzwx+F7k=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -82,7 +82,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>5+c+Upp3ZH3YJi04Q7UOQPe6IqY=</dsig:DigestValue>
+        <dsig:DigestValue>rs6SVQkH1FzSMn4KDQLdyNBUQBw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

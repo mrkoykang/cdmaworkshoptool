@@ -84,6 +84,8 @@ namespace cdmaDevTerm
             this.DataContext = cdmaTerm.thePhone;
             cdmaTerm.initSixteenDigitCodes(AppDomain.CurrentDomain.BaseDirectory + "16digitpass.txt");
             cdmaTerm.GetComs();
+            comBox.SelectedIndex = 0;
+
         }
 
         private void Connect_Click(object sender, RoutedEventArgs e)

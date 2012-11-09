@@ -722,12 +722,17 @@ Public Class cdmaTerm
 
     Shared Sub sendAnySPC(ByVal customSPC As String)
         ''dg qc send spc
+        If (customSPC = Nothing) Then
+            Return
+        End If
         dispatchQ.add(CommandFactory.GetCommand(DIAG_SPC_F, ASCIIEncoding.ASCII.GetBytes(customSPC)))
 
     End Sub
 
     Public Shared Sub writeAnySpc(ByVal customSPC As String)
-
+        If (customSPC = Nothing) Then
+            Return
+        End If
         dispatchQ.add(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, NvItems.NVItems.NV_SEC_CODE_I, ASCIIEncoding.ASCII.GetBytes(customSPC), "write spc")) ''todo:untested now
 
     End Sub
@@ -1158,7 +1163,9 @@ Public Class cdmaTerm
                     nv.readNVItemRange(subNvRange(0), subNvRange(1))
                 ElseIf True Then
                     Dim debugString As String = "readNVItemList DIAG_NV_READ_F " + nvItemList(i)
-                    dispatchQ.add(New Command(Qcdm.Cmd.DIAG_NV_READ_F, Integer.Parse(nvItemList(i)), New Byte() {}, debugString))
+                    Dim cmd = New Command(Qcdm.Cmd.DIAG_NV_READ_F, Integer.Parse(nvItemList(i)), New Byte() {}, debugString)
+                    dispatchQ.add(cmd)
+                    nvReadQ.add(cmd)
                 End If
             Next
             dispatchQ.executeCommandQ()

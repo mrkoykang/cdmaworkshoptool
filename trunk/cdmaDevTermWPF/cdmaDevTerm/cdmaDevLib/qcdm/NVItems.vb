@@ -1471,9 +1471,9 @@ Public Class NvItems
 
 
                 ''cdmaTerm.dispatchQ.addCommandToQ(readNVItem(i, debugString))
-
-                cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_NV_READ_F, i, New Byte() {}, debugString))
-
+                Dim cmd = New Command(Qcdm.Cmd.DIAG_NV_READ_F, i, New Byte() {}, debugString)
+                cdmaTerm.dispatchQ.add(cmd)
+                cdmaTerm.nvReadQ.add(cmd)
 
             Next
 

@@ -51,7 +51,8 @@ Public Class dispatchQmanager
     Public Function executeCommandQ() As Boolean
 
         If cdmaTerm.portIsOpen = False Then
-            logger.add("Dispatch Queue Error: Port Not Open, Please Connect")
+            logger.add("Dispatch Queue Error: Port Not Open, Please Connect", logger.logType.infoAndMsg)
+
             silentInterruptCommandQ()
         Else
 

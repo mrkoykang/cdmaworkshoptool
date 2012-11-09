@@ -93,45 +93,6 @@ Public Class cdmaTerm
 
     Dim mySDR As New SecretDecoderRing
 
-    ''This is the one that works!
-    '' MAKE THIS RECIEVE AN ARRAY AS BYTE AND TX TO PORT
-    ''TODO: not needed?
-    Public Sub sendTermCommand2(ByVal byteArrayToTransmit() As Byte)
-
-        ''When send button clicked Clear the rx buffer
-        rxBuff = ""
-
-        Try
-
-            logger.addToLog("TX2: " + biznytesToStrizings(byteArrayToTransmit) + vbNewLine + vbNewLine)
-            mySerialPort2.Write(byteArrayToTransmit)
-
-            Dim rBuff(4000) As Byte
-            Dim rxBuff(mySerialPort2.Read(rBuff)) As Byte
-
-            For Each b As Byte In rxBuff
-                rxBuff(b) = rBuff(b)
-            Next
-
-            Dim returnStr As String = biznytesToStrizings(rxBuff)
-            logger.addToLog("RX: " + returnStr + vbNewLine + vbNewLine)
-
-            newCommandRxd = True
-
-        Catch e As Exception
-            logger.addToLog("com error: device does not rx: " + e.Message)
-        End Try
-
-        'Pause for 800ms
-        System.Threading.Thread.Sleep(200)
-
-        'If the buffer is still empty then no data. End sub
-        If rxBuff = "" Then GoTo ends
-
-ends:
-    End Sub
-
-
     Public Shared mySerialPort2 As New SerialCom("\\.\COM3", 9600, IO.Ports.StopBits.One, IO.Ports.Parity.None, 8) ''actual winapi port
     ''this is the AT return changed
     ''think in a farther program the box can just be replaced with a string VAR?
@@ -208,22 +169,13 @@ ends:
 
 
 
-
-
-
     Public Shared Sub connectSub(portName As String)
-
-
         Try
             ''ajh dg change 1 - need to check for port being opened already /
             '' dg added checkbox to test bb winapi dll
 
             portName = thePhone.AvailableComPorts.Find(Function(f) f.Description = portName).Name
-
-
             serialportType = "blackberry" ''aka winApiCom
-
-
             If (portIsOpen = False) Then
 
                 mySerialPort2.SetPort("\\.\" + portName) ''todo:untested?
@@ -231,7 +183,8 @@ ends:
                 ''ToolStripStatusLabel1.Text = "connect ok || Type : WinApiCom.dll || " + ("\\.\" + GetPlainPortNameFromFriendly(ComNumBox1.Text))
                 If (result) Then
                     portIsOpen = True
-                    logger.addToLog("portIsOpen = true - port opened")
+                    logger.addToLog("portIsOpen = true - port " + portName + " opened")
+                    logger.addToLog("Connected to " + portName, logger.logType.msg)
                 Else
                     logger.addToLog("can't connect")
                 End If

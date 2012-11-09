@@ -49,5 +49,17 @@ namespace cdmaDevTerm.Properties {
                 return ((bool)(this["AutoModeOffline"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastPrl {
+            get {
+                return ((string)(this["LastPrl"]));
+            }
+            set {
+                this["LastPrl"] = value;
+            }
+        }
     }
 }

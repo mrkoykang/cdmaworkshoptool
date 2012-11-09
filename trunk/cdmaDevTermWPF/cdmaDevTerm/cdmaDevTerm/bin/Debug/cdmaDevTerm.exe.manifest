@@ -63,26 +63,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevLib.dll" size="147968">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevLib.dll" size="147456">
       <assemblyIdentity name="cdmaDevLib" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>z9F2/kDxvVq4YXx3yffdvM3Xeoo=</dsig:DigestValue>
+        <dsig:DigestValue>OCSNCvBU37KoBaguQAK9IQIF+0Y=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="50688">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="52736">
       <assemblyIdentity name="cdmaDevTerm" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>WHD/p0Z+wWQGsVh8GVAOOIz1xH0=</dsig:DigestValue>
+        <dsig:DigestValue>KgRf92ew/4IY3D3eJhEkKopNB50=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -110,13 +110,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="cdmaDevTerm.exe.config" size="1054">
+  <file name="cdmaDevTerm.exe.config" size="1738">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>v3IW8b5vthxbZGHva6pyadEib5o=</dsig:DigestValue>
+      <dsig:DigestValue>d0GEj3N1J+Y8hq+3m4ZhadyZFrA=</dsig:DigestValue>
     </hash>
   </file>
   <file name="k-64x64.ico" size="5694">

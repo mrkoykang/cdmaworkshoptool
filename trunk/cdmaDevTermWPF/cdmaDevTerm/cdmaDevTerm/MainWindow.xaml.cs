@@ -83,10 +83,17 @@ namespace cdmaDevTerm
 
             this.DataContext = cdmaTerm.thePhone;
             cdmaTerm.initSixteenDigitCodes(AppDomain.CurrentDomain.BaseDirectory + "16digitpass.txt");
+            cdmaTerm.thePhone.PrlFilename = Properties.Settings.Default.LastPrl;
             cdmaTerm.GetComs();
             comBox.SelectedIndex = 0;
 
         }
+        ~MainWindow()
+        {
+            Properties.Settings.Default.LastPrl = cdmaTerm.thePhone.PrlFilename;
+            Properties.Settings.Default.Save();
+        }
+
 
         private void Connect_Click(object sender, RoutedEventArgs e)
         {
@@ -307,6 +314,18 @@ namespace cdmaDevTerm
             {
                 cdmaTerm.writeAnySpc("000000");
                 cdmaTerm.dispatchQ.executeCommandQ();
+            }
+
+            private void ReadNvItem_Click(object sender, RoutedEventArgs e)
+            {  
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+                {
+                    Title = "Save NV Read as...",
+                    DefaultExt = ".txt",
+                    Filter = "Text (.txt)|*.txt",
+                };
+                if ((bool)dlg.ShowDialog())
+                    cdmaTerm.readNVList(ReadNvItemTextbox.Text, dlg.FileName);
             }
 
 

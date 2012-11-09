@@ -8,8 +8,8 @@
         Try
 
             If Me.bytesRxd(0) = &H42 Then
-                logger.addToLog("Spc not found (send spc or 16 SP required?)")
-                logger.addToLog("Spc not found (send spc or 16 SP required?)", logger.logType.msg)
+                logger.add("Spc not found (send spc or 16 SP required?)")
+                logger.add("Spc not found (send spc or 16 SP required?)", logger.logType.msg)
             Else
 
 
@@ -38,7 +38,7 @@
 
 
         Catch
-            logger.addToLog("cant find spc_nv 1", logger.logType.msg)
+            logger.add("cant find spc_nv 1", logger.logType.msg)
 
 
         End Try

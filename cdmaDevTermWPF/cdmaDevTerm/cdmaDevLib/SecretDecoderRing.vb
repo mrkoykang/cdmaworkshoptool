@@ -136,7 +136,7 @@ Public Class SecretDecoderRing
             End Select
 
         Catch ex As Exception
-            logger.addToLog("decoder err: " + ex.ToString)
+            logger.add("decoder err: " + ex.ToString)
             Return False
 
         End Try
@@ -251,13 +251,13 @@ Public Class SecretDecoderRing
 
 
         Catch
-            logger.addToLog("cant find spc_lg 1")
+            logger.add("cant find spc_lg 1")
 
         End Try
 
     End Sub
 
-  
+
 
 
 
@@ -283,7 +283,7 @@ Public Class SecretDecoderRing
 
 
         Catch
-            logger.addToLog("damn decoder ring: cant get decoded min2")
+            logger.add("damn decoder ring: cant get decoded min2")
 
         End Try
 
@@ -432,7 +432,7 @@ Public Class SecretDecoderRing
     Public Shared Function trimFrontAndEndAscii(ByVal str As String) As String
 
         If (str.Length - 7) <= 0 Then
-            logger.addToLog("No ascii response to command l: " + str.Length.ToString)
+            logger.add("No ascii response to command l: " + str.Length.ToString)
             Return ""
         End If
 
@@ -491,10 +491,10 @@ Public Class SecretDecoderRing
     Private Shared Sub decode_DIAG_SPC_F(ByVal cmd As Command)
 
         If cmd.bytesRxd(1) <> 1 Then
-            logger.addToLog("Spc not accepted, don't send anything for 10 seconds (or devterm will crash)")
+            logger.add("Spc not accepted, don't send anything for 10 seconds (or devterm will crash)")
             System.Threading.Thread.Sleep(1000)
         ElseIf cmd.bytesRxd(1) = 1 And cmd.bytesRxd(0) = &H41 Then
-            logger.addToLog("Spc Accepted")
+            logger.add("Spc Accepted")
         End If
 
     End Sub
@@ -527,7 +527,7 @@ Public Class SecretDecoderRing
         min1c = (min1 And &H3FF)
         min1c = (min1c + 1) Mod 10 + ((((min1c Mod 100 / 10) + 1) Mod 10) * 10) + ((((min1c / 100) + 1) Mod 10) * 100)
 
-        logger.addToLog("test Min Decode: " & "min2: " & min2 & "min1a: " & min1a & "min1b: " & min1b & "min1c: " & min1c)
+        logger.add("test Min Decode: " & "min2: " & min2 & "min1a: " & min1a & "min1b: " & min1b & "min1c: " & min1c)
 
 
 
@@ -541,7 +541,7 @@ Public Class SecretDecoderRing
             Return decode_NV_MIN1(System.Convert.ToInt32(min1, 16), System.Convert.ToInt32(min2, 16))
 
         Catch ex As Exception
-            logger.addToLog("decode_NV_MIN1 string string err: " + ex.ToString)
+            logger.add("decode_NV_MIN1 string string err: " + ex.ToString)
             Return ""
         End Try
 

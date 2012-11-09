@@ -1479,7 +1479,7 @@ Public Class NvItems
 
             Return True
         Catch ex As Exception
-            logger.addToLog("err:" + ex.ToString)
+            logger.add("err:" + ex.ToString)
         End Try
         Return False
 
@@ -1543,7 +1543,7 @@ Public Class NvItems
 
 
         Else
-            logger.addToLog("err: Bad nv file?")
+            logger.add("err: Bad nv file?")
         End If
 
         ''determine 3.5/2.7 - not sure if this will matter with our engine?

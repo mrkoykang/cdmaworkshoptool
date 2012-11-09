@@ -21,7 +21,7 @@
 
 
         Catch
-            logger.addToLog("decoder err: cant get decoded mdn")
+            logger.add("decoder err: cant get decoded mdn")
         End Try
     End Sub
 

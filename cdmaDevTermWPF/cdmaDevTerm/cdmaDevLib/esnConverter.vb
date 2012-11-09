@@ -23,55 +23,57 @@ Imports System.Security.Cryptography
 
 
 Public Class esnConverter
-    'Public Sub OnMeidConversionSub(ByVal incomingToConvert)
-    '    '' Dim serie As String = cdmaTerm.meidExtractedFromPacketTxtbox.Text.ToString
-    '    Dim serie As String = incomingToConvert
+    Public Shared Function ConversionSub(ByVal incomingToConvert) As String
+        '    '' Dim serie As String = cdmaTerm.meidExtractedFromPacketTxtbox.Text.ToString
+        Dim ret As String = ""
+        Dim serie As String = incomingToConvert
 
-    '    Select Case ChecaSerie(serie)
-    '        Case 0
-    '            cdmaTerm.ResultsListBox.Items.Add("Invalid MEID/ESN")
-    '            Exit Select
-    '        Case 1
-    '            cdmaTerm.ResultsListBox.Items.Add("MEID/ESN Hexadecimal")
-    '            cdmaTerm.ResultsListBox.Items.Add(" ")
-    '            cdmaTerm.ResultsListBox.Items.Add("MEID/ESN Decimal: ")
-    '            cdmaTerm.ResultsListBox.Items.Add(Convierte(1, serie))
+        Select Case ChecaSerie(incomingToConvert)
+            Case 0
+                logger.add("Invalid MEID/ESN")
+                '            Exit Select
+            Case 1
+                '            cdmaTerm.ResultsListBox.Items.Add("MEID/ESN Hexadecimal")
+                '            cdmaTerm.ResultsListBox.Items.Add(" ")
+                '            cdmaTerm.ResultsListBox.Items.Add("MEID/ESN Decimal: ")
+                ret = (Convierte(1, serie))
 
-    '            Exit Select
-    '        Case 2
+                Exit Select
+            Case 2
 
-    '            cdmaTerm.ResultsListBox.Items.Add("MEID/ESN Decimal")
-    '            cdmaTerm.ResultsListBox.Items.Add(" ")
-    '            cdmaTerm.ResultsListBox.Items.Add("MEID/ESN Hexadecimal: ")
-    '            cdmaTerm.ResultsListBox.Items.Add(Convierte(2, serie))
-    '            Exit Select
-    '        Case 3
+                '            cdmaTerm.ResultsListBox.Items.Add("MEID/ESN Decimal")
+                '            cdmaTerm.ResultsListBox.Items.Add(" ")
+                '            cdmaTerm.ResultsListBox.Items.Add("MEID/ESN Hexadecimal: ")
+                ret = (Convierte(2, serie))
+                Exit Select
+            Case 3
 
-    '            cdmaTerm.ResultsListBox.Items.Add("Meid Hexadecimal")
-    '            cdmaTerm.ResultsListBox.Items.Add(" ")
-    '            cdmaTerm.ResultsListBox.Items.Add(("Meid Decimal: "))
-    '            cdmaTerm.ResultsListBox.Items.Add(Convierte(3, serie))
-    '            cdmaTerm.ResultsListBox.Items.Add(("pESN Hexadecimal: "))
-    '            cdmaTerm.ResultsListBox.Items.Add("80" & pesn(meidh2byte(serie)))
-    '            cdmaTerm.ResultsListBox.Items.Add(("pESN Decimal: "))
-    '            cdmaTerm.ResultsListBox.Items.Add(Convierte(1, ("80" & pesn(meidh2byte(serie)))))
-    '            Exit Select
-    '        Case 4
+                '            cdmaTerm.ResultsListBox.Items.Add("Meid Hexadecimal")
+                '            cdmaTerm.ResultsListBox.Items.Add(" ")
+                '            cdmaTerm.ResultsListBox.Items.Add(("Meid Decimal: "))
+                '   ret = (Convierte(3, serie))
+                '            cdmaTerm.ResultsListBox.Items.Add(("pESN Hexadecimal: "))
+                '            cdmaTerm.ResultsListBox.Items.Add("80" & pesn(meidh2byte(serie)))
+                '            cdmaTerm.ResultsListBox.Items.Add(("pESN Decimal: "))
+                ret = Convierte(1, ("80" & pesn(meidh2byte(serie))))
+                Exit Select
+            Case 4
 
-    '            cdmaTerm.ResultsListBox.Items.Add("Meid Decimal")
-    '            cdmaTerm.ResultsListBox.Items.Add(" ")
-    '            cdmaTerm.ResultsListBox.Items.Add(("Meid Hexadecimal: "))
-    '            cdmaTerm.ResultsListBox.Items.Add(Convierte(4, serie))
-    '            cdmaTerm.ResultsListBox.Items.Add(("pESN Hexadecimal:"))
-    '            cdmaTerm.ResultsListBox.Items.Add("80" & pesn(meidh2byte(Convierte(4, serie))))
-    '            cdmaTerm.ResultsListBox.Items.Add(("pESN Decimal: "))
-    '            cdmaTerm.ResultsListBox.Items.Add(Convierte(1, ("80" & pesn(meidh2byte(Convierte(4, serie))))))
-    '            Exit Select
-    '        Case Else
-    '            cdmaTerm.ResultsListBox.Items.Add("Invalid MEID/ESN")
-    '            Exit Select
-    '    End Select
-    ' End Sub
+                '            cdmaTerm.ResultsListBox.Items.Add("Meid Decimal")
+                '            cdmaTerm.ResultsListBox.Items.Add(" ")
+                '            cdmaTerm.ResultsListBox.Items.Add(("Meid Hexadecimal: "))
+                '            cdmaTerm.ResultsListBox.Items.Add(Convierte(4, serie))
+                '            cdmaTerm.ResultsListBox.Items.Add(("pESN Hexadecimal:"))
+                '            cdmaTerm.ResultsListBox.Items.Add("80" & pesn(meidh2byte(Convierte(4, serie))))
+                '            cdmaTerm.ResultsListBox.Items.Add(("pESN Decimal: "))
+                ret = (Convierte(1, ("80" & pesn(meidh2byte(Convierte(4, serie))))))
+                Exit Select
+            Case Else
+                logger.add("Invalid MEID/ESN")
+                '            Exit Select
+        End Select
+        Return ret
+    End Function
     Public Shared Function hex2dec(ByVal hexa As String) As String
         Dim num As Double = 0
         hexa = hexa.ToLower

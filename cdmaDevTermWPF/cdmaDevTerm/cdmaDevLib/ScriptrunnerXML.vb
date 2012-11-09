@@ -32,7 +32,7 @@ Public Class ScriptrunnerXML
         ' go through each product
         For Each cmd In cmds
             ' output the value of the <Name> element within product
-            logger.addToLog("command sent: " + cmd.Value)
+            logger.add("command sent: " + cmd.Value)
 
             Dim TermCommandWithoutSpaces As String = cmd.Value.ToString.Replace(" ", String.Empty)
             cdmaTerm.dispatchQ.add(New Command(cdmaTerm.String_To_Bytes(TermCommandWithoutSpaces), "speakNSpell"))
@@ -54,7 +54,7 @@ Public Class ScriptrunnerXML
         ' go through each product
         For Each cmd In cmds
             ' output the value of the <Name> element within product
-            logger.addToLog("command sent: " + cmd.Value)
+            logger.add("command sent: " + cmd.Value)
 
             Dim TermCommandWithoutSpaces As String = cmd.Value.ToString.Replace(" ", String.Empty)
             cdmaTerm.dispatchQ.add(New Command(cdmaTerm.String_To_Bytes(TermCommandWithoutSpaces), "dutchToEnglishSpeakNSpell"))
@@ -98,7 +98,7 @@ Public Class ScriptrunnerXML
         ' go through each product
         For Each cmd In cmds
             ' output the value of the <Name> element within product
-            logger.addToLog("command sent: " + cmd.Value)
+            logger.add("command sent: " + cmd.Value)
 
             ''Dim TermCommandWithoutSpaces As String = cmd.Value.ToString.Replace(" ", String.Empty)
             ''cdmaTerm. dispatchQ.addCommandToQ(New Command((cdmaTerm.String_To_Bytes(TermCommandWithoutSpaces))

@@ -39,7 +39,7 @@ Public Class SixteenDigitCodes
             Try
                 cdmaTerm.thePhone.SpSixteenDigit.Add(sLine.Substring(0, seperator), sLine.Substring(seperator + 1, 16))
             Catch ex As Exception
-                logger.addToLog("Error in 16 digit pass line: " + sLine + " error:" + ex.ToString)
+                logger.add("Error in 16 digit pass line: " + sLine + " error:" + ex.ToString)
             End Try
         Next
 

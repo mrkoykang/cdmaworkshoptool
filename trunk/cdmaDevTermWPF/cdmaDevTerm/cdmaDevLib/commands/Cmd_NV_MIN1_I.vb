@@ -7,7 +7,7 @@
         Try
             cdmaTerm.MIN1Raw = cdmaTerm.biznytesToStrizings(New Byte() {Me.bytesRxd(11), Me.bytesRxd(10), Me.bytesRxd(9), Me.bytesRxd(8)})
         Catch ex As Exception
-            logger.addToLog("Min1 err: " + ex.ToString)
+            logger.add("Min1 err: " + ex.ToString)
         End Try
     End Sub
 End Class

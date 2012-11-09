@@ -38,12 +38,12 @@ Public Class dispatchQmanager
 
     Public Sub interruptCommandQ()
         ''catch all errors and rx type
-        logger.addToLog("Transmit error in message queue")
+        logger.add("Transmit error in message queue")
         mySynqdQ.Clear()
     End Sub
 
     Public Sub silentInterruptCommandQ()
-        logger.addToLog("Message queue was silently cleared")
+        logger.add("Message queue was silently cleared")
         mySynqdQ.Clear()
     End Sub
 
@@ -51,7 +51,7 @@ Public Class dispatchQmanager
     Public Function executeCommandQ() As Boolean
 
         If cdmaTerm.portIsOpen = False Then
-            logger.addToLog("Dispatch Queue Error: Port Not Open, Please Connect")
+            logger.add("Dispatch Queue Error: Port Not Open, Please Connect")
             silentInterruptCommandQ()
         Else
 
@@ -64,7 +64,7 @@ Public Class dispatchQmanager
                     Return False
                 End If
                 thisC.decode()
-                logger.addToLog("q count: " + mySynqdQ.Count.ToString + Environment.NewLine + thisC.debuggingText & Environment.NewLine)
+                logger.add("q count: " + mySynqdQ.Count.ToString + Environment.NewLine + thisC.debuggingText & Environment.NewLine)
 
             End While
 
@@ -111,7 +111,7 @@ Public Class dispatchQmanager
             Next
 
         Catch ex As Exception
-            logger.addToLog("nv check err: " + ex.ToString)
+            logger.add("nv check err: " + ex.ToString)
         End Try
 
     End Sub
@@ -149,7 +149,7 @@ Public Class dispatchQmanager
 
             myFileStream.Close()
         Catch ex As Exception
-            logger.addToLog("Ram read err: " + ex.ToString)
+            logger.add("Ram read err: " + ex.ToString)
         End Try
 
 
@@ -197,7 +197,7 @@ Public Class dispatchQmanager
 
 
         Catch ex As Exception
-            logger.addToLog("Ram scan err: " + ex.ToString)
+            logger.add("Ram scan err: " + ex.ToString)
         End Try
 
         Return Ranges

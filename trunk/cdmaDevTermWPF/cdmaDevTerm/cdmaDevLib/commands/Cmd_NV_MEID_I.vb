@@ -10,7 +10,7 @@
 
             ''todo uh. this doesnt seem to work? wtf?
             If meidFromPacket.StartsWith("4") Then
-                logger.addToLog("meid not returned, try sending 16 Digit SP / unlock code")
+                logger.add("meid not returned, try sending 16 Digit SP / unlock code")
             End If
 
             Dim thisIsTheMeid As String = ""
@@ -25,7 +25,7 @@
             meidFromPacket(6) + meidFromPacket(7)
 
             If thisIsTheMeid = "00000000000000" Then
-                logger.addToLog("cant find meid 1")
+                logger.add("cant find meid 1")
 
             Else
                 cdmaTerm.thePhone.Meid = thisIsTheMeid
@@ -34,7 +34,7 @@
 
 
         Catch
-            logger.addToLog("cant find meid 2")
+            logger.add("cant find meid 2")
         Finally
             ''todo: esn convert here?
 

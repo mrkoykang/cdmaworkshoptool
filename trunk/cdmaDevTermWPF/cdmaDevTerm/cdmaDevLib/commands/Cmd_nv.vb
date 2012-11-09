@@ -60,7 +60,7 @@
             End If
         Catch ex As Exception
 
-            logger.addToLog("Nv item parse err: " + ex.ToString)
+            logger.add("Nv item parse err: " + ex.ToString)
         End Try
 
 
@@ -94,7 +94,7 @@
             cdmaTerm.thePhone.NvItems(Me.currentNv) = New Nv(Me.currentNv, SecretDecoderRing.trimFrontAndEndAscii(SecretDecoderRing.getAsciiStrings(bytesRxd)))
 
         Catch ex As Exception
-            logger.addToLog("decode err:" + ex.ToString)
+            logger.add("decode err:" + ex.ToString)
 
         End Try
     End Sub

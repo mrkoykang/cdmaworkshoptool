@@ -328,6 +328,18 @@ namespace cdmaDevTerm
                     cdmaTerm.readNVList(ReadNvItemTextbox.Text, dlg.FileName);
             }
 
+            private void copyEsnConverted_Click_1(object sender, RoutedEventArgs e)
+            {
+                Clipboard.SetText(cdmaDevLib.esnConverter.ConversionSub(cdmaTerm.thePhone.Esn));
+            }
+
+            private void copyMeidConverted_Click_1(object sender, RoutedEventArgs e)
+            {
+                Clipboard.SetText(cdmaDevLib.esnConverter.ConversionSub(cdmaTerm.thePhone.Meid));
+            }
+
+          
+
 
 
     }

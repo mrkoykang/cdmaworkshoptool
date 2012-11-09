@@ -183,18 +183,18 @@ Public Class cdmaTerm
                 ''ToolStripStatusLabel1.Text = "connect ok || Type : WinApiCom.dll || " + ("\\.\" + GetPlainPortNameFromFriendly(ComNumBox1.Text))
                 If (result) Then
                     portIsOpen = True
-                    logger.addToLog("portIsOpen = true - port " + portName + " opened")
-                    logger.addToLog("Connected to " + portName, logger.logType.msg)
+                    logger.add("portIsOpen = true - port " + portName + " opened")
+                    logger.add("Connected to " + portName, logger.logType.msg)
                 Else
-                    logger.addToLog("can't connect")
+                    logger.add("can't connect")
                 End If
 
             Else
-                logger.addToLog("portIsOpen == true - can't connect")
+                logger.add("portIsOpen == true - can't connect")
             End If
 
         Catch ex As Exception
-            logger.addToLog("ex: " + ex.ToString)
+            logger.add("ex: " + ex.ToString)
 
         End Try
     End Sub
@@ -273,7 +273,7 @@ Public Class cdmaTerm
             ' return the finished byte array of decimal values
             Return bytes
         Catch ex As Exception
-            logger.addToLog("HexString to Byte() Conversion Error: Try Removing Spaces: " + ex.ToString)
+            logger.add("HexString to Byte() Conversion Error: Try Removing Spaces: " + ex.ToString)
 
             Return Diag01
         End Try
@@ -289,7 +289,7 @@ Public Class cdmaTerm
             Next
 
         Catch ex As Exception
-            logger.addToLog("biz err: " + ex.ToString)
+            logger.add("biz err: " + ex.ToString)
         End Try
         ''returns "" if try catch fails
         Return (returnStr)
@@ -330,7 +330,7 @@ Public Class cdmaTerm
                 )
             dispatchQ.executeCommandQ()
         Else
-            logger.addToLog("16 digit SP is not 16 digits", logger.logType.msg)
+            logger.add("16 digit SP is not 16 digits", logger.logType.msg)
         End If
 
 
@@ -396,7 +396,7 @@ Public Class cdmaTerm
                 ''get esn from gui
                 thePhone.Spc = ajhBlackMagic.MetroSPCcalc(thePhone.Esn) ''todo: what to do with result in this design?
             Catch ex As Exception
-                logger.addToLog("metro spc error: " + ex.ToString)
+                logger.add("metro spc error: " + ex.ToString)
             End Try
 
         End If
@@ -471,11 +471,11 @@ Public Class cdmaTerm
             atCmd.Add(&HD)
             atCmd.Add(&HA)
 
-            logger.addToLog(biznytesToStrizings(myDm.WriteRead(atCmd.ToArray)), logger.logType.infoAndMsg)
+            logger.add(biznytesToStrizings(myDm.WriteRead(atCmd.ToArray)), logger.logType.infoAndMsg)
 
         Catch
 
-            logger.addToLog("Cant Open AT Port", logger.logType.infoAndMsg)
+            logger.add("Cant Open AT Port", logger.logType.infoAndMsg)
         End Try
 
 
@@ -803,15 +803,15 @@ Public Class cdmaTerm
 
     Private Sub readNV(rangeStart As String, rangeEnd As String, saveFilePath As String)
         nvReadQ.clearCommandQ()
-        logger.addToLog("Reading NV - This may take a while, do not unplug.")
+        logger.add("Reading NV - This may take a while, do not unplug.")
         Dim nv As New NvItems
         nv.readNVItemRange(rangeStart, rangeEnd)
         dispatchQ.executeCommandQ()
-        logger.addToLog("Reading NV - This may take a while, do not unplug..")
+        logger.add("Reading NV - This may take a while, do not unplug..")
         nvReadQ.checkNvQForBadItems()
-        logger.addToLog("Reading NV - This may take a while, do not unplug...")
+        logger.add("Reading NV - This may take a while, do not unplug...")
         nvReadQ.generateNvReadReport(saveFilePath)
-        logger.addToLog("NV Read Complete")
+        logger.add("NV Read Complete")
     End Sub
 
     Public Shared Sub WriteNvItemInt(i As Integer, NVItemValue As Byte())
@@ -826,7 +826,7 @@ Public Class cdmaTerm
             Dim myPlus As New Prl
             myPlus.UploadPrl(PrlFilePath)
         Catch ex As Exception
-            logger.addToLog("Prl send err: " + ex.ToString)
+            logger.add("Prl send err: " + ex.ToString)
         End Try
     End Sub
 
@@ -912,7 +912,7 @@ Public Class cdmaTerm
         dispatchQ.add(New Command(DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray, "DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray"))
         dispatchQ.add(New Command(DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray, "DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray"))
 
-        logger.addToLog("min write attempted... unstable feature: warning")
+        logger.add("min write attempted... unstable feature: warning")
 
     End Sub
 
@@ -927,9 +927,9 @@ Public Class cdmaTerm
             mySerialPort2.Flush()
             mySerialPort2.Dispose()
             portIsOpen = False
-            logger.addToLog("disconnected")
+            logger.add("disconnected")
         Catch ex As Exception
-            logger.addToLog("disconnect err" + ex.ToString)
+            logger.add("disconnect err" + ex.ToString)
         End Try
     End Sub
 
@@ -956,7 +956,7 @@ Public Class cdmaTerm
             WriteBBRegId(String_To_Bytes(Integer.Parse(regId).ToString("x4")))
             dispatchQ.executeCommandQ()
         Catch ex As Exception
-            logger.addToLog("Write Bb reg err: " + ex.ToString)
+            logger.add("Write Bb reg err: " + ex.ToString)
         End Try
     End Sub
 
@@ -995,7 +995,7 @@ Public Class cdmaTerm
         If search Then
             SearchBin(outFileName)
         End If
-        logger.addToLog("Ram Read Complete", logger.logType.infoAndMsg)
+        logger.add("Ram Read Complete", logger.logType.infoAndMsg)
     End Sub
 
     Private Shared Function SearchBin(ByVal fileName As String) As List(Of String)
@@ -1028,9 +1028,9 @@ Public Class cdmaTerm
                     ''ResultsListBox1.Items.Add(d1.ToString() + d2.ToString() + d3.ToString() + d4.ToString() + d5.ToString() + d6.ToString())
                 End If
             Loop
-            logger.addToLog("Search Bin For SPC Done", logger.logType.infoAndMsg)
+            logger.add("Search Bin For SPC Done", logger.logType.infoAndMsg)
         Else
-            logger.addToLog("File Does Not Exist", logger.logType.infoAndMsg)
+            logger.add("File Does Not Exist", logger.logType.infoAndMsg)
         End If
 
         Return ResultsList
@@ -1137,11 +1137,11 @@ Public Class cdmaTerm
         Try
             Dim nvItemList As String() = ReadNvList.Replace(",", "").Split(" ")
             ReadNvItemList(nvItemList)
-            logger.addToLog("Reading NV List - This may take a while, do not unplug...")
+            logger.add("Reading NV List - This may take a while, do not unplug...")
             nvReadQ.generateNvReadReport(fileName)
-            logger.addToLog("NV Read Complete")
+            logger.add("NV Read Complete")
         Catch ex As Exception
-            logger.addToLog("Read nv list err: " + ex.ToString)
+            logger.add("Read nv list err: " + ex.ToString)
 
         End Try
 
@@ -1149,7 +1149,7 @@ Public Class cdmaTerm
 
     Public Shared Sub ReadNvItemList(ByVal nvItemList As String())
         Try
-            logger.addToLog("Reading NV List - This may take a while, do not unplug.")
+            logger.add("Reading NV List - This may take a while, do not unplug.")
             nvReadQ.clearCommandQ()
             For i = 0 To nvItemList.Count - 1
                 If nvItemList(i).Contains("-") Then
@@ -1162,10 +1162,10 @@ Public Class cdmaTerm
                 End If
             Next
             dispatchQ.executeCommandQ()
-            logger.addToLog("Reading NV List - This may take a while, do not unplug..")
+            logger.add("Reading NV List - This may take a while, do not unplug..")
             nvReadQ.checkNvQForBadItems()
         Catch ex As Exception
-            logger.addToLog("Read NV Item Range Err: " + ex.ToString)
+            logger.add("Read NV Item Range Err: " + ex.ToString)
         End Try
     End Sub
 
@@ -1182,7 +1182,7 @@ Public Class cdmaTerm
             RamScanResultList.Add(s)
         Next
 
-        logger.addToLog("Ram Read Complete")
+        logger.add("Ram Read Complete")
         Return RamScanResultList
     End Function
 
@@ -1191,7 +1191,7 @@ Public Class cdmaTerm
         Dim droid As New AndroidD
         Dim thisCmd As String() = {"cd " + AndroidSdkPath, "adb " + Adb}
 
-        logger.addToLog(droid.SendCMD(thisCmd))
+        logger.add(droid.SendCMD(thisCmd))
 
     End Sub
 
@@ -1291,7 +1291,7 @@ Public Class cdmaTerm
 
     Function loadCarrier(FileName As String, dataMdn As String, dataMin As String) As Carrier
         Dim myCarrier As New Carrier(FileName, dataMdn, dataMin)
-        logger.addToLog("Loaded: " + myCarrier.Name + " " + myCarrier.Prl)
+        logger.add("Loaded: " + myCarrier.Name + " " + myCarrier.Prl)
         Return myCarrier
     End Function
     Function loadModel(FileName As String, Carrier As Carrier, prlFilePath As String) As Model

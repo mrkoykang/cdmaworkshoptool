@@ -14,6 +14,12 @@
                         <TextBlock Text="meid"/>
                     </ToolTip>
                 </TextBox.ToolTip>
+                <ContextMenuService.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy" Command="Copy"></MenuItem>
+                        <MenuItem Name="copyMeidConverted" Header="Copy Meid Converted" Click="copyMeidConverted_Click_1"/>
+                    </ContextMenu>
+                </ContextMenuService.ContextMenu>
             </TextBox>
             <TextBox MinWidth="50" Margin="5,5,5,5" Text="{Binding Path=Esn}"  HorizontalAlignment="Left" Name="EsnLabel" VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="14" BorderThickness="0" IsReadOnly="True">
                 <TextBox.ToolTip>
@@ -21,6 +27,12 @@
                         <TextBlock Text="esn"/>
                     </ToolTip>
                 </TextBox.ToolTip>
+                <ContextMenuService.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy" Command="Copy" ></MenuItem>
+                        <MenuItem Name="copyEsnConverted" Header="Copy Esn Converted" Click="copyEsnConverted_Click_1"/>
+                    </ContextMenu>
+                </ContextMenuService.ContextMenu>
             </TextBox>
         </StackPanel>
         <Grid Margin="20,40,20,20">

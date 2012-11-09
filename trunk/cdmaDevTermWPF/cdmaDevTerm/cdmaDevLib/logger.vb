@@ -7,18 +7,18 @@ Public Class logger
         msg
         infoAndMsg
     End Enum
-    Public Shared Sub addToLog(str As String)
+    Public Shared Sub add(str As String)
         cdmaTerm.thePhone.LogData = str + Environment.NewLine + cdmaTerm.thePhone.LogData
     End Sub
-    Public Shared Sub addToLog(str As String, type As logType)
+    Public Shared Sub add(str As String, type As logType)
         ''todo: create logger? I think the end goal is binding the dll to a WPF/xamal solution.. not sure where to go with this
         If type = logType.msg Then
             cdmaTerm.thePhone.Msg = str + Environment.NewLine + cdmaTerm.thePhone.Msg
         ElseIf type = logType.infoAndMsg Then
-            addToLog(str, logType.msg)
-            addToLog(str)
+            add(str, logType.msg)
+            add(str)
         Else
-            addToLog(str)
+            add(str)
         End If
     End Sub
  

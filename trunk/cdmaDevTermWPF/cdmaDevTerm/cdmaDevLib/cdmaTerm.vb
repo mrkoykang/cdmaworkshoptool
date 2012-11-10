@@ -97,75 +97,49 @@ Public Class cdmaTerm
     ''this is the AT return changed
     ''think in a farther program the box can just be replaced with a string VAR?
 
-    'Private Sub AtReturnCmdBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AtReturnCmdBox.TextChanged
+    Private Function HexToAsciiStr(ByVal incomingString As String) As String
+        Dim ret As String = ""
+        Try
+            '' TEST REPLACE BLANK
+            ''DIM HEXVALUE AS STRING = ATRETURNCMDBOX.TEXT.REPLACE("00", STRING.EMPTY)
+            '' TEST REPLACE KP
+            ''TODO: BUG SEEMS TO CLIP LAST 30'S ASCII 0 WHEN NEXT TO A 0000 BLOCK. 
+            ''MAYBE BETTER IS A LOOP THAT CHECKS EACH TWO CHAR FOR 00 VS 30 31 32 3F ETC
+            ''DIM HEXVALUE AS STRING = ATRETURNCMDBOX.TEXT.REPLACE("00", "5F")
+            ''UPDATE: FIXED BY ADDISON A WHILE AGO(PRETTY SURE..)...
 
+            incomingString = incomingString.Replace(" ", "")
+            Dim hexValue As String = ""
+            For I = 0 To incomingString.Length - 1
+                If (incomingString.Substring(I, 2) = "00") Then
+                    hexValue += "5F"
+                    I += 1
+                Else
+                    hexValue += incomingString.Substring(I, 2)
+                    I += 1
+                End If
+            Next
+            ''ORIGINAL
+            '' DIM HEXVALUE AS STRING = ATRETURNCMDBOX.TEXT
+            ' AN OBJECT STORING THE STRING VALUE
 
-    '    Try
-    '        ' An object storing the hex value
+            ' WHILE THERE'S STILL SOMETHING TO CONVERT IN THE HEX STRING
+            While hexValue.Length > 0
+                ' USE TOCHAR() TO CONVERT EACH ASCII VALUE (TWO HEX DIGITS) TO THE ACTUAL CHARACTER
+                ''TODO TEST U I NT32 U I NT64
+                ret += System.Convert.ToChar(System.Convert.ToUInt64(hexValue.Substring(0, 2), 16)).ToString()
+                ' REMOVE FROM THE HEX OBJECT THE CONVERTED VALUE
+                hexValue = hexValue.Substring(2, hexValue.Length - 2)
+            End While
+            ' SHOW WHAT WE JUST CONVERTED
+            ''LOGGER.ADDTOLOG(STRVALUE)
+        Catch EX As Exception
+            logger.add("HexToAsciiStr error:" + EX.ToString)
+            '' DISPATCHQ.INTERRUPTCOMMANDQ()''todo:should this end it? probably not
+        End Try
 
-    '        '' test replace blank
-    '        ''Dim HexValue As String = AtReturnCmdBox.Text.Replace("00", String.Empty)
-
-
-    '        '' test replace kp
-    '        ''TODO: BUG SEEMS TO CLIP LAST 30's ascii 0 when next to a 0000 block. 
-    '        ''maybe better is a loop that checks each two char for 00 vs 30 31 32 3F etc
-    '        ''Dim HexValue As String = AtReturnCmdBox.Text.Replace("00", "5F")
-    '        ''UPDATE: FIXED BY ADDISON A WHILE AGO(pretty sure..)...
-
-
-    '        Dim incomingString As String = AtReturnCmdBox.Text.Replace(" ", "")
-
-    '        Dim HexValue As String = ""
-    '        For i = 0 To incomingString.Length - 1
-    '            If (incomingString.Substring(i, 2) = "00") Then
-    '                HexValue += "5F"
-    '                i += 1
-    '            Else
-    '                HexValue += incomingString.Substring(i, 2)
-    '                i += 1
-    '            End If
-
-    '        Next
-
-
-    '        ''original
-    '        '' Dim HexValue As String = AtReturnCmdBox.Text
-
-    '        ' An object storing the string value
-
-    '        Dim StrValue As String = ""
-
-    '        ' While there's still something to convert in the hex string
-
-    '        While HexValue.Length > 0
-
-
-    '            ' Use ToChar() to convert each ASCII value (two hex digits) to the actual character
-    '            ''TODO test u i nt32 u i nt64
-    '            StrValue += System.Convert.ToChar(System.Convert.ToUInt64(HexValue.Substring(0, 2), 16)).ToString()
-
-    '            ' Remove from the hex object the converted value
-
-
-    '            HexValue = HexValue.Substring(2, HexValue.Length - 2)
-    '        End While
-
-    '        ' Show what we just converted
-
-    '        ''logger.addToLog(StrValue)
-
-    '        convertToAsciiTextBox.Text = StrValue
-
-    '    Catch ex As Exception
-    '        convertToAsciiTextBox.Text = ("atretn cmd box err:" + ex.ToString)
-    '        '' dispatchQ.interruptCommandQ()
-    '    End Try
-
-
-
-
-    'End Sub
+        Return ret
+    End Function
 
 
 
@@ -819,10 +793,6 @@ Public Class cdmaTerm
         logger.add("NV Read Complete")
     End Sub
 
-    Public Shared Sub WriteNvItemInt(i As Integer, NVItemValue As Byte())
-        Dim nv As New NvItems()
-        nv.WriteNVItem(i, NVItemValue)
-    End Sub
 
     Public Shared EfsQc As New Qcdm
 
@@ -1346,5 +1316,10 @@ Public Class cdmaTerm
         dispatchQ.executeCommandQ()
     End Sub
 
+    Public Shared Sub UnlockMotoEvdo()
+        cdmaTerm.WriteNv(8035, New Byte() {0})
+        ''thanks to http://www.whiterabbit.org/android/
+        ''thanks to kbman http://www.howardforums.com/showthread.php/1593533-service-programming-on-the-moto-droid?p=14467348#post14467348
+    End Sub
 
 End Class

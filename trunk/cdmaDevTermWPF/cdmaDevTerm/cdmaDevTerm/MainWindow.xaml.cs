@@ -338,6 +338,11 @@ namespace cdmaDevTerm
                 Clipboard.SetText(cdmaDevLib.esnConverter.ConversionSub(cdmaTerm.thePhone.Meid));
             }
 
+            private void sendMotoUnlock_Click(object sender, RoutedEventArgs e)
+            {
+                cdmaTerm.UnlockMotoEvdo();
+            }
+
           
 
 

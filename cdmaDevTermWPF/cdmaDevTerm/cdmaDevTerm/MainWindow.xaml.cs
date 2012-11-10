@@ -42,8 +42,12 @@ namespace cdmaDevTerm
 # and names may change from time to time
 #
 from cdmaDevLib import *
-cdmaTerm.connectSub(cdmaTerm.thePhone.ComPortName)
-cdmaTerm.ReadAllNam()";
+cdmaTerm.connectSub(phone.ComPortName)
+cdmaTerm.ReadAllNam()
+cdmaTerm.readNV(NvItems.NVItems.NV_DS_MIP_ACTIVE_PROF_I)
+cdmaTerm.sendAnySPC(""000000"")
+cdmaTerm.readNVList(""900-915"",""nvOut.txt"")
+q.executeCommandQ()";
 
 
         public MainWindow()
@@ -57,7 +61,7 @@ cdmaTerm.ReadAllNam()";
             runtime.LoadAssembly(typeof(String).Assembly);
             runtime.LoadAssembly(typeof(Uri).Assembly);
             runtime.LoadAssembly(typeof(cdmaDevLib.cdmaTerm).Assembly);
-
+            
             CodeTextEditor.SyntaxHighlighting =
             HighlightingLoader.Load(new XmlTextReader("ICSharpCode.PythonBinding.Resources.Python.xshd"),
             HighlightingManager.Instance);

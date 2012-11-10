@@ -694,10 +694,13 @@ Public Class cdmaTerm
 
 #Region "Random Test Code"
 
-    Shared Sub sendAnySPC(ByVal customSPC As String)
+    Public Shared Sub sendAnySPC(ByVal customSPC As String)
         ''dg qc send spc
         If (customSPC = Nothing) Then
+            logger.add("Spc null, not sent")
+
             Return
+
         End If
         dispatchQ.add(CommandFactory.GetCommand(DIAG_SPC_F, ASCIIEncoding.ASCII.GetBytes(customSPC)))
 

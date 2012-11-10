@@ -33,7 +33,6 @@ Public Class CommandFactory
                                                 nv, _
                                                 data, _
                                                 qc.ToString() & " " & nv.ToString())
-
             Case NV_MIN1_I
                 cmd = New Cmd_NV_MIN1_I(qc, _
                                         nv, _
@@ -66,6 +65,16 @@ Public Class CommandFactory
                                         qc.ToString() & " " & nv.ToString())
             Case NV_NAM_LOCK_I
                 cmd = New Cmd_NV_NAM_LOCK_I(qc, _
+                                        nv, _
+                                        data, _
+                                        qc.ToString() & " " & nv.ToString())
+            Case NV_DS_MIP_NUM_PROF_I
+                cmd = New Cmd_NV_DS_MIP_NUM_PROF_I(qc, _
+                                        nv, _
+                                        data, _
+                                        qc.ToString() & " " & nv.ToString())
+            Case NV_DS_MIP_ENABLE_PROF_I
+                cmd = New Cmd_NV_DS_MIP_ENABLE_PROF_I(qc, _
                                         nv, _
                                         data, _
                                         qc.ToString() & " " & nv.ToString())

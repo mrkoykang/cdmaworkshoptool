@@ -1277,26 +1277,38 @@ Public Class cdmaTerm
     End Function
 
     Public Shared Sub updatePhoneFromViewModel()
-        If (thePhone.Mdn <> thePhoneRxd.Mdn) Then
-            Dim WriteData As New List(Of Byte)
-            WriteData.Add(&H0)
-            WriteData.AddRange(ASCIIEncoding.ASCII.GetBytes(thePhone.Mdn))
-            cdmaTerm.WriteNv(NvItems.NVItems.NV_DIR_NUMBER_I, WriteData.ToArray)
-        End If
-        If (thePhone.Min <> thePhoneRxd.Min) Then
-            cdmaTerm.WriteMIN(thePhone.Min)
-            dispatchQ.executeCommandQ()
-        End If
-        If (thePhone.UserLock <> thePhoneRxd.UserLock) Then
-            cdmaTerm.WriteNv(NV_LOCK_CODE_I, ASCIIEncoding.ASCII.GetBytes(thePhone.UserLock))
-        End If
-        If (thePhone.Sid <> thePhoneRxd.Sid Or thePhone.Nid <> thePhoneRxd.Nid) Then
-            cdmaTerm.WriteSidAndNid(thePhone.Sid, thePhone.Nid)
-        End If
-        If (thePhone.NamLock <> thePhoneRxd.NamLock) Then
-            cdmaTerm.WriteNamLock(thePhone.NamLock)
-        End If
-        updateNvItemsFromViewModel()
+        Try
+            If (thePhone.Mdn <> thePhoneRxd.Mdn) Then
+                Dim WriteData As New List(Of Byte)
+                WriteData.Add(&H0)
+                WriteData.AddRange(ASCIIEncoding.ASCII.GetBytes(thePhone.Mdn))
+                cdmaTerm.WriteNv(NvItems.NVItems.NV_DIR_NUMBER_I, WriteData.ToArray)
+            End If
+            If (thePhone.Min <> thePhoneRxd.Min) Then
+                cdmaTerm.WriteMIN(thePhone.Min)
+                dispatchQ.executeCommandQ()
+            End If
+            If (thePhone.UserLock <> thePhoneRxd.UserLock) Then
+                cdmaTerm.WriteNv(NV_LOCK_CODE_I, ASCIIEncoding.ASCII.GetBytes(thePhone.UserLock))
+            End If
+            If (thePhone.Sid <> thePhoneRxd.Sid Or thePhone.Nid <> thePhoneRxd.Nid) Then
+                cdmaTerm.WriteSidAndNid(thePhone.Sid, thePhone.Nid)
+            End If
+            If (thePhone.NamLock <> thePhoneRxd.NamLock) Then
+                cdmaTerm.WriteNamLock(thePhone.NamLock)
+            End If
+            If (thePhone.NumMipProfiles <> thePhoneRxd.NumMipProfiles) Then
+                cdmaTerm.WriteNv(NV_DS_MIP_NUM_PROF_I, New Byte() {Integer.Parse(thePhone.NumMipProfiles)})
+            End If
+            If (thePhone.EnabledMipProfile <> thePhoneRxd.EnabledMipProfile) Then
+                cdmaTerm.WriteNv(NV_DS_MIP_ENABLE_PROF_I, New Byte() {Integer.Parse(thePhone.EnabledMipProfile)})
+            End If
+
+            updateNvItemsFromViewModel()
+        Catch ex As Exception
+            logger.add("Update err: see log for more info", logger.logType.msg)
+            logger.add("updatePhoneFromViewModel err: " + ex.ToString)
+        End Try
     End Sub
 
     Public Shared Sub updateNvItemsFromViewModel()
@@ -1316,10 +1328,13 @@ Public Class cdmaTerm
         dispatchQ.executeCommandQ()
     End Sub
 
+    ''thanks to http://www.whiterabbit.org/android/
+    ''thanks to kbman http://www.howardforums.com/showthread.php/1593533-service-programming-on-the-moto-droid?p=14467348#post14467348
     Public Shared Sub UnlockMotoEvdo()
         cdmaTerm.WriteNv(8035, New Byte() {0})
-        ''thanks to http://www.whiterabbit.org/android/
-        ''thanks to kbman http://www.howardforums.com/showthread.php/1593533-service-programming-on-the-moto-droid?p=14467348#post14467348
+    End Sub
+    Public Shared Sub RelockMotoEvdo()
+        cdmaTerm.WriteNv(8035, New Byte() {1})
     End Sub
 
 End Class

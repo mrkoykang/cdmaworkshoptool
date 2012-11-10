@@ -343,6 +343,11 @@ namespace cdmaDevTerm
                 cdmaTerm.UnlockMotoEvdo();
             }
 
+            private void RelockMoto_Click_1(object sender, RoutedEventArgs e)
+            {
+                cdmaTerm.RelockMotoEvdo();
+            }
+
           
 
 

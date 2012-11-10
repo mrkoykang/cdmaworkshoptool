@@ -13,6 +13,8 @@ Public Class Phone
     Private _Spc As String
     Private _Sid As String
     Private _Nid As String
+    Private _NumMipProfiles As String
+    Private _EnabledMipProfile As String
     Private _RegId As String
     Private _Meid As String
     Private _Esn As String
@@ -32,6 +34,8 @@ Public Class Phone
     Private _Username As String
     Private _Password As String
     Private _PrlFilename As String
+
+
 
     Public Sub New()
 
@@ -54,7 +58,8 @@ Public Class Phone
         Me.Username = ""
         Me.Password = ""
         Me.PrlFilename = ""
-
+        Me.NumMipProfiles = ""
+        Me.EnabledMipProfile = ""
         '' _NvItems = New Dictionary(Of NvItems.NVItems, Nv)
     End Sub
     Public Sub clearViewModel()
@@ -74,6 +79,8 @@ Public Class Phone
         Me.TermCommand = ""
         Me.Username = ""
         Me.Password = ""
+        Me.NumMipProfiles = ""
+        Me.EnabledMipProfile = ""
     End Sub
     Public Property SpSixteenDigit() As Dictionary(Of String, String)
         Get
@@ -227,6 +234,30 @@ Public Class Phone
             End If
         End Set
     End Property
+
+    Public Property NumMipProfiles() As String
+        Get
+            Return _NumMipProfiles
+        End Get
+        Set(value As String)
+            If value <> _NumMipProfiles Then
+                _NumMipProfiles = value
+                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("NumMipProfiles"))
+            End If
+        End Set
+    End Property
+
+    Public Property EnabledMipProfile() As String
+        Get
+            Return _EnabledMipProfile
+        End Get
+        Set(value As String)
+            If value <> _EnabledMipProfile Then
+                _EnabledMipProfile = value
+                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("EnabledMipProfile"))
+            End If
+        End Set
+    End Property
     Public Property Nid() As String
         Get
             Return _Nid
@@ -238,6 +269,8 @@ Public Class Phone
             End If
         End Set
     End Property
+
+
     Public Property RegId() As String
         Get
             Return _RegId

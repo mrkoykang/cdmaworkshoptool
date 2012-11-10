@@ -4,18 +4,17 @@
   <description asmv2:publisher="cdmaDevTerm" asmv2:product="cdmaDevTerm" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <deployment install="true" mapFileExtensions="true" />
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
-    <framework targetVersion="4.0" profile="Client" supportedRuntime="4.0.30319" />
     <framework targetVersion="4.0" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="cdmaDevTerm.exe.manifest" size="7023">
+    <dependentAssembly dependencyType="install" codebase="cdmaDevTerm.exe.manifest" size="13088">
       <assemblyIdentity name="cdmaDevTerm.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="x86" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>TgZmYpG2E2TfL6gj9/MJRlybsGU=</dsig:DigestValue>
+        <dsig:DigestValue>2dmsG6Wxy/xqZisTo0iwGuftrp8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

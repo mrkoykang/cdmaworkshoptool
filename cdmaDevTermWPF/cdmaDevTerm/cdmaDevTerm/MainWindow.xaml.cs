@@ -15,6 +15,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using cdmaDevLib;
+using Microsoft.Scripting;
+using Microsoft.Scripting.Hosting;
+using IronPython.Hosting;
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using System.Xml;
 
 namespace cdmaDevTerm
 {
@@ -24,9 +30,38 @@ namespace cdmaDevTerm
     /// </summary>
     public partial class MainWindow : Elysium.Theme.Controls.Window
     {
+        private ScriptEngine _engine;
+        private ScriptScope _scope;
+
+        private string cdmaDevTermSampleScript = @"#
+#cdmaDevTerm sample ironPython script
+#copyright 2012 DG, chromableedstudios.com
+#
+#warning: 
+# the cdmaDevLib api is in unstable development 
+# and names may change from time to time
+#
+from cdmaDevLib import *
+cdmaTerm.connectSub(cdmaTerm.thePhone.ComPortName)
+cdmaTerm.ReadAllNam()";
+
+
         public MainWindow()
         {
             InitializeComponent();
+
+            _engine = Python.CreateEngine();
+            _scope = _engine.CreateScope();
+
+            var runtime = _engine.Runtime;
+            runtime.LoadAssembly(typeof(String).Assembly);
+            runtime.LoadAssembly(typeof(Uri).Assembly);
+            runtime.LoadAssembly(typeof(cdmaDevLib.cdmaTerm).Assembly);
+
+            CodeTextEditor.SyntaxHighlighting =
+            HighlightingLoader.Load(new XmlTextReader("ICSharpCode.PythonBinding.Resources.Python.xshd"),
+            HighlightingManager.Instance);
+            CodeTextEditor.Text = cdmaDevTermSampleScript;
 
             #region theme
                 dynamic accent;
@@ -88,6 +123,7 @@ namespace cdmaDevTerm
             comBox.SelectedIndex = 0;
 
         }
+      
         ~MainWindow()
         {
             Properties.Settings.Default.LastPrl = cdmaTerm.thePhone.PrlFilename;
@@ -346,6 +382,26 @@ namespace cdmaDevTerm
             private void RelockMoto_Click_1(object sender, RoutedEventArgs e)
             {
                 cdmaTerm.RelockMotoEvdo();
+            }
+
+            private void runScript_Click(object sender, RoutedEventArgs e)
+            {
+                _scope.SetVariable("phone", cdmaTerm.thePhone);
+                _scope.SetVariable("q", cdmaTerm.dispatchQ);
+                var code = CodeTextEditor.Text;
+                try
+                {
+                    var source = _engine.CreateScriptSourceFromString(code, SourceCodeKind.Statements);
+                    source.Execute(_scope);
+
+                }
+                catch (Exception ex)
+                {
+                    var eo = _engine.GetService<ExceptionOperations>();
+                    var error = eo.FormatException(ex);
+
+                    MessageBox.Show(error, "There was an Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
 
           

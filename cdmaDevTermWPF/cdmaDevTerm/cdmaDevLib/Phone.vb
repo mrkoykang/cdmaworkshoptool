@@ -74,7 +74,6 @@ Public Class Phone
         Me.TermCommand = ""
         Me.Username = ""
         Me.Password = ""
-        Me.PrlFilename = ""
     End Sub
     Public Property SpSixteenDigit() As Dictionary(Of String, String)
         Get

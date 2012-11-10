@@ -200,6 +200,26 @@
 
                                 </StackPanel>
                                 <StackPanel Margin="2" Orientation="Horizontal">
+
+                                    <TextBlock Margin="5" Text="UNLOCK MOTO EVDO" HorizontalAlignment="Left" Name="MotoUnlockLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
+
+
+                                    <Button  Margin="5,0,0,0" HorizontalAlignment="Left" Name="sendMotoUnlock" Width="63" Click="sendMotoUnlock_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="Resources/upload.png" Stretch="Uniform" Height="20" Width="20" />
+
+                                        </StackPanel>
+
+                                        <Button.ToolTip>
+                                            <ToolTip>
+                                                <TextBlock Text="send"/>
+                                            </ToolTip>
+                                        </Button.ToolTip>
+                                    </Button>
+                                </StackPanel>
+
+
+                                <StackPanel Margin="2" Orientation="Horizontal">
                                     <TextBlock Margin="5" Text="USER" HorizontalAlignment="Left" Name="UserLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
                                     <TextBox HorizontalAlignment="Left"  Text="{Binding Path=Username}" MinWidth="160"/>
                                     <TextBlock Margin="5" Text="PASS" HorizontalAlignment="Left" Name="PassLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
@@ -294,12 +314,15 @@
                     <TabItem Header="NV" Name="NV">
                         <TabControl>
                             
-                            <TabItem Header="EVDO/Edit NV" Name="EditNV">
+                            <TabItem Header="EVDO/Edit" Name="EditNV">
+                                
                                 <Grid >
+                                    
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="70*"/>
                                         <ColumnDefinition Width="183*"/>
                                     </Grid.ColumnDefinitions>
+                                    
                                     <ListBox x:Name="NvList" HorizontalContentAlignment="Stretch" ItemsSource="{Binding NvItems}" Margin="0,0,0,0" Grid.ColumnSpan="2">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>

@@ -146,16 +146,9 @@ Public Class SecretDecoderRing
 
     Private Shared Sub decodeNvItem(ByVal cmd As Command)
         Select Case cmd.currentNv
-            Case NvItems.NVItems.NV_MEID_I
-                ''Read MEID
-                decode_ReadMeid_NV(cmd)
-
-
                 ''Case NvItems.NVItems.NV_NAM_LOCK_I
                 ''Read nam lock
                 '' decode_NV_NAM_LOCK_I(cmd.bytesRxd)
-
-
             Case NvItems.NVItems.NV_MIN1_I
                 ''Read min1
                 decode_NV_MIN1(cmd)
@@ -184,12 +177,9 @@ Public Class SecretDecoderRing
                 '    decode_NV_DS_MIP_NUM_PROF_I(cmd.bytesRxd)
                 'Case NvItems.NVItems.NV_DS_MIP_ENABLE_PROF_I ''enabled profile
                 '    decode_NV_DS_MIP_ENABLE_PROF_I(cmd.bytesRxd)
-
-
         End Select
 
     End Sub
-
 
     '#Region "Decoders"
 
@@ -219,12 +209,6 @@ Public Class SecretDecoderRing
 
     '    'End Sub
 
-    Shared Sub decode_ReadMeid_NV(ByVal cmd As Command)
-
-
-
-
-    End Sub
     Shared Sub decode_ReadSPC_LG(ByVal cmd As Command)
         ''test decode spc
         Try
@@ -256,10 +240,6 @@ Public Class SecretDecoderRing
         End Try
 
     End Sub
-
-
-
-
 
     Shared Sub decode_ReadNam0MIN_Part2(ByVal cmd As Command)
         ''test decode mdn
@@ -333,7 +313,6 @@ Public Class SecretDecoderRing
         ''End Try
 
     End Sub
-
 
     ''#End Region
 
@@ -430,29 +409,21 @@ Public Class SecretDecoderRing
     '    End Sub
 
     Public Shared Function trimFrontAndEndAscii(ByVal str As String) As String
-
         If (str.Length - 7) <= 0 Then
             logger.add("No ascii response to command l: " + str.Length.ToString)
             Return ""
         End If
-
         Return str.Substring(4, str.Length - 7)
-
     End Function
 
     Public Shared Function trimFrontAndEndAsciiSpecific(ByVal before As String, ByVal start As Integer, ByVal lengthMinus As Integer) As String
         Dim after As String = before
         Return after.Substring(start, before.Length - lengthMinus)
-
     End Function
 
     Public Shared Function getAsciiStrings(ByVal bytes As Byte()) As String
-
-
         Dim bString = cdmaTerm.biznytesToStrizings(bytes)
-
         Try
-
             Dim HexValue As String = ""
             For i = 0 To bString.Length - 1
                 If (bString.Substring(i, 2) = "00") Then
@@ -462,53 +433,36 @@ Public Class SecretDecoderRing
                     HexValue += bString.Substring(i, 2)
                     i += 1
                 End If
-
             Next
-
-
             Dim StrValue As String = ""
-
-            ' While there's still something to convert in the hex string
-
             While HexValue.Length > 0
-
-
                 ' Use ToChar() to convert each ASCII value (two hex digits) to the actual character
                 ''TODO test u i nt32 u i nt64
                 StrValue += System.Convert.ToChar(System.Convert.ToUInt64(HexValue.Substring(0, 2), 16)).ToString()
-
                 HexValue = HexValue.Substring(2, HexValue.Length - 2)
             End While
 
             Return StrValue
-
         Catch ex As Exception
             Return ""
         End Try
-
     End Function
 
     Private Shared Sub decode_DIAG_SPC_F(ByVal cmd As Command)
-
         If cmd.bytesRxd(1) <> 1 Then
             logger.add("Spc not accepted, don't send anything for 10 seconds (or devterm will crash)")
             System.Threading.Thread.Sleep(1000)
         ElseIf cmd.bytesRxd(1) = 1 And cmd.bytesRxd(0) = &H41 Then
             logger.add("Spc Accepted")
         End If
-
     End Sub
 
     Private Shared Sub decode_NV_MIN1(ByVal cmd As Command)
         ' logger.addToLog("rxd: " + cdmaTerm.biznytesToStrizings(cmd.bytesRxd))
         'logger.addToLog("rxd: " + getAsciiStrings(cmd.bytesRxd))
-
         'cdmaTerm.MIN1Raw = cdmaTerm.biznytesToStrizings(New Byte() {cmd.bytesRxd(7), cmd.bytesRxd(6), cmd.bytesRxd(5), cmd.bytesRxd(4)})
-
         'test to fix lg
         cdmaTerm.MIN1Raw = cdmaTerm.biznytesToStrizings(New Byte() {cmd.bytesRxd(11), cmd.bytesRxd(10), cmd.bytesRxd(9), cmd.bytesRxd(8)})
-
-
         Dim min1 As New Integer
         min1 = &HF9D260
         Dim min2 As New Integer
@@ -528,23 +482,15 @@ Public Class SecretDecoderRing
         min1c = (min1c + 1) Mod 10 + ((((min1c Mod 100 / 10) + 1) Mod 10) * 10) + ((((min1c / 100) + 1) Mod 10) * 100)
 
         logger.add("test Min Decode: " & "min2: " & min2 & "min1a: " & min1a & "min1b: " & min1b & "min1c: " & min1c)
-
-
-
     End Sub
-
-
 
     Public Shared Function decode_NV_MIN1(ByVal min1 As String, ByVal min2 As String) As String
         Try
-
             Return decode_NV_MIN1(System.Convert.ToInt32(min1, 16), System.Convert.ToInt32(min2, 16))
-
         Catch ex As Exception
             logger.add("decode_NV_MIN1 string string err: " + ex.ToString)
             Return ""
         End Try
-
     End Function
     Public Shared Function decode_NV_MIN1(ByVal min1 As Long, ByVal min2 As Long) As String
 
@@ -603,17 +549,13 @@ Public Class SecretDecoderRing
         Return New String() {min1.ToUpper, min2.ToUpper}
     End Function
 
-
-
     Private Shared Sub decode_11055(ByVal bytesRxd As Byte())
         ''TODO untested
         ''System.Convert.ToInt32((bytesRxd(4)+bytesRxd(3)), 16) needed?
-
         ''cdmaTerm.BbRegIdTextbox.Text = Integer.Parse(bytesRxd(4).ToString + bytesRxd(3).ToString).ToString
         ''cdmaTerm.BbRegIdTextbox.Text = System.Convert.ToInt32((bytesRxd(4).ToString + bytesRxd(3).ToString), 16).ToString
         cdmaTerm.thePhone.RegId = System.Convert.ToInt32((bytesRxd(4).ToString("x2") + bytesRxd(3).ToString("x2")), 16).ToString
         cdmaTerm.thePhoneRxd.RegId = System.Convert.ToInt32((bytesRxd(4).ToString("x2") + bytesRxd(3).ToString("x2")), 16).ToString
-
     End Sub
 
 
@@ -628,11 +570,7 @@ Public Class SecretDecoderRing
 
 
 
-    '    Private Sub decode_NV_DS_MIP_NUM_PROF_I(ByVal bytesRxd As Byte())
 
-    '        cdmaTerm.NumberOfProfilesComboBox1.Text = bytesRxd(3).ToString
-
-    '    End Sub
     '    Private Sub decode_NV_DS_MIP_ENABLE_PROF_I(ByVal bytesRxd As Byte())
     '        cdmaTerm.SelectedProfileCombo.Text = bytesRxd(3).ToString
     '    End Sub
@@ -711,8 +649,6 @@ Public Class SecretDecoderRing
 
     '    End Sub
 
-
-
     '    Public Function addToEfsTreeView(ByVal f As String, ByVal efsType As String) As Boolean
 
     '        If efsType = "folder" Then
@@ -726,12 +662,6 @@ Public Class SecretDecoderRing
 
     '        Return False
     '    End Function
-
-
-
-
-
-
 
 
 End Class

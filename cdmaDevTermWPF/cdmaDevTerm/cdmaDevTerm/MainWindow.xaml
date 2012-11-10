@@ -104,7 +104,7 @@
 
                             <Button.ToolTip>
                                 <ToolTip>
-                                    <TextBlock Text="write: mdn, min, namLock, userlock, sid, nid and NV"/>
+                                    <TextBlock Text="write: mdn, min, namLock, userlock, sid, nid, mip num/enable, and NV"/>
                                 </ToolTip>
                             </Button.ToolTip>
                         </Button>
@@ -212,12 +212,21 @@
 
                                         <Button.ToolTip>
                                             <ToolTip>
-                                                <TextBlock Text="send"/>
+                                                <TextBlock Text="write nv item 8035 0x00"/>
                                             </ToolTip>
                                         </Button.ToolTip>
+                                        <ContextMenuService.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Name="RelockMoto" Header="Relock - write nv item 8035 0x01" Click="RelockMoto_Click_1"/>
+                                            </ContextMenu>
+                                        </ContextMenuService.ContextMenu>
                                     </Button>
-                                </StackPanel>
+                                    <TextBlock Margin="5" Text="NUM MIP PROF" HorizontalAlignment="Left" Name="NumMipProfLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
+                                    <TextBox HorizontalAlignment="Left"  Text="{Binding Path=NumMipProfiles}" MinWidth="35"/>
+                                    <TextBlock Margin="5" Text="MIP PROF ENABLE" HorizontalAlignment="Left" Name="EnabledMipProfile" VerticalAlignment="Top" FontFamily="Segoe UI" />
+                                    <TextBox HorizontalAlignment="Left"  Text="{Binding Path=EnabledMipProfile}" MinWidth="35"/>
 
+                                </StackPanel>
 
                                 <StackPanel Margin="2" Orientation="Horizontal">
                                     <TextBlock Margin="5" Text="USER" HorizontalAlignment="Left" Name="UserLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />

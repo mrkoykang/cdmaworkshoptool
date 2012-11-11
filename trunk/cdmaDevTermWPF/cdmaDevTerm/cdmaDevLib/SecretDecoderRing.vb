@@ -149,7 +149,7 @@ Public Class SecretDecoderRing
                 ''Case NvItems.NVItems.NV_NAM_LOCK_I
                 ''Read nam lock
                 '' decode_NV_NAM_LOCK_I(cmd.bytesRxd)
-            Case NvItems.NVItems.NV_MIN1_I
+            Case NvItems.NvItems.NV_MIN1_I
                 ''Read min1
                 decode_NV_MIN1(cmd)
                 'Case NvItems.NVItems.NV_PPP_USER_ID_I ''910 EVDO_P1

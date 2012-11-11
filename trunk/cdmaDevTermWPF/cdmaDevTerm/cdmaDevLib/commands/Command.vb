@@ -33,7 +33,7 @@ Public Class Command
     Public commandSuccess As Boolean = True ''tracks whether the command was successfull (needed?)
     Public debuggingText As String ''string to define command for logging purposes
     Public currentQcdm As Qcdm.Cmd = Qcdm.Cmd.NOT_A_COMMAND ''current qcdm command
-    Public currentNv As NvItems.NVItems = NvItems.NVItems.NOT_AN_NV_ITEM ''current nv item
+    Public currentNv As NvItems.NvItems = NvItems.NvItems.NOT_AN_NV_ITEM ''current nv item
     Public badNvRead As Boolean = False
     Public inactiveNvRead As Boolean = False
     Public badSecurityNvRead As Boolean = False
@@ -118,7 +118,7 @@ Public Class Command
 
     End Sub
 
-    Public Sub New(ByVal qcdm As Qcdm.Cmd, ByVal nv As NvItems.NVItems, ByVal nvItemData As Byte(), ByVal debuggingTextIn As String)
+    Public Sub New(ByVal qcdm As Qcdm.Cmd, ByVal nv As NvItems.NvItems, ByVal nvItemData As Byte(), ByVal debuggingTextIn As String)
 
         currentQcdm = qcdm
         currentNv = nv

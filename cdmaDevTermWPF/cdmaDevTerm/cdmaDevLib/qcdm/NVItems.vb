@@ -1523,7 +1523,7 @@ Public Class NvItems
                 nItemNumber = fixNVItemNumberHalfway(fileTxt.Item(i))
 
 
-                nItemData += fileTxt.Item(i + 1)
+                nItemData += fileTxt.Item(i + 1) ''todo add length of read here to be 3.5+ compatible
                 nItemData += fileTxt.Item(i + 2)
                 nItemData += fileTxt.Item(i + 3)
                 nItemData += fileTxt.Item(i + 4)

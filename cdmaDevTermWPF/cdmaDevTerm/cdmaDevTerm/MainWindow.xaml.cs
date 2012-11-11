@@ -51,7 +51,9 @@ from System import Array,Byte,String
 cdmaTerm.Connect(phone.ComPortName)
 cdmaTerm.ReadAllNam()
 cdmaTerm.ReadNv(NvItems.NvItems.NV_DS_MIP_ACTIVE_PROF_I)
+cdmaTerm.ReadNv(906)
 #cdmaTerm.WriteNv(NvItems.NvItems.NV_SEC_CODE_I, Array[Byte]((0x30, 0x30, 0x30, 0x30, 0x30, 0x30)))
+#cdmaTerm.WriteNv(906,""PPPassword"")
 cdmaTerm.SendSpc(""000000"")
 cdmaTerm.ReadNvList(""900-915"",""nvOut.txt"")
 q.Run()";

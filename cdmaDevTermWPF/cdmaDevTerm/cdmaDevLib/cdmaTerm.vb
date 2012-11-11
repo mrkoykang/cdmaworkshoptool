@@ -874,34 +874,26 @@ Public Class cdmaTerm
         Dim MIN1 As New List(Of Byte)
         ''Random Mystery Zeros...
         MIN1.Add(&H0)
-
         For i As Integer = String_To_Bytes(MIN1Raw).Length - 1 To 0 Step -1
             MIN1.Add(String_To_Bytes(MIN1Raw)(i))
         Next
         For i As Integer = String_To_Bytes(MIN1Raw).Length - 1 To 0 Step -1
             MIN1.Add(String_To_Bytes(MIN1Raw)(i))
         Next
-
         Dim MIN2 As New List(Of Byte)
         ''Random Mystery Zeros...
         MIN2.Add(&H0)
-
         For i As Integer = String_To_Bytes(MIN2Raw).Length - 1 To 0 Step -1
             MIN2.Add(String_To_Bytes(MIN2Raw)(i))
         Next
         For i As Integer = String_To_Bytes(MIN2Raw).Length - 1 To 0 Step -1
             MIN2.Add(String_To_Bytes(MIN2Raw)(i))
         Next
-
-
         ''Totally untested probably dangerous
-
-
         Q.Add(New Command(DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray, "DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray"))
         Q.Add(New Command(DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray, "DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray"))
 
         logger.add("min write attempted... unstable feature: warning")
-
     End Sub
 
     Shared Function DecodeMin() As String
@@ -1045,8 +1037,45 @@ Public Class cdmaTerm
         AddNv(nv)
         Q.Run()
     End Sub
+
+    Public Shared Sub ReadNv(ByVal nv As Integer)
+        Dim nv64 As Int64 = nv
+        If (NvItems.NvItems.IsDefined(GetType(NvItems.NvItems), nv64)) Then
+            Dim nvi As NvItems.NvItems = CType(nv, NvItems.NvItems)
+            ReadNv(nvi)
+        Else
+            Q.Clear()
+            Q.Add(New Command(Qcdm.Cmd.DIAG_NV_READ_F, nv, New Byte() {}, "Read Nv " + nv.ToString))
+            Q.Run()
+        End If
+    End Sub
+
     Public Shared Sub AddNv(ByVal nv As NvItems.NvItems)
         Q.Add(CommandFactory.GetCommand(nv))
+    End Sub
+
+    Public Shared Sub WriteNv(ByVal nv As Integer, writeData As String)
+        Dim nv64 As Int64 = nv
+        If (NvItems.NvItems.IsDefined(GetType(NvItems.NvItems), nv64)) Then
+            Dim nvi As NvItems.NvItems = CType(nv, NvItems.NvItems)
+            WriteNv(nvi, writeData)
+        Else
+            Q.Clear()
+            Q.Add(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, nv, GetNvWriteDataByteList(writeData).ToArray, "Write Nv " + nv.ToString))
+            Q.Run()
+        End If
+    End Sub
+
+    Public Shared Sub WriteNv(ByVal nv As Integer, writeData() As Byte)
+        Dim nv64 As Int64 = nv
+        If (NvItems.NvItems.IsDefined(GetType(NvItems.NvItems), nv64)) Then
+            Dim nvi As NvItems.NvItems = CType(nv, NvItems.NvItems)
+            WriteNv(nvi, writeData)
+        Else
+            Q.Clear()
+            Q.Add(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, nv, writeData, "Write Nv " + nv.ToString))
+            Q.Run()
+        End If
     End Sub
 
     Public Shared Sub WriteNv(ByVal nv As NvItems.NvItems, writeData As String)
@@ -1062,6 +1091,13 @@ Public Class cdmaTerm
     End Sub
 
     Public Shared Sub AddWriteNv(ByVal nv As NvItems.NvItems, writeData As String)
+        AddWriteNv(nv, GetNvWriteDataByteList(writeData).ToArray)
+    End Sub
+    Public Shared Sub AddWriteNv(ByVal nv As NvItems.NvItems, writeData() As Byte)
+        Q.Add(CommandFactory.GetCommand(nv, True, writeData))
+    End Sub
+
+    Private Shared Function GetNvWriteDataByteList(writeData As String) As List(Of Byte)
         Dim encoding As New System.Text.ASCIIEncoding()
         Dim data() As Byte
         Dim writeDataList As New List(Of Byte)
@@ -1072,11 +1108,9 @@ Public Class cdmaTerm
             writeDataList.Add(data.Count)
             writeDataList.AddRange(data)
         End If
-        AddWriteNv(nv, writeDataList.ToArray)
-    End Sub
-    Public Shared Sub AddWriteNv(ByVal nv As NvItems.NvItems, writeData() As Byte)
-        Q.Add(CommandFactory.GetCommand(nv, True, writeData))
-    End Sub
+        Return writeDataList
+    End Function
+
     Public Shared Sub ReadQc(ByVal qc As Qcdm.Cmd)
         Q.Clear()
         AddQc(qc)
@@ -1125,11 +1159,11 @@ Public Class cdmaTerm
         Try
             Dim nvItemList As String() = ReadNvList.Replace(",", "").Split(" ")
             ReadNvItemList(nvItemList)
-            logger.add("Reading NV List - This may take a while, do not unplug...")
+            Logger.Add("Reading NV List - This may take a while, do not unplug...")
             nvReadQ.generateNvReadReport(fileName)
-            logger.add("NV Read Complete")
+            Logger.Add("NV Read Complete")
         Catch ex As Exception
-            logger.add("Read nv list err: " + ex.ToString)
+            Logger.Add("Read nv list err: " + ex.ToString)
 
         End Try
 
@@ -1137,7 +1171,7 @@ Public Class cdmaTerm
 
     Public Shared Sub ReadNvItemList(ByVal nvItemList As String())
         Try
-            logger.add("Reading NV List - This may take a while, do not unplug.")
+            Logger.Add("Reading NV List - This may take a while, do not unplug.")
             nvReadQ.Clear()
             For i = 0 To nvItemList.Count - 1
                 If nvItemList(i).Contains("-") Then
@@ -1152,10 +1186,10 @@ Public Class cdmaTerm
                 End If
             Next
             Q.Run()
-            logger.add("Reading NV List - This may take a while, do not unplug..")
+            Logger.Add("Reading NV List - This may take a while, do not unplug..")
             nvReadQ.checkNvQForBadItems()
         Catch ex As Exception
-            logger.add("Read NV Item Range Err: " + ex.ToString)
+            Logger.Add("Read NV Item Range Err: " + ex.ToString)
         End Try
     End Sub
 
@@ -1172,7 +1206,7 @@ Public Class cdmaTerm
             RamScanResultList.Add(s)
         Next
 
-        logger.add("Ram Read Complete")
+        Logger.Add("Ram Read Complete")
         Return RamScanResultList
     End Function
 
@@ -1181,7 +1215,7 @@ Public Class cdmaTerm
         Dim droid As New AndroidD
         Dim thisCmd As String() = {"cd " + AndroidSdkPath, "adb " + Adb}
 
-        logger.add(droid.SendCMD(thisCmd))
+        Logger.Add(droid.SendCMD(thisCmd))
 
     End Sub
 
@@ -1281,7 +1315,7 @@ Public Class cdmaTerm
 
     Function loadCarrier(FileName As String, dataMdn As String, dataMin As String) As Carrier
         Dim myCarrier As New Carrier(FileName, dataMdn, dataMin)
-        logger.add("Loaded: " + myCarrier.Name + " " + myCarrier.Prl)
+        Logger.Add("Loaded: " + myCarrier.Name + " " + myCarrier.Prl)
         Return myCarrier
     End Function
     Function loadModel(FileName As String, Carrier As Carrier, prlFilePath As String) As Model
@@ -1316,8 +1350,8 @@ Public Class cdmaTerm
 
             updateNvItemsFromViewModel()
         Catch ex As Exception
-            logger.add("Update err: see log for more info", logger.LogType.msg)
-            logger.add("updatePhoneFromViewModel err: " + ex.ToString)
+            Logger.Add("Update err: see log for more info", Logger.LogType.Msg)
+            Logger.Add("updatePhoneFromViewModel err: " + ex.ToString)
         End Try
     End Sub
 

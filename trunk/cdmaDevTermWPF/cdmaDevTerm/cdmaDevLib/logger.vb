@@ -1,25 +1,25 @@
 ﻿''Copyright 2012 Dillon Graham
 ''GPL v3 
 Imports cdmaDevLib.Phone
-Public Class logger
-    Enum logType
-        info
-        msg
-        infoAndMsg
+Public Class Logger
+    Enum LogType
+        Info
+        Msg
+        InfoAndMsg
     End Enum
-    Public Shared Sub add(str As String)
+    Public Shared Sub Add(str As String)
         cdmaTerm.thePhone.LogData = str + Environment.NewLine + cdmaTerm.thePhone.LogData
     End Sub
-    Public Shared Sub add(str As String, type As logType)
+    Public Shared Sub Add(str As String, type As LogType)
         ''todo: create logger? I think the end goal is binding the dll to a WPF/xamal solution.. not sure where to go with this
-        If type = logType.msg Then
+        If type = LogType.msg Then
             cdmaTerm.thePhone.Msg = str + Environment.NewLine + cdmaTerm.thePhone.Msg
-        ElseIf type = logType.infoAndMsg Then
-            add(str, logType.msg)
-            add(str)
+        ElseIf type = LogType.infoAndMsg Then
+            Add(str, LogType.msg)
+            Add(str)
         Else
-            add(str)
+            Add(str)
         End If
     End Sub
- 
+
 End Class

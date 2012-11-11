@@ -120,13 +120,13 @@ Public Class SecretDecoderRing
                     ''hm.. random memory leak rofl
                     '' should add test or clear if dooing nv read?
                     ''testing for nv read cdma ws style
-                    cdmaTerm.nvReadQ.add(cmd)
+                    cdmaTerm.nvReadQ.Add(cmd)
                 Case Qcdm.Cmd.DIAG_PEEKB_F
                     ''  decode_DIAG_PEEKB_F(cmd)
 
                     If cdmaTerm.ReadingRamToFile Then
 
-                        cdmaTerm.RamReadQ.add(cmd)
+                        cdmaTerm.RamReadQ.Add(cmd)
                     End If
 
 
@@ -563,7 +563,7 @@ Public Class SecretDecoderRing
     '    Private Sub decode_DIAG_PEEKB_F(ByVal cmd As Command)
     '        ''unused.. could add test to see if read is bad
     '        If cdmaTerm.ReadingRamToFile Then
-    '            '' cdmaTerm.dispatchQ.SaveTextToFile()
+    '            '' cdmaTerm.Q.SaveTextToFile()
     '        End If
 
     '    End Sub

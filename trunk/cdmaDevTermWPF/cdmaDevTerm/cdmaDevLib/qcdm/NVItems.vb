@@ -1421,7 +1421,7 @@ Public Class NvItems
 
     '    Dim prefix As Byte() = cdmaTerm.String_To_Bytes("26" + returnHex)
     '    ''no se? test
-    '    '' cdmaTerm. dispatchQ.addCommandToQ(New Command((bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")))
+    '    '' cdmaTerm. Q.addCommandToQ(New Command((bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")))
     '    ''
 
     '    Dim fullCommand As New List(Of Byte)
@@ -1470,10 +1470,10 @@ Public Class NvItems
                 Dim debugString As String = "readNVItemRange Qcdm.Cmd.DIAG_NV_READ_F " + i.ToString
 
 
-                ''cdmaTerm.dispatchQ.addCommandToQ(readNVItem(i, debugString))
+                ''cdmaTerm.Q.addCommandToQ(readNVItem(i, debugString))
                 Dim cmd = New Command(Qcdm.Cmd.DIAG_NV_READ_F, i, New Byte() {}, debugString)
-                cdmaTerm.dispatchQ.add(cmd)
-                cdmaTerm.nvReadQ.add(cmd)
+                cdmaTerm.Q.Add(cmd)
+                cdmaTerm.nvReadQ.Add(cmd)
 
             Next
 
@@ -1570,7 +1570,7 @@ Public Class NvItems
 
 
     '    Dim prefix As Byte() = cdmaTerm.String_To_Bytes("27" + fixNVItemNumber(item, 4) + (value))
-    '    Dim tempQ As New dispatchQmanager
+    '    Dim tempQ As New Qmanager
 
     '    '' logger.addToLog(cdmaTerm.biznytesToStrizings(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")))).ToString()
 
@@ -1582,7 +1582,7 @@ Public Class NvItems
 
     '    tempQ.addCommandToQ(New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), ("nv#")))
 
-    '    tempQ.executeCommandQ()
+    '    tempQ.Run()
     '    Return True
 
     'End Function
@@ -1591,9 +1591,9 @@ Public Class NvItems
 
         Dim logMsg = "DIAG_NV_WRITE item: " + item.ToString
 
-        cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, data, logMsg))
+        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, data, logMsg))
 
-        Return cdmaTerm.dispatchQ.executeCommandQ
+        Return cdmaTerm.Q.Run
     End Function
     Dim oFile As System.IO.File
     Dim oRead As System.IO.StreamReader

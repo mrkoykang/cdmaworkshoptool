@@ -22,7 +22,7 @@ Public Class Phone
     Private _SpcReadType As cdmaTerm.SpcReadType
     Private _ModeChangeType As Qcdm.Mode
     Private _NamLock As Boolean
-    Private OperationCount As Integer = 0
+    Private _OperationCount As Integer = 0
     'Private _NvData As New ObservableCollection(Of Nv)
     Private _Qcmip As Qcdm.Qcmip
     Private _AvailableComPorts As New List(Of COMPortInfo.COMPortInfo)
@@ -50,7 +50,7 @@ Public Class Phone
         Me.Esn = ""
         Me.UserLock = ""
         Me.NamLock = False
-        Me.OperationCount = 0
+        Me._OperationCount = 0
         Me.ComPortName = ""
         Me.SixteenDigitSP = ""
         Me.NvItems = New Dictionary(Of NvItems.NVItems, Nv)
@@ -73,7 +73,7 @@ Public Class Phone
         Me.Esn = ""
         Me.UserLock = ""
         Me.NamLock = False
-        Me.OperationCount = 0
+        Me._OperationCount = 0
         Me.SixteenDigitSP = ""
         Me.NvItems = New Dictionary(Of NvItems.NVItems, Nv)
         Me.TermCommand = ""
@@ -110,10 +110,10 @@ Public Class Phone
             If value <> _Msg Then
                 If value = "" Then ''todo:wtf
                     _Msg = ""
-                    OperationCount += 1
+                    _OperationCount += 1
                     RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("Msg"))
                 End If
-                OperationCount += 1
+                _OperationCount += 1
                 _Msg = value
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("Msg"))
             End If
@@ -128,10 +128,10 @@ Public Class Phone
             If value <> _LogData Then
                 If value = "" Then ''todo:wtf
                     _LogData = ""
-                    OperationCount += 1
+                    _OperationCount += 1
                     RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("LogData"))
                 End If
-                OperationCount += 1
+                _OperationCount += 1
                 _LogData = value
                 RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("LogData"))
             End If

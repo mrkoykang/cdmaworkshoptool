@@ -17,7 +17,7 @@
         Try
 
         Catch ex As Exception
-            logger.add("err in diag verno f decode: " + ex.ToString(), logger.logType.msg)
+            logger.add("err in diag verno f decode: " + ex.ToString(), logger.LogType.msg)
 
         End Try
     End Sub

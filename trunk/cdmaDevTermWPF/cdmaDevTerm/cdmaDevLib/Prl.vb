@@ -57,7 +57,7 @@ Public Class Prl
 
             Dim prlBytesToTx As Byte() = cdmaTerm.myD.GetBufferWithCRC(request)
 
-            cdmaTerm.dispatchQ.add(New Command(prlBytesToTx, prlDebug))
+            cdmaTerm.Q.Add(New Command(prlBytesToTx, prlDebug))
 
         Next
         Return True
@@ -93,12 +93,12 @@ Public Class Prl
         request(0) = DIAG_PR_LIST_RD_F
 
         Dim frameCount As Integer = 0
-      
+
         For i As Integer = 1 To 40 ''todo: actually check byte
             Dim cmd As Command = CommandFactory.GetCommand(DIAG_PR_LIST_RD_F, New Byte() {frameCount, 1})
 
-            cdmaTerm.dispatchQ.add(cmd) ''todo: what is the actual packet
-            cdmaTerm.dispatchQ.executeCommandQ()
+            cdmaTerm.Q.Add(cmd) ''todo: what is the actual packet
+            cdmaTerm.Q.Run()
             If (cmd.bytesRxd IsNot Nothing) Then
 
                 If (cmd.bytesRxd(0) = 0) Then

@@ -317,9 +317,9 @@ Public Class Qcdm
 
     Public Function ReadEfsFolderByName(ByVal folderName As String) As String
 
-        cdmaTerm.dispatchQ.clearCommandQ()
+        cdmaTerm.Q.Clear()
 
-        cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, SubsysStorage.DIAG_EFS2_READ, New Byte() {&HE, &H0}, "Read EFS", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, SubsysStorage.DIAG_EFS2_READ, New Byte() {&HE, &H0}, "Read EFS", "stupidfix"))
 
 
         Dim openFolder As New List(Of Byte)
@@ -331,7 +331,7 @@ Public Class Qcdm
         openFolder.Add(&H0)
         ''}
 
-        cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, openFolder.ToArray, "OPENDIR " + folderName, "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, openFolder.ToArray, "OPENDIR " + folderName, "stupidfix"))
         Dim j As Integer = 1
 
         ''TODO: Increase max count to test and fix efs loop not stoping/arithmatic overflow exception
@@ -345,12 +345,12 @@ Public Class Qcdm
         End While
 
         '' For i = 0 To count
-        ''cdmaTerm.dispatchQ.addCommandToQ(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_READDIR, &H0, &H1, &H0, &H0, &H0, i, &H0, &H0, &H0}, "READDIR", "stupidfix"))
+        ''cdmaTerm.Q.addCommandToQ(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_READDIR, &H0, &H1, &H0, &H0, &H0, i, &H0, &H0, &H0}, "READDIR", "stupidfix"))
         ''Next
 
-        cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_CLOSEDIR, &H0, &H1, &H0, &H0, &H0}, "CLOSEDIR /", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_CLOSEDIR, &H0, &H1, &H0, &H0, &H0}, "CLOSEDIR /", "stupidfix"))
 
-        cdmaTerm.dispatchQ.executeCommandQ()
+        cdmaTerm.Q.Run()
 
         Return New String("?")
 
@@ -358,10 +358,10 @@ Public Class Qcdm
 
     Public Function ReadEfsRoot() As String
 
-        cdmaTerm.dispatchQ.clearCommandQ()
+        cdmaTerm.Q.Clear()
 
-        cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, SubsysStorage.DIAG_EFS2_READ, New Byte() {&HE, &H0}, "Read EFS", "stupidfix"))
-        cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_OPENDIR, &H0, &H2F, &H0}, "OPENDIR /", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, SubsysStorage.DIAG_EFS2_READ, New Byte() {&HE, &H0}, "Read EFS", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_OPENDIR, &H0, &H2F, &H0}, "OPENDIR /", "stupidfix"))
         Dim j As Integer = 1
 
         ''TODO: Increase max count to test and fix efs loop not stoping/arithmatic overflow exception
@@ -374,12 +374,12 @@ Public Class Qcdm
         End While
 
         '' For i = 0 To count
-        ''cdmaTerm.dispatchQ.addCommandToQ(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_READDIR, &H0, &H1, &H0, &H0, &H0, i, &H0, &H0, &H0}, "READDIR", "stupidfix"))
+        ''cdmaTerm.Q.addCommandToQ(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_READDIR, &H0, &H1, &H0, &H0, &H0, i, &H0, &H0, &H0}, "READDIR", "stupidfix"))
         ''Next
 
-        cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_CLOSEDIR, &H0, &H1, &H0, &H0, &H0}, "CLOSEDIR /", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_CLOSEDIR, &H0, &H1, &H0, &H0, &H0}, "CLOSEDIR /", "stupidfix"))
 
-        cdmaTerm.dispatchQ.executeCommandQ()
+        cdmaTerm.Q.Run()
 
         Return New String("?")
 
@@ -388,9 +388,9 @@ Public Class Qcdm
 
     Public Function ReadEfsDir(ByVal dir As Integer) As Boolean
 
-        cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_READDIR, &H0, &H1, &H0, &H0, &H0, dir, &H0, &H0, &H0}, "READDIR", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_READDIR, &H0, &H1, &H0, &H0, &H0, dir, &H0, &H0, &H0}, "READDIR", "stupidfix"))
 
-        cdmaTerm.dispatchQ.executeCommandQ()
+        cdmaTerm.Q.Run()
 
 
 
@@ -419,9 +419,9 @@ Public Class Qcdm
         Next
         OpenForWrite.Add(0)
 
-        cdmaTerm.dispatchQ.clearCommandQ()
-        cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, SubsysCmd.STORAGE, OpenForWrite.ToArray, "OpenEfsForWrite", "StupidFix"))
-        cdmaTerm.dispatchQ.executeCommandQ()
+        cdmaTerm.Q.Clear()
+        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, SubsysCmd.STORAGE, OpenForWrite.ToArray, "OpenEfsForWrite", "StupidFix"))
+        cdmaTerm.Q.Run()
 
     End Sub
 
@@ -440,7 +440,7 @@ Public Class Qcdm
 
         efsPacket.Add(&H0)
 
-        cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, efsPacket.ToArray, "DeleteEFS", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, efsPacket.ToArray, "DeleteEFS", "stupidfix"))
 
         Dim EfsDirectory As New List(Of Byte)
         EfsDirectory.AddRange(New Byte() {&HB, 0, 0, 0, 0})
@@ -451,7 +451,7 @@ Public Class Qcdm
 
         EfsDirectory.Add(0)
 
-        cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_FS_OP_F, EfsDirectory.ToArray, "EfsDirectory"))
+        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_FS_OP_F, EfsDirectory.ToArray, "EfsDirectory"))
     End Sub
 
     Dim EfsPacketLength As Integer = 527
@@ -534,14 +534,14 @@ Public Class Qcdm
             '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
             Dim debugstring As String = "DIAG_EFS2_WRITE " + i.ToString
-            cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, efsPacket.ToArray, debugstring, "stupidfix"))
+            cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, efsPacket.ToArray, debugstring, "stupidfix"))
 
 
             CurrentPacket += 2
             CurrentOffset += EfsPacketMinusHeader
 
         Next
-        cdmaTerm.dispatchQ.add(New Command(Cmd.DIAG_SUBSYS_CMD_F, SubsysCmd.STORAGE, New Byte() {&H3, 0, 0, 0, 0, 0}, "DIAG_EFS2_CLOSE", "StupidFix"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, SubsysCmd.STORAGE, New Byte() {&H3, 0, 0, 0, 0, 0}, "DIAG_EFS2_CLOSE", "StupidFix"))
 
         Return True
 

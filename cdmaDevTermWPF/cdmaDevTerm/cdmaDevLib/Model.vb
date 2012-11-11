@@ -25,30 +25,30 @@ Public Class Model
         WriteSpc = New String(writeSpcNode.Nodes.ElementAt(0).ToString)
 
 
-        cdmaTerm.modeSwitch("Offline")
+        cdmaTerm.ModeSwitch("Offline")
 
 
         If (Spc <> "SP") Then
 
             cdmaTerm.readSpcFromPhone(Spc)
-            cdmaTerm.dispatchQ.executeCommandQ()
-            cdmaTerm.sendAnySPC(cdmaTerm.SPC)
+            cdmaTerm.Q.Run()
+            cdmaTerm.SendSpc(cdmaTerm.SPC)
         Else
             Dim sixteenDigitNode = From SP In doc...<SP> _
                        Select SP
             Dim sp16digit As New String(sixteenDigitNode.Nodes.ElementAt(0).ToString)
-            cdmaTerm.dispatchQ.add(
+            cdmaTerm.Q.Add(
                     New Command(
                         DIAG_PASSWORD_F,
                         cdmaTerm.String_To_Bytes(sp16digit),
                         "Send custom 16 digit DIAG_PASSWORD_F"
                         )
                     )
-            cdmaTerm.dispatchQ.executeCommandQ()
+            cdmaTerm.Q.Run()
         End If
 
         ''TODO: is this an old spc method? the code uses raw bytes... bleh
-        cdmaTerm.writeAnySpc(WriteSpc)
+        cdmaTerm.WriteSpc(WriteSpc)
 
         sendCarrierPrl(Carrier, prlFilePath)
 
@@ -70,14 +70,14 @@ Public Class Model
             byteS.AddRange(encoding.GetBytes(currentData))
 
             Try
-                cdmaTerm.dispatchQ.add(New Command(Cmd.DIAG_NV_WRITE_F, Integer.Parse(x.Element("number").Value), byteS.ToArray, currentData))
+                cdmaTerm.Q.Add(New Command(Cmd.DIAG_NV_WRITE_F, Integer.Parse(x.Element("number").Value), byteS.ToArray, currentData))
 
                 ''sloppy bs
             Catch ex As Exception
                 Try
                     Dim NvItemCurrent = DirectCast([Enum].Parse(GetType(NvItems.NVItems), x.Element("number").Value, True), NvItems.NVItems)
 
-                    cdmaTerm.dispatchQ.add(New Command(Cmd.DIAG_NV_WRITE_F, NvItemCurrent, byteS.ToArray, currentData))
+                    cdmaTerm.Q.Add(New Command(Cmd.DIAG_NV_WRITE_F, NvItemCurrent, byteS.ToArray, currentData))
 
                 Catch ex2 As Exception
                     logger.add("Error: Nv element appears not to be a number or an nv item")
@@ -85,8 +85,8 @@ Public Class Model
             End Try
         Next
 
-        cdmaTerm.modeSwitch("Reset")
-        cdmaTerm.dispatchQ.executeCommandQ()
+        cdmaTerm.ModeSwitch("Reset")
+        cdmaTerm.Q.Run()
 
 
 

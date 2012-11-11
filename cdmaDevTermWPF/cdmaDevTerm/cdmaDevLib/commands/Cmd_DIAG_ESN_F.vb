@@ -24,7 +24,7 @@
 
 
         Catch
-            logger.add("No esn(diag_esn_f) found", logger.logType.msg)
+            logger.add("No esn(diag_esn_f) found", logger.LogType.msg)
 
         End Try
     End Sub

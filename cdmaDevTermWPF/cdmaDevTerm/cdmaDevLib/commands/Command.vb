@@ -178,7 +178,7 @@ Public Class Command
     Public Overrides Function tx() As Boolean
         If cdmaTerm.portIsOpen = False Then
             logger.add("Port not open err, please connect.")
-            cdmaTerm.dispatchQ.silentInterruptCommandQ()
+            cdmaTerm.Q.InterruptQuiet()
         Else
             Try
                 Dim testSend As New DmPort
@@ -205,7 +205,7 @@ Public Class Command
 
             Catch ex As Exception
                 logger.add("Command.tx err: " + ex.ToString)
-                cdmaTerm.dispatchQ.interruptCommandQ()
+                cdmaTerm.Q.Interrupt()
             End Try
         End If
 

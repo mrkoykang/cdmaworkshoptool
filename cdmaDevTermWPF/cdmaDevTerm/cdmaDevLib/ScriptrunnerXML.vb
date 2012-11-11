@@ -35,7 +35,7 @@ Public Class ScriptrunnerXML
             logger.add("command sent: " + cmd.Value)
 
             Dim TermCommandWithoutSpaces As String = cmd.Value.ToString.Replace(" ", String.Empty)
-            cdmaTerm.dispatchQ.add(New Command(cdmaTerm.String_To_Bytes(TermCommandWithoutSpaces), "speakNSpell"))
+            cdmaTerm.Q.Add(New Command(cdmaTerm.String_To_Bytes(TermCommandWithoutSpaces), "speakNSpell"))
 
 
         Next
@@ -57,7 +57,7 @@ Public Class ScriptrunnerXML
             logger.add("command sent: " + cmd.Value)
 
             Dim TermCommandWithoutSpaces As String = cmd.Value.ToString.Replace(" ", String.Empty)
-            cdmaTerm.dispatchQ.add(New Command(cdmaTerm.String_To_Bytes(TermCommandWithoutSpaces), "dutchToEnglishSpeakNSpell"))
+            cdmaTerm.Q.Add(New Command(cdmaTerm.String_To_Bytes(TermCommandWithoutSpaces), "dutchToEnglishSpeakNSpell"))
 
 
         Next
@@ -80,7 +80,7 @@ Public Class ScriptrunnerXML
             ''logger.addToLog("command sent: " + cmd.Value)
 
             Dim TermCommandWithoutSpaces As String = cmd.Value.ToString.Replace(" ", String.Empty)
-            cdmaTerm.dispatchQ.add(New Command(cdmaTerm.String_To_Bytes(TermCommandWithoutSpaces), "MuteSpeakNSpell"))
+            cdmaTerm.Q.Add(New Command(cdmaTerm.String_To_Bytes(TermCommandWithoutSpaces), "MuteSpeakNSpell"))
             '' System.Threading.Thread.Sleep(200)
 
         Next
@@ -101,7 +101,7 @@ Public Class ScriptrunnerXML
             logger.add("command sent: " + cmd.Value)
 
             ''Dim TermCommandWithoutSpaces As String = cmd.Value.ToString.Replace(" ", String.Empty)
-            ''cdmaTerm. dispatchQ.addCommandToQ(New Command((cdmaTerm.String_To_Bytes(TermCommandWithoutSpaces))
+            ''cdmaTerm. Q.addCommandToQ(New Command((cdmaTerm.String_To_Bytes(TermCommandWithoutSpaces))
 
 
         Next

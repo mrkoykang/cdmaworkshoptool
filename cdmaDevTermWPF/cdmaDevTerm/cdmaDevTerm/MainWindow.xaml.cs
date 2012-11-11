@@ -42,12 +42,12 @@ namespace cdmaDevTerm
 # and names may change from time to time
 #
 from cdmaDevLib import *
-cdmaTerm.connectSub(phone.ComPortName)
+cdmaTerm.Connect(phone.ComPortName)
 cdmaTerm.ReadAllNam()
-cdmaTerm.readNV(NvItems.NVItems.NV_DS_MIP_ACTIVE_PROF_I)
-cdmaTerm.sendAnySPC(""000000"")
-cdmaTerm.readNVList(""900-915"",""nvOut.txt"")
-q.executeCommandQ()";
+cdmaTerm.ReadNv(NvItems.NVItems.NV_DS_MIP_ACTIVE_PROF_I)
+cdmaTerm.SendSpc(""000000"")
+cdmaTerm.ReadNvList(""900-915"",""nvOut.txt"")
+q.Run()";
 
 
         public MainWindow()
@@ -138,13 +138,13 @@ q.executeCommandQ()";
         private void Connect_Click(object sender, RoutedEventArgs e)
         {
             Boolean result = true;
-            cdmaTerm.connectSub(cdmaTerm.thePhone.ComPortName);
+            cdmaTerm.Connect(cdmaTerm.thePhone.ComPortName);
 
             if (Properties.Settings.Default.AutoModeOffline)
             {
-                cdmaTerm.dispatchQ.clearCommandQ();
-                cdmaTerm.modeSwitch(Qcdm.Mode.MODE_RADIO_OFFLINE);
-                result = cdmaTerm.dispatchQ.executeCommandQ();
+                cdmaTerm.Q.Clear();
+                cdmaTerm.ModeSwitch(Qcdm.Mode.MODE_RADIO_OFFLINE);
+                result = cdmaTerm.Q.Run();
             }
             if (result)
             {
@@ -156,7 +156,7 @@ q.executeCommandQ()";
                 cdmaTerm.AddNv(NvItems.NVItems.NV_LOCK_CODE_I);
                 cdmaTerm.AddNv(NvItems.NVItems.NV_HOME_SID_NID_I);
                 cdmaTerm.AddNv(NvItems.NVItems.NV_NAM_LOCK_I);
-                result = result && cdmaTerm.dispatchQ.executeCommandQ();
+                result = result && cdmaTerm.Q.Run();
                 if(result)
                 cdmaTerm.ReadMIN1();
             }
@@ -183,7 +183,7 @@ q.executeCommandQ()";
         private void readSpc_Click(object sender, RoutedEventArgs e)
         {
             cdmaTerm.readSpcFromPhone(cdmaTerm.thePhone.SpcReadType);
-            cdmaTerm.dispatchQ.executeCommandQ(); 
+            cdmaTerm.Q.Run(); 
         }
 
         #region keyPress
@@ -259,9 +259,9 @@ q.executeCommandQ()";
 
             private void sendSpc_Click(object sender, RoutedEventArgs e)
             {
-                cdmaTerm.dispatchQ.clearCommandQ();
-                cdmaTerm.sendAnySPC(cdmaTerm.thePhone.Spc);
-                cdmaTerm.dispatchQ.executeCommandQ();
+                cdmaTerm.Q.Clear();
+                cdmaTerm.SendSpc(cdmaTerm.thePhone.Spc);
+                cdmaTerm.Q.Run();
             }
 
             private void SendSP_Click(object sender, RoutedEventArgs e)
@@ -271,9 +271,9 @@ q.executeCommandQ()";
 
             private void writeSpc_Click(object sender, RoutedEventArgs e)
             {
-                cdmaTerm.dispatchQ.clearCommandQ();
-                cdmaTerm.writeAnySpc(cdmaTerm.thePhone.Spc);
-                cdmaTerm.dispatchQ.executeCommandQ();
+                cdmaTerm.Q.Clear();
+                cdmaTerm.WriteSpc(cdmaTerm.thePhone.Spc);
+                cdmaTerm.Q.Run();
             }
 
             private void SendTerm_Click(object sender, RoutedEventArgs e)
@@ -283,23 +283,23 @@ q.executeCommandQ()";
 
             private void writeEvdo_Click(object sender, RoutedEventArgs e)
             {
-                cdmaTerm.dispatchQ.clearCommandQ();
+                cdmaTerm.Q.Clear();
                 cdmaTerm.sendAllEVDO(cdmaTerm.thePhone.Username, cdmaTerm.thePhone.Password);
-                cdmaTerm.dispatchQ.executeCommandQ();
+                cdmaTerm.Q.Run();
             }
 
             private void sendModeSwitch_Click(object sender, RoutedEventArgs e)
             {
-                cdmaTerm.dispatchQ.clearCommandQ();
-                cdmaTerm.modeSwitch(cdmaTerm.thePhone.ModeChangeType);
-                cdmaTerm.dispatchQ.executeCommandQ();
+                cdmaTerm.Q.Clear();
+                cdmaTerm.ModeSwitch(cdmaTerm.thePhone.ModeChangeType);
+                cdmaTerm.Q.Run();
             }
 
             private void sendPrl_Click(object sender, RoutedEventArgs e)
             {
-                cdmaTerm.dispatchQ.clearCommandQ();
+                cdmaTerm.Q.Clear();
                 cdmaTerm.SendPrlFile(cdmaTerm.thePhone.PrlFilename);
-                cdmaTerm.dispatchQ.executeCommandQ();
+                cdmaTerm.Q.Run();
             }
 
             private void ChoosePrl_Click(object sender, RoutedEventArgs e)
@@ -317,7 +317,7 @@ q.executeCommandQ()";
 
             private void writeNam_Click(object sender, RoutedEventArgs e)
             {
-                cdmaTerm.dispatchQ.clearCommandQ();
+                cdmaTerm.Q.Clear();
                 cdmaTerm.updatePhoneFromViewModel();
             }
 
@@ -325,7 +325,7 @@ q.executeCommandQ()";
             {
                 var p = new cdmaDevLib.Prl();
                 p.DownloadPrl("prl.prl");
-                cdmaTerm.dispatchQ.executeCommandQ();
+                cdmaTerm.Q.Run();
             }
 
             private void readPhone_Click(object sender, RoutedEventArgs e)
@@ -339,21 +339,21 @@ q.executeCommandQ()";
                 cdmaTerm.AddNv(NvItems.NVItems.NV_LOCK_CODE_I);
                 cdmaTerm.AddNv(NvItems.NVItems.NV_HOME_SID_NID_I);
                 cdmaTerm.AddNv(NvItems.NVItems.NV_NAM_LOCK_I);
-                result = result && cdmaTerm.dispatchQ.executeCommandQ();
+                result = result && cdmaTerm.Q.Run();
                 if (result)
                     cdmaTerm.ReadMIN1();
             }
 
             private void SendSpcZerosMenuItem_Click_1(object sender, RoutedEventArgs e)
             {
-                cdmaTerm.sendAnySPC("000000");
-                cdmaTerm.dispatchQ.executeCommandQ();
+                cdmaTerm.SendSpc("000000");
+                cdmaTerm.Q.Run();
             }
 
             private void WriteSpcZerosMenuItem_Click_1(object sender, RoutedEventArgs e)
             {
-                cdmaTerm.writeAnySpc("000000");
-                cdmaTerm.dispatchQ.executeCommandQ();
+                cdmaTerm.WriteSpc("000000");
+                cdmaTerm.Q.Run();
             }
 
             private void ReadNvItem_Click(object sender, RoutedEventArgs e)
@@ -365,7 +365,7 @@ q.executeCommandQ()";
                     Filter = "Text (.txt)|*.txt",
                 };
                 if ((bool)dlg.ShowDialog())
-                    cdmaTerm.readNVList(ReadNvItemTextbox.Text, dlg.FileName);
+                    cdmaTerm.ReadNvList(ReadNvItemTextbox.Text, dlg.FileName);
             }
 
             private void copyEsnConverted_Click_1(object sender, RoutedEventArgs e)
@@ -391,7 +391,7 @@ q.executeCommandQ()";
             private void runScript_Click(object sender, RoutedEventArgs e)
             {
                 _scope.SetVariable("phone", cdmaTerm.thePhone);
-                _scope.SetVariable("q", cdmaTerm.dispatchQ);
+                _scope.SetVariable("q", cdmaTerm.Q);
                 var code = CodeTextEditor.Text;
                 try
                 {

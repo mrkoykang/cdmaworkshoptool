@@ -332,7 +332,7 @@ Public Class DmPort
 
                 request = GetBufferWithCRC(request)
 
-                cdmaTerm.dispatchQ.add(New Command(request, "Ram Read i: " + i.ToString + "j: " + j.ToString))
+                cdmaTerm.Q.Add(New Command(request, "Ram Read i: " + i.ToString + "j: " + j.ToString))
                 '' Dim response = WriteRead(New Byte() {4, Convert.ToByte(start And &HFF), Convert.ToByte((start And &HFF00) >> 8), Convert.ToByte((start And &HFF0000) >> 16), Convert.ToByte((start And &HFF000000UI) >> 24), 4, _
                 '' 0})
 
@@ -381,7 +381,7 @@ Public Class DmPort
             request.Add(&H10)
             request.Add(0)
 
-            cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_PEEKB_F, request.ToArray, ("DIAG_PEEKB_F: " + current.ToString("x8").ToUpper)))
+            cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_PEEKB_F, request.ToArray, ("DIAG_PEEKB_F: " + current.ToString("x8").ToUpper)))
 
 
             current = current + &H10000
@@ -417,7 +417,7 @@ Public Class DmPort
             request.Add(&H10)
             request.Add(0)
 
-            cdmaTerm.dispatchQ.add(New Command(Qcdm.Cmd.DIAG_PEEKB_F, request.ToArray, ("DIAG_PEEKB_F: " + current.ToString("x8"))))
+            cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_PEEKB_F, request.ToArray, ("DIAG_PEEKB_F: " + current.ToString("x8"))))
 
 
             current = current + &H10

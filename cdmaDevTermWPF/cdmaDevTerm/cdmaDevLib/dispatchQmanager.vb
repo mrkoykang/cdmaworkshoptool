@@ -20,7 +20,7 @@ Imports System.Collections
 Imports System.IO
 Imports System.Threading
 
-Public Class dispatchQmanager
+Public Class CommandQueue
 
     Private myQ As New Queue
     ''sync wrapper for queue
@@ -28,32 +28,32 @@ Public Class dispatchQmanager
     Public badItemCount As Integer = 0
     Public inturruptCommandQFlag As Boolean = False
 
-    Public Sub add(ByRef inCommand As Command)
+    Public Sub Add(ByRef inCommand As Command)
         mySynqdQ.Enqueue(inCommand)
     End Sub
 
-    Public Sub clearCommandQ()
+    Public Sub Clear()
         mySynqdQ.Clear()
     End Sub
 
-    Public Sub interruptCommandQ()
+    Public Sub Interrupt()
         ''catch all errors and rx type
         logger.add("Transmit error in message queue")
         mySynqdQ.Clear()
     End Sub
 
-    Public Sub silentInterruptCommandQ()
+    Public Sub InterruptQuiet()
         logger.add("Message queue was silently cleared")
         mySynqdQ.Clear()
     End Sub
 
     ''Returns true if all commands execute
-    Public Function executeCommandQ() As Boolean
+    Public Function Run() As Boolean
 
         If cdmaTerm.portIsOpen = False Then
-            logger.add("Dispatch Queue Error: Port Not Open, Please Connect", logger.logType.infoAndMsg)
+            logger.add("Dispatch Queue Error: Port Not Open, Please Connect", logger.LogType.infoAndMsg)
 
-            silentInterruptCommandQ()
+            InterruptQuiet()
         Else
 
             While mySynqdQ.Count <> 0
@@ -61,7 +61,7 @@ Public Class dispatchQmanager
                 Dim thisC As Command = mySynqdQ.Dequeue()
                 thisC.commandSuccess = thisC.tx()
                 If thisC.commandSuccess = False Then
-                    interruptCommandQ()
+                    Interrupt()
                     Return False
                 End If
                 thisC.decode()
@@ -74,7 +74,7 @@ Public Class dispatchQmanager
 
     End Function
 
-    Public Sub checkNvQForBadItems()
+    Friend Sub checkNvQForBadItems()
         Try
 
             For Each c As Command In mySynqdQ
@@ -112,7 +112,7 @@ Public Class dispatchQmanager
             Next
 
         Catch ex As Exception
-            logger.add("nv check err: " + ex.ToString)
+            Logger.Add("nv check err: " + ex.ToString)
         End Try
 
     End Sub

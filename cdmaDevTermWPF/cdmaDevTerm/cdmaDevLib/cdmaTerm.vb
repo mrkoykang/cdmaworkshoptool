@@ -41,9 +41,9 @@ Imports cdmaDevLib.Qcdm
 Public Class cdmaTerm
 
     ''Dim WithEvents mySerialPort As SerialPort = New SerialPort
-    Public Shared dispatchQ As dispatchQmanager = New dispatchQmanager
-    Public Shared nvReadQ As dispatchQmanager = New dispatchQmanager
-    Public Shared RamReadQ As dispatchQmanager = New dispatchQmanager
+    Public Shared Q As CommandQueue = New CommandQueue
+    Public Shared nvReadQ As CommandQueue = New CommandQueue
+    Public Shared RamReadQ As CommandQueue = New CommandQueue
     Public Shared thePhone As Phone = New Phone
     Friend Shared thePhoneRxd As Phone = New Phone
     ''this should probably be either refactored out due to 'blackberry'(winapicom) being standard now
@@ -72,24 +72,17 @@ Public Class cdmaTerm
 
 #Region "Port Setup"
     ''some of this logic may still be needed but in a different way
-    ''check for com devices and populate combobox
     Public Shared Sub GetComs()
 
         ' Get a list of serial port names.
-        Dim ports As String() = SerialPort.GetPortNames()
         thePhone.AvailableComPorts = COMPortInfo.COMPortInfo.GetCOMPortsInfo()
-        '' thePhone.AvailableComPorts = New List(Of String)(ports)
 
     End Sub
-
 
     ''no se
     Public commandInProgress As String
 
-
     Dim rxBuff As String
-
-    
 
     Dim mySDR As New SecretDecoderRing
 
@@ -135,7 +128,7 @@ Public Class cdmaTerm
             ''LOGGER.ADDTOLOG(STRVALUE)
         Catch EX As Exception
             logger.add("HexToAsciiStr error:" + EX.ToString)
-            '' DISPATCHQ.INTERRUPTCOMMANDQ()''todo:should this end it? probably not
+            '' Q.INTERRUPTCOMMANDQ()''todo:should this end it? probably not
         End Try
 
         Return ret
@@ -143,12 +136,22 @@ Public Class cdmaTerm
 
 
 
-    Public Shared Sub connectSub(portName As String)
+    Public Shared Sub Connect(portName As String)
         Try
             ''ajh dg change 1 - need to check for port being opened already /
             '' dg added checkbox to test bb winapi dll
 
-            portName = thePhone.AvailableComPorts.Find(Function(f) f.Description = portName).Name
+            Dim nameByDescription = thePhone.AvailableComPorts.Find(Function(f) f.Description = portName)
+            If (nameByDescription IsNot Nothing) Then
+                portName = thePhone.AvailableComPorts.Find(Function(f) f.Description = portName).Name
+            End If
+
+
+            If (portName = Nothing Or portName = "") Then
+                GetComs()
+                portName = thePhone.AvailableComPorts.Find(Function(f) f.Name = portName).Name
+            End If
+
             serialportType = "blackberry" ''aka winApiCom
             If (portIsOpen = False) Then
 
@@ -157,18 +160,18 @@ Public Class cdmaTerm
                 ''ToolStripStatusLabel1.Text = "connect ok || Type : WinApiCom.dll || " + ("\\.\" + GetPlainPortNameFromFriendly(ComNumBox1.Text))
                 If (result) Then
                     portIsOpen = True
-                    logger.add("portIsOpen = true - port " + portName + " opened")
-                    logger.add("Connected to " + portName, logger.logType.msg)
+                    Logger.Add("portIsOpen = true - port " + portName + " opened")
+                    Logger.Add("Connected to " + portName, Logger.LogType.Msg)
                 Else
-                    logger.add("can't connect")
+                    Logger.Add("can't connect")
                 End If
 
             Else
-                logger.add("portIsOpen == true - can't connect")
+                Logger.Add("portIsOpen == true - can't connect")
             End If
 
         Catch ex As Exception
-            logger.add("ex: " + ex.ToString)
+            Logger.Add("ex: " + ex.ToString)
 
         End Try
     End Sub
@@ -283,28 +286,28 @@ Public Class cdmaTerm
 
         'Dim MySixteenDigitCodes As New SixteenDigitCodes()
 
-        'dispatchQ.addCommandToQ(
+        'Q.addCommandToQ(
         '    New Command(
         '        DIAG_PASSWORD_F,
         '        String_To_Bytes(SixteenDigitCodes.get16DigitPassword(select16digitCodeBox)),
         '        "16 digit password"
         '        )
         '    )
-        'dispatchQ.executeCommandQ()
+        'Q.Run()
 
         ' Else
         If (Send16DigitSP.Length = 16) Then
 
-            dispatchQ.add(
+            Q.Add(
                 New Command(
                     DIAG_PASSWORD_F,
                     String_To_Bytes(Send16DigitSP),
                     "Send custom 16 digit DIAG_PASSWORD_F"
                     )
                 )
-            dispatchQ.executeCommandQ()
+            Q.Run()
         Else
-            logger.add("16 digit SP is not 16 digits", logger.logType.msg)
+            logger.add("16 digit SP is not 16 digits", logger.LogType.msg)
         End If
 
 
@@ -316,53 +319,53 @@ Public Class cdmaTerm
         ''first check which read type then go
         If spcType = cdmaTerm.SpcReadType.DefaultNv Then
 
-            dispatchQ.add(CommandFactory.GetCommand(NvItems.NVItems.NV_SEC_CODE_I))
+            Q.Add(CommandFactory.GetCommand(NvItems.NVItems.NV_SEC_CODE_I))
 
 
         ElseIf spcType = cdmaTerm.SpcReadType.HTC Then
 
-            dispatchQ.add(New Command(unlockHtcSuperSPC, "unlockHtcSuperSPC byte array method"))
-            dispatchQ.add(New Command(readSPC_HTCMethod, "readSPC_HTCMethod byte array method"))
-            dispatchQ.add(CommandFactory.GetCommand(NvItems.NVItems.NV_SEC_CODE_I))
+            Q.Add(New Command(unlockHtcSuperSPC, "unlockHtcSuperSPC byte array method"))
+            Q.Add(New Command(readSPC_HTCMethod, "readSPC_HTCMethod byte array method"))
+            Q.Add(CommandFactory.GetCommand(NvItems.NVItems.NV_SEC_CODE_I))
 
         ElseIf spcType = cdmaTerm.SpcReadType.LG Then
 
             ''ajh7495 start 3
-            dispatchQ.add(New Command(unlockLgNvMemory, "Unlock LG NV Memory"))
-            dispatchQ.add(New Command(readSPC_LgMethod, "Read SPC _ LG Method")) '' needs response to complete - send
-            dispatchQ.add(New Command(readSPC_LgMethod, "ReadSPC_LG", "Read SPC _ LG Method | True | ReadSPC_LG|"))
-            ''dispatchQ.executeCommandQ()
+            Q.Add(New Command(unlockLgNvMemory, "Unlock LG NV Memory"))
+            Q.Add(New Command(readSPC_LgMethod, "Read SPC _ LG Method")) '' needs response to complete - send
+            Q.Add(New Command(readSPC_LgMethod, "ReadSPC_LG", "Read SPC _ LG Method | True | ReadSPC_LG|"))
+            ''Q.Run()
 
 
             'ElseIf spcType = "Samsung1" Then
             '    ''logger.addToLog("s1 method not here yet")
             '    ''TODO: Find sample, make decoder
-            '    dispatchQ.addCommandToQ(New Command(readSPC_Samsung1Method, "ReadSPC_NV", "readSPC_Samsung1Method byte array method"))
+            '    Q.addCommandToQ(New Command(readSPC_Samsung1Method, "ReadSPC_NV", "readSPC_Samsung1Method byte array method"))
 
 
             'ElseIf spcType = "Samsung2" Then
             '    ''logger.addToLog("s2 method")
             '    ''TODO: Find sample, make decoder
-            '    dispatchQ.addCommandToQ(New Command(readSPC_Samsung2Method, "ReadSPC_NV", "readSPC_Samsung2Method byte array method"))
+            '    Q.addCommandToQ(New Command(readSPC_Samsung2Method, "ReadSPC_NV", "readSPC_Samsung2Method byte array method"))
 
 
             'ElseIf spcType = "Kyocera" Then
             '    ''logger.addToLog("kyocera method")
             '    ''TODO: Find sample, make decoder
-            '    dispatchQ.addCommandToQ(New Command(readSPC_Kyocera, "ReadSPC_NV", "readSPC_Kyocera byte array method"))
+            '    Q.addCommandToQ(New Command(readSPC_Kyocera, "ReadSPC_NV", "readSPC_Kyocera byte array method"))
 
 
             'ElseIf spcType = "EFS" Then
             '    '' logger.addToLog("efs method")
 
-            '    dispatchQ.addCommandToQ(New Command(readSPC_EFSMethod_SubsytemCmd, "readSPC_EFSMethod_SubsytemCmd byte array method"))
-            '    dispatchQ.addCommandToQ(New Command(readSPC_EFSMethod_EfsCmd, "readSPC_EFSMethod_EfsCmd byte array method"))
+            '    Q.addCommandToQ(New Command(readSPC_EFSMethod_SubsytemCmd, "readSPC_EFSMethod_SubsytemCmd byte array method"))
+            '    Q.addCommandToQ(New Command(readSPC_EFSMethod_EfsCmd, "readSPC_EFSMethod_EfsCmd byte array method"))
 
             '    ''insert decoder
         ElseIf spcType = cdmaTerm.SpcReadType.MetroPCS Then
 
-            dispatchQ.add(CommandFactory.GetCommand(DIAG_ESN_F))
-            dispatchQ.executeCommandQ()
+            Q.Add(CommandFactory.GetCommand(DIAG_ESN_F))
+            Q.Run()
 
 
             Try
@@ -382,9 +385,9 @@ Public Class cdmaTerm
 
 
     Public Shared Sub SendTerminalCommand(terminalCommand As String)
-        dispatchQ.clearCommandQ()
-        dispatchQ.add(CommandFactory.GetCommand(terminalCommand))
-        dispatchQ.executeCommandQ()
+        Q.Clear()
+        Q.Add(CommandFactory.GetCommand(terminalCommand))
+        Q.Run()
     End Sub
 
 
@@ -445,27 +448,27 @@ Public Class cdmaTerm
             atCmd.Add(&HD)
             atCmd.Add(&HA)
 
-            logger.add(biznytesToStrizings(myDm.WriteRead(atCmd.ToArray)), logger.logType.infoAndMsg)
+            logger.add(biznytesToStrizings(myDm.WriteRead(atCmd.ToArray)), logger.LogType.infoAndMsg)
 
         Catch
 
-            logger.add("Cant Open AT Port", logger.logType.infoAndMsg)
+            logger.add("Cant Open AT Port", logger.LogType.infoAndMsg)
         End Try
 
 
     End Sub
 
     'Private Sub modeOfflineButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles modeSwitchButton.Click
-    '    dispatchQ.clearCommandQ()
+    '    Q.Clear()
     '    modeSwitch(modeSwitchCombo.Text)
-    '    dispatchQ.executeCommandQ()
+    '    Q.Run()
 
     '    If modeSwitchCombo.Text = "Reset" Then
 
     '        ''Attempt to fix crazy BSOD
     '        ''Driver unloaded without cancelling pending operations?
     '        ''TODO: wtf. maybe the bsod was a fluke.. not even sure if this does anything. madness.
-    '        While (dispatchQ.GetCount > 0)
+    '        While (Q.GetCount > 0)
     '            System.Threading.Thread.Sleep(150)
     '        End While
 
@@ -489,20 +492,20 @@ Public Class cdmaTerm
 
     ''BEGIN THE RANDOM ARRAYS FOR COMMANDS N SHIT
     ''key presses
-    Dim keyPress_Pound() As Byte = {&H20, &H0, &H23, &H6E, &HD6, &H7E}
-    Dim keyPress_Star() As Byte = {&H20, &H0, &H2A, &HAF, &H4B, &H7E}
-    Dim keyPress_0() As Byte = {&H20, &H0, &H30, &H74, &HF4, &H7E}
-    Dim keyPress_1() As Byte = {&H20, &H0, &H31, &HFD, &HE5, &H7E}
-    Dim keyPress_2() As Byte = {&H20, &H0, &H32, &H66, &HD7, &H7E}
-    Dim keyPress_3() As Byte = {&H20, &H0, &H33, &HEF, &HC6, &H7E}
-    Dim keyPress_4() As Byte = {&H20, &H0, &H34, &H50, &HB2, &H7E}
-    Dim keyPress_5() As Byte = {&H20, &H0, &H35, &HD9, &HA3, &H7E}
-    Dim keyPress_6() As Byte = {&H20, &H0, &H36, &H42, &H91, &H7E}
-    Dim keyPress_7() As Byte = {&H20, &H0, &H37, &HCB, &H80, &H7E}
-    Dim keyPress_8() As Byte = {&H20, &H0, &H38, &H3C, &H78, &H7E}
-    Dim keyPress_9() As Byte = {&H20, &H0, &H39, &HB5, &H69, &H7E}
-    Dim keyPress_SEND_UP() As Byte = {&H20, &H0, &H50, &H72, &H97, &H7E}
-    Dim keyPress_END_DN() As Byte = {&H20, &H0, &H51, &HFB, &H86, &H7E}
+    Public Shared ReadOnly keyPress_Pound() As Byte = {&H20, &H0, &H23, &H6E, &HD6, &H7E}
+    Public Shared ReadOnly keyPress_Star() As Byte = {&H20, &H0, &H2A, &HAF, &H4B, &H7E}
+    Public Shared ReadOnly keyPress_0() As Byte = {&H20, &H0, &H30, &H74, &HF4, &H7E}
+    Public Shared ReadOnly keyPress_1() As Byte = {&H20, &H0, &H31, &HFD, &HE5, &H7E}
+    Public Shared ReadOnly keyPress_2() As Byte = {&H20, &H0, &H32, &H66, &HD7, &H7E}
+    Public Shared ReadOnly keyPress_3() As Byte = {&H20, &H0, &H33, &HEF, &HC6, &H7E}
+    Public Shared ReadOnly keyPress_4() As Byte = {&H20, &H0, &H34, &H50, &HB2, &H7E}
+    Public Shared ReadOnly keyPress_5() As Byte = {&H20, &H0, &H35, &HD9, &HA3, &H7E}
+    Public Shared ReadOnly keyPress_6() As Byte = {&H20, &H0, &H36, &H42, &H91, &H7E}
+    Public Shared ReadOnly keyPress_7() As Byte = {&H20, &H0, &H37, &HCB, &H80, &H7E}
+    Public Shared ReadOnly keyPress_8() As Byte = {&H20, &H0, &H38, &H3C, &H78, &H7E}
+    Public Shared ReadOnly keyPress_9() As Byte = {&H20, &H0, &H39, &HB5, &H69, &H7E}
+    Public Shared ReadOnly keyPress_SEND_UP() As Byte = {&H20, &H0, &H50, &H72, &H97, &H7E}
+    Public Shared ReadOnly keyPress_END_DN() As Byte = {&H20, &H0, &H51, &HFB, &H86, &H7E}
 
     ''change modes
     Public Shared ReadOnly modeOfflineD() As Byte = {&H29, &H1, &H0, &H31, &H40, &H7E}
@@ -653,14 +656,14 @@ Public Class cdmaTerm
         Dim evdoUser As Byte() = countedEvdoUser.ToArray
         Dim evdoPass As Byte() = countedEvdoPass.ToArray
 
-        dispatchQ.add(CommandFactory.GetCommand(NV_PPP_USER_ID_I, True, evdoUser))
-        dispatchQ.add(CommandFactory.GetCommand(NV_PPP_PASSWORD_I, True, evdoPass))
-        dispatchQ.add(CommandFactory.GetCommand(NV_PAP_USER_ID_I, True, evdoUser))
-        dispatchQ.add(CommandFactory.GetCommand(NV_PAP_PASSWORD_I, True, evdoPass))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_USER_ID_LONG_I, True, evdoUser))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_LONG_I, True, evdoPass))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_NAI_I, True, evdoUser))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_I, True, evdoPass))
+        Q.Add(CommandFactory.GetCommand(NV_PPP_USER_ID_I, True, evdoUser))
+        Q.Add(CommandFactory.GetCommand(NV_PPP_PASSWORD_I, True, evdoPass))
+        Q.Add(CommandFactory.GetCommand(NV_PAP_USER_ID_I, True, evdoUser))
+        Q.Add(CommandFactory.GetCommand(NV_PAP_PASSWORD_I, True, evdoPass))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_USER_ID_LONG_I, True, evdoUser))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_LONG_I, True, evdoPass))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_NAI_I, True, evdoUser))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_I, True, evdoPass))
 
     End Sub
 
@@ -694,7 +697,7 @@ Public Class cdmaTerm
 
 #Region "Random Test Code"
 
-    Public Shared Sub sendAnySPC(ByVal customSPC As String)
+    Public Shared Sub SendSpc(ByVal customSPC As String)
         ''dg qc send spc
         If (customSPC = Nothing) Then
             logger.add("Spc null, not sent")
@@ -702,52 +705,52 @@ Public Class cdmaTerm
             Return
 
         End If
-        dispatchQ.add(CommandFactory.GetCommand(DIAG_SPC_F, ASCIIEncoding.ASCII.GetBytes(customSPC)))
+        Q.Add(CommandFactory.GetCommand(DIAG_SPC_F, ASCIIEncoding.ASCII.GetBytes(customSPC)))
 
     End Sub
 
-    Public Shared Sub writeAnySpc(ByVal customSPC As String)
+    Public Shared Sub WriteSpc(ByVal customSPC As String)
         If (customSPC = Nothing) Then
             Return
         End If
-        dispatchQ.add(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, NvItems.NVItems.NV_SEC_CODE_I, ASCIIEncoding.ASCII.GetBytes(customSPC), "write spc")) ''todo:untested now
+        Q.Add(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, NvItems.NVItems.NV_SEC_CODE_I, ASCIIEncoding.ASCII.GetBytes(customSPC), "write spc")) ''todo:untested now
 
     End Sub
 
 
-    Private Sub lgReadMeid()
+    Public Shared Sub LgReadMeid()
 
-        Dim ponyXpress As New dispatchQmanager
+        Dim ponyXpress As New CommandQueue
 
-        dispatchQ.clearCommandQ()
-        dispatchQ.add(New Command(unlockLgNvMemory, "Unlock LG NV Memory"))
-        dispatchQ.add(New Command(lg_Lock1, "LG Lock 1"))
-        dispatchQ.add(New Command(lg_KeyEmu1, "LG Key Emu1"))
-        dispatchQ.add(New Command(keyPress_END_DN, "KeyPress END_DN"))
-        dispatchQ.add(New Command(keyPress_3, "KeyPress 3"))
-        dispatchQ.add(New Command(keyPress_7, "KeyPress 7"))
-        dispatchQ.add(New Command(keyPress_3, "KeyPress 3"))
-        dispatchQ.add(New Command(keyPress_3, "KeyPress 3"))
-        dispatchQ.add(New Command(keyPress_9, "KeyPress 9"))
-        dispatchQ.add(New Command(keyPress_2, "KeyPress 2"))
-        dispatchQ.add(New Command(keyPress_9, "KeyPress 9"))
-        dispatchQ.add(New Command(keyPress_END_DN, "KeyPress END_DN"))
+        Q.Clear()
+        Q.Add(New Command(unlockLgNvMemory, "Unlock LG NV Memory"))
+        Q.Add(New Command(lg_Lock1, "LG Lock 1"))
+        Q.Add(New Command(lg_KeyEmu1, "LG Key Emu1"))
+        Q.Add(New Command(keyPress_END_DN, "KeyPress END_DN"))
+        Q.Add(New Command(keyPress_3, "KeyPress 3"))
+        Q.Add(New Command(keyPress_7, "KeyPress 7"))
+        Q.Add(New Command(keyPress_3, "KeyPress 3"))
+        Q.Add(New Command(keyPress_3, "KeyPress 3"))
+        Q.Add(New Command(keyPress_9, "KeyPress 9"))
+        Q.Add(New Command(keyPress_2, "KeyPress 2"))
+        Q.Add(New Command(keyPress_9, "KeyPress 9"))
+        Q.Add(New Command(keyPress_END_DN, "KeyPress END_DN"))
 
-        ''dispatchQ.addCommandToQ(New Command(nvmodeMEIDRead, "NV Mode MEID Read"))
-        ''dispatchQ.addCommandToQ(New Command(nvmodeMEIDRead, True, "ReadMeid_NV", "Any", "NV Mode MEID Read"))
-        dispatchQ.add(New Command(readSPC_LgMethod, "ReadSPC_LG", "ReadSPC_LG"))
-        dispatchQ.add(New Command(readSPC_LgMethod, "ReadSPC_LG", "ReadSPC_LG"))
-        dispatchQ.executeCommandQ()
+        ''Q.addCommandToQ(New Command(nvmodeMEIDRead, "NV Mode MEID Read"))
+        ''Q.addCommandToQ(New Command(nvmodeMEIDRead, True, "ReadMeid_NV", "Any", "NV Mode MEID Read"))
+        Q.Add(New Command(readSPC_LgMethod, "ReadSPC_LG", "ReadSPC_LG"))
+        Q.Add(New Command(readSPC_LgMethod, "ReadSPC_LG", "ReadSPC_LG"))
+        Q.Run()
 
 
     End Sub
 
     Public Shared Sub ReadMIN1()
 
-        dispatchQ.clearCommandQ()
-        dispatchQ.add(CommandFactory.GetCommand(NV_MIN1_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_MIN2_I))
-        dispatchQ.executeCommandQ()
+        Q.Clear()
+        Q.Add(CommandFactory.GetCommand(NV_MIN1_I))
+        Q.Add(CommandFactory.GetCommand(NV_MIN2_I))
+        Q.Run()
 
         cdmaTerm.thePhone.Min = DecodeMin()
         cdmaTerm.thePhoneRxd.Min = DecodeMin()
@@ -765,17 +768,17 @@ Public Class cdmaTerm
         sendATCommand("AT$LGDMGO")
     End Sub
 
-    Public Shared Sub modeSwitch(ByVal mode As Qcdm.Mode)
+    Public Shared Sub ModeSwitch(ByVal mode As Qcdm.Mode)
 
         ''first check which read type then go
         If mode = Qcdm.Mode.MODE_RADIO_OFFLINE Then
-            dispatchQ.add(New Command(modeOfflineD, "mode offline")) ''TODO: refactor to actually pass qc enum
+            Q.Add(New Command(modeOfflineD, "mode offline")) ''TODO: refactor to actually pass qc enum
         ElseIf mode = Qcdm.Mode.MODE_RADIO_ONLINE Then
-            dispatchQ.add(New Command(modeReset, "no mode online(reset sent)"))
+            Q.Add(New Command(modeReset, "no mode online(reset sent)"))
         ElseIf mode = Qcdm.Mode.MODE_RADIO_LOWPOWER Then
-            dispatchQ.add(New Command(modeOfflineD, "no mode low(offd sent)"))
+            Q.Add(New Command(modeOfflineD, "no mode low(offd sent)"))
         ElseIf mode = Qcdm.Mode.MODE_RADIO_RESET Then
-            dispatchQ.add(New Command(modeReset, "mode reset"))
+            Q.Add(New Command(modeReset, "mode reset"))
         ElseIf mode = "P2K" Then
             switchToP2K()
         End If
@@ -783,12 +786,12 @@ Public Class cdmaTerm
 
     End Sub
 
-    Private Sub readNV(rangeStart As String, rangeEnd As String, saveFilePath As String)
-        nvReadQ.clearCommandQ()
+    Private Sub ReadNv(rangeStart As String, rangeEnd As String, saveFilePath As String)
+        nvReadQ.Clear()
         logger.add("Reading NV - This may take a while, do not unplug.")
         Dim nv As New NvItems
         nv.readNVItemRange(rangeStart, rangeEnd)
-        dispatchQ.executeCommandQ()
+        Q.Run()
         logger.add("Reading NV - This may take a while, do not unplug..")
         nvReadQ.checkNvQForBadItems()
         logger.add("Reading NV - This may take a while, do not unplug...")
@@ -812,22 +815,22 @@ Public Class cdmaTerm
 
 
     Public Shared Sub ReadAllEvdo()
-        dispatchQ.clearCommandQ()
+        Q.Clear()
         AddAllEvdo()
-        dispatchQ.executeCommandQ()
+        Q.Run()
     End Sub
     Public Shared Sub AddAllEvdo()
 
-        dispatchQ.add(CommandFactory.GetCommand(NV_PPP_USER_ID_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_PPP_PASSWORD_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_PAP_USER_ID_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_PAP_PASSWORD_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_USER_ID_LONG_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_LONG_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_NAI_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_DS_MIP_NUM_PROF_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_DS_MIP_ENABLE_PROF_I))
+        Q.Add(CommandFactory.GetCommand(NV_PPP_USER_ID_I))
+        Q.Add(CommandFactory.GetCommand(NV_PPP_PASSWORD_I))
+        Q.Add(CommandFactory.GetCommand(NV_PAP_USER_ID_I))
+        Q.Add(CommandFactory.GetCommand(NV_PAP_PASSWORD_I))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_USER_ID_LONG_I))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_LONG_I))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_NAI_I))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_I))
+        Q.Add(CommandFactory.GetCommand(NV_DS_MIP_NUM_PROF_I))
+        Q.Add(CommandFactory.GetCommand(NV_DS_MIP_ENABLE_PROF_I))
 
     End Sub
 
@@ -837,14 +840,14 @@ Public Class cdmaTerm
 
     Public Shared Sub ReadEvdoMode()
 
-        dispatchQ.add(New Command(DIAG_NV_READ_F, NV_DS_QCMIP_I, New Byte() {}, "NV_DS_QCMIP_I Read EVDO mode"))
+        Q.Add(New Command(DIAG_NV_READ_F, NV_DS_QCMIP_I, New Byte() {}, "NV_DS_QCMIP_I Read EVDO mode"))
 
     End Sub
 
     Public Shared Sub WriteEvdoMode(evdoMode As Integer)
 
         Dim type As Byte() = {evdoMode}
-        dispatchQ.add(CommandFactory.GetCommand(NV_DS_QCMIP_I, True, type))
+        Q.Add(CommandFactory.GetCommand(NV_DS_QCMIP_I, True, type))
 
     End Sub
 
@@ -887,8 +890,8 @@ Public Class cdmaTerm
         ''Totally untested probably dangerous
 
 
-        dispatchQ.add(New Command(DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray, "DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray"))
-        dispatchQ.add(New Command(DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray, "DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray"))
+        Q.Add(New Command(DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray, "DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray"))
+        Q.Add(New Command(DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray, "DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray"))
 
         logger.add("min write attempted... unstable feature: warning")
 
@@ -916,32 +919,32 @@ Public Class cdmaTerm
     ''requestnvitemidwrite 11089 0x01 0xD4 0x07
     ''http://www.mobile-files.com/forum/archive/index.php/t-584.html
     Public Shared Sub ReadBBRegId()
-        dispatchQ.add(New Command(DIAG_NV_READ_F, 11055, New Byte() {}, "Read Bb reg id")) ''todo command factory and decoders?
-        dispatchQ.add(New Command(DIAG_NV_READ_F, 11089, New Byte() {}, "Read Bb reg id 2"))
+        Q.Add(New Command(DIAG_NV_READ_F, 11055, New Byte() {}, "Read Bb reg id")) ''todo command factory and decoders?
+        Q.Add(New Command(DIAG_NV_READ_F, 11089, New Byte() {}, "Read Bb reg id 2"))
 
     End Sub
 
     Public Shared Sub WriteBBRegId(ByVal bbRegId As Byte())
-        dispatchQ.add(New Command(DIAG_NV_WRITE_F, 11055, New Byte() {bbRegId(1), bbRegId(0)}, "Read Bb reg id"))
+        Q.Add(New Command(DIAG_NV_WRITE_F, 11055, New Byte() {bbRegId(1), bbRegId(0)}, "Read Bb reg id"))
         '' 26 51 2B 01 D4 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF
         Dim regId2 As Byte() = {&H1, bbRegId(1), bbRegId(0), &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &HFF}
-        dispatchQ.add(New Command(DIAG_NV_WRITE_F, 11089, regId2, "Read Bb reg id 2"))
+        Q.Add(New Command(DIAG_NV_WRITE_F, 11089, regId2, "Read Bb reg id 2"))
     End Sub
 
     Public Shared Sub WriteBbRegId(regId As String)
         Try
-            dispatchQ.clearCommandQ()
+            Q.Clear()
             WriteBBRegId(String_To_Bytes(Integer.Parse(regId).ToString("x4")))
-            dispatchQ.executeCommandQ()
+            Q.Run()
         Catch ex As Exception
             logger.add("Write Bb reg err: " + ex.ToString)
         End Try
     End Sub
 
     Private Shared Sub WriteSidAndNid(sid As String, nid As String)
-        dispatchQ.clearCommandQ()
+        Q.Clear()
         WriteSidAndNid(String_To_Bytes(Integer.Parse(sid).ToString("x4")), String_To_Bytes(Integer.Parse(nid).ToString("x4")))
-        dispatchQ.executeCommandQ()
+        Q.Run()
     End Sub
 
     Private Shared Sub WriteSidAndNid(ByVal sid As Byte(), ByVal nid As Byte())
@@ -952,7 +955,7 @@ Public Class cdmaTerm
         SidNid.Add(nid(1))
         SidNid.Add(nid(0))
 
-        dispatchQ.add(New Command(DIAG_NV_WRITE_F, NV_HOME_SID_NID_I, SidNid.ToArray, "Write SID/NID"))
+        Q.Add(New Command(DIAG_NV_WRITE_F, NV_HOME_SID_NID_I, SidNid.ToArray, "Write SID/NID"))
     End Sub
 
     Public Shared ReadingRamToFile = False
@@ -961,19 +964,19 @@ Public Class cdmaTerm
     Public Shared Sub ReadRam(RamStartAddress As String, RamStartOffset As String, RamEndAddress As String, RamEndOffset As String, outFileName As String, search As Boolean)
 
         ReadingRamToFile = True
-        RamReadQ.clearCommandQ()
-        dispatchQ.clearCommandQ()
+        RamReadQ.Clear()
+        Q.Clear()
         ''myD.ReadRam(Integer.Parse(ReadRamStartAddressTextbox.Text), Integer.Parse(ReadRamEndAddressTextbox.Text), False)
 
         myD.ReadRam2(RamStartAddress + RamStartOffset, RamEndAddress + RamEndOffset)
-        dispatchQ.executeCommandQ()
+        Q.Run()
 
         RamReadQ.generateRamReadReport(outFileName)
 
         If search Then
             SearchBin(outFileName)
         End If
-        logger.add("Ram Read Complete", logger.logType.infoAndMsg)
+        logger.add("Ram Read Complete", logger.LogType.infoAndMsg)
     End Sub
 
     Private Shared Function SearchBin(ByVal fileName As String) As List(Of String)
@@ -1006,49 +1009,49 @@ Public Class cdmaTerm
                     ''ResultsListBox1.Items.Add(d1.ToString() + d2.ToString() + d3.ToString() + d4.ToString() + d5.ToString() + d6.ToString())
                 End If
             Loop
-            logger.add("Search Bin For SPC Done", logger.logType.infoAndMsg)
+            logger.add("Search Bin For SPC Done", logger.LogType.infoAndMsg)
         Else
-            logger.add("File Does Not Exist", logger.logType.infoAndMsg)
+            logger.add("File Does Not Exist", logger.LogType.infoAndMsg)
         End If
 
         Return ResultsList
     End Function
 
     Public Shared Sub ReadAllNam()
-        dispatchQ.clearCommandQ()
-        dispatchQ.add(CommandFactory.GetCommand(NV_NAM_LOCK_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_DIR_NUMBER_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_MIN1_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_MIN2_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HOME_SID_NID_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_MEID_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_LOCK_CODE_I))
-        dispatchQ.add(CommandFactory.GetCommand(DIAG_VERNO_F))
+        Q.Clear()
+        Q.Add(CommandFactory.GetCommand(NV_NAM_LOCK_I))
+        Q.Add(CommandFactory.GetCommand(NV_DIR_NUMBER_I))
+        Q.Add(CommandFactory.GetCommand(NV_MIN1_I))
+        Q.Add(CommandFactory.GetCommand(NV_MIN2_I))
+        Q.Add(CommandFactory.GetCommand(NV_HOME_SID_NID_I))
+        Q.Add(CommandFactory.GetCommand(NV_MEID_I))
+        Q.Add(CommandFactory.GetCommand(NV_LOCK_CODE_I))
+        Q.Add(CommandFactory.GetCommand(DIAG_VERNO_F))
 
-        dispatchQ.executeCommandQ()
+        Q.Run()
 
         DecodeMin()
     End Sub
 
     Public Shared Sub ReadNv(ByVal nv As NvItems.NVItems)
-        dispatchQ.clearCommandQ()
+        Q.Clear()
         AddNv(nv)
-        dispatchQ.executeCommandQ()
+        Q.Run()
     End Sub
     Public Shared Sub AddNv(ByVal nv As NvItems.NVItems)
-        dispatchQ.add(CommandFactory.GetCommand(nv))
+        Q.Add(CommandFactory.GetCommand(nv))
     End Sub
 
     Public Shared Sub WriteNv(ByVal nv As NvItems.NVItems, writeData As String)
-        dispatchQ.clearCommandQ()
+        Q.Clear()
         AddWriteNv(nv, writeData)
-        dispatchQ.executeCommandQ()
+        Q.Run()
     End Sub
 
     Public Shared Sub WriteNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
-        dispatchQ.clearCommandQ()
+        Q.Clear()
         AddWriteNv(nv, writeData)
-        dispatchQ.executeCommandQ()
+        Q.Run()
     End Sub
 
     Public Shared Sub AddWriteNv(ByVal nv As NvItems.NVItems, writeData As String)
@@ -1065,15 +1068,15 @@ Public Class cdmaTerm
         AddWriteNv(nv, writeDataList.ToArray)
     End Sub
     Public Shared Sub AddWriteNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
-        dispatchQ.add(CommandFactory.GetCommand(nv, True, writeData))
+        Q.Add(CommandFactory.GetCommand(nv, True, writeData))
     End Sub
     Public Shared Sub ReadQc(ByVal qc As Qcdm.Cmd)
-        dispatchQ.clearCommandQ()
+        Q.Clear()
         AddQc(qc)
-        dispatchQ.executeCommandQ()
+        Q.Run()
     End Sub
     Public Shared Sub AddQc(ByVal qc As Qcdm.Cmd)
-        dispatchQ.add(CommandFactory.GetCommand(qc))
+        Q.Add(CommandFactory.GetCommand(qc))
     End Sub
 
     Public Enum phoneKeys
@@ -1095,9 +1098,9 @@ Public Class cdmaTerm
 
 
     Public Shared Sub KeyPress(k As phoneKeys)
-        cdmaTerm.dispatchQ.clearCommandQ()
-        cdmaTerm.dispatchQ.add(CommandFactory.GetCommand(DIAG_HS_KEY_F, New Byte() {0, k}))
-        cdmaTerm.dispatchQ.executeCommandQ()
+        cdmaTerm.Q.Clear()
+        cdmaTerm.Q.Add(CommandFactory.GetCommand(DIAG_HS_KEY_F, New Byte() {0, k}))
+        cdmaTerm.Q.Run()
     End Sub
 
     Public Shared Sub WriteNamLock(lockNam As Boolean)
@@ -1106,12 +1109,12 @@ Public Class cdmaTerm
             namLock(1) = 1
         End If
 
-        dispatchQ.clearCommandQ()
-        dispatchQ.add(CommandFactory.GetCommand(NV_NAM_LOCK_I, True, namLock))
-        dispatchQ.executeCommandQ()
+        Q.Clear()
+        Q.Add(CommandFactory.GetCommand(NV_NAM_LOCK_I, True, namLock))
+        Q.Run()
     End Sub
 
-    Public Shared Sub readNVList(ReadNvList As String, fileName As String)
+    Public Shared Sub ReadNvList(ReadNvList As String, fileName As String)
         Try
             Dim nvItemList As String() = ReadNvList.Replace(",", "").Split(" ")
             ReadNvItemList(nvItemList)
@@ -1128,7 +1131,7 @@ Public Class cdmaTerm
     Public Shared Sub ReadNvItemList(ByVal nvItemList As String())
         Try
             logger.add("Reading NV List - This may take a while, do not unplug.")
-            nvReadQ.clearCommandQ()
+            nvReadQ.Clear()
             For i = 0 To nvItemList.Count - 1
                 If nvItemList(i).Contains("-") Then
                     Dim nv As New NvItems
@@ -1137,11 +1140,11 @@ Public Class cdmaTerm
                 ElseIf True Then
                     Dim debugString As String = "readNVItemList DIAG_NV_READ_F " + nvItemList(i)
                     Dim cmd = New Command(Qcdm.Cmd.DIAG_NV_READ_F, Integer.Parse(nvItemList(i)), New Byte() {}, debugString)
-                    dispatchQ.add(cmd)
-                    nvReadQ.add(cmd)
+                    Q.Add(cmd)
+                    nvReadQ.Add(cmd)
                 End If
             Next
-            dispatchQ.executeCommandQ()
+            Q.Run()
             logger.add("Reading NV List - This may take a while, do not unplug..")
             nvReadQ.checkNvQForBadItems()
         Catch ex As Exception
@@ -1152,10 +1155,10 @@ Public Class cdmaTerm
     Function ScanForReadableRam(ScanRamStart As String, ScanRamEnd As String) As List(Of String)
         Dim RamScanResultList As New List(Of String)
         ReadingRamToFile = True
-        RamReadQ.clearCommandQ()
-        dispatchQ.clearCommandQ()
+        RamReadQ.Clear()
+        Q.Clear()
         myD.ScanRam2(ScanRamStart + "0000", ScanRamEnd + "0000")
-        dispatchQ.executeCommandQ()
+        Q.Run()
         Dim R As List(Of String) = RamReadQ.generateRamScanReport()
 
         For Each s As String In R
@@ -1176,31 +1179,31 @@ Public Class cdmaTerm
     End Sub
 
     Public Shared Sub ReadAllPhone()
-        dispatchQ.clearCommandQ()
+        Q.Clear()
         ''evdo
-        dispatchQ.add(CommandFactory.GetCommand(NV_PPP_USER_ID_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_PPP_PASSWORD_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_PAP_USER_ID_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_PAP_PASSWORD_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_USER_ID_LONG_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_LONG_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_NAI_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_I))
+        Q.Add(CommandFactory.GetCommand(NV_PPP_USER_ID_I))
+        Q.Add(CommandFactory.GetCommand(NV_PPP_PASSWORD_I))
+        Q.Add(CommandFactory.GetCommand(NV_PAP_USER_ID_I))
+        Q.Add(CommandFactory.GetCommand(NV_PAP_PASSWORD_I))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_USER_ID_LONG_I))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_LONG_I))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_NAI_I))
+        Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_I))
         ''evdo profiles/mode
-        dispatchQ.add(CommandFactory.GetCommand(NV_DS_QCMIP_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_DS_MIP_NUM_PROF_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_DS_MIP_ENABLE_PROF_I))
+        Q.Add(CommandFactory.GetCommand(NV_DS_QCMIP_I))
+        Q.Add(CommandFactory.GetCommand(NV_DS_MIP_NUM_PROF_I))
+        Q.Add(CommandFactory.GetCommand(NV_DS_MIP_ENABLE_PROF_I))
         ''nam1
-        dispatchQ.add(CommandFactory.GetCommand(NV_NAM_LOCK_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_DIR_NUMBER_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_MIN1_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_MIN2_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_HOME_SID_NID_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_MEID_I))
-        dispatchQ.add(CommandFactory.GetCommand(NV_LOCK_CODE_I))
-        dispatchQ.add(CommandFactory.GetCommand(DIAG_VERNO_F))
+        Q.Add(CommandFactory.GetCommand(NV_NAM_LOCK_I))
+        Q.Add(CommandFactory.GetCommand(NV_DIR_NUMBER_I))
+        Q.Add(CommandFactory.GetCommand(NV_MIN1_I))
+        Q.Add(CommandFactory.GetCommand(NV_MIN2_I))
+        Q.Add(CommandFactory.GetCommand(NV_HOME_SID_NID_I))
+        Q.Add(CommandFactory.GetCommand(NV_MEID_I))
+        Q.Add(CommandFactory.GetCommand(NV_LOCK_CODE_I))
+        Q.Add(CommandFactory.GetCommand(DIAG_VERNO_F))
 
-        dispatchQ.executeCommandQ()
+        Q.Run()
 
         DecodeMin()
     End Sub
@@ -1289,7 +1292,7 @@ Public Class cdmaTerm
             End If
             If (thePhone.Min <> thePhoneRxd.Min) Then
                 cdmaTerm.WriteMIN(thePhone.Min)
-                dispatchQ.executeCommandQ()
+                Q.Run()
             End If
             If (thePhone.UserLock <> thePhoneRxd.UserLock) Then
                 cdmaTerm.WriteNv(NV_LOCK_CODE_I, ASCIIEncoding.ASCII.GetBytes(thePhone.UserLock))
@@ -1309,13 +1312,13 @@ Public Class cdmaTerm
 
             updateNvItemsFromViewModel()
         Catch ex As Exception
-            logger.add("Update err: see log for more info", logger.logType.msg)
+            logger.add("Update err: see log for more info", logger.LogType.msg)
             logger.add("updatePhoneFromViewModel err: " + ex.ToString)
         End Try
     End Sub
 
     Public Shared Sub updateNvItemsFromViewModel()
-        dispatchQ.clearCommandQ()
+        Q.Clear()
         ''For i As Integer = 0 To cdmaTerm.thePhone.NvItems.Count
         '' If (kvp.Value.Data <> cdmaTerm.thePhoneRxd.NvItems.Item(kvp.Key).Data) Then
         ''cdmaTerm.WriteNv(cdmaTerm.thePhone.NvItems, kvp.Value.Data)
@@ -1328,7 +1331,7 @@ Public Class cdmaTerm
                 cdmaTerm.WriteNv(kvp.Key, kvp.Value.Data)
             End If
         Next
-        dispatchQ.executeCommandQ()
+        Q.Run()
     End Sub
 
     ''thanks to http://www.whiterabbit.org/android/

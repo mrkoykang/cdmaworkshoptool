@@ -63,14 +63,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevLib.dll" size="150528">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevLib.dll" size="151040">
       <assemblyIdentity name="cdmaDevLib" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>U145PZ6jgS0K/vYJgtsMHf6Z2jo=</dsig:DigestValue>
+        <dsig:DigestValue>2iKuFnP88WxBg8+ZKSOnKlHopzY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -82,7 +82,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Poy1NTcE1OqZlBrRONB77mlQLpg=</dsig:DigestValue>
+        <dsig:DigestValue>CtuOkjFDimueeVW6aD0/Y95ykRQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -214,17 +214,17 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>bOPTb+OoS1JjMKPjtayYC05AbnE=</dsig:DigestValue>
+        <dsig:DigestValue>UBr4Uffq/VLl0BAaP0Nr31D/CqA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="cdmaDevTerm.exe.config" size="1803">
+  <file name="cdmaDevTerm.exe.config" size="1804">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>otVMIseWW2tl/thBL7Swn7nwTLo=</dsig:DigestValue>
+      <dsig:DigestValue>2kSYblpxQRtxvLFUhNEkd1AS+jY=</dsig:DigestValue>
     </hash>
   </file>
   <file name="k-64x64.ico" size="5694">

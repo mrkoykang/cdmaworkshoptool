@@ -1,7 +1,7 @@
 ﻿Imports System.Text
 
 Public Class NvItems
-    Public Enum NVItems As Long
+    Public Enum NvItems As Long
         ''Random sht for make fix decoder? wat?
         NOT_AN_NV_ITEM = -1222
 

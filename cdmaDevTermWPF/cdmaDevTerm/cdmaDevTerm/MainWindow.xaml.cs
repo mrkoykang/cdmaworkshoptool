@@ -33,6 +33,12 @@ namespace cdmaDevTerm
         private ScriptEngine _engine;
         private ScriptScope _scope;
 
+        private string _scriptImports = @"#imports
+import clr
+from cdmaDevLib import *
+from System import Array,Byte,String
+";
+
         private string cdmaDevTermSampleScript = @"#
 #cdmaDevTerm sample ironPython script
 #copyright 2012 DG, chromableedstudios.com
@@ -41,10 +47,11 @@ namespace cdmaDevTerm
 # the cdmaDevLib api is in unstable development 
 # and names may change from time to time
 #
-from cdmaDevLib import *
+#cdmaTerm.Connect(""COM9"")
 cdmaTerm.Connect(phone.ComPortName)
 cdmaTerm.ReadAllNam()
-cdmaTerm.ReadNv(NvItems.NVItems.NV_DS_MIP_ACTIVE_PROF_I)
+cdmaTerm.ReadNv(NvItems.NvItems.NV_DS_MIP_ACTIVE_PROF_I)
+#cdmaTerm.WriteNv(NvItems.NvItems.NV_SEC_CODE_I, Array[Byte]((0x30, 0x30, 0x30, 0x30, 0x30, 0x30)))
 cdmaTerm.SendSpc(""000000"")
 cdmaTerm.ReadNvList(""900-915"",""nvOut.txt"")
 q.Run()";
@@ -59,9 +66,12 @@ q.Run()";
 
             var runtime = _engine.Runtime;
             runtime.LoadAssembly(typeof(String).Assembly);
-            runtime.LoadAssembly(typeof(Uri).Assembly);
+            runtime.LoadAssembly(typeof(Array).Assembly);
             runtime.LoadAssembly(typeof(cdmaDevLib.cdmaTerm).Assembly);
-            
+            _scope.SetVariable("phone", cdmaTerm.thePhone);
+            _scope.SetVariable("q", cdmaTerm.Q);
+
+            RunScript(_scriptImports);
             CodeTextEditor.SyntaxHighlighting =
             HighlightingLoader.Load(new XmlTextReader("ICSharpCode.PythonBinding.Resources.Python.xshd"),
             HighlightingManager.Instance);
@@ -134,6 +144,28 @@ q.Run()";
             Properties.Settings.Default.Save();
         }
 
+        private void runScript_Click(object sender, RoutedEventArgs e)
+        {
+            
+            var code = CodeTextEditor.Text;
+            RunScript(code);
+        }
+        private void RunScript(string code)
+        {
+            try
+            {
+                var source = _engine.CreateScriptSourceFromString(code, SourceCodeKind.Statements);
+                source.Execute(_scope);
+
+            }
+            catch (Exception ex)
+            {
+                var eo = _engine.GetService<ExceptionOperations>();
+                var error = eo.FormatException(ex);
+
+                MessageBox.Show(error, "There was an Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private void Connect_Click(object sender, RoutedEventArgs e)
         {
@@ -149,13 +181,13 @@ q.Run()";
             if (result)
             {
                 cdmaTerm.AddAllEvdo();
-                cdmaTerm.AddNv(NvItems.NVItems.NV_MEID_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_MEID_I);
                 cdmaTerm.AddQc(Qcdm.Cmd.DIAG_ESN_F);
-                cdmaTerm.AddNv(NvItems.NVItems.NV_DIR_NUMBER_I);
-                cdmaTerm.AddNv(NvItems.NVItems.NV_SEC_CODE_I);
-                cdmaTerm.AddNv(NvItems.NVItems.NV_LOCK_CODE_I);
-                cdmaTerm.AddNv(NvItems.NVItems.NV_HOME_SID_NID_I);
-                cdmaTerm.AddNv(NvItems.NVItems.NV_NAM_LOCK_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_DIR_NUMBER_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_SEC_CODE_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_LOCK_CODE_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_HOME_SID_NID_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_NAM_LOCK_I);
                 result = result && cdmaTerm.Q.Run();
                 if(result)
                 cdmaTerm.ReadMIN1();
@@ -177,7 +209,7 @@ q.Run()";
 
         private void button1_Click_1(object sender, RoutedEventArgs e)
         {
-            cdmaTerm.disconnectPort();
+            cdmaTerm.Disconnect();
         }
 
         private void readSpc_Click(object sender, RoutedEventArgs e)
@@ -284,7 +316,7 @@ q.Run()";
             private void writeEvdo_Click(object sender, RoutedEventArgs e)
             {
                 cdmaTerm.Q.Clear();
-                cdmaTerm.sendAllEVDO(cdmaTerm.thePhone.Username, cdmaTerm.thePhone.Password);
+                cdmaTerm.WriteEvdo(cdmaTerm.thePhone.Username, cdmaTerm.thePhone.Password);
                 cdmaTerm.Q.Run();
             }
 
@@ -332,13 +364,13 @@ q.Run()";
             {
                 Boolean result = true;
                 cdmaTerm.AddAllEvdo();
-                cdmaTerm.AddNv(NvItems.NVItems.NV_MEID_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_MEID_I);
                 cdmaTerm.AddQc(Qcdm.Cmd.DIAG_ESN_F);
-                cdmaTerm.AddNv(NvItems.NVItems.NV_DIR_NUMBER_I);
-                cdmaTerm.AddNv(NvItems.NVItems.NV_SEC_CODE_I);
-                cdmaTerm.AddNv(NvItems.NVItems.NV_LOCK_CODE_I);
-                cdmaTerm.AddNv(NvItems.NVItems.NV_HOME_SID_NID_I);
-                cdmaTerm.AddNv(NvItems.NVItems.NV_NAM_LOCK_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_DIR_NUMBER_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_SEC_CODE_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_LOCK_CODE_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_HOME_SID_NID_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_NAM_LOCK_I);
                 result = result && cdmaTerm.Q.Run();
                 if (result)
                     cdmaTerm.ReadMIN1();
@@ -388,25 +420,7 @@ q.Run()";
                 cdmaTerm.RelockMotoEvdo();
             }
 
-            private void runScript_Click(object sender, RoutedEventArgs e)
-            {
-                _scope.SetVariable("phone", cdmaTerm.thePhone);
-                _scope.SetVariable("q", cdmaTerm.Q);
-                var code = CodeTextEditor.Text;
-                try
-                {
-                    var source = _engine.CreateScriptSourceFromString(code, SourceCodeKind.Statements);
-                    source.Execute(_scope);
-
-                }
-                catch (Exception ex)
-                {
-                    var eo = _engine.GetService<ExceptionOperations>();
-                    var error = eo.FormatException(ex);
-
-                    MessageBox.Show(error, "There was an Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
+           
 
           
 

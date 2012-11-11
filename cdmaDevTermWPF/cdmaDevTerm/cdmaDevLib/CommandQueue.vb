@@ -140,20 +140,15 @@ Public Class CommandQueue
 
                     Next
                 End If
-
-
                 'For lngLoop = 0 To intByte - 1
                 '    myFileStream.WriteByte(bteWrite(lngLoop))
                 'Next
             Next
 
-
             myFileStream.Close()
         Catch ex As Exception
             logger.add("Ram read err: " + ex.ToString)
         End Try
-
-
 
     End Sub
 
@@ -175,7 +170,6 @@ Public Class CommandQueue
                         inReadableRange = True
                     End If
 
-
                     '' For i As Integer = 7 To 22
 
                     ''     myFileStream.WriteByte(c.bytesRxd(i))
@@ -190,12 +184,10 @@ Public Class CommandQueue
 
                 End If
 
-
                 'For lngLoop = 0 To intByte - 1
                 '    myFileStream.WriteByte(bteWrite(lngLoop))
                 'Next
             Next
-
 
         Catch ex As Exception
             logger.add("Ram scan err: " + ex.ToString)
@@ -236,7 +228,7 @@ Public Class CommandQueue
         ''2.7
         '' SaveTextToFile("[NV Items]", fileName)
         ''3.5
-        SaveTextToFile("[NV items]", fileName)
+        SaveTextToFile("[NV items]", fileName, False)
 
         SaveTextToFile(vbCrLf, fileName)
 
@@ -245,11 +237,9 @@ Public Class CommandQueue
         ''3.5
         Dim completeItems As String = "[Complete items - " + (mySynqdQ.Count - badItemCount).ToString + ", Items size - 128]"
 
-
         SaveTextToFile(completeItems, fileName)
         SaveTextToFile(vbCrLf, fileName)
         SaveTextToFile(vbCrLf, fileName)
-
 
         For Each c As Command In mySynqdQ
 
@@ -257,8 +247,6 @@ Public Class CommandQueue
             Dim nvOutputArray As New List(Of String)
             ''20 38 25 bad response length 20 results in arg out of range
             ''
-
-
             ''use the sent data to grab the item #
             ''test to fix 7d 5e bug
             Dim nvItemNumberPart1 As String
@@ -271,10 +259,6 @@ Public Class CommandQueue
                 nvItemNumberPart1 = cdmaTerm.biznytesToStrizings(c.bytesRxd).Substring(4, 2)
                 nvItemNumberPart2 = cdmaTerm.biznytesToStrizings(c.bytesRxd).Substring(2, 2)
             End If
-
-
-
-
 
             Dim nvItemNumberS As String = nvItemNumberPart1 + nvItemNumberPart2
             ''0085 (0x0055)   -   OK
@@ -306,7 +290,6 @@ Public Class CommandQueue
 
                 Dim itemString As String = decL.ToString("d5") + " (0x" + hexString + ")   -   OK"
 
-
                 '' logger.addToLog("nvItemNumberS: " + nvItemNumberS + " itemString: " + itemString)
                 ''logger.addToLog("num " + nvItemNumberS + " rxd: " + nvData)
 
@@ -331,40 +314,27 @@ Public Class CommandQueue
                 SaveTextToFile(vbCrLf, fileName)
                 SaveTextToFile(vbCrLf, fileName)
 
-
             End If
-
 
         Next
 
-
-
-
-
     End Sub
 
-    ''  SaveTextToFile()
-
-    Public Function SaveTextToFile(ByVal strData As String, _
- ByVal FullPath As String, _
-   Optional ByVal ErrInfo As String = "") As Boolean
+    Public Function SaveTextToFile(ByVal strData As String, ByVal FullPath As String, Optional ByVal Append As Boolean = True) As Boolean
 
         Dim bAns As Boolean = False
         Dim objReader As StreamWriter
         Try
-
-
-            objReader = New StreamWriter(FullPath, True)
+            objReader = New StreamWriter(FullPath, Append)
             objReader.Write(strData)
             objReader.Close()
             bAns = True
         Catch Ex As Exception
-            ErrInfo = Ex.Message
-
+            Logger.Add("SaveTextToFile err: " + Ex.ToString)
         End Try
         Return bAns
-    End Function
 
+    End Function
 
     Private Function hexSpace(ByVal hexString As String) As String
         Dim sb As New System.Text.StringBuilder
@@ -380,10 +350,8 @@ Public Class CommandQueue
         Return sb.ToString
     End Function
 
-
     Public Function GetCount() As Integer
         Return mySynqdQ.Count
     End Function
-
 
 End Class

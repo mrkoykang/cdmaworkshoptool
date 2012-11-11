@@ -70,19 +70,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Z29TthJnMbBi5Tg6OMPrig5+Xtk=</dsig:DigestValue>
+        <dsig:DigestValue>U145PZ6jgS0K/vYJgtsMHf6Z2jo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="58880">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="59392">
       <assemblyIdentity name="cdmaDevTerm" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>jBjl7Aw5b+wUHo4OgG8+Qv7BQ3g=</dsig:DigestValue>
+        <dsig:DigestValue>Poy1NTcE1OqZlBrRONB77mlQLpg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

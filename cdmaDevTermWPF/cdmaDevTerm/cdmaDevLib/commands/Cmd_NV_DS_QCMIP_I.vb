@@ -1,7 +1,7 @@
 ﻿Public Class Cmd_NV_DS_QCMIP_I
     Inherits Command
 
-    Sub New(qc As Qcdm.Cmd, nv As NvItems.NVItems, data() As Byte, debugstr As String)
+    Sub New(qc As Qcdm.Cmd, nv As NvItems.NvItems, data() As Byte, debugstr As String)
         MyBase.New(qc, nv, data, debugstr)
     End Sub
 

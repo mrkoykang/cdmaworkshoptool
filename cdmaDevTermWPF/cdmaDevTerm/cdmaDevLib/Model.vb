@@ -75,7 +75,7 @@ Public Class Model
                 ''sloppy bs
             Catch ex As Exception
                 Try
-                    Dim NvItemCurrent = DirectCast([Enum].Parse(GetType(NvItems.NVItems), x.Element("number").Value, True), NvItems.NVItems)
+                    Dim NvItemCurrent = DirectCast([Enum].Parse(GetType(NvItems.NvItems), x.Element("number").Value, True), NvItems.NvItems)
 
                     cdmaTerm.Q.Add(New Command(Cmd.DIAG_NV_WRITE_F, NvItemCurrent, byteS.ToArray, currentData))
 

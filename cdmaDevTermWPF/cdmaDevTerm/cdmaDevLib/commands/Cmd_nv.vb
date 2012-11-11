@@ -1,6 +1,6 @@
 ﻿Public Class Cmd_nv
     Inherits Command
-    Sub New(qc As Qcdm.Cmd, nv As NvItems.NVItems, data() As Byte, debugstr As String)
+    Sub New(qc As Qcdm.Cmd, nv As NvItems.NvItems, data() As Byte, debugstr As String)
         MyBase.New(qc, nv, data, debugstr)
     End Sub
     Property ItemNumber As Long
@@ -72,7 +72,7 @@
     End Function
 
     Public Function getItemName() As String
-        Return [Enum].GetName(GetType(NvItems.NVItems), ItemNumber)
+        Return [Enum].GetName(GetType(NvItems.NvItems), ItemNumber)
     End Function
 
 

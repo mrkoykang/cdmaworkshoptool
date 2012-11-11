@@ -33,7 +33,7 @@ Imports winAPIcom
 Imports System.Management
 Imports Microsoft.Win32
 Imports System.Text.RegularExpressions
-Imports cdmaDevLib.NvItems.NVItems
+Imports cdmaDevLib.NvItems.NvItems
 Imports cdmaDevLib.Qcdm.Cmd
 Imports cdmaDevLib.Qcdm
 
@@ -319,14 +319,14 @@ Public Class cdmaTerm
         ''first check which read type then go
         If spcType = cdmaTerm.SpcReadType.DefaultNv Then
 
-            Q.Add(CommandFactory.GetCommand(NvItems.NVItems.NV_SEC_CODE_I))
+            Q.Add(CommandFactory.GetCommand(NvItems.NvItems.NV_SEC_CODE_I))
 
 
         ElseIf spcType = cdmaTerm.SpcReadType.HTC Then
 
             Q.Add(New Command(unlockHtcSuperSPC, "unlockHtcSuperSPC byte array method"))
             Q.Add(New Command(readSPC_HTCMethod, "readSPC_HTCMethod byte array method"))
-            Q.Add(CommandFactory.GetCommand(NvItems.NVItems.NV_SEC_CODE_I))
+            Q.Add(CommandFactory.GetCommand(NvItems.NvItems.NV_SEC_CODE_I))
 
         ElseIf spcType = cdmaTerm.SpcReadType.LG Then
 
@@ -637,7 +637,7 @@ Public Class cdmaTerm
 
 #Region "evdoTestCode"
 
-    Public Shared Sub sendAllEVDO(evdo_username As String, evdo_password As String)
+    Public Shared Sub WriteEvdo(evdo_username As String, evdo_password As String)
 
         ''untested evdo now, potential loss of function
 
@@ -666,7 +666,7 @@ Public Class cdmaTerm
         Q.Add(CommandFactory.GetCommand(NV_HDR_AN_AUTH_PASSWORD_I, True, evdoPass))
 
     End Sub
-
+    ''not being used? probably could be generic for any 'counted' nv item
     Function getEvdoUser(evdo_username As String) As Byte()
         Dim encoding As New System.Text.ASCIIEncoding()
 
@@ -713,7 +713,7 @@ Public Class cdmaTerm
         If (customSPC = Nothing) Then
             Return
         End If
-        Q.Add(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, NvItems.NVItems.NV_SEC_CODE_I, ASCIIEncoding.ASCII.GetBytes(customSPC), "write spc")) ''todo:untested now
+        Q.Add(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, NvItems.NvItems.NV_SEC_CODE_I, ASCIIEncoding.ASCII.GetBytes(customSPC), "write spc")) ''todo:untested now
 
     End Sub
 
@@ -851,6 +851,13 @@ Public Class cdmaTerm
 
     End Sub
 
+    Public Shared Sub WriteMdn(mdn As String)
+        Dim WriteData As New List(Of Byte)
+        WriteData.Add(&H0)
+        WriteData.AddRange(ASCIIEncoding.ASCII.GetBytes(mdn))
+        cdmaTerm.WriteNv(NvItems.NvItems.NV_DIR_NUMBER_I, WriteData.ToArray)
+    End Sub
+
     Private Shared Sub EncodeMIN(MIN1 As String)
 
         Dim minStrings() As String = SecretDecoderRing.encode_NV_MIN1(MIN1)
@@ -861,7 +868,7 @@ Public Class cdmaTerm
 
     Public Shared MIN1Raw As New String("")
     Public Shared MIN2Raw As New String("")
-    Private Shared Sub WriteMIN(MinNumber As String)
+    Public Shared Sub WriteMin(MinNumber As String)
         EncodeMIN(MinNumber)
 
         Dim MIN1 As New List(Of Byte)
@@ -901,7 +908,7 @@ Public Class cdmaTerm
         Return SecretDecoderRing.decode_NV_MIN1(MIN1Raw, MIN2Raw)
     End Function
 
-    Public Shared Sub disconnectPort()
+    Public Shared Sub Disconnect()
         Try
             cdmaTerm.thePhone.clearViewModel()
             cdmaTerm.thePhoneRxd.clearViewModel()
@@ -1033,28 +1040,28 @@ Public Class cdmaTerm
         DecodeMin()
     End Sub
 
-    Public Shared Sub ReadNv(ByVal nv As NvItems.NVItems)
+    Public Shared Sub ReadNv(ByVal nv As NvItems.NvItems)
         Q.Clear()
         AddNv(nv)
         Q.Run()
     End Sub
-    Public Shared Sub AddNv(ByVal nv As NvItems.NVItems)
+    Public Shared Sub AddNv(ByVal nv As NvItems.NvItems)
         Q.Add(CommandFactory.GetCommand(nv))
     End Sub
 
-    Public Shared Sub WriteNv(ByVal nv As NvItems.NVItems, writeData As String)
+    Public Shared Sub WriteNv(ByVal nv As NvItems.NvItems, writeData As String)
         Q.Clear()
         AddWriteNv(nv, writeData)
         Q.Run()
     End Sub
 
-    Public Shared Sub WriteNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
+    Public Shared Sub WriteNv(ByVal nv As NvItems.NvItems, writeData() As Byte)
         Q.Clear()
         AddWriteNv(nv, writeData)
         Q.Run()
     End Sub
 
-    Public Shared Sub AddWriteNv(ByVal nv As NvItems.NVItems, writeData As String)
+    Public Shared Sub AddWriteNv(ByVal nv As NvItems.NvItems, writeData As String)
         Dim encoding As New System.Text.ASCIIEncoding()
         Dim data() As Byte
         Dim writeDataList As New List(Of Byte)
@@ -1067,7 +1074,7 @@ Public Class cdmaTerm
         End If
         AddWriteNv(nv, writeDataList.ToArray)
     End Sub
-    Public Shared Sub AddWriteNv(ByVal nv As NvItems.NVItems, writeData() As Byte)
+    Public Shared Sub AddWriteNv(ByVal nv As NvItems.NvItems, writeData() As Byte)
         Q.Add(CommandFactory.GetCommand(nv, True, writeData))
     End Sub
     Public Shared Sub ReadQc(ByVal qc As Qcdm.Cmd)
@@ -1285,13 +1292,10 @@ Public Class cdmaTerm
     Public Shared Sub updatePhoneFromViewModel()
         Try
             If (thePhone.Mdn <> thePhoneRxd.Mdn) Then
-                Dim WriteData As New List(Of Byte)
-                WriteData.Add(&H0)
-                WriteData.AddRange(ASCIIEncoding.ASCII.GetBytes(thePhone.Mdn))
-                cdmaTerm.WriteNv(NvItems.NVItems.NV_DIR_NUMBER_I, WriteData.ToArray)
+                WriteMdn(thePhone.Mdn)
             End If
             If (thePhone.Min <> thePhoneRxd.Min) Then
-                cdmaTerm.WriteMIN(thePhone.Min)
+                cdmaTerm.WriteMin(thePhone.Min)
                 Q.Run()
             End If
             If (thePhone.UserLock <> thePhoneRxd.UserLock) Then
@@ -1324,9 +1328,9 @@ Public Class cdmaTerm
         ''cdmaTerm.WriteNv(cdmaTerm.thePhone.NvItems, kvp.Value.Data)
         ''End If
         ''Next
-        Dim listIterator As New Dictionary(Of NvItems.NVItems, Nv)(cdmaTerm.thePhone.NvItems)
+        Dim listIterator As New Dictionary(Of NvItems.NvItems, Nv)(cdmaTerm.thePhone.NvItems)
 
-        For Each kvp As KeyValuePair(Of NvItems.NVItems, Nv) In listIterator
+        For Each kvp As KeyValuePair(Of NvItems.NvItems, Nv) In listIterator
             If (kvp.Value.Data <> cdmaTerm.thePhoneRxd.NvItems.Item(kvp.Key).Data) Then
                 cdmaTerm.WriteNv(kvp.Key, kvp.Value.Data)
             End If

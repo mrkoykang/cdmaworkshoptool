@@ -28,7 +28,7 @@ Public Class Phone
     Private _AvailableComPorts As New List(Of COMPortInfo.COMPortInfo)
     Private _ComPortName As String
     Private _SixteenDigitSP As String
-    Private _NvItems As Dictionary(Of NvItems.NVItems, Nv)
+    Private _NvItems As Dictionary(Of NvItems.NvItems, Nv)
     Private _SpSixteenDigit As New Dictionary(Of String, String)
     Private _TermCommand As String
     Private _Username As String
@@ -53,7 +53,7 @@ Public Class Phone
         Me._OperationCount = 0
         Me.ComPortName = ""
         Me.SixteenDigitSP = ""
-        Me.NvItems = New Dictionary(Of NvItems.NVItems, Nv)
+        Me.NvItems = New Dictionary(Of NvItems.NvItems, Nv)
         Me.TermCommand = ""
         Me.Username = ""
         Me.Password = ""
@@ -75,7 +75,7 @@ Public Class Phone
         Me.NamLock = False
         Me._OperationCount = 0
         Me.SixteenDigitSP = ""
-        Me.NvItems = New Dictionary(Of NvItems.NVItems, Nv)
+        Me.NvItems = New Dictionary(Of NvItems.NvItems, Nv)
         Me.TermCommand = ""
         Me.Username = ""
         Me.Password = ""
@@ -92,11 +92,11 @@ Public Class Phone
         End Set
     End Property
 
-    Public Property NvItems() As Dictionary(Of NvItems.NVItems, Nv)
+    Public Property NvItems() As Dictionary(Of NvItems.NvItems, Nv)
         Get
             Return _NvItems
         End Get
-        Set(value As Dictionary(Of NvItems.NVItems, Nv))
+        Set(value As Dictionary(Of NvItems.NvItems, Nv))
             _NvItems = value
             RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("NvItems"))
         End Set

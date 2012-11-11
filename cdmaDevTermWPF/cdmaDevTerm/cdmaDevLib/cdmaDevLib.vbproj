@@ -88,7 +88,7 @@
     <Compile Include="commands\ICommand.vb" />
     <Compile Include="commands\QcCommand.vb" />
     <Compile Include="COMPortInfo.vb" />
-    <Compile Include="dispatchQmanager.vb" />
+    <Compile Include="CommandQueue.vb" />
     <Compile Include="DmPort.vb" />
     <Compile Include="esnConverter.vb" />
     <Compile Include="logger.vb" />

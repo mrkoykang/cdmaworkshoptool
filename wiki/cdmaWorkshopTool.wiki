@@ -12,9 +12,14 @@ Here you will find some wiki documentation about cdmaDevTerm and cwTool.
 
 http://www.chromableedstudios.com/techninjutsu/howtowritemdnminwithcdmadevterm
 
+*DEV FAQ*
+  * What is the current branch of development? cdmaDevTermWPF
+  
+  * How do I get started? Download tortoiseSvn: tortoisesvn.net/ visual studio 2012 express http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-for-windows-desktop then create a folder where you want to keep code, right click and say SVN Checkout using this address: http://cdmaworkshoptool.googlecode.com/svn/trunk/cdmaDevTermWPF
+
 *FAQ*
 
-  * Whats cdmaDevLib vs cdmaDevTerm? cdmaDevLib is a library which enables the functions in cdmaDevTerm
+  * What is cdmaDevLib vs cdmaDevTerm? cdmaDevLib is a library which enables the functions in cdmaDevTerm
 
   * Could I please have the source code to cdmaDevTerm? of course, it is GPL v3 software. Click the source tab, and checkout from svn(I use tortoiseSvn personally)
 

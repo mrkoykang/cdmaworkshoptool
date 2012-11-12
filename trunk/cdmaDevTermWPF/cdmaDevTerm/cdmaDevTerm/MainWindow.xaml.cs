@@ -21,6 +21,7 @@ using IronPython.Hosting;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using System.Xml;
+using System.ComponentModel;
 
 namespace cdmaDevTerm
 {
@@ -399,8 +400,32 @@ q.Run()";
                     Filter = "Text (.txt)|*.txt",
                 };
                 if ((bool)dlg.ShowDialog())
-                    cdmaTerm.ReadNvList(ReadNvItemTextbox.Text, dlg.FileName);
+                {
+                    DoNVRead(dlg.FileName, ReadNvItemTextbox.Text);
+                }
             }
+            
+            private void DoNVRead(string fileName,string nvList)
+            {
+                BackgroundWorker bw = new BackgroundWorker();
+
+                bw.DoWork += (sender, args) => {
+                    // do your lengthy stuff here -- this will happen in a separate thread
+                    cdmaTerm.ReadNvList(nvList, fileName);
+                };
+
+                bw.RunWorkerCompleted += (sender, args) => {
+                if (args.Error != null)  // if an exception occurred during DoWork,
+                    MessageBox.Show(args.Error.ToString());  // do your error handling here
+
+                // do any UI stuff after the long operation here
+                Logger.Add("NV Read - long operation done");
+                };
+
+                bw.RunWorkerAsync(); // start the background worker
+    
+            }
+
 
             private void copyEsnConverted_Click_1(object sender, RoutedEventArgs e)
             {

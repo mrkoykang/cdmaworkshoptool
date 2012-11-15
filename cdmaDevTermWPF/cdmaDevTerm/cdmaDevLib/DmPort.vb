@@ -71,7 +71,7 @@ Public Class DmPort
 
 
     Public Function GetBufferWithCRC(ByVal s As String) As Byte()
-        Return GetBufferWithCRC(cdmaTerm.String_To_Bytes(s), (s.Length / 2))
+        Return GetBufferWithCRC(s.ToHexBytes(), (s.Length / 2))
     End Function
     Public Function GetBufferWithCRC(ByVal bs As Byte()) As Byte()
         Return GetBufferWithCRC(bs, (bs.Length))
@@ -253,7 +253,7 @@ Public Class DmPort
             End If
             ''Test for REALLY late response
             If readCount = 0 Then
-                Throw New Exception("No Response.. tx:" + Environment.NewLine + cdmaTerm.biznytesToStrizings(data))
+                Throw New Exception("No Response.. tx:" + Environment.NewLine + data.ToHexString())
             Else
                 For i As Integer = 0 To readCount - 1
                     responseList.Add(buffer(i))
@@ -371,7 +371,8 @@ Public Class DmPort
         While current <= endAdr
 
             Dim request As New List(Of Byte)
-            Dim addressBs As Byte() = cdmaTerm.String_To_Bytes(current.ToString("x8"))
+            Dim addressBs As Byte() = current.ToString("x8").ToHexBytes()
+
             request.Add(addressBs(3))
             request.Add(addressBs(2))
             request.Add(addressBs(1))
@@ -407,7 +408,7 @@ Public Class DmPort
         While current <= endAdr
 
             Dim request As New List(Of Byte)
-            Dim addressBs As Byte() = cdmaTerm.String_To_Bytes(current.ToString("x8"))
+            Dim addressBs As Byte() = current.ToString("x8").ToHexBytes()
             request.Add(addressBs(3))
             request.Add(addressBs(2))
             request.Add(addressBs(1))

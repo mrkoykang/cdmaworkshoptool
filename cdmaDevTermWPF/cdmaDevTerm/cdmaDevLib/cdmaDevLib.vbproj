@@ -91,6 +91,7 @@
     <Compile Include="CommandQueue.vb" />
     <Compile Include="DmPort.vb" />
     <Compile Include="esnConverter.vb" />
+    <Compile Include="ExtensionMethods.vb" />
     <Compile Include="logger.vb" />
     <Compile Include="metroCalc.vb" />
     <Compile Include="Model.vb" />
@@ -117,7 +118,6 @@
     <Compile Include="p2k.vb" />
     <Compile Include="Prl.vb" />
     <Compile Include="qcdm\Qcdm.vb" />
-    <Compile Include="ScriptrunnerXML.vb" />
     <Compile Include="SecretDecoderRing.vb" />
     <Compile Include="SixteenDigitCodes.vb" />
   </ItemGroup>

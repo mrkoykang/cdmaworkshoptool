@@ -40,7 +40,7 @@ Public Class Model
             cdmaTerm.Q.Add(
                     New Command(
                         DIAG_PASSWORD_F,
-                        cdmaTerm.String_To_Bytes(sp16digit),
+                        sp16digit.ToHexBytes(),
                         "Send custom 16 digit DIAG_PASSWORD_F"
                         )
                     )

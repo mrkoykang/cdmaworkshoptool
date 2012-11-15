@@ -1536,7 +1536,7 @@ Public Class NvItems
                 nItemData = nItemData.Replace(" ", "")
                 ''logger.addToLog("NV Item: " + nItemNumber + " data: " + nItemData)
 
-                WriteNVItem(nItemNumber, cdmaTerm.String_To_Bytes(nItemData))
+                WriteNVItem(nItemNumber, nItemData.ToHexBytes())
 
                 i = i + 13
             Next

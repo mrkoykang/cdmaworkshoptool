@@ -6,7 +6,7 @@
 
     Overrides Sub decode()
         Try
-            Dim stringFromPacket As String = cdmaTerm.biznytesToStrizings(Me.bytesRxd)
+            Dim stringFromPacket As String = Me.bytesRxd.ToHexString()
 
             Dim DecodedString As String = ""
 

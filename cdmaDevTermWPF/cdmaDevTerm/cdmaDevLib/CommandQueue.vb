@@ -65,7 +65,7 @@ Public Class CommandQueue
                     Return False
                 End If
                 thisC.decode()
-                logger.add("q count: " + mySynqdQ.Count.ToString + Environment.NewLine + thisC.debuggingText & Environment.NewLine)
+                Logger.Add("q count: " + mySynqdQ.Count.ToString + Environment.NewLine + thisC.debuggingText & Environment.NewLine)
 
             End While
 
@@ -253,11 +253,11 @@ Public Class CommandQueue
             Dim nvItemNumberPart2 As String
 
             If c.bytesRxd(0) = &H14 Then
-                nvItemNumberPart1 = cdmaTerm.biznytesToStrizings(c.bytesToTx).Substring(4, 2)
-                nvItemNumberPart2 = cdmaTerm.biznytesToStrizings(c.bytesToTx).Substring(2, 2)
+                nvItemNumberPart1 = c.bytesToTx.ToHexString().Substring(4, 2)
+                nvItemNumberPart2 = c.bytesToTx.ToHexString().Substring(2, 2)
             Else
-                nvItemNumberPart1 = cdmaTerm.biznytesToStrizings(c.bytesRxd).Substring(4, 2)
-                nvItemNumberPart2 = cdmaTerm.biznytesToStrizings(c.bytesRxd).Substring(2, 2)
+                nvItemNumberPart1 = c.bytesRxd.ToHexString().Substring(4, 2)
+                nvItemNumberPart2 = c.bytesRxd.ToHexString().Substring(2, 2)
             End If
 
             Dim nvItemNumberS As String = nvItemNumberPart1 + nvItemNumberPart2
@@ -285,7 +285,7 @@ Public Class CommandQueue
                 SaveTextToFile(vbCrLf, fileName)
             Else
 
-                Dim nvData As String = cdmaTerm.biznytesToStrizings(c.bytesRxd).Substring(6, 256)
+                Dim nvData As String = c.bytesRxd.ToHexString().Substring(6, 256)
                 ''3.5 dec length 5 hex length 
 
                 Dim itemString As String = decL.ToString("d5") + " (0x" + hexString + ")   -   OK"

@@ -216,7 +216,7 @@ Public Class SecretDecoderRing
 
             ''Dim spcFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
 
-            Dim spcFromPacket As String = cdmaTerm.biznytesToStrizings(cmd.bytesRxd)
+            Dim spcFromPacket As String = cmd.bytesRxd.ToHexString()
 
             Dim thisIsTheSPC As String = ""
 
@@ -246,7 +246,7 @@ Public Class SecretDecoderRing
         Try
 
             ''Dim stringFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
-            Dim stringFromPacket As String = cdmaTerm.biznytesToStrizings(cmd.bytesRxd)
+            Dim stringFromPacket As String = cmd.bytesRxd.ToHexString()
 
             Dim DecodedString As String = ""
 
@@ -275,7 +275,7 @@ Public Class SecretDecoderRing
         '' Try
 
         ''Dim stringFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
-        Dim stringFromPacket As String = cdmaTerm.biznytesToStrizings(cmd.bytesRxd)
+        Dim stringFromPacket As String = cmd.bytesRxd.ToHexString()
 
         Dim DecodedString As String = ""
 
@@ -422,7 +422,7 @@ Public Class SecretDecoderRing
     End Function
 
     Public Shared Function getAsciiStrings(ByVal bytes As Byte()) As String
-        Dim bString = cdmaTerm.biznytesToStrizings(bytes)
+        Dim bString = bytes.ToHexString()
         Try
             Dim HexValue As String = ""
             For i = 0 To bString.Length - 1
@@ -462,7 +462,7 @@ Public Class SecretDecoderRing
         'logger.addToLog("rxd: " + getAsciiStrings(cmd.bytesRxd))
         'cdmaTerm.MIN1Raw = cdmaTerm.biznytesToStrizings(New Byte() {cmd.bytesRxd(7), cmd.bytesRxd(6), cmd.bytesRxd(5), cmd.bytesRxd(4)})
         'test to fix lg
-        cdmaTerm.MIN1Raw = cdmaTerm.biznytesToStrizings(New Byte() {cmd.bytesRxd(11), cmd.bytesRxd(10), cmd.bytesRxd(9), cmd.bytesRxd(8)})
+        cdmaTerm.MIN1Raw = (New Byte() {cmd.bytesRxd(11), cmd.bytesRxd(10), cmd.bytesRxd(9), cmd.bytesRxd(8)}).ToHexString()
         Dim min1 As New Integer
         min1 = &HF9D260
         Dim min2 As New Integer

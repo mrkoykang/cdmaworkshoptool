@@ -14,7 +14,7 @@
 
 
                 '' Dim spcFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
-                Dim spcFromPacket As String = cdmaTerm.biznytesToStrizings(Me.bytesRxd)
+                Dim spcFromPacket As String = Me.bytesRxd.ToHexString()
 
 
 

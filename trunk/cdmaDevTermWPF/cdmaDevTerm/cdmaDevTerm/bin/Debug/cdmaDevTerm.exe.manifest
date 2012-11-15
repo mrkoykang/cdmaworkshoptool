@@ -63,26 +63,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevLib.dll" size="151040">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevLib.dll" size="149504">
       <assemblyIdentity name="cdmaDevLib" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>2iKuFnP88WxBg8+ZKSOnKlHopzY=</dsig:DigestValue>
+        <dsig:DigestValue>uLSuU7vgETZuS9wSvxkPwgod/oo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="59392">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="60416">
       <assemblyIdentity name="cdmaDevTerm" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>CtuOkjFDimueeVW6aD0/Y95ykRQ=</dsig:DigestValue>
+        <dsig:DigestValue>mxpSomo/Q3/kh3OAoDVBRIyWsOk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -214,7 +214,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>UBr4Uffq/VLl0BAaP0Nr31D/CqA=</dsig:DigestValue>
+        <dsig:DigestValue>bOPTb+OoS1JjMKPjtayYC05AbnE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

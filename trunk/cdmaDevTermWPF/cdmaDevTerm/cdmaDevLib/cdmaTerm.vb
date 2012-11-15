@@ -36,6 +36,7 @@ Imports System.Text.RegularExpressions
 Imports cdmaDevLib.NvItems.NvItems
 Imports cdmaDevLib.Qcdm.Cmd
 Imports cdmaDevLib.Qcdm
+Imports System.Runtime.CompilerServices
 
 
 Public Class cdmaTerm
@@ -127,7 +128,7 @@ Public Class cdmaTerm
             ' SHOW WHAT WE JUST CONVERTED
             ''LOGGER.ADDTOLOG(STRVALUE)
         Catch EX As Exception
-            logger.add("HexToAsciiStr error:" + EX.ToString)
+            Logger.Add("HexToAsciiStr error:" + EX.ToString)
             '' Q.INTERRUPTCOMMANDQ()''todo:should this end it? probably not
         End Try
 
@@ -227,50 +228,8 @@ Public Class cdmaTerm
 
 #Region "conversionRoutines"
 
-    '' YAY!!! the internetz comes thru again
-    '' http://programmerramblings.blogspot.com/2008/03/convert-hex-string-to-byte-array-and.html
-    '' takes in the hex string and spits out the byte array
-    Public Shared Function String_To_Bytes(ByVal strInput As String) As Byte()
-        Try
-            ' i variable used to hold position in string
-            Dim i As Integer = 0
-            ' x variable used to hold byte array element position
-            Dim x As Integer = 0
-            ' allocate byte array based on half of string length
-            Dim bytes As Byte() = New Byte((strInput.Length) / 2 - 1) {}
-            ' loop through the string - 2 bytes at a time converting
-            '  it to decimal equivalent and store in byte array
-            While strInput.Length > i + 1
-                ''TODO TEST i nt32 vs int 64
-                Dim lngDecimal As Long = Convert.ToInt64(strInput.Substring(i, 2), 16)
-                bytes(x) = Convert.ToByte(lngDecimal)
-                i = i + 2
-                x += 1
-            End While
-            ' return the finished byte array of decimal values
-            Return bytes
-        Catch ex As Exception
-            logger.add("HexString to Byte() Conversion Error: Try Removing Spaces: " + ex.ToString)
-
-            Return Diag01
-        End Try
-    End Function
-    Shared Function biznytesToStrizings(ByVal byteInput() As Byte) As String
-        Dim ascStr As String = ""
-        Dim returnStr As String = ""
-        Try
-
-            For Each b As Byte In byteInput
-                ascStr += Chr(b)        'Ascii String
-                returnStr += Hex(b).PadLeft(2, "0")     'Hex String (Modified Padding, to intake compulsory 2 chars, mainly in case of 0)
-            Next
-
-        Catch ex As Exception
-            logger.add("biz err: " + ex.ToString)
-        End Try
-        ''returns "" if try catch fails
-        Return (returnStr)
-    End Function
+  
+   
 
 
 
@@ -301,13 +260,13 @@ Public Class cdmaTerm
             Q.Add(
                 New Command(
                     DIAG_PASSWORD_F,
-                    String_To_Bytes(Send16DigitSP),
+                    Send16DigitSP.ToHexBytes(),
                     "Send custom 16 digit DIAG_PASSWORD_F"
                     )
                 )
             Q.Run()
         Else
-            logger.add("16 digit SP is not 16 digits", logger.LogType.msg)
+            Logger.Add("16 digit SP is not 16 digits", Logger.LogType.Msg)
         End If
 
 
@@ -373,7 +332,7 @@ Public Class cdmaTerm
                 ''get esn from gui
                 thePhone.Spc = ajhBlackMagic.MetroSPCcalc(thePhone.Esn) ''todo: what to do with result in this design?
             Catch ex As Exception
-                logger.add("metro spc error: " + ex.ToString)
+                Logger.Add("metro spc error: " + ex.ToString)
             End Try
 
         End If
@@ -389,7 +348,6 @@ Public Class cdmaTerm
         Q.Add(CommandFactory.GetCommand(terminalCommand))
         Q.Run()
     End Sub
-
 
 
     'Private Sub ScanButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ScanButton.Click
@@ -448,11 +406,11 @@ Public Class cdmaTerm
             atCmd.Add(&HD)
             atCmd.Add(&HA)
 
-            logger.add(biznytesToStrizings(myDm.WriteRead(atCmd.ToArray)), logger.LogType.infoAndMsg)
+            Logger.Add(myDm.WriteRead(atCmd.ToArray).ToHexString(), Logger.LogType.InfoAndMsg)
 
         Catch
 
-            logger.add("Cant Open AT Port", logger.LogType.infoAndMsg)
+            Logger.Add("Cant Open AT Port", Logger.LogType.InfoAndMsg)
         End Try
 
 
@@ -700,7 +658,7 @@ Public Class cdmaTerm
     Public Shared Sub SendSpc(ByVal customSPC As String)
         ''dg qc send spc
         If (customSPC = Nothing) Then
-            logger.add("Spc null, not sent")
+            Logger.Add("Spc null, not sent")
 
             Return
 
@@ -788,15 +746,15 @@ Public Class cdmaTerm
 
     Private Sub ReadNv(rangeStart As String, rangeEnd As String, saveFilePath As String)
         nvReadQ.Clear()
-        logger.add("Reading NV - This may take a while, do not unplug.")
+        Logger.Add("Reading NV - This may take a while, do not unplug.")
         Dim nv As New NvItems
         nv.readNVItemRange(rangeStart, rangeEnd)
         Q.Run()
-        logger.add("Reading NV - This may take a while, do not unplug..")
+        Logger.Add("Reading NV - This may take a while, do not unplug..")
         nvReadQ.checkNvQForBadItems()
-        logger.add("Reading NV - This may take a while, do not unplug...")
+        Logger.Add("Reading NV - This may take a while, do not unplug...")
         nvReadQ.generateNvReadReport(saveFilePath)
-        logger.add("NV Read Complete")
+        Logger.Add("NV Read Complete")
     End Sub
 
 
@@ -807,7 +765,7 @@ Public Class cdmaTerm
             Dim myPlus As New Prl
             myPlus.UploadPrl(PrlFilePath)
         Catch ex As Exception
-            logger.add("Prl send err: " + ex.ToString)
+            Logger.Add("Prl send err: " + ex.ToString)
         End Try
     End Sub
 
@@ -874,26 +832,26 @@ Public Class cdmaTerm
         Dim MIN1 As New List(Of Byte)
         ''Random Mystery Zeros...
         MIN1.Add(&H0)
-        For i As Integer = String_To_Bytes(MIN1Raw).Length - 1 To 0 Step -1
-            MIN1.Add(String_To_Bytes(MIN1Raw)(i))
+        For i As Integer = MIN1Raw.ToHexBytes().Length - 1 To 0 Step -1
+            MIN1.Add(MIN1Raw.ToHexBytes()(i))
         Next
-        For i As Integer = String_To_Bytes(MIN1Raw).Length - 1 To 0 Step -1
-            MIN1.Add(String_To_Bytes(MIN1Raw)(i))
+        For i As Integer = MIN1Raw.ToHexBytes().Length - 1 To 0 Step -1
+            MIN1.Add(MIN1Raw.ToHexBytes()(i))
         Next
         Dim MIN2 As New List(Of Byte)
         ''Random Mystery Zeros...
         MIN2.Add(&H0)
-        For i As Integer = String_To_Bytes(MIN2Raw).Length - 1 To 0 Step -1
-            MIN2.Add(String_To_Bytes(MIN2Raw)(i))
+        For i As Integer = MIN2Raw.ToHexBytes().Length - 1 To 0 Step -1
+            MIN2.Add(MIN2Raw.ToHexBytes()(i))
         Next
-        For i As Integer = String_To_Bytes(MIN2Raw).Length - 1 To 0 Step -1
-            MIN2.Add(String_To_Bytes(MIN2Raw)(i))
+        For i As Integer = MIN2Raw.ToHexBytes().Length - 1 To 0 Step -1
+            MIN2.Add(MIN2Raw.ToHexBytes()(i))
         Next
         ''Totally untested probably dangerous
         Q.Add(New Command(DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray, "DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray"))
         Q.Add(New Command(DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray, "DIAG_NV_WRITE_F, NV_MIN2_I, MIN2.ToArray"))
 
-        logger.add("min write attempted... unstable feature: warning")
+        Logger.Add("min write attempted... unstable feature: warning")
     End Sub
 
     Shared Function DecodeMin() As String
@@ -907,9 +865,9 @@ Public Class cdmaTerm
             mySerialPort2.Flush()
             mySerialPort2.Dispose()
             portIsOpen = False
-            logger.add("disconnected")
+            Logger.Add("disconnected")
         Catch ex As Exception
-            logger.add("disconnect err" + ex.ToString)
+            Logger.Add("disconnect err" + ex.ToString)
         End Try
     End Sub
 
@@ -933,16 +891,16 @@ Public Class cdmaTerm
     Public Shared Sub WriteBbRegId(regId As String)
         Try
             Q.Clear()
-            WriteBBRegId(String_To_Bytes(Integer.Parse(regId).ToString("x4")))
+            WriteBBRegId(Integer.Parse(regId).ToString("x4").ToHexBytes())
             Q.Run()
         Catch ex As Exception
-            logger.add("Write Bb reg err: " + ex.ToString)
+            Logger.Add("Write Bb reg err: " + ex.ToString)
         End Try
     End Sub
 
     Private Shared Sub WriteSidAndNid(sid As String, nid As String)
         Q.Clear()
-        WriteSidAndNid(String_To_Bytes(Integer.Parse(sid).ToString("x4")), String_To_Bytes(Integer.Parse(nid).ToString("x4")))
+        WriteSidAndNid(Integer.Parse(sid).ToString("x4").ToHexBytes(), Integer.Parse(nid).ToString("x4").ToHexBytes())
         Q.Run()
     End Sub
 
@@ -975,7 +933,7 @@ Public Class cdmaTerm
         If search Then
             SearchBin(outFileName)
         End If
-        logger.add("Ram Read Complete", logger.LogType.infoAndMsg)
+        Logger.Add("Ram Read Complete", Logger.LogType.InfoAndMsg)
     End Sub
 
     Private Shared Function SearchBin(ByVal fileName As String) As List(Of String)
@@ -1008,9 +966,9 @@ Public Class cdmaTerm
                     ''ResultsListBox1.Items.Add(d1.ToString() + d2.ToString() + d3.ToString() + d4.ToString() + d5.ToString() + d6.ToString())
                 End If
             Loop
-            logger.add("Search Bin For SPC Done", logger.LogType.infoAndMsg)
+            Logger.Add("Search Bin For SPC Done", Logger.LogType.InfoAndMsg)
         Else
-            logger.add("File Does Not Exist", logger.LogType.infoAndMsg)
+            Logger.Add("File Does Not Exist", Logger.LogType.InfoAndMsg)
         End If
 
         Return ResultsList
@@ -1102,7 +1060,7 @@ Public Class cdmaTerm
         Dim data() As Byte
         Dim writeDataList As New List(Of Byte)
         If (writeData.StartsWith("0x")) Then
-            writeDataList.AddRange(String_To_Bytes(writeData.Substring(2)))
+            writeDataList.AddRange(writeData.Substring(2).ToHexBytes())
         Else
             data = encoding.GetBytes(writeData)
             writeDataList.Add(data.Count)

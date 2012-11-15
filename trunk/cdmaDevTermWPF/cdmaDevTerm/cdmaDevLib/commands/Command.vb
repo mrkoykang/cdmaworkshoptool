@@ -192,8 +192,8 @@ Public Class Command
                 logger.add(debuggingText)
 
                 Dim appendString As String = vbNewLine + debuggingText +
-                    vbNewLine + "TX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesToTx)) + vbNewLine + vbNewLine +
-                            "RX: " + vbNewLine + hexSpace(cdmaTerm.biznytesToStrizings(bytesRxd)) + vbNewLine
+                    vbNewLine + "TX: " + vbNewLine + hexSpace(bytesToTx.ToHexString()) + vbNewLine + vbNewLine +
+                            "RX: " + vbNewLine + hexSpace(bytesRxd.ToHexString()) + vbNewLine
                 appendString += vbNewLine + "RX(ascii): " + SecretDecoderRing.getAsciiStrings(bytesRxd) + vbNewLine + vbNewLine
 
                 '' thePhone.SerialData = appendString

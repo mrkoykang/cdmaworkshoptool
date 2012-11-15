@@ -509,8 +509,8 @@ Public Class Qcdm
             Dim efsPacket As New List(Of Byte)
             efsPacket.AddRange(writeHeader)
             Dim hexPacketNumber As String = CurrentPacket.ToString("x4")
-            efsPacket.AddRange(cdmaTerm.String_To_Bytes(hexPacketNumber.Substring(2, 2)))
-            efsPacket.AddRange(cdmaTerm.String_To_Bytes(hexPacketNumber.Substring(0, 2)))
+            efsPacket.AddRange(hexPacketNumber.Substring(2, 2).ToHexBytes())
+            efsPacket.AddRange(hexPacketNumber.Substring(0, 2).ToHexBytes())
             efsPacket.Add(&H0)
             efsPacket.Add(&H0)
 

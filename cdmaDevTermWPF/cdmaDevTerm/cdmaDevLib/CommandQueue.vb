@@ -19,6 +19,7 @@ Imports System
 Imports System.Collections
 Imports System.IO
 Imports System.Threading
+Imports System.ComponentModel
 
 Public Class CommandQueue
 
@@ -33,46 +34,92 @@ Public Class CommandQueue
     End Sub
 
     Public Sub Clear()
+
         mySynqdQ.Clear()
     End Sub
 
     Public Sub Interrupt()
         ''catch all errors and rx type
-        logger.add("Transmit error in message queue")
+        Logger.Add("Transmit error in message queue")
         mySynqdQ.Clear()
     End Sub
 
     Public Sub InterruptQuiet()
-        logger.add("Message queue was silently cleared")
+        Logger.Add("Message queue was silently cleared")
         mySynqdQ.Clear()
     End Sub
-
+    Private pendingOperations As Boolean = False
     ''Returns true if all commands execute
     Public Function Run() As Boolean
-
-        If cdmaTerm.portIsOpen = False Then
-            logger.add("Dispatch Queue Error: Port Not Open, Please Connect", logger.LogType.infoAndMsg)
-
-            InterruptQuiet()
+        If (BackgroundWorker1.IsBusy Or pendingOperations) Then
+            pendingOperations = True
         Else
-
-            While mySynqdQ.Count <> 0
-
-                Dim thisC As Command = mySynqdQ.Dequeue()
-                thisC.commandSuccess = thisC.tx()
-                If thisC.commandSuccess = False Then
-                    Interrupt()
-                    Return False
-                End If
-                thisC.decode()
-                Logger.Add("q count: " + mySynqdQ.Count.ToString + Environment.NewLine + thisC.debuggingText & Environment.NewLine)
-
-            End While
-
+            BackgroundWorker1.RunWorkerAsync()
         End If
-        Return True
 
+        Return True ''todo:always returns true
     End Function
+
+    Private Function doRun()
+        SyncLock mySynqdQ.SyncRoot
+            If cdmaTerm.portIsOpen = False Then
+                Logger.Add("Dispatch Queue Error: Port Not Open, Please Connect", Logger.LogType.InfoAndMsg)
+
+                InterruptQuiet()
+            Else
+
+
+                'For Each cmd In mySynqdQ
+                '    cmd.commandSuccess = cmd.tx()
+                '    If cmd.commandSuccess = False Then
+                '        Interrupt()
+                '        Return False
+                '    End If
+                '    cmd.decode()
+                '    Logger.Add("q count: " + mySynqdQ.Count.ToString + Environment.NewLine + cmd.debuggingText & Environment.NewLine)
+                'Next cmd
+                While mySynqdQ.Count <> 0
+
+                    Dim thisC As Command = mySynqdQ.Dequeue()
+                    thisC.commandSuccess = thisC.tx()
+                    If thisC.commandSuccess = False Then
+                        Interrupt()
+                        Return False
+                    End If
+                    thisC.decode()
+                    Logger.Add("q count: " + mySynqdQ.Count.ToString + Environment.NewLine + thisC.debuggingText & Environment.NewLine)
+
+                End While
+            End If
+        End SyncLock
+        Return True
+    End Function
+
+    Private WithEvents BackgroundWorker1 As New BackgroundWorker()
+
+
+    Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object, _
+                                         ByVal e As System.ComponentModel.DoWorkEventArgs) _
+                                         Handles BackgroundWorker1.DoWork
+
+        doRun()
+
+    End Sub
+
+
+    Private Sub BackgroundWorker1_RunWorkerCompleted(ByVal sender As System.Object, _
+                                                     ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) _
+                                                     Handles BackgroundWorker1.RunWorkerCompleted
+
+        Logger.Add("cmd run done...")
+        If (pendingOperations) Then
+            pendingOperations = False
+            BackgroundWorker1.RunWorkerAsync()
+        End If
+
+
+    End Sub
+
 
     Friend Sub checkNvQForBadItems()
         Try
@@ -147,7 +194,7 @@ Public Class CommandQueue
 
             myFileStream.Close()
         Catch ex As Exception
-            logger.add("Ram read err: " + ex.ToString)
+            Logger.Add("Ram read err: " + ex.ToString)
         End Try
 
     End Sub
@@ -190,7 +237,7 @@ Public Class CommandQueue
             Next
 
         Catch ex As Exception
-            logger.add("Ram scan err: " + ex.ToString)
+            Logger.Add("Ram scan err: " + ex.ToString)
         End Try
 
         Return Ranges

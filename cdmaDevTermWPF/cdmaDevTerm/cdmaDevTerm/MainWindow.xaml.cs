@@ -401,7 +401,8 @@ q.Run()";
                 };
                 if ((bool)dlg.ShowDialog())
                 {
-                    DoNVRead(dlg.FileName, ReadNvItemTextbox.Text);
+                    //DoNVRead(dlg.FileName, ReadNvItemTextbox.Text);
+                    cdmaTerm.ReadNvList(ReadNvItemTextbox.Text, dlg.FileName);
                 }
             }
             

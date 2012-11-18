@@ -6,6 +6,8 @@
     Overrides Sub decode()
         Try
             cdmaTerm.MIN2Raw = (New Byte() {Me.bytesRxd(7), Me.bytesRxd(6)}).ToHexString()
+            cdmaTerm.thePhone.Min = cdmaTerm.DecodeMin()
+            cdmaTerm.thePhoneRxd.Min = cdmaTerm.DecodeMin()
         Catch ex As Exception
             logger.add("Min2 err: " + ex.ToString)
         End Try

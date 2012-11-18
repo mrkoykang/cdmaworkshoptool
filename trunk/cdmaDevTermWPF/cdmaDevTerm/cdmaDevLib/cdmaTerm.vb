@@ -226,14 +226,6 @@ Public Class cdmaTerm
 
 #End Region
 
-#Region "conversionRoutines"
-
-  
-   
-
-
-
-#End Region
 
 #Region "selectionRoutinesAndSelectors"
 
@@ -680,7 +672,6 @@ Public Class cdmaTerm
 
         Dim ponyXpress As New CommandQueue
 
-        Q.Clear()
         Q.Add(New Command(unlockLgNvMemory, "Unlock LG NV Memory"))
         Q.Add(New Command(lg_Lock1, "LG Lock 1"))
         Q.Add(New Command(lg_KeyEmu1, "LG Key Emu1"))
@@ -704,14 +695,9 @@ Public Class cdmaTerm
     End Sub
 
     Public Shared Sub ReadMIN1()
-
-        Q.Clear()
-        Q.Add(CommandFactory.GetCommand(NV_MIN1_I))
-        Q.Add(CommandFactory.GetCommand(NV_MIN2_I))
-        Q.Run()
-
-        cdmaTerm.thePhone.Min = DecodeMin()
-        cdmaTerm.thePhoneRxd.Min = DecodeMin()
+            Q.Add(CommandFactory.GetCommand(NV_MIN1_I))
+            Q.Add(CommandFactory.GetCommand(NV_MIN2_I))
+            Q.Run()
     End Sub
 
     Public Shared Sub switchToP2K()
@@ -745,7 +731,6 @@ Public Class cdmaTerm
     End Sub
 
     Private Sub ReadNv(rangeStart As String, rangeEnd As String, saveFilePath As String)
-        nvReadQ.Clear()
         Logger.Add("Reading NV - This may take a while, do not unplug.")
         Dim nv As New NvItems
         nv.readNVItemRange(rangeStart, rangeEnd)
@@ -773,7 +758,6 @@ Public Class cdmaTerm
 
 
     Public Shared Sub ReadAllEvdo()
-        Q.Clear()
         AddAllEvdo()
         Q.Run()
     End Sub
@@ -890,7 +874,6 @@ Public Class cdmaTerm
 
     Public Shared Sub WriteBbRegId(regId As String)
         Try
-            Q.Clear()
             WriteBBRegId(Integer.Parse(regId).ToString("x4").ToHexBytes())
             Q.Run()
         Catch ex As Exception
@@ -899,7 +882,6 @@ Public Class cdmaTerm
     End Sub
 
     Private Shared Sub WriteSidAndNid(sid As String, nid As String)
-        Q.Clear()
         WriteSidAndNid(Integer.Parse(sid).ToString("x4").ToHexBytes(), Integer.Parse(nid).ToString("x4").ToHexBytes())
         Q.Run()
     End Sub
@@ -922,7 +904,6 @@ Public Class cdmaTerm
 
         ReadingRamToFile = True
         RamReadQ.Clear()
-        Q.Clear()
         ''myD.ReadRam(Integer.Parse(ReadRamStartAddressTextbox.Text), Integer.Parse(ReadRamEndAddressTextbox.Text), False)
 
         myD.ReadRam2(RamStartAddress + RamStartOffset, RamEndAddress + RamEndOffset)
@@ -975,7 +956,6 @@ Public Class cdmaTerm
     End Function
 
     Public Shared Sub ReadAllNam()
-        Q.Clear()
         Q.Add(CommandFactory.GetCommand(NV_NAM_LOCK_I))
         Q.Add(CommandFactory.GetCommand(NV_DIR_NUMBER_I))
         Q.Add(CommandFactory.GetCommand(NV_MIN1_I))
@@ -991,7 +971,6 @@ Public Class cdmaTerm
     End Sub
 
     Public Shared Sub ReadNv(ByVal nv As NvItems.NvItems)
-        Q.Clear()
         AddNv(nv)
         Q.Run()
     End Sub
@@ -1002,7 +981,6 @@ Public Class cdmaTerm
             Dim nvi As NvItems.NvItems = CType(nv, NvItems.NvItems)
             ReadNv(nvi)
         Else
-            Q.Clear()
             Q.Add(New Command(Qcdm.Cmd.DIAG_NV_READ_F, nv, New Byte() {}, "Read Nv " + nv.ToString))
             Q.Run()
         End If
@@ -1018,7 +996,6 @@ Public Class cdmaTerm
             Dim nvi As NvItems.NvItems = CType(nv, NvItems.NvItems)
             WriteNv(nvi, writeData)
         Else
-            Q.Clear()
             Q.Add(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, nv, GetNvWriteDataByteList(writeData).ToArray, "Write Nv " + nv.ToString))
             Q.Run()
         End If
@@ -1030,20 +1007,17 @@ Public Class cdmaTerm
             Dim nvi As NvItems.NvItems = CType(nv, NvItems.NvItems)
             WriteNv(nvi, writeData)
         Else
-            Q.Clear()
             Q.Add(New Command(Qcdm.Cmd.DIAG_NV_WRITE_F, nv, writeData, "Write Nv " + nv.ToString))
             Q.Run()
         End If
     End Sub
 
     Public Shared Sub WriteNv(ByVal nv As NvItems.NvItems, writeData As String)
-        Q.Clear()
         AddWriteNv(nv, writeData)
         Q.Run()
     End Sub
 
     Public Shared Sub WriteNv(ByVal nv As NvItems.NvItems, writeData() As Byte)
-        Q.Clear()
         AddWriteNv(nv, writeData)
         Q.Run()
     End Sub
@@ -1070,7 +1044,6 @@ Public Class cdmaTerm
     End Function
 
     Public Shared Sub ReadQc(ByVal qc As Qcdm.Cmd)
-        Q.Clear()
         AddQc(qc)
         Q.Run()
     End Sub
@@ -1097,8 +1070,6 @@ Public Class cdmaTerm
 
 
     Public Shared Sub KeyPress(k As phoneKeys)
-        cdmaTerm.Q.Clear()
-        cdmaTerm.Q.Add(CommandFactory.GetCommand(DIAG_HS_KEY_F, New Byte() {0, k}))
         cdmaTerm.Q.Run()
     End Sub
 
@@ -1108,7 +1079,6 @@ Public Class cdmaTerm
             namLock(1) = 1
         End If
 
-        Q.Clear()
         Q.Add(CommandFactory.GetCommand(NV_NAM_LOCK_I, True, namLock))
         Q.Run()
     End Sub
@@ -1155,7 +1125,7 @@ Public Class cdmaTerm
         Dim RamScanResultList As New List(Of String)
         ReadingRamToFile = True
         RamReadQ.Clear()
-        Q.Clear()
+
         myD.ScanRam2(ScanRamStart + "0000", ScanRamEnd + "0000")
         Q.Run()
         Dim R As List(Of String) = RamReadQ.generateRamScanReport()
@@ -1178,7 +1148,6 @@ Public Class cdmaTerm
     End Sub
 
     Public Shared Sub ReadAllPhone()
-        Q.Clear()
         ''evdo
         Q.Add(CommandFactory.GetCommand(NV_PPP_USER_ID_I))
         Q.Add(CommandFactory.GetCommand(NV_PPP_PASSWORD_I))
@@ -1314,7 +1283,6 @@ Public Class cdmaTerm
     End Sub
 
     Public Shared Sub updateNvItemsFromViewModel()
-        Q.Clear()
         ''For i As Integer = 0 To cdmaTerm.thePhone.NvItems.Count
         '' If (kvp.Value.Data <> cdmaTerm.thePhoneRxd.NvItems.Item(kvp.Key).Data) Then
         ''cdmaTerm.WriteNv(cdmaTerm.thePhone.NvItems, kvp.Value.Data)

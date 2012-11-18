@@ -392,8 +392,6 @@ Public Class Qcdm
 
         cdmaTerm.Q.Run()
 
-
-
         Return LastEfsWorked2
 
     End Function

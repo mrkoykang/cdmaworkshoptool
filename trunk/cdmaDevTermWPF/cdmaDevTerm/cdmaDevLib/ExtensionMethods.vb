@@ -1,15 +1,19 @@
 ﻿Imports System.Runtime.CompilerServices
 
+<Assembly: Microsoft.Scripting.Runtime.ExtensionType(GetType(System.Array), GetType(cdmaDevLib.ExtensionMethods))> 
+
+<Assembly: Microsoft.Scripting.Runtime.ExtensionType(GetType(String), GetType(cdmaDevLib.ExtensionMethods))> 
+
 Public Module ExtensionMethods
     <Extension()> _
     Public Function ToHexBytes(ByVal InputValue As String) As Byte()
-        Return HexStringToByteArray(InputValue.Replace(" ", String.Empty))
+        Return HexStringToBytes(InputValue.Replace(" ", String.Empty))
     End Function
 
     '' YAY!!! the internetz comes thru again
     '' http://programmerramblings.blogspot.com/2008/03/convert-hex-string-to-byte-array-and.html
     '' takes in the hex string and spits out the byte array
-    Public Function HexStringToByteArray(ByVal strInput As String) As Byte()
+    Public Function HexStringToBytes(ByVal strInput As String) As Byte()
         Try
             ' i variable used to hold position in string
             Dim i As Integer = 0
@@ -31,7 +35,7 @@ Public Module ExtensionMethods
         Catch ex As Exception
             Logger.Add("HexStringToByteArray Conversion Error: " + ex.ToString)
 
-            Return New Byte() {&HDE, &HAD, &HBE, &HEF}
+            Return New Byte() {}
 
         End Try
     End Function

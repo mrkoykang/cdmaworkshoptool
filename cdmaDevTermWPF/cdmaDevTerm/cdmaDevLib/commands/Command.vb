@@ -157,9 +157,6 @@ Public Class Command
         request.Add(Byte.Parse(qcdm))
         request.Add(Byte.Parse(subsys))
 
-
-
-
         For Each b As Byte In data
             request.Add(b)
         Next

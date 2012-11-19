@@ -15,6 +15,12 @@ namespace cdmaDevTerm
         public CompletionData(string text)
         {
             this.Text = text;
+            this.Description = text;
+        }
+        public CompletionData(string text, string desc)
+        {
+            this.Text = text;
+            this.Description = desc;
         }
 
         public System.Windows.Media.ImageSource Image
@@ -30,10 +36,8 @@ namespace cdmaDevTerm
             get { return this.Text; }
         }
 
-        public object Description
-        {
-            get { return "Description for " + this.Text; }
-        }
+        public object Description { get; private set; }
+
 
         public void Complete(TextArea textArea, ISegment completionSegment,
             EventArgs insertionRequestEventArgs)

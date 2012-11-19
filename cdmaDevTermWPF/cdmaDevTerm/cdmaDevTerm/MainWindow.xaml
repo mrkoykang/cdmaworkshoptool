@@ -106,7 +106,7 @@
 
                             <Button.ToolTip>
                                 <ToolTip>
-                                    <TextBlock Text="write: mdn, min, namLock, userlock, sid, nid, mip num/enable, and NV"/>
+                                    <TextBlock Text="write: mdn, min, namLock, userlock, sid, nid, mip num/enable, qcmip, and NV"/>
                                 </ToolTip>
                             </Button.ToolTip>
                         </Button>
@@ -270,6 +270,10 @@
                                             </ToolTip>
                                         </Button.ToolTip>
                                     </Button>
+                                    <ComboBox Margin="5,0,0,0"  HorizontalAlignment="Left"  Name="QcmipSwitch" MinWidth="145" 
+                         SelectedItem="{Binding Qcmip}"
+                          ItemsSource="{Binding QcmipTypeValues}"/>
+                                    
                                 </StackPanel>
                                 <StackPanel Margin="2" Orientation="Horizontal">
 

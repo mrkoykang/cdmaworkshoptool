@@ -410,6 +410,12 @@ Public Class Phone
             End If
         End Set
     End Property
+    Public ReadOnly Property QcmipTypeValues() As IEnumerable(Of Qcdm.Qcmip)
+        Get
+            Return [Enum].GetValues(GetType(Qcdm.Qcmip)).Cast(Of Qcdm.Qcmip)()
+        End Get
+    End Property
+
     Public Event PropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs) Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
 
 End Class

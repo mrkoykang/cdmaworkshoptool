@@ -73,6 +73,11 @@ Public Class cdmaTerm
 
 #Region "Port Setup"
     ''some of this logic may still be needed but in a different way
+
+    ''' <summary>
+    ''' Gets a list of ComPortInfo objects and assigns them to thePhone.AvailableComPorts
+    ''' </summary>
+    ''' <remarks>Note: gets friendly and non-friendly names</remarks>
     Public Shared Sub GetComs()
 
         ' Get a list of serial port names.
@@ -773,7 +778,7 @@ Public Class cdmaTerm
 
     End Sub
 
-    Public Shared Function GetComFriendlyNames()
+    Friend Shared Function GetComFriendlyNames()
         Return COMPortInfo.COMPortInfo.GetCOMPortsInfo()
     End Function
 
@@ -1100,9 +1105,8 @@ Public Class cdmaTerm
             nvReadQ.Clear()
             For i = 0 To nvItemList.Count - 1
                 If nvItemList(i).Contains("-") Then
-                    Dim nv As New NvItems
                     Dim subNvRange As String() = nvItemList(i).Split("-")
-                    nv.readNVItemRange(subNvRange(0), subNvRange(1))
+                    NvItems.readNVItemRange(subNvRange(0), subNvRange(1))
                 ElseIf True Then
                     Dim debugString As String = "readNVItemList DIAG_NV_READ_F " + nvItemList(i)
                     Dim cmd = New Command(Qcdm.Cmd.DIAG_NV_READ_F, Integer.Parse(nvItemList(i)), New Byte() {}, debugString)
@@ -1270,6 +1274,9 @@ Public Class cdmaTerm
             End If
             If (thePhone.EnabledMipProfile <> thePhoneRxd.EnabledMipProfile) Then
                 cdmaTerm.WriteNv(NV_DS_MIP_ENABLE_PROF_I, New Byte() {Integer.Parse(thePhone.EnabledMipProfile)})
+            End If
+            If (thePhone.Qcmip <> thePhoneRxd.Qcmip) Then
+                cdmaTerm.WriteNv(NV_DS_QCMIP_I, New Byte() {Integer.Parse(thePhone.Qcmip)})
             End If
 
             updateNvItemsFromViewModel()

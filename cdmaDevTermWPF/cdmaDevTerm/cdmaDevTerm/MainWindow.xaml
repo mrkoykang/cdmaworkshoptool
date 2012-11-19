@@ -306,7 +306,7 @@
                                             </ToolTip>
                                         </Button.ToolTip>
                                     </Button>
-                                    <Button  Margin="5,0,0,0"  HorizontalAlignment="Left" Name="readPrl" Width="63" Click="readPrl_Click" Visibility="Visible" >
+                                    <Button  Margin="5,0,0,0"  HorizontalAlignment="Left" Name="readPrl" Width="63" Click="readPrl_Click" Visibility="Hidden" >
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="Resources/download.png" Stretch="Uniform" Height="20" Width="20" />
 
@@ -482,21 +482,47 @@
                     <TabItem Header="Script" Name="Script">
                         <StackPanel>
                             
-                            <avalonedit:TextEditor Name="CodeTextEditor" FontFamily="Consolas" FontSize="10pt" ShowLineNumbers="True" MaxHeight="325"/>
-                            <TextBlock Margin="5" Text="WARNING: SCRIPTS MAY EXECUTE ARBITRARY CODE, USE AT OWN RISK"  HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Segoe UI" />
-                            <Button  Margin="2" HorizontalAlignment="Right"  Name="runScript"  Width="60" Click="runScript_Click"  >
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="Resources/download.png" Stretch="Uniform" Height="20" Width="20" />
+                            <avalonedit:TextEditor Name="CodeTextEditor" 
+                                                   FontFamily="Consolas"
+                                                   FontSize="10pt" 
+                                                   ShowLineNumbers="True" 
+                                                   MaxHeight="325"
+                                                   AllowDrop="True"
+                                                   PreviewDragEnter="FileShowTextBox_PreviewDragEnter"
+                                                   PreviewDragOver="FileShowTextBox_PreviewDragEnter"
+                                                   PreviewDrop="FileShowTextBox_PreviewDrop" />
+                            
+                            <TextBlock Margin="5" Text="WARNING: Scripts execute code: know what you are running.  USE AT OWN RISK!"  HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Segoe UI" />
 
-                                </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
-                                <Button.ToolTip>
-                                    <ToolTip>
-                                        <TextBlock Text="run ironPython script"/>
-                                    </ToolTip>
-                                </Button.ToolTip>
+                                <Button  Margin="2" HorizontalAlignment="Left" Name="ChooseScript" Width="63" Click="ChooseScript_Click"  >
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Resources/folder.png" Stretch="Uniform" Height="20" Width="20" />
 
-                            </Button>
+                                    </StackPanel>
+
+                                    <Button.ToolTip>
+                                        <ToolTip>
+                                            <TextBlock Text="select script"/>
+                                        </ToolTip>
+                                    </Button.ToolTip>
+                                </Button>
+                                <Button  Margin="2" HorizontalAlignment="Right"  Name="runScript"  Width="60" Click="runScript_Click"  >
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Resources/upload.png" Stretch="Uniform" Height="20" Width="20" />
+
+                                    </StackPanel>
+
+                                    <Button.ToolTip>
+                                        <ToolTip>
+                                            <TextBlock Text="run script"/>
+                                        </ToolTip>
+                                    </Button.ToolTip>
+
+                                </Button>
+                            </StackPanel>
+                            
                         </StackPanel>
                     </TabItem>
                 </TabControl>

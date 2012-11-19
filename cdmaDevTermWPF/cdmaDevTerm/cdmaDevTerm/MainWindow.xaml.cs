@@ -22,6 +22,9 @@ using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using System.Xml;
 using System.ComponentModel;
+using System.IO;
+using ICSharpCode.AvalonEdit.CodeCompletion;
+using System.Reflection;
 
 namespace cdmaDevTerm
 {
@@ -138,6 +141,10 @@ q.Run()";
             cdmaTerm.thePhone.PrlFilename = Properties.Settings.Default.LastPrl;
             cdmaTerm.GetComs();
             comBox.SelectedIndex = 0;
+
+            //code completion handlers
+            CodeTextEditor.TextArea.TextEntering += textEditor_TextArea_TextEntering;
+            CodeTextEditor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
 
         }
       
@@ -401,8 +408,8 @@ q.Run()";
                 };
                 if ((bool)dlg.ShowDialog())
                 {
-                    //DoNVRead(dlg.FileName, ReadNvItemTextbox.Text);
-                    cdmaTerm.ReadNvList(ReadNvItemTextbox.Text, dlg.FileName);
+                    DoNVRead(dlg.FileName, ReadNvItemTextbox.Text);
+                   // cdmaTerm.ReadNvList(ReadNvItemTextbox.Text, dlg.FileName);
                 }
             }
             
@@ -448,11 +455,111 @@ q.Run()";
                 cdmaTerm.RelockMotoEvdo();
             }
 
-           
+            //http://studentguru.gr/b/solidus/archive/2010/07/30/wpf-how-to-drag-amp-drop-a-file-in-your-window.aspx -->
+            private void FileShowTextBox_PreviewDragEnter(object sender, DragEventArgs e)
+            {
+                bool isCorrect = true;
 
-          
+                if (e.Data.GetDataPresent(DataFormats.FileDrop, true) == true)
+                {
+                    string[] filenames = (string[])e.Data.GetData(DataFormats.FileDrop, true);
+                    foreach (string filename in filenames)
+                    {
+                        if (File.Exists(filename) == false)
+                        {
+                            isCorrect = false;
+                            break;
+                        }
+                        FileInfo info = new FileInfo(filename);
+                        if (info.Extension != ".txt" && info.Extension != ".py")
+                        {
+                            isCorrect = false;
+                            break;
+                        }
+                    }
+                }
+                if (isCorrect == true)
+                    e.Effects = DragDropEffects.All;
+                else
+                    e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
 
+            private void FileShowTextBox_PreviewDrop(object sender, DragEventArgs e)
+            {
+                string[] filenames = (string[])e.Data.GetData(DataFormats.FileDrop, true);
+                foreach (string filename in filenames)
+                    CodeTextEditor.Text = File.ReadAllText(filename);
+                e.Handled = true;
+            }
+            //<-- http://studentguru.gr/b/solidus/archive/2010/07/30/wpf-how-to-drag-amp-drop-a-file-in-your-window.aspx 
 
+            private void ChooseScript_Click(object sender, RoutedEventArgs e)
+            {
+                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Title = "Select ironPython script",
+                    DefaultExt = ".py",
+                    Filter = "PRL-file (.py)|*.py|All files (*.*)|*.*",
+                    CheckFileExists = true
+                };
+                if ((bool)dlg.ShowDialog())
+                    CodeTextEditor.Text = File.ReadAllText(dlg.FileName);
+            }
+
+            //http://www.codeproject.com/Articles/42490/Using-AvalonEdit-WPF-Text-Editor
+            CompletionWindow completionWindow;
+
+            void textEditor_TextArea_TextEntered(object sender, TextCompositionEventArgs e)
+            {
+                if (e.Text == ".")
+                {
+                    // Open code completion after the user has pressed dot:
+                    completionWindow = new CompletionWindow(CodeTextEditor.TextArea);
+
+                    IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
+                    var offset = CodeTextEditor.CaretOffset-9;
+                    if (offset > 0)
+                    {
+                        var s = CodeTextEditor.Text.Substring(offset, 8);
+                        if (s == "cdmaTerm")
+                        {
+
+                            //http://www.java2s.com/Tutorial/CSharp/0400__Reflection/ListMethods.htm
+                            cdmaTerm f = new cdmaTerm();
+                            Type t = f.GetType();
+                            MethodInfo[] mi = t.GetMethods(BindingFlags.Static | BindingFlags.Public);
+                            foreach (MethodInfo m in mi)
+                            {
+                                data.Add(new CompletionData(m.Name));
+
+                            }
+
+                            completionWindow.Show();
+                        }
+                    }
+                    
+                    completionWindow.Closed += delegate
+                    {
+                        completionWindow = null;
+                    };
+                }
+            }
+
+            void textEditor_TextArea_TextEntering(object sender, TextCompositionEventArgs e)
+            {
+                if (e.Text.Length > 0 && completionWindow != null)
+                {
+                    if (!char.IsLetterOrDigit(e.Text[0]))
+                    {
+                        // Whenever a non-letter is typed while the completion window is open,
+                        // insert the currently selected element.
+                        completionWindow.CompletionList.RequestInsertion(e);
+                    }
+                }
+                // Do not set e.Handled=true.
+                // We still want to insert the character that was typed.
+            }
 
     }
 }

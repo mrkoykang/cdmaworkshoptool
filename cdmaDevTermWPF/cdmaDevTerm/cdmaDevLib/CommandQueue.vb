@@ -51,11 +51,12 @@ Public Class CommandQueue
     Private pendingOperations As Boolean = False
     ''Returns true if all commands execute
     Public Function Run() As Boolean
-        If (BackgroundWorker1.IsBusy Or pendingOperations) Then
-            pendingOperations = True
-        Else
-            BackgroundWorker1.RunWorkerAsync()
-        End If
+        'If (BackgroundWorker1.IsBusy Or pendingOperations) Then
+        '    pendingOperations = True
+        'Else
+        ''BackgroundWorker1.RunWorkerAsync() ''still testing bgw
+        doRun()
+        'End If
 
         Return True ''todo:always returns true
     End Function
@@ -95,30 +96,32 @@ Public Class CommandQueue
         Return True
     End Function
 
-    Private WithEvents BackgroundWorker1 As New BackgroundWorker()
+    'Private WithEvents BackgroundWorker1 As New BackgroundWorker()
 
 
-    Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object, _
-                                         ByVal e As System.ComponentModel.DoWorkEventArgs) _
-                                         Handles BackgroundWorker1.DoWork
+    'Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object, _
+    '                                     ByVal e As System.ComponentModel.DoWorkEventArgs) _
+    '                                     Handles BackgroundWorker1.DoWork
 
-        doRun()
+    '    doRun()
 
-    End Sub
-
-
-    Private Sub BackgroundWorker1_RunWorkerCompleted(ByVal sender As System.Object, _
-                                                     ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) _
-                                                     Handles BackgroundWorker1.RunWorkerCompleted
-
-        Logger.Add("cmd run done...")
-        If (pendingOperations) Then
-            pendingOperations = False
-            BackgroundWorker1.RunWorkerAsync()
-        End If
+    'End Sub
 
 
-    End Sub
+    'Private Sub BackgroundWorker1_RunWorkerCompleted(ByVal sender As System.Object, _
+    '                                                 ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) _
+    '                                                 Handles BackgroundWorker1.RunWorkerCompleted
+
+    '    Logger.Add("cmd run done...")
+    '    If (pendingOperations) Then
+    '        Logger.Add("pendingOperations...")
+
+    '        BackgroundWorker1.RunWorkerAsync()
+    '        pendingOperations = False
+    '    End If
+
+
+    'End Sub
 
 
     Friend Sub checkNvQForBadItems()

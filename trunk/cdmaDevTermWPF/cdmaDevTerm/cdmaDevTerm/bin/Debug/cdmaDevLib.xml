@@ -6,7 +6,12 @@ cdmaDevLib
 </name>
 </assembly>
 <members>
-<member name="P:cdmaDevLib.My.Resources.Resources.ResourceManager">
+<member name="M:cdmaDevLib.cdmaTerm.GetComs">
+	<summary>
+ Gets a list of ComPortInfo objects and assigns them to thePhone.AvailableComPorts
+ </summary>
+	<remarks>Note: gets friendly and non-friendly names</remarks>
+</member><member name="P:cdmaDevLib.My.Resources.Resources.ResourceManager">
 	<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>

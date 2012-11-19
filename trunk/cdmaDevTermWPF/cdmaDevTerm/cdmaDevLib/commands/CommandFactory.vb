@@ -78,6 +78,11 @@ Public Class CommandFactory
                                         nv, _
                                         data, _
                                         qc.ToString() & " " & nv.ToString())
+            Case NV_DS_QCMIP_I
+                cmd = New Cmd_NV_DS_QCMIP_I(qc, _
+                                        nv, _
+                                        data, _
+                                        qc.ToString() & " " & nv.ToString())
             Case Else
                 cmd = New Cmd_nv(qc, _
                                   nv, _

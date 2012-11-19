@@ -560,9 +560,9 @@ Public Class Qcdm
     End Function
 
     Public Enum Qcmip
-        simple
-        mobileAndSimple
-        mobile
+        Simple
+        MobileAndSimple
+        Mobile
     End Enum
 
 End Class

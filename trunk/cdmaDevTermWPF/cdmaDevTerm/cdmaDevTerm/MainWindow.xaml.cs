@@ -198,6 +198,7 @@ q.Run()";
                 cdmaTerm.AddNv(NvItems.NvItems.NV_LOCK_CODE_I);
                 cdmaTerm.AddNv(NvItems.NvItems.NV_HOME_SID_NID_I);
                 cdmaTerm.AddNv(NvItems.NvItems.NV_NAM_LOCK_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_DS_QCMIP_I);
                 result = result && cdmaTerm.Q.Run();
                 if(result)
                 cdmaTerm.ReadMIN1();
@@ -381,6 +382,8 @@ q.Run()";
                 cdmaTerm.AddNv(NvItems.NvItems.NV_LOCK_CODE_I);
                 cdmaTerm.AddNv(NvItems.NvItems.NV_HOME_SID_NID_I);
                 cdmaTerm.AddNv(NvItems.NvItems.NV_NAM_LOCK_I);
+                cdmaTerm.AddNv(NvItems.NvItems.NV_DS_QCMIP_I);
+
                 result = result && cdmaTerm.Q.Run();
                 if (result)
                     cdmaTerm.ReadMIN1();
@@ -488,9 +491,12 @@ q.Run()";
             private void FileShowTextBox_PreviewDrop(object sender, DragEventArgs e)
             {
                 string[] filenames = (string[])e.Data.GetData(DataFormats.FileDrop, true);
-                foreach (string filename in filenames)
-                    CodeTextEditor.Text = File.ReadAllText(filename);
-                e.Handled = true;
+                if (filenames != null)
+                {
+                    foreach (string filename in filenames)
+                        CodeTextEditor.Text = File.ReadAllText(filename);
+                    e.Handled = true;
+                }
             }
             //<-- http://studentguru.gr/b/solidus/archive/2010/07/30/wpf-how-to-drag-amp-drop-a-file-in-your-window.aspx 
 
@@ -531,10 +537,10 @@ q.Run()";
                             MethodInfo[] mi = t.GetMethods(BindingFlags.Static | BindingFlags.Public);
                             foreach (MethodInfo m in mi)
                             {
-                                data.Add(new CompletionData(m.Name));
+                                data.Add(new CompletionData(m.Name, m.GetSignature()));
 
                             }
-
+                            completionWindow.BorderThickness = new System.Windows.Thickness { Left = 0, Top = 0, Right = 0, Bottom = 0 };
                             completionWindow.Show();
                         }
                     }

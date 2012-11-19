@@ -1454,32 +1454,35 @@ Public Class NvItems
 
     '    Return returnTheCommand
     'End Function
-    Function readNVItemRange(ByVal startingItem As Integer, ByVal endItem As Integer) As Boolean
+    Shared Function readNVItemRange(startingItem As Integer, ByVal endItem As Integer) As Boolean
+        Return readNVItemRange(startingItem, endItem, False, "")
+    End Function
 
+    Shared Function readNVItemRange(ByVal startingItem As Integer, ByVal endItem As Integer, ByVal generateReport As Boolean, nvReadPath As String) As Boolean
         Try
 
             Dim count As Integer = (endItem - startingItem)
-            ''0 item err?
-            'If endItem = startingItem Then
-            '    ''count += 1
-            'End If
 
             For i = startingItem To (count + startingItem)
-                '' logger.addToLog("inside loop")
-                ''Dim debugString As String = "NVread Item " + i.ToString
                 Dim debugString As String = "readNVItemRange Qcdm.Cmd.DIAG_NV_READ_F " + i.ToString
 
-
-                ''cdmaTerm.Q.addCommandToQ(readNVItem(i, debugString))
                 Dim cmd = New Command(Qcdm.Cmd.DIAG_NV_READ_F, i, New Byte() {}, debugString)
                 cdmaTerm.Q.Add(cmd)
+
+
                 cdmaTerm.nvReadQ.Add(cmd)
 
             Next
+            cdmaTerm.Q.Run()
+            If (generateReport) Then
+                cdmaTerm.nvReadQ.checkNvQForBadItems()
+                Logger.Add("Reading NV - This may take a while, do not unplug...")
+                cdmaTerm.nvReadQ.generateNvReadReport(nvReadPath)
+            End If
 
             Return True
         Catch ex As Exception
-            logger.add("err:" + ex.ToString)
+            Logger.Add("err:" + ex.ToString)
         End Try
         Return False
 

@@ -732,13 +732,10 @@ Public Class cdmaTerm
 
     Private Sub ReadNv(rangeStart As String, rangeEnd As String, saveFilePath As String)
         Logger.Add("Reading NV - This may take a while, do not unplug.")
-        Dim nv As New NvItems
-        nv.readNVItemRange(rangeStart, rangeEnd)
+        NvItems.readNVItemRange(rangeStart, rangeEnd, True, saveFilePath)
         Q.Run()
         Logger.Add("Reading NV - This may take a while, do not unplug..")
-        nvReadQ.checkNvQForBadItems()
-        Logger.Add("Reading NV - This may take a while, do not unplug...")
-        nvReadQ.generateNvReadReport(saveFilePath)
+       
         Logger.Add("NV Read Complete")
     End Sub
 

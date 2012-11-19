@@ -63,26 +63,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevLib.dll" size="151040">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevLib.dll" size="150016">
       <assemblyIdentity name="cdmaDevLib" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>IZc4qbQh5wQh6tAKss7aGKxOnds=</dsig:DigestValue>
+        <dsig:DigestValue>XEZw6xfjnohJxnyoJ/jvKKKMmfw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="60416">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="cdmaDevTerm.exe" size="64512">
       <assemblyIdentity name="cdmaDevTerm" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>x0MicF77t2CJoTFWOHnHIauBFFk=</dsig:DigestValue>
+        <dsig:DigestValue>KRlWWcGfOrsg3/orbQOG/ioT9eg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

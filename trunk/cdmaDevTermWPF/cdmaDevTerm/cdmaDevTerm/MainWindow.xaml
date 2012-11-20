@@ -255,7 +255,7 @@
 
                                     <TextBlock Margin="5" Text="MODE" HorizontalAlignment="Left" Name="ModeLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
 
-                                    <ComboBox Margin="5,0,0,0"  HorizontalAlignment="Left"  Name="modeSwitch" MinWidth="200" 
+                                    <ComboBox Margin="5,0,0,0"  HorizontalAlignment="Left"  Name="modeSwitch" MinWidth="175" 
                          SelectedItem="{Binding ModeChangeType}"
                           ItemsSource="{Binding ModeChangeTypeValues}"/>
                                     <Button  Margin="5,0,0,0" HorizontalAlignment="Left" Name="sendModeSwitch" Width="63" Click="sendModeSwitch_Click" >
@@ -270,9 +270,10 @@
                                             </ToolTip>
                                         </Button.ToolTip>
                                     </Button>
+                                    <TextBlock Margin="5" Text="MIP" HorizontalAlignment="Left" Name="QcmipLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
                                     <ComboBox Margin="5,0,0,0"  HorizontalAlignment="Left"  Name="QcmipSwitch" MinWidth="145" 
-                         SelectedItem="{Binding Qcmip}"
-                          ItemsSource="{Binding QcmipTypeValues}"/>
+                                         SelectedItem="{Binding Qcmip}"
+                                         ItemsSource="{Binding QcmipTypeValues}"/>
                                     
                                 </StackPanel>
                                 <StackPanel Margin="2" Orientation="Horizontal">
@@ -500,7 +501,19 @@
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
-                                <Button  Margin="2" HorizontalAlignment="Left" Name="ChooseScript" Width="63" Click="ChooseScript_Click"  >
+                                <Button  Margin="2" HorizontalAlignment="Left" Name="SaveScript" Width="63" Click="SaveScript_Click" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Resources/edit.png" Stretch="Uniform" Height="20" Width="20" />
+
+                                    </StackPanel>
+
+                                    <Button.ToolTip>
+                                        <ToolTip>
+                                            <TextBlock Text="save script"/>
+                                        </ToolTip>
+                                    </Button.ToolTip>
+                                </Button>
+                                <Button  Margin="2" HorizontalAlignment="Left" Name="OpenScript" Width="63" Click="ChooseScript_Click"  >
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="Resources/folder.png" Stretch="Uniform" Height="20" Width="20" />
 
@@ -508,7 +521,7 @@
 
                                     <Button.ToolTip>
                                         <ToolTip>
-                                            <TextBlock Text="select script"/>
+                                            <TextBlock Text="open script"/>
                                         </ToolTip>
                                     </Button.ToolTip>
                                 </Button>
@@ -530,7 +543,7 @@
                         </StackPanel>
                     </TabItem>
                 </TabControl>
-                <Grid Margin="0,5,0,2">
+                <Grid Margin="0,5,0,2" VerticalAlignment="Bottom">
                     <TextBox Text="{Binding Path=Msg}" TextWrapping="Wrap" Height="40" VerticalScrollBarVisibility="Visible" VerticalAlignment="Bottom" />
                 </Grid>
             </StackPanel>

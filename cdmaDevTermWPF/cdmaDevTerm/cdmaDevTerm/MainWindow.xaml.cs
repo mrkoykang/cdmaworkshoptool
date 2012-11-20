@@ -440,11 +440,15 @@ q.Run()";
 
             private void copyEsnConverted_Click_1(object sender, RoutedEventArgs e)
             {
+                if (cdmaTerm.thePhone.Esn == null)
+                    return;
                 Clipboard.SetText(cdmaDevLib.esnConverter.ConversionSub(cdmaTerm.thePhone.Esn));
             }
 
             private void copyMeidConverted_Click_1(object sender, RoutedEventArgs e)
             {
+                if (cdmaTerm.thePhone.Meid == null)
+                    return;
                 Clipboard.SetText(cdmaDevLib.esnConverter.ConversionSub(cdmaTerm.thePhone.Meid));
             }
 
@@ -512,8 +516,24 @@ q.Run()";
                 if ((bool)dlg.ShowDialog())
                     CodeTextEditor.Text = File.ReadAllText(dlg.FileName);
             }
+            private void SaveScript_Click(object sender, RoutedEventArgs e)
+            {
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+                {
+                    Title = "Save ironPython script",
+                    DefaultExt = ".py",
+                    Filter = "PRL-file (.py)|*.py|All files (*.*)|*.*",
+                };
+                if ((bool)dlg.ShowDialog())
+                {
+                    StreamWriter sw2 = new StreamWriter(dlg.FileName,
+                        false, System.Text.Encoding.UTF8);
+                    sw2.Write(CodeTextEditor.Text);
+                    sw2.Close();
+                }
+            }
 
-            //http://www.codeproject.com/Articles/42490/Using-AvalonEdit-WPF-Text-Editor
+            //http://www.codeproject.com/Articles/42490/Using-AvalonEdit-WPF-Text-Editor -->
             CompletionWindow completionWindow;
 
             void textEditor_TextArea_TextEntered(object sender, TextCompositionEventArgs e)
@@ -566,6 +586,6 @@ q.Run()";
                 // Do not set e.Handled=true.
                 // We still want to insert the character that was typed.
             }
-
+        //<-- http://www.codeproject.com/Articles/42490/Using-AvalonEdit-WPF-Text-Editor 
     }
 }

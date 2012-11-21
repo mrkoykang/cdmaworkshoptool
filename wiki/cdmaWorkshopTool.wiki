@@ -15,7 +15,13 @@ http://www.chromableedstudios.com/techninjutsu/howtowritemdnminwithcdmadevterm
 *DEV FAQ*
   * What is the current branch of development? cdmaDevTermWPF
   
-  * How do I get started? Download tortoiseSvn: tortoisesvn.net/ visual studio 2012 express http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-for-windows-desktop then create a folder where you want to keep code, right click and say SVN Checkout using this address: http://cdmaworkshoptool.googlecode.com/svn/trunk/cdmaDevTermWPF
+  * How do I get started? 
+      * Download tortoiseSvn: tortoisesvn.net/ 
+      * Download visual studio 2012 express http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-for-windows-desktop 
+      * Create a folder where you want to keep code
+      * Right click on that folder and say SVN Checkout using this address: http://cdmaworkshoptool.googlecode.com/svn/trunk/cdmaDevTermWPF
+      
+  * How do I create a patch? right click on the changed file and say create a patch(tortoise svn, google for other svn clients)
 
 *FAQ*
 

@@ -105,7 +105,7 @@ Public Class Prl
                     Exit For
                 End If
 
-                Dim b = cmd.bytesRxdLessHdlc()
+                Dim b = cmd.bytesRxdLessHdlc() ''todo:sketchy function
                 prlData.AddRange(b)
             End If
             frameCount += 1

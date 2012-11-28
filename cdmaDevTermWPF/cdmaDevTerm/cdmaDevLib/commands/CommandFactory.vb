@@ -118,9 +118,9 @@ Public Class CommandFactory
         Return cmd
     End Function
     ''TODO: untested entirely
-    Shared Function GetCommand(str As String) As ICommand
+    Shared Function GetCommand(hexStr As String) As ICommand
         Dim cmd As ICommand
-        Dim bytes As Byte() = str.ToHexBytes()
+        Dim bytes As Byte() = hexStr.ToHexBytes()
 
         Try
             Dim qc As Qcdm.Cmd = CType(bytes(0), Qcdm.Cmd)
@@ -134,13 +134,13 @@ Public Class CommandFactory
                 Dim numS As String = bytes(2).ToString("X2") + bytes(1).ToString("X2")
                 Dim num = Integer.Parse(numS)
                 Dim nv As Qcdm.Cmd = CType(num, NvItems.NvItems)
-                cmd = CommandFactory.GetCommand(nv, True, str.Substring(6).ToHexBytes())
+                cmd = CommandFactory.GetCommand(nv, True, hexStr.Substring(6).ToHexBytes())
             Else
-                cmd = New Command(str.ToHexBytes, "Raw bytes")
+                cmd = New Command(hexStr.ToHexBytes, "Raw bytes")
             End If
 
         Catch ex As Exception
-            cmd = New Command(str.Replace(" ", String.Empty).ToHexBytes(), "Raw bytes")
+            cmd = New Command(hexStr.Replace(" ", String.Empty).ToHexBytes(), "Raw bytes")
 
         End Try
 

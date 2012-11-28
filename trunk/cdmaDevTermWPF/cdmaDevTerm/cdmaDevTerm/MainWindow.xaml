@@ -427,6 +427,10 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
                                 <TextBox Text="{Binding TermCommand}" HorizontalAlignment="Stretch" Margin="2" MinWidth="300"></TextBox>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Name="TermAppendCrc"></CheckBox>
+                                    <TextBlock Text="ADD CRC + 7E"></TextBlock>
+                                </StackPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="1">
                                 <Button  Margin="5" MinHeight="70" MinWidth="70" Name="SendTerm" Click="SendTerm_Click" >

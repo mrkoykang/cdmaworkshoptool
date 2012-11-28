@@ -26,7 +26,6 @@ Imports System
 Imports System.IO.Ports
 Imports System.IO
 Imports System.Text
-Imports System.Data.OleDb
 Imports System.Data
 Imports System.Xml
 Imports winAPIcom
@@ -38,20 +37,14 @@ Imports cdmaDevLib.Qcdm.Cmd
 Imports cdmaDevLib.Qcdm
 Imports System.Runtime.CompilerServices
 
-
 Public Class cdmaTerm
 
-    ''Dim WithEvents mySerialPort As SerialPort = New SerialPort
     Public Shared Q As CommandQueue = New CommandQueue
     Public Shared nvReadQ As CommandQueue = New CommandQueue
     Public Shared RamReadQ As CommandQueue = New CommandQueue
     Public Shared thePhone As Phone = New Phone
     Friend Shared thePhoneRxd As Phone = New Phone
-    ''this should probably be either refactored out due to 'blackberry'(winapicom) being standard now
-    ''or turned into a fallback if winapicom.dll is not found
-    '' "normal" for standard serialPort ----- "blackberry"  for new serialport2 testing type whatchamakallitz
     Public Shared portIsOpen As Boolean = False
-    Public Shared serialportType As String = "blackberry"
 
     Public Shared newCommandRxd As Boolean
 
@@ -66,13 +59,7 @@ Public Class cdmaTerm
         MetroPCS
     End Enum
 
-
-    Public debugMode = False
-
-
-
 #Region "Port Setup"
-    ''some of this logic may still be needed but in a different way
 
     ''' <summary>
     ''' Gets a list of ComPortInfo objects and assigns them to thePhone.AvailableComPorts
@@ -93,8 +80,6 @@ Public Class cdmaTerm
     Dim mySDR As New SecretDecoderRing
 
     Public Shared mySerialPort2 As New SerialCom("\\.\COM3", 9600, IO.Ports.StopBits.One, IO.Ports.Parity.None, 8) ''actual winapi port
-    ''this is the AT return changed
-    ''think in a farther program the box can just be replaced with a string VAR?
 
     Private Function HexToAsciiStr(ByVal incomingString As String) As String
         Dim ret As String = ""
@@ -118,10 +103,6 @@ Public Class cdmaTerm
                     I += 1
                 End If
             Next
-            ''ORIGINAL
-            '' DIM HEXVALUE AS STRING = ATRETURNCMDBOX.TEXT
-            ' AN OBJECT STORING THE STRING VALUE
-
             ' WHILE THERE'S STILL SOMETHING TO CONVERT IN THE HEX STRING
             While hexValue.Length > 0
                 ' USE TOCHAR() TO CONVERT EACH ASCII VALUE (TWO HEX DIGITS) TO THE ACTUAL CHARACTER
@@ -130,17 +111,14 @@ Public Class cdmaTerm
                 ' REMOVE FROM THE HEX OBJECT THE CONVERTED VALUE
                 hexValue = hexValue.Substring(2, hexValue.Length - 2)
             End While
-            ' SHOW WHAT WE JUST CONVERTED
+            ' SHOW WHAT WE JUST CONVERTED?
             ''LOGGER.ADDTOLOG(STRVALUE)
         Catch EX As Exception
             Logger.Add("HexToAsciiStr error:" + EX.ToString)
-            '' Q.INTERRUPTCOMMANDQ()''todo:should this end it? probably not
         End Try
 
         Return ret
     End Function
-
-
 
     Public Shared Sub Connect(portName As String)
         Try
@@ -158,18 +136,17 @@ Public Class cdmaTerm
                 portName = thePhone.AvailableComPorts.Find(Function(f) f.Name = portName).Name
             End If
 
-            serialportType = "blackberry" ''aka winApiCom
             If (portIsOpen = False) Then
 
-                mySerialPort2.SetPort("\\.\" + portName) ''todo:untested?
+                mySerialPort2.SetPort("\\.\" + portName)
                 Dim result = mySerialPort2.Open()
-                ''ToolStripStatusLabel1.Text = "connect ok || Type : WinApiCom.dll || " + ("\\.\" + GetPlainPortNameFromFriendly(ComNumBox1.Text))
+
                 If (result) Then
                     portIsOpen = True
                     Logger.Add("portIsOpen = true - port " + portName + " opened")
                     Logger.Add("Connected to " + portName, Logger.LogType.Msg)
                 Else
-                    Logger.Add("can't connect")
+                    Logger.Add("Can't connect to " + portName)
                 End If
 
             Else
@@ -340,9 +317,11 @@ Public Class cdmaTerm
 #End Region
 
 
-    Public Shared Sub SendTerminalCommand(terminalCommand As String)
-        Q.Clear()
-        Q.Add(CommandFactory.GetCommand(terminalCommand))
+    Public Shared Sub SendTerminalCommand(terminalCommand As String, addCrcEof As Boolean)
+        Dim c As Command = If(addCrcEof, _
+                              New Command(cdmaTerm.myD.GetBufferWithCRC(terminalCommand.ToHexBytes()), "Term crc added"), _
+                              CommandFactory.GetCommand(terminalCommand)) ''todo:both should use factory probably
+        Q.Add(c)
         Q.Run()
     End Sub
 

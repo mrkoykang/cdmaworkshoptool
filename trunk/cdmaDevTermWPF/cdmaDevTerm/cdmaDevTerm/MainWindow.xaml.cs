@@ -321,7 +321,8 @@ q.Run()";
 
             private void SendTerm_Click(object sender, RoutedEventArgs e)
             {
-                cdmaTerm.SendTerminalCommand(cdmaTerm.thePhone.TermCommand);
+                bool appendCrcEof = TermAppendCrc.IsChecked ?? false;
+                cdmaTerm.SendTerminalCommand(cdmaTerm.thePhone.TermCommand, appendCrcEof);
             }
 
             private void writeEvdo_Click(object sender, RoutedEventArgs e)

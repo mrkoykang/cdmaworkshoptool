@@ -462,7 +462,7 @@ Public Class SecretDecoderRing
         'logger.addToLog("rxd: " + getAsciiStrings(cmd.bytesRxd))
         'cdmaTerm.MIN1Raw = cdmaTerm.biznytesToStrizings(New Byte() {cmd.bytesRxd(7), cmd.bytesRxd(6), cmd.bytesRxd(5), cmd.bytesRxd(4)})
         'test to fix lg
-        cdmaTerm.MIN1Raw = (New Byte() {cmd.bytesRxd(11), cmd.bytesRxd(10), cmd.bytesRxd(9), cmd.bytesRxd(8)}).ToHexString()
+        Phone.MIN1Raw = (New Byte() {cmd.bytesRxd(11), cmd.bytesRxd(10), cmd.bytesRxd(9), cmd.bytesRxd(8)}).ToHexString()
         Dim min1 As New Integer
         min1 = &HF9D260
         Dim min2 As New Integer

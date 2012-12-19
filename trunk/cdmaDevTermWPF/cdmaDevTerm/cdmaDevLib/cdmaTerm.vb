@@ -17,9 +17,9 @@
 ''
 ''cdmaDevTerm 
 ''build:
-''alphaalphaOrxMEID16MworkingTabbySecretDecoderSamsungAutoMagic(applyDirectlyToTheForehead)HalfBakedCRC_TastesOK!lilEVDOsauceSPEEDYspcMetCalcAT$QCDMG_LOGtXrX_NV_READinPRLsendin(woot!woot!)clean_n_leanNvEditorStyle_PostMortemCleanUp_aNewData
+''alphaalphaOrxMEID16MworkingTabbySecretDecoderSamsungAutoMagic(applyDirectlyToTheForehead)HalfBakedCRC_TastesOK!lilEVDOsauceSPEEDYspcMetCalcAT$QCDMG_LOGtXrX_NV_READinPRLsendin(woot!woot!)clean_n_leanNvEditorStyle_PostMortemCleanUp_aNewDataStandaloneComplex(libby)
 ''
-''11pm - 10/04/2012
+'952pm - 12/18/2012
 ''
 ''here goes nop
 Imports System
@@ -81,38 +81,27 @@ Public Class cdmaTerm
 
     Public Shared mySerialPort2 As New SerialCom("\\.\COM3", 9600, IO.Ports.StopBits.One, IO.Ports.Parity.None, 8) ''actual winapi port
 
-    Private Function HexToAsciiStr(ByVal incomingString As String) As String
+    Private Shared Function HexToAsciiStr(ByVal incomingString As String) As String
         Dim ret As String = ""
         Try
-            '' TEST REPLACE BLANK
-            ''DIM HEXVALUE AS STRING = ATRETURNCMDBOX.TEXT.REPLACE("00", STRING.EMPTY)
-            '' TEST REPLACE KP
-            ''TODO: BUG SEEMS TO CLIP LAST 30'S ASCII 0 WHEN NEXT TO A 0000 BLOCK. 
-            ''MAYBE BETTER IS A LOOP THAT CHECKS EACH TWO CHAR FOR 00 VS 30 31 32 3F ETC
-            ''DIM HEXVALUE AS STRING = ATRETURNCMDBOX.TEXT.REPLACE("00", "5F")
-            ''UPDATE: FIXED BY ADDISON A WHILE AGO(PRETTY SURE..)...
-
+            ''Fixed by Addison a while ago(pretty sure..)...
+            ''may still be a todo here..
             incomingString = incomingString.Replace(" ", "")
             Dim hexValue As String = ""
-            For I = 0 To incomingString.Length - 1
+            For I = 0 To incomingString.Length - 1 Step 2
+
                 If (incomingString.Substring(I, 2) = "00") Then
-                    hexValue += "5F"
-                    I += 1
+                    ''hexValue += "5F" ''igonore nulls for now
                 Else
                     hexValue += incomingString.Substring(I, 2)
-                    I += 1
                 End If
             Next
-            ' WHILE THERE'S STILL SOMETHING TO CONVERT IN THE HEX STRING
+
             While hexValue.Length > 0
-                ' USE TOCHAR() TO CONVERT EACH ASCII VALUE (TWO HEX DIGITS) TO THE ACTUAL CHARACTER
-                ''TODO TEST U I NT32 U I NT64
                 ret += System.Convert.ToChar(System.Convert.ToUInt64(hexValue.Substring(0, 2), 16)).ToString()
-                ' REMOVE FROM THE HEX OBJECT THE CONVERTED VALUE
                 hexValue = hexValue.Substring(2, hexValue.Length - 2)
             End While
-            ' SHOW WHAT WE JUST CONVERTED?
-            ''LOGGER.ADDTOLOG(STRVALUE)
+            Logger.Add(ret)
         Catch EX As Exception
             Logger.Add("HexToAsciiStr error:" + EX.ToString)
         End Try
@@ -370,9 +359,8 @@ Public Class cdmaTerm
 
     'End Sub
 
-    Public Shared Sub sendATCommand(ByVal atCommand As String)
+    Public Shared Sub SendAtCommand(ByVal atCommand As String)
         Try
-            '            ''SEND AN AT COMMAND
             Dim myDm As New DmPort
             Dim atCmd As New List(Of Byte)
             For Each c As Char In atCommand
@@ -382,7 +370,7 @@ Public Class cdmaTerm
             atCmd.Add(&HD)
             atCmd.Add(&HA)
 
-            Logger.Add(myDm.WriteRead(atCmd.ToArray).ToHexString(), Logger.LogType.InfoAndMsg)
+            Logger.Add(HexToAsciiStr(myDm.WriteRead(atCmd.ToArray).ToHexString()), Logger.LogType.InfoAndMsg)
 
         Catch
 
@@ -679,21 +667,21 @@ Public Class cdmaTerm
     End Sub
 
     Public Shared Sub ReadMIN1()
-            Q.Add(CommandFactory.GetCommand(NV_MIN1_I))
-            Q.Add(CommandFactory.GetCommand(NV_MIN2_I))
-            Q.Run()
+        Q.Add(CommandFactory.GetCommand(NV_MIN1_I))
+        Q.Add(CommandFactory.GetCommand(NV_MIN2_I))
+        Q.Run()
     End Sub
 
     Public Shared Sub switchToP2K()
-        sendATCommand("AT+MODE=8\r")
+        SendAtCommand("AT+MODE=8\r")
     End Sub
 
     Public Shared Sub switchToQCDM()
-        sendATCommand("AT$QCDMG")
+        SendAtCommand("AT$QCDMG")
     End Sub
 
     Public Shared Sub switchToLGDM()
-        sendATCommand("AT$LGDMGO")
+        SendAtCommand("AT$LGDMGO")
     End Sub
 
     Public Shared Sub ModeSwitch(ByVal mode As Qcdm.Mode)
@@ -719,7 +707,7 @@ Public Class cdmaTerm
         NvItems.readNVItemRange(rangeStart, rangeEnd, True, saveFilePath)
         Q.Run()
         Logger.Add("Reading NV - This may take a while, do not unplug..")
-       
+
         Logger.Add("NV Read Complete")
     End Sub
 
@@ -784,33 +772,32 @@ Public Class cdmaTerm
     Private Shared Sub EncodeMIN(MIN1 As String)
 
         Dim minStrings() As String = SecretDecoderRing.encode_NV_MIN1(MIN1)
-        MIN1Raw = minStrings(0)
-        MIN2Raw = minStrings(1)
+        Phone.MIN1Raw = minStrings(0)
+        Phone.MIN2Raw = minStrings(1)
 
     End Sub
 
-    Public Shared MIN1Raw As New String("")
-    Public Shared MIN2Raw As New String("")
+   
     Public Shared Sub WriteMin(MinNumber As String)
         EncodeMIN(MinNumber)
 
         Dim MIN1 As New List(Of Byte)
         ''Random Mystery Zeros...
         MIN1.Add(&H0)
-        For i As Integer = MIN1Raw.ToHexBytes().Length - 1 To 0 Step -1
-            MIN1.Add(MIN1Raw.ToHexBytes()(i))
+        For i As Integer = Phone.MIN1Raw.ToHexBytes().Length - 1 To 0 Step -1
+            MIN1.Add(Phone.MIN1Raw.ToHexBytes()(i))
         Next
-        For i As Integer = MIN1Raw.ToHexBytes().Length - 1 To 0 Step -1
-            MIN1.Add(MIN1Raw.ToHexBytes()(i))
+        For i As Integer = Phone.MIN1Raw.ToHexBytes().Length - 1 To 0 Step -1
+            MIN1.Add(Phone.MIN1Raw.ToHexBytes()(i))
         Next
         Dim MIN2 As New List(Of Byte)
         ''Random Mystery Zeros...
         MIN2.Add(&H0)
-        For i As Integer = MIN2Raw.ToHexBytes().Length - 1 To 0 Step -1
-            MIN2.Add(MIN2Raw.ToHexBytes()(i))
+        For i As Integer = Phone.MIN2Raw.ToHexBytes().Length - 1 To 0 Step -1
+            MIN2.Add(Phone.MIN2Raw.ToHexBytes()(i))
         Next
-        For i As Integer = MIN2Raw.ToHexBytes().Length - 1 To 0 Step -1
-            MIN2.Add(MIN2Raw.ToHexBytes()(i))
+        For i As Integer = Phone.MIN2Raw.ToHexBytes().Length - 1 To 0 Step -1
+            MIN2.Add(Phone.MIN2Raw.ToHexBytes()(i))
         Next
         ''Totally untested probably dangerous
         Q.Add(New Command(DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray, "DIAG_NV_WRITE_F, NV_MIN1_I, MIN1.ToArray"))
@@ -819,7 +806,7 @@ Public Class cdmaTerm
         Logger.Add("min write attempted... unstable feature: warning")
     End Sub
 
-    Shared Function DecodeMin() As String
+    Shared Function DecodeMin(MIN1Raw As String, MIN2Raw As String) As String
         Return SecretDecoderRing.decode_NV_MIN1(MIN1Raw, MIN2Raw)
     End Function
 
@@ -948,7 +935,7 @@ Public Class cdmaTerm
 
         Q.Run()
 
-        DecodeMin()
+        DecodeMin(Phone.MIN1Raw, Phone.MIN2Raw)
     End Sub
 
     Public Shared Sub ReadNv(ByVal nv As NvItems.NvItems)
@@ -1153,7 +1140,7 @@ Public Class cdmaTerm
 
         Q.Run()
 
-        DecodeMin()
+        DecodeMin(Phone.MIN1Raw, Phone.MIN2Raw)
     End Sub
 
     ''untested

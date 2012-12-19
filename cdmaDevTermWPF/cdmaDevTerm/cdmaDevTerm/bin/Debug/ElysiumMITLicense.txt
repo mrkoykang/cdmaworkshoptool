@@ -1,5 +1,5 @@
-A portion of this program (only the Elysium components) is included under the MIT licence as follows. 
-All other parts of cdmaDevTerm not designated otherwise in source are (c) Dillon Graham and released under the GPL V3.
+A portion of this program: "the Elysium component" is included under the MIT licence as follows. 
+All other parts of cdmaDevTerm not designated otherwise in source or Readme are (c) Dillon Graham and released under the GPL V3.
 
 Elysium Theme components only licence:
 

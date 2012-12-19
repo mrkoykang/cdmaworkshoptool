@@ -1,4 +1,4 @@
-The Avalon Edit component is licenced under the LGPL v2.1
+The Avalon Edit component is included under the LGPL v2.1
 
 GNU Lesser General Public License
 

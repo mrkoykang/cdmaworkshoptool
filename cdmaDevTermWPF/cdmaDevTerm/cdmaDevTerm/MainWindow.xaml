@@ -5,7 +5,7 @@
         xmlns:metro="http://schemas.codeplex.com/elysium/theme"
         xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
                   
-              Title="CdmaDevTerm .2.8.alpha (c)11.12 dg chromableedstudios.com"
+              Title="cdmaDevTerm .2.85.alpha (c)12.12 dg chromableedstudios.com"
               Height="650" Width="554" 
               AllowsTransparency="False" WindowStyle="ThreeDBorderWindow">
     <Grid>
@@ -86,6 +86,7 @@
         </StackPanel>
                 <StackPanel>
                     <StackPanel Margin="2,2,20,2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <CheckBox Name="AutoQcRead" Content="AUTO QC READ" IsChecked="True"  ></CheckBox>
                         <Button  Margin="2" HorizontalAlignment="Left"  Name="readPhone"  Width="60" Click="readPhone_Click" >
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Resources/download.png" Stretch="Uniform" Height="20" Width="20" />
@@ -135,9 +136,8 @@
                                     </TextBox>
                                     <TextBlock Margin="5" Text="MIN"  HorizontalAlignment="Left" Name="MinLabel" VerticalAlignment="Top" FontFamily="Segoe UI" />
                                     <TextBox   Text="{Binding Path=Min}" HorizontalAlignment="Right" MinWidth="94"  VerticalAlignment="Bottom" MaxLength="10"/>
-                                    <TextBlock Margin="5" Text="NAM LOCK"  HorizontalAlignment="Left" Name="NamLock" VerticalAlignment="Top" FontFamily="Segoe UI" />
 
-                                    <CheckBox x:Name="NamLockCheckbox" IsChecked="{Binding Path=NamLock}"></CheckBox>
+                                    <CheckBox x:Name="NamLockCheckbox" IsChecked="{Binding Path=NamLock}" Content="NAM LOCK"></CheckBox>
                                 </StackPanel>
                                 
                                 <StackPanel Margin="2" Orientation="Horizontal">
@@ -420,32 +420,61 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Term" Name="TerminalTab">
-                        <Grid >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition MinWidth="310" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBox Text="{Binding TermCommand}" HorizontalAlignment="Stretch" Margin="2" MinWidth="300"></TextBox>
-                                <StackPanel Orientation="Horizontal">
-                                    <CheckBox Name="TermAppendCrc"></CheckBox>
-                                    <TextBlock Text="ADD CRC + 7E"></TextBlock>
-                                </StackPanel>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1">
-                                <Button  Margin="5" MinHeight="70" MinWidth="70" Name="SendTerm" Click="SendTerm_Click" >
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="Resources/upload.png" Stretch="Uniform" Height="40" Width="40" />
-
+                        <TabControl>
+                            <TabItem Name="QC" Header="QC">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition MinWidth="310" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBox Name="TermCommand" HorizontalAlignment="Stretch" Margin="2" MinWidth="300"></TextBox>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox Name="TermAppendCrc" Content="ADD CRC + 7E"></CheckBox>
+                                        </StackPanel>
                                     </StackPanel>
-                                    <Button.ToolTip>
-                                        <ToolTip>
-                                            <TextBlock Text="send"/>
-                                        </ToolTip>
-                                    </Button.ToolTip>
-                                </Button>
-                            </StackPanel>
-                        </Grid>
+                                    <StackPanel Grid.Column="1">
+                                        <Button  Margin="5" MinHeight="70" MinWidth="70" Name="SendTerm" Click="SendTerm_Click" >
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="Resources/upload.png" Stretch="Uniform" Height="40" Width="40" />
+
+                                            </StackPanel>
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock Text="send"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Name="AT" Header="AT">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition MinWidth="310" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBox Name="AtCommand" HorizontalAlignment="Stretch" Margin="2" MinWidth="300"></TextBox>
+                                        
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <Button  Margin="5" MinHeight="70" MinWidth="70" Name="SendAt" Click="SendAt_Click" >
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="Resources/upload.png" Stretch="Uniform" Height="40" Width="40" />
+
+                                            </StackPanel>
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock Text="send"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                        
                     </TabItem>
                     <TabItem Header="Keys" Name="KeysTab">
                         <Grid>

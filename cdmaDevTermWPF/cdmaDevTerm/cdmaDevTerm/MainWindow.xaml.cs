@@ -182,13 +182,14 @@ q.Run()";
             Boolean result = true;
             cdmaTerm.Connect(cdmaTerm.thePhone.ComPortName);
 
-            if (Properties.Settings.Default.AutoModeOffline)
+            if (Properties.Settings.Default.AutoModeOffline && (AutoQcRead.IsChecked ?? true))
             {
                 cdmaTerm.Q.Clear();
                 cdmaTerm.ModeSwitch(Qcdm.Mode.MODE_RADIO_OFFLINE);
                 result = cdmaTerm.Q.Run();
             }
-            if (result)
+
+            if (result && (AutoQcRead.IsChecked ?? true))
             {
                 cdmaTerm.AddAllEvdo();
                 cdmaTerm.AddNv(NvItems.NvItems.NV_MEID_I);
@@ -322,7 +323,7 @@ q.Run()";
             private void SendTerm_Click(object sender, RoutedEventArgs e)
             {
                 bool appendCrcEof = TermAppendCrc.IsChecked ?? false;
-                cdmaTerm.SendTerminalCommand(cdmaTerm.thePhone.TermCommand, appendCrcEof);
+                cdmaTerm.SendTerminalCommand(TermCommand.Text, appendCrcEof);
             }
 
             private void writeEvdo_Click(object sender, RoutedEventArgs e)
@@ -587,6 +588,13 @@ q.Run()";
                 // Do not set e.Handled=true.
                 // We still want to insert the character that was typed.
             }
+
+           
         //<-- http://www.codeproject.com/Articles/42490/Using-AvalonEdit-WPF-Text-Editor 
+
+        private void SendAt_Click(object sender, RoutedEventArgs e)
+        {
+            cdmaTerm.SendAtCommand(AtCommand.Text);
+        }
     }
 }

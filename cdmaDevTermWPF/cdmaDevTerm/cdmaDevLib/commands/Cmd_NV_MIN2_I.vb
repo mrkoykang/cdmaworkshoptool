@@ -5,9 +5,9 @@
     End Sub
     Overrides Sub decode()
         Try
-            cdmaTerm.MIN2Raw = (New Byte() {Me.bytesRxd(7), Me.bytesRxd(6)}).ToHexString()
-            cdmaTerm.thePhone.Min = cdmaTerm.DecodeMin()
-            cdmaTerm.thePhoneRxd.Min = cdmaTerm.DecodeMin()
+            Phone.MIN2Raw = (New Byte() {Me.bytesRxd(7), Me.bytesRxd(6)}).ToHexString()
+            cdmaTerm.thePhone.Min = cdmaTerm.DecodeMin(Phone.MIN1Raw, Phone.MIN2Raw)
+            cdmaTerm.thePhoneRxd.Min = cdmaTerm.DecodeMin(Phone.MIN1Raw, Phone.MIN2Raw)
         Catch ex As Exception
             logger.add("Min2 err: " + ex.ToString)
         End Try

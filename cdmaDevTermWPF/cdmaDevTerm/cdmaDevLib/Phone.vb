@@ -1,8 +1,13 @@
 ﻿''Copyright 2012 Dillon Graham
 ''GPL v3 
+
 Imports System.Text
 Imports System.Collections.ObjectModel
 
+''  This class esentially implements the model and the view in a MVVM-ish pattern
+''  - the model being cdmaTerm.thePhoneRxd
+''  - the view being cdmaterm.thePhone
+'' INotifyPropertyChanged is implemented to allow binding to the properties in wpf
 Public Class Phone
     Implements System.ComponentModel.INotifyPropertyChanged
 
@@ -23,19 +28,18 @@ Public Class Phone
     Private _ModeChangeType As Qcdm.Mode
     Private _NamLock As Boolean
     Private _OperationCount As Integer = 0
-    'Private _NvData As New ObservableCollection(Of Nv)
     Private _Qcmip As Qcdm.Qcmip
     Private _AvailableComPorts As New List(Of COMPortInfo.COMPortInfo)
     Private _ComPortName As String
     Private _SixteenDigitSP As String
     Private _NvItems As Dictionary(Of NvItems.NvItems, Nv)
     Private _SpSixteenDigit As New Dictionary(Of String, String)
-    Private _TermCommand As String
     Private _Username As String
     Private _Password As String
     Private _PrlFilename As String
 
-
+    Public Shared MIN1Raw As New String("")
+    Public Shared MIN2Raw As New String("")
 
     Public Sub New()
 
@@ -54,13 +58,11 @@ Public Class Phone
         Me.ComPortName = ""
         Me.SixteenDigitSP = ""
         Me.NvItems = New Dictionary(Of NvItems.NvItems, Nv)
-        Me.TermCommand = ""
         Me.Username = ""
         Me.Password = ""
         Me.PrlFilename = ""
         Me.NumMipProfiles = ""
         Me.EnabledMipProfile = ""
-        '' _NvItems = New Dictionary(Of NvItems.NVItems, Nv)
     End Sub
     Public Sub clearViewModel()
         Me.Mdn = ""
@@ -76,7 +78,6 @@ Public Class Phone
         Me._OperationCount = 0
         Me.SixteenDigitSP = ""
         Me.NvItems = New Dictionary(Of NvItems.NvItems, Nv)
-        Me.TermCommand = ""
         Me.Username = ""
         Me.Password = ""
         Me.NumMipProfiles = ""
@@ -202,17 +203,7 @@ Public Class Phone
             End If
         End Set
     End Property
-    Public Property TermCommand() As String
-        Get
-            Return _TermCommand
-        End Get
-        Set(value As String)
-            If value <> _TermCommand Then
-                _TermCommand = value
-                RaiseEvent PropertyChanged(Me, New ComponentModel.PropertyChangedEventArgs("TermCommand"))
-            End If
-        End Set
-    End Property
+    
     Public Property Spc() As String
         Get
             Return _Spc

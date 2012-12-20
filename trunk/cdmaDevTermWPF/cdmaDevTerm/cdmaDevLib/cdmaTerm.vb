@@ -152,8 +152,6 @@ Public Class cdmaTerm
 #End Region
 
 #Region "onFormOpenAndOnFormClose"
-    ''coding koan: make it work, fix it later
-    ' ''on form load
 
     Public Shared Sub initSixteenDigitCodes(spFilePath As String)
         If (System.IO.File.Exists(spFilePath)) Then
@@ -161,38 +159,6 @@ Public Class cdmaTerm
             cdmaTerm.thePhone.SpSixteenDigit = cdmaTerm.thePhone.SpSixteenDigit
         End If
     End Sub
-
-    '        qcCommandsCombo.DataSource = [Enum].GetValues(GetType(Qcdm.Cmd))
-    '        nvItemsCombo.DataSource = [Enum].GetValues(GetType(NvItems.NVItems))
-
-    '        ''set the default nv read mode
-    '        readSPCTypeCombo.SelectedIndex = 0
-    '        ''this stuff is good leave alone for now
-    '        Try
-    '            ''assign the box the first com found
-    '            ComNumBox1.Text = ComNumBox1.Items.Item(ComNumBox1.Items.Count - 1)
-    '        Catch
-    '            logger.addToLog("no com devices found")
-    '        End Try
-
-    '    Catch ex As Exception
-    '        logger.addToLog("Load error:" + e.ToString)
-    '    End Try
-
-    'End Sub
-
-
-
-    ' ''check if the port is open on close
-    'Private Sub Form1_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-    '    ''kill 'er if she aint dead
-    '    If mySerialPort.IsOpen Then
-    '        mySerialPort.Close()
-    '    End If
-    'End Sub
-
-
-
 
 
 #End Region
@@ -1036,8 +1002,8 @@ Public Class cdmaTerm
         EndKey = &H51
     End Enum
 
-
     Public Shared Sub KeyPress(k As phoneKeys)
+        cdmaTerm.Q.Add(CommandFactory.GetCommand(DIAG_HS_KEY_F, New Byte() {0, k}))
         cdmaTerm.Q.Run()
     End Sub
 

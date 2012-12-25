@@ -5,8 +5,8 @@ Here you will find some wiki documentation about cdmaDevTerm and cwTool.
 
 = cdmaDevTerm =
 
-|| current version || v.2 ||
-|| status || beta ||
+|| current stable version || v.2 || status: beta ||
+|| current dev/unstable version || v .2.86 || status: alpha ||
 
 *Community content*
 

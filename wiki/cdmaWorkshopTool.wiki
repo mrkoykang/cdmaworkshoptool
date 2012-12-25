@@ -1,12 +1,10 @@
 #summary cdmaworkshoptool wiki.
 
-Here you will find some wiki documentation about cdmaDevTerm and cwTool.
-
-
 = cdmaDevTerm =
 
-|| current stable version || v.2 || status: beta || <a href ="http://cdmaworkshoptool.googlecode.com/files/CdmaDevTermV.2.zip"> download </a> ||
-|| current dev/unstable version || v .2.85 || status: alpha || <a href ="http://cdmaworkshoptool.googlecode.com/files/cdmaDevTerm.2.85.zip"> download </a> ||
+|| current(03/2012) stable version || v.2 || status: beta || <a href ="http://cdmaworkshoptool.googlecode.com/files/CdmaDevTermV.2.zip"> download </a> ||
+|| current(12/2012) dev/unstable version || v .2.85 || status: alpha || <a href ="http://cdmaworkshoptool.googlecode.com/files/cdmaDevTerm.2.85.zip"> download </a> ||
+
 *Community content*
 
 HTC SPC/MSL by mrrobertdeanjohnson

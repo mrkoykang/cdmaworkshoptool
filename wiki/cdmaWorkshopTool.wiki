@@ -23,6 +23,8 @@ LG Optimus G SPC by Drancid(xda-developers)- http://forum.xda-developers.com/sho
 
 *Guides*
 
+http://www.chromableedstudios.com/techninjutsu/scriptingwithironpythonincdmadevterm
+
 http://www.chromableedstudios.com/techninjutsu/howtowritemdnminwithcdmadevterm
 
 

@@ -30,6 +30,10 @@ http://www.chromableedstudios.com/techninjutsu/howtowritemdnminwithcdmadevterm
 
 *FAQ*
 
+  * Will you help me flash my phone? No. Please pay someone else that knows how if you don't. 
+  
+  * Will you help me change my esn/meid? No. To the best of my knowledge this is against some FCC rules in the USA where I am located.
+
   * What is cdmaDevLib vs cdmaDevTerm? cdmaDevLib is a library which enables the functions in cdmaDevTerm
 
   * Could I please have the source code to cdmaDevTerm? of course, it is GPL v3 software. Click the source tab, and checkout from svn(I use tortoiseSvn personally)

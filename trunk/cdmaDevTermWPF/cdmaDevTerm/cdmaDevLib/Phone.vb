@@ -1,10 +1,10 @@
-﻿''Copyright 2012 Dillon Graham
+ ''Copyright 2012 Dillon Graham
 ''GPL v3 
 
 Imports System.Text
 Imports System.Collections.ObjectModel
 
-''  This class esentially implements the model and the view in a MVVM-ish pattern
+''  This class essentially implements the model and the view in a MVVM-ish pattern
 ''  - the model being cdmaTerm.thePhoneRxd
 ''  - the view being cdmaterm.thePhone
 '' INotifyPropertyChanged is implemented to allow binding to the properties in wpf

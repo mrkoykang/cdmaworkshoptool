@@ -71,7 +71,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidD.vb" />
-    <Compile Include="Carrier.vb" />
     <Compile Include="cdmaCRC.vb" />
     <Compile Include="cdmaTerm.vb" />
     <Compile Include="commands\Cmd_DIAG_ESN_F.vb" />
@@ -98,9 +97,8 @@
     <Compile Include="DmPort.vb" />
     <Compile Include="esnConverter.vb" />
     <Compile Include="ExtensionMethods.vb" />
-    <Compile Include="logger.vb" />
+    <Compile Include="Logger.vb" />
     <Compile Include="metroCalc.vb" />
-    <Compile Include="Model.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

@@ -1,10 +1,9 @@
 ﻿Imports System.IO
 
 Public Class Qcdm
-
     Public Enum Cmd As Short
         ''Random sht for make fix decoder? wat?
-        NOT_A_COMMAND = -1222
+        NOT_A_COMMAND = - 1222
 
         DIAG_VERNO_F = &H0  '' Version Number Request/Response      
         DIAG_ESN_F = &H1  '' Mobile Station ESN Request/Response  
@@ -163,7 +162,6 @@ Public Class Qcdm
         CONTROL = &HFA
         ''no idea what this is = to
         LAST_SUBSYS
-
     End Enum
 
     Public Enum Response As Short
@@ -177,7 +175,6 @@ Public Class Qcdm
         DIAG_ERR_BAD_REPLY_CMD = &HB
         DIAG_ERR_BAD_SPC_MODE = &H15
         DIAG_ERR_BAD_MODE = &H20
-
     End Enum
 
     Public Enum Mode As Short
@@ -186,7 +183,6 @@ Public Class Qcdm
         MODE_RADIO_RESET = &H2
         MODE_RADIO_ONLINE = &H4
         MODE_RADIO_LOWPOWER = &H5
-
     End Enum
 
     Public Enum SubsysStorage As Short
@@ -199,7 +195,6 @@ Public Class Qcdm
         DIAG_EFS2_OPENDIR = &HB
         DIAG_EFS2_READDIR = &HC
         DIAG_EFS2_CLOSEDIR = &HD
-
     End Enum
 
     Public Enum diagpkt_subsys_cmd_enum_type As Short
@@ -283,19 +278,19 @@ Public Class Qcdm
         DIAG_SUBSYS_TIME = 73      ''/* Time Services */ 	
         DIAG_SUBSYS_Q6_CORE = 74      ''/* Q6 core services */	
         DIAG_SUBSYS_COREBSP = 75      ''/* CoreBSP */	
-        ''''/* Command code allocation: 	
+        '' '/* Command code allocation:
         ''  [0 - 2047]        - HWENGINES 	
         ''  [2048 - 2147]        - MPROC
         ''  [2148 - 2247]        - BUSES
         ''  [2248 - 2347]        - USB
         ''  [2348 - 65535]        - Reserved	
         '' */
-        DIAG_SUBSYS_MFLO2 = 76      ''/* Media Flow */
-        ''''/* Command code allocation: 
+            DIAG_SUBSYS_MFLO2 = 76      ''/* Media Flow */
+        '' '/* Command code allocation:
         ''    [0 - 1023]       - APPs
         ''    [1024 - 65535]   - Reserved	
         ''*/
-        DIAG_SUBSYS_ULOG = 77  ''/* ULog Services */	
+            DIAG_SUBSYS_ULOG = 77  ''/* ULog Services */	
         DIAG_SUBSYS_APR = 78  ''/* Asynchronous Packet Router (Yu Andy)*/	
         DIAG_SUBSYS_QNP = 79  ''/*QNP (Ravinder Are  Arun Harnoor)*/	
         DIAG_SUBSYS_STRIDE = 80  ''/* Ivailo Petrov */	
@@ -319,19 +314,20 @@ Public Class Qcdm
 
         cdmaTerm.Q.Clear()
 
-        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, SubsysStorage.DIAG_EFS2_READ, New Byte() {&HE, &H0}, "Read EFS", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, SubsysStorage.DIAG_EFS2_READ, New Byte() {&HE, &H0},
+                                   "Read EFS", "stupidfix"))
 
 
         Dim openFolder As New List(Of Byte)
         openFolder.AddRange(New Byte() {SubsysStorage.DIAG_EFS2_OPENDIR, &H0})
         ''  &H2F,
         For Each c As Char In folderName
-            openFolder.Add(System.Convert.ToUInt32(c))
+            openFolder.Add(Convert.ToUInt32(c))
         Next
         openFolder.Add(&H0)
         ''}
 
-        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, openFolder.ToArray, "OPENDIR " + folderName, "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, &H13, openFolder.ToArray, "OPENDIR " + folderName, "stupidfix"))
         Dim j As Integer = 1
 
         ''TODO: Increase max count to test and fix efs loop not stoping/arithmatic overflow exception
@@ -348,20 +344,24 @@ Public Class Qcdm
         ''cdmaTerm.Q.addCommandToQ(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_READDIR, &H0, &H1, &H0, &H0, &H0, i, &H0, &H0, &H0}, "READDIR", "stupidfix"))
         ''Next
 
-        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_CLOSEDIR, &H0, &H1, &H0, &H0, &H0}, "CLOSEDIR /", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, &H13,
+                                   New Byte() {SubsysStorage.DIAG_EFS2_CLOSEDIR, &H0, &H1, &H0, &H0, &H0}, "CLOSEDIR /",
+                                   "stupidfix"))
 
         cdmaTerm.Q.Run()
 
         Return New String("?")
-
     End Function
 
     Public Function ReadEfsRoot() As String
 
         cdmaTerm.Q.Clear()
 
-        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, SubsysStorage.DIAG_EFS2_READ, New Byte() {&HE, &H0}, "Read EFS", "stupidfix"))
-        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_OPENDIR, &H0, &H2F, &H0}, "OPENDIR /", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, SubsysStorage.DIAG_EFS2_READ, New Byte() {&HE, &H0},
+                                   "Read EFS", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, &H13,
+                                   New Byte() {SubsysStorage.DIAG_EFS2_OPENDIR, &H0, &H2F, &H0}, "OPENDIR /",
+                                   "stupidfix"))
         Dim j As Integer = 1
 
         ''TODO: Increase max count to test and fix efs loop not stoping/arithmatic overflow exception
@@ -377,23 +377,27 @@ Public Class Qcdm
         ''cdmaTerm.Q.addCommandToQ(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_READDIR, &H0, &H1, &H0, &H0, &H0, i, &H0, &H0, &H0}, "READDIR", "stupidfix"))
         ''Next
 
-        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_CLOSEDIR, &H0, &H1, &H0, &H0, &H0}, "CLOSEDIR /", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, &H13,
+                                   New Byte() {SubsysStorage.DIAG_EFS2_CLOSEDIR, &H0, &H1, &H0, &H0, &H0}, "CLOSEDIR /",
+                                   "stupidfix"))
 
         cdmaTerm.Q.Run()
 
         Return New String("?")
-
     End Function
+
     Public LastEfsWorked2 As Boolean = False
 
     Public Function ReadEfsDir(ByVal dir As Integer) As Boolean
 
-        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, New Byte() {SubsysStorage.DIAG_EFS2_READDIR, &H0, &H1, &H0, &H0, &H0, dir, &H0, &H0, &H0}, "READDIR", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, &H13,
+                                   New Byte() _
+                                      {SubsysStorage.DIAG_EFS2_READDIR, &H0, &H1, &H0, &H0, &H0, dir, &H0, &H0, &H0},
+                                   "READDIR", "stupidfix"))
 
         cdmaTerm.Q.Run()
 
         Return LastEfsWorked2
-
     End Function
 
 
@@ -413,14 +417,14 @@ Public Class Qcdm
         'End If
 
         For Each c As Char In fileName
-            OpenForWrite.Add(System.Convert.ToUInt32(c))
+            OpenForWrite.Add(Convert.ToUInt32(c))
         Next
         OpenForWrite.Add(0)
 
         cdmaTerm.Q.Clear()
-        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, SubsysCmd.STORAGE, OpenForWrite.ToArray, "OpenEfsForWrite", "StupidFix"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, SubsysCmd.STORAGE, OpenForWrite.ToArray, "OpenEfsForWrite",
+                                   "StupidFix"))
         cdmaTerm.Q.Run()
-
     End Sub
 
     Public Sub DeleteFromEFS(ByVal fileName As String, path As String)
@@ -433,23 +437,23 @@ Public Class Qcdm
         fileName = path + "/" + fileName
 
         For Each c As Char In fileName
-            efsPacket.Add(System.Convert.ToUInt32(c))
+            efsPacket.Add(Convert.ToUInt32(c))
         Next
 
         efsPacket.Add(&H0)
 
-        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, efsPacket.ToArray, "DeleteEFS", "stupidfix"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, &H13, efsPacket.ToArray, "DeleteEFS", "stupidfix"))
 
         Dim EfsDirectory As New List(Of Byte)
         EfsDirectory.AddRange(New Byte() {&HB, 0, 0, 0, 0})
 
         For Each c As Char In path
-            EfsDirectory.Add(System.Convert.ToUInt32(c))
+            EfsDirectory.Add(Convert.ToUInt32(c))
         Next
 
         EfsDirectory.Add(0)
 
-        cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_FS_OP_F, EfsDirectory.ToArray, "EfsDirectory"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_FS_OP_F, EfsDirectory.ToArray, "EfsDirectory"))
     End Sub
 
     Dim EfsPacketLength As Integer = 527
@@ -463,7 +467,6 @@ Public Class Qcdm
         Catch ex As Exception
             Return False
         End Try
-
     End Function
 
     Public Function WriteEfsFile(ByVal fileNameBytes As Byte()) As Boolean
@@ -471,14 +474,14 @@ Public Class Qcdm
         Dim currentFileBytes As New List(Of Byte())
 
         Dim FileLength As Integer = fileNameBytes.Length
-        Dim NumOfPackets As Integer = (FileLength / (EfsPacketMinusHeader))
+        Dim NumOfPackets As Integer = (FileLength/(EfsPacketMinusHeader))
 
 
         Dim CurrentPacket As Integer = 0
         Dim CurrentOffset As Integer = 0
 
 
-        Dim lastPacketSize As Integer = FileLength - ((NumOfPackets - 1) * EfsPacketMinusHeader)
+        Dim lastPacketSize As Integer = FileLength - ((NumOfPackets - 1)*EfsPacketMinusHeader)
 
         For i = 0 To NumOfPackets - 1
 
@@ -486,12 +489,12 @@ Public Class Qcdm
 
             Dim endOfCurrent As Integer
             If (i = NumOfPackets - 1) Then
-                endOfCurrent = ((i) * EfsPacketMinusHeader) - 1 + lastPacketSize
+                endOfCurrent = ((i)*EfsPacketMinusHeader) - 1 + lastPacketSize
             Else
-                endOfCurrent = (i + 1) * EfsPacketMinusHeader
+                endOfCurrent = (i + 1)*EfsPacketMinusHeader
             End If
 
-            For j = i * EfsPacketMinusHeader To endOfCurrent
+            For j = i*EfsPacketMinusHeader To endOfCurrent
                 ''For j = i * EfsPacketLength To EfsPacketMinusHeader
                 insideLoopPacket.Add(fileNameBytes(j))
             Next
@@ -532,21 +535,21 @@ Public Class Qcdm
             '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
             Dim debugstring As String = "DIAG_EFS2_WRITE " + i.ToString
-            cdmaTerm.Q.Add(New Command(Qcdm.Cmd.DIAG_SUBSYS_CMD_F, &H13, efsPacket.ToArray, debugstring, "stupidfix"))
+            cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, &H13, efsPacket.ToArray, debugstring, "stupidfix"))
 
 
             CurrentPacket += 2
             CurrentOffset += EfsPacketMinusHeader
 
         Next
-        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, SubsysCmd.STORAGE, New Byte() {&H3, 0, 0, 0, 0, 0}, "DIAG_EFS2_CLOSE", "StupidFix"))
+        cdmaTerm.Q.Add(New Command(Cmd.DIAG_SUBSYS_CMD_F, SubsysCmd.STORAGE, New Byte() {&H3, 0, 0, 0, 0, 0},
+                                   "DIAG_EFS2_CLOSE", "StupidFix"))
 
         Return True
-
     End Function
 
     Private Function ReadFileToBytes(ByVal filename As String) As Byte()
-        Dim fileExists = System.IO.File.Exists(filename)
+        Dim fileExists = File.Exists(filename)
 
         If (fileExists) Then
             Dim input As New FileStream(filename, FileMode.Open)
@@ -555,7 +558,7 @@ Public Class Qcdm
             input.Close()
             Return bytes
         End If
-        
+
         Return Nothing
     End Function
 
@@ -564,6 +567,5 @@ Public Class Qcdm
         MobileAndSimple
         Mobile
     End Enum
-
 End Class
 

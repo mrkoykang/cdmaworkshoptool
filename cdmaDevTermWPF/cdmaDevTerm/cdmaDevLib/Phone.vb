@@ -43,45 +43,45 @@ Public Class Phone
 
     Public Sub New()
 
-        Me.LogData = ""
-        Me.Mdn = ""
-        Me.Min = ""
-        Me.Spc = ""
-        Me.Sid = ""
-        Me.Nid = ""
-        Me.RegId = ""
-        Me.Meid = ""
-        Me.Esn = ""
-        Me.UserLock = ""
-        Me.NamLock = False
-        Me._OperationCount = 0
-        Me.ComPortName = ""
-        Me.SixteenDigitSP = ""
-        Me.NvItems = New Dictionary(Of NvItems.NvItems, Nv)
-        Me.Username = ""
-        Me.Password = ""
-        Me.PrlFilename = ""
-        Me.NumMipProfiles = ""
-        Me.EnabledMipProfile = ""
+        LogData = ""
+        Mdn = ""
+        Min = ""
+        Spc = ""
+        Sid = ""
+        Nid = ""
+        RegId = ""
+        Meid = ""
+        Esn = ""
+        UserLock = ""
+        NamLock = False
+        _OperationCount = 0
+        ComPortName = ""
+        SixteenDigitSP = ""
+        NvItems = New Dictionary(Of NvItems.NvItems, Nv)
+        Username = ""
+        Password = ""
+        PrlFilename = ""
+        NumMipProfiles = ""
+        EnabledMipProfile = ""
     End Sub
     Public Sub clearViewModel()
-        Me.Mdn = ""
-        Me.Min = ""
-        Me.Spc = ""
-        Me.Sid = ""
-        Me.Nid = ""
-        Me.RegId = ""
-        Me.Meid = ""
-        Me.Esn = ""
-        Me.UserLock = ""
-        Me.NamLock = False
-        Me._OperationCount = 0
-        Me.SixteenDigitSP = ""
-        Me.NvItems = New Dictionary(Of NvItems.NvItems, Nv)
-        Me.Username = ""
-        Me.Password = ""
-        Me.NumMipProfiles = ""
-        Me.EnabledMipProfile = ""
+        Mdn = ""
+        Min = ""
+        Spc = ""
+        Sid = ""
+        Nid = ""
+        RegId = ""
+        Meid = ""
+        Esn = ""
+        UserLock = ""
+        NamLock = False
+        _OperationCount = 0
+        SixteenDigitSP = ""
+        NvItems = New Dictionary(Of NvItems.NvItems, Nv)
+        Username = ""
+        Password = ""
+        NumMipProfiles = ""
+        EnabledMipProfile = ""
         ''TODO: not clearing raw min
     End Sub
     Public Property SpSixteenDigit() As Dictionary(Of String, String)
@@ -407,6 +407,6 @@ Public Class Phone
         End Get
     End Property
 
-    Public Event PropertyChanged(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs) Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+    Public Event PropertyChanged(sender As Object, e As ComponentModel.PropertyChangedEventArgs) Implements ComponentModel.INotifyPropertyChanged.PropertyChanged
 
 End Class

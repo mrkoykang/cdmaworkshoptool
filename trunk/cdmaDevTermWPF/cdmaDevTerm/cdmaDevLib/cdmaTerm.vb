@@ -23,19 +23,11 @@
 ''
 ''here goes nop
 Imports System
-Imports System.IO.Ports
-Imports System.IO
 Imports System.Text
-Imports System.Data
-Imports System.Xml
 Imports winAPIcom
-Imports System.Management
-Imports Microsoft.Win32
 Imports System.Text.RegularExpressions
 Imports cdmaDevLib.NvItems.NvItems
 Imports cdmaDevLib.Qcdm.Cmd
-Imports cdmaDevLib.Qcdm
-Imports System.Runtime.CompilerServices
 
 Public Class cdmaTerm
 
@@ -346,73 +338,7 @@ Public Class cdmaTerm
 
     End Sub
 
-    'Private Sub modeOfflineButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles modeSwitchButton.Click
-    '    Q.Clear()
-    '    modeSwitch(modeSwitchCombo.Text)
-    '    Q.Run()
-
-    '    If modeSwitchCombo.Text = "Reset" Then
-
-    '        ''Attempt to fix crazy BSOD
-    '        ''Driver unloaded without cancelling pending operations?
-    '        ''TODO: wtf. maybe the bsod was a fluke.. not even sure if this does anything. madness.
-    '        While (Q.GetCount > 0)
-    '            System.Threading.Thread.Sleep(150)
-    '        End While
-
-    '        Try
-    '            mySerialPort2.Flush()
-    '            mySerialPort2.Dispose()
-
-    '            ConnectButton.Enabled = True
-    '            disconnectPortButton.Enabled = False
-    '            logger.addToLog("Phone has been reset, port has been disconnected. Reconnect when the phone powers back on")
-    '        Catch ex As Exception
-    '            logger.addToLog("Mode reset disconnect err: " + ex.ToString)
-    '        End Try
-    '    End If
-
-    'End Sub
-
-
-    ''All the commands
 #Region "CommandsAsByteArrays"
-
-    ''BEGIN THE RANDOM ARRAYS FOR COMMANDS N SHIT
-    ''key presses
-    Public Shared ReadOnly keyPress_Pound() As Byte = {&H20, &H0, &H23, &H6E, &HD6, &H7E}
-    Public Shared ReadOnly keyPress_Star() As Byte = {&H20, &H0, &H2A, &HAF, &H4B, &H7E}
-    Public Shared ReadOnly keyPress_0() As Byte = {&H20, &H0, &H30, &H74, &HF4, &H7E}
-    Public Shared ReadOnly keyPress_1() As Byte = {&H20, &H0, &H31, &HFD, &HE5, &H7E}
-    Public Shared ReadOnly keyPress_2() As Byte = {&H20, &H0, &H32, &H66, &HD7, &H7E}
-    Public Shared ReadOnly keyPress_3() As Byte = {&H20, &H0, &H33, &HEF, &HC6, &H7E}
-    Public Shared ReadOnly keyPress_4() As Byte = {&H20, &H0, &H34, &H50, &HB2, &H7E}
-    Public Shared ReadOnly keyPress_5() As Byte = {&H20, &H0, &H35, &HD9, &HA3, &H7E}
-    Public Shared ReadOnly keyPress_6() As Byte = {&H20, &H0, &H36, &H42, &H91, &H7E}
-    Public Shared ReadOnly keyPress_7() As Byte = {&H20, &H0, &H37, &HCB, &H80, &H7E}
-    Public Shared ReadOnly keyPress_8() As Byte = {&H20, &H0, &H38, &H3C, &H78, &H7E}
-    Public Shared ReadOnly keyPress_9() As Byte = {&H20, &H0, &H39, &HB5, &H69, &H7E}
-    Public Shared ReadOnly keyPress_SEND_UP() As Byte = {&H20, &H0, &H50, &H72, &H97, &H7E}
-    Public Shared ReadOnly keyPress_END_DN() As Byte = {&H20, &H0, &H51, &HFB, &H86, &H7E}
-
-    ''change modes
-    Public Shared ReadOnly modeOfflineD() As Byte = {&H29, &H1, &H0, &H31, &H40, &H7E}
-    Public Shared ReadOnly modeReset() As Byte = {&H29, &H2, &H0, &H59, &H6A, &H7E}
-    Public Shared ReadOnly modeOnline() As Byte = {&H29, &H4, &H0, &H89, &H3E, &H7E}
-    Public Shared ReadOnly modeLow() As Byte = {&H29, &H5, &H0, &H51, &H27, &H7E}
-
-    ''these are commands as byte arrays including crc and eof
-    ''00identify
-    Public Shared ReadOnly Diag00() As Byte = {&H0, &H78, &HF0, &H7E}
-    ''01readesn
-    Public Shared ReadOnly Diag01() As Byte = {&H1, &HF1, &HE1, &H7E}
-
-    ''nvread meid
-    Public Shared ReadOnly nvmodeMEIDRead() As Byte = {&H26, &H97, &H7, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H69, &H3E, &H7E}
-
-    Public Shared ReadOnly send16digitFs() As Byte = {&H46, &HFF, &HFF, &HFF, &HFF, &HFF, &HFF, &HFF, &HFF, &HFE, &H74, &H7E}
-    Public Shared ReadOnly send16digitSchU350() As Byte = {&H46, &H19, &H45, &H8, &H15, &H20, &H8, &H11, &H6, &HE7, &H20, &H7E}
-
 
     ''read spc functions
     Public Shared ReadOnly readSPC_nvMethod() As Byte = {&H26, &H55, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &HA5, &H34, &H7E}
@@ -431,10 +357,6 @@ Public Class cdmaTerm
     ''uh?
     Public Shared ReadOnly unlockHtcSuperSPC() As Byte = {&H41, &H74, &H64, &H77, &H61, &H6F, &H70, &H42, &H4A, &H7E}
 
-
-
-
-    ''random test sht
     ''qm calls this read build id
     Public Shared ReadOnly readChipset() As Byte = {&H7C, &H93, &H49, &H7E}
 
@@ -451,75 +373,6 @@ Public Class cdmaTerm
     Public Shared ReadOnly lg_Lock1() As Byte = {&H21, &H0, &H0, &H2B, &H9F, &H7E}
     Public Shared ReadOnly lg_KeyEmu1() As Byte = {&H20, &H0, &H6, &HC1, &HA0, &H7E}
     Public Shared ReadOnly lg_Lock2() As Byte = {&H21, &H0, &H1, &HA2, &H8E, &H7E}
-
-
-    ''blank arrays
-    Public empty_cmd_133() As Byte = {&H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0}
-    Public empty_cmd_136() As Byte = {&H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0}
-
-    Public empty_cmd_264() As Byte = {&H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0}
-
-
-#End Region
-
-#Region "WM_COMMNOTIFY"
-
-    Private WM_DEVICECHANGE As Integer = &H219
-    Private WM_COMMNOTIFY As Integer = &H44
-
-    Public Enum WM_DEVICECHANGE_WPPARAMS As Integer
-        DBT_CONFIGCHANGECANCELED = &H19
-        DBT_CONFIGCHANGED = &H18
-        DBT_CUSTOMEVENT = &H8006
-        DBT_DEVICEARRIVAL = &H8000
-        DBT_DEVICEQUERYREMOVE = &H8001
-        DBT_DEVICEQUERYREMOVEFAILED = &H8002
-        DBT_DEVICEREMOVECOMPLETE = &H8004
-        DBT_DEVICEREMOVEPENDING = &H8003
-        DBT_DEVICETYPESPECIFIC = &H8005
-        DBT_DEVNODES_CHANGED = &H7
-        DBT_QUERYCHANGECONFIG = &H17
-        DBT_USERDEFINED = &HFFFF
-    End Enum
-
-
-    ''was used to notify when a device is plugged in, not needed?
-    'Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
-    '    If m.Msg = WM_COMMNOTIFY Then
-    '        logger.addToLog("WM_COMMNOTIFY Triggered")
-    '        ''mySerialPort2.Read(
-    '    End If
-    '    If m.Msg = WM_DEVICECHANGE Then
-
-    '        Select Case m.WParam
-    '            Case WM_DEVICECHANGE_WPPARAMS.DBT_DEVICEARRIVAL
-    '                Try
-    '                    If automagic350check.Checked = True Then
-    '                        If Val(autoFlashCountTextbox.Text) > 0 Then
-    '                            ''getterdone
-    '                            ''autoFlashCountTextbox.Text = Val(autoFlashCountTextbox.Text) - 1
-
-    '                            ''TODO FIX WHEN FIXING BULK FLASH
-    '                            autoFlashCountTextbox.Text = "0"
-    '                            u350magicAPPLYDIRECTLYTOTHEFOREHEAD()
-    '                            '' logger.addToLog("connect next phone")
-    '                            ''autoFlashCountTextbox.Text = Val(autoFlashCountTextbox.Text) - 1  ajh was here - hello world
-    '                            '' System.Threading.Thread.Sleep(5000)
-    '                        End If
-
-    '                    End If
-
-    '                Finally
-    '                    ''System.Threading.Thread.Sleep(5000)
-    '                End Try
-    '                ''lblMessage.Text = "USB Inserted"
-
-    '            Case WM_DEVICECHANGE_WPPARAMS.DBT_DEVICEREMOVECOMPLETE
-    '                ''don nothing
-    '        End Select
-    '    End If
-    '    MyBase.WndProc(m)
-    'End Sub
 
 #End Region
 
@@ -613,15 +466,16 @@ Public Class cdmaTerm
         Q.Add(New Command(unlockLgNvMemory, "Unlock LG NV Memory"))
         Q.Add(New Command(lg_Lock1, "LG Lock 1"))
         Q.Add(New Command(lg_KeyEmu1, "LG Key Emu1"))
-        Q.Add(New Command(keyPress_END_DN, "KeyPress END_DN"))
-        Q.Add(New Command(keyPress_3, "KeyPress 3"))
-        Q.Add(New Command(keyPress_7, "KeyPress 7"))
-        Q.Add(New Command(keyPress_3, "KeyPress 3"))
-        Q.Add(New Command(keyPress_3, "KeyPress 3"))
-        Q.Add(New Command(keyPress_9, "KeyPress 9"))
-        Q.Add(New Command(keyPress_2, "KeyPress 2"))
-        Q.Add(New Command(keyPress_9, "KeyPress 9"))
-        Q.Add(New Command(keyPress_END_DN, "KeyPress END_DN"))
+
+        cdmaTerm.AddKeyPress(cdmaTerm.phoneKeys.EndKey)
+        cdmaTerm.AddKeyPress(cdmaTerm.phoneKeys.Three)
+        cdmaTerm.AddKeyPress(cdmaTerm.phoneKeys.Seven)
+        cdmaTerm.AddKeyPress(cdmaTerm.phoneKeys.Three)
+        cdmaTerm.AddKeyPress(cdmaTerm.phoneKeys.Three)
+        cdmaTerm.AddKeyPress(cdmaTerm.phoneKeys.Nine)
+        cdmaTerm.AddKeyPress(cdmaTerm.phoneKeys.Two)
+        cdmaTerm.AddKeyPress(cdmaTerm.phoneKeys.Nine)
+        cdmaTerm.AddKeyPress(cdmaTerm.phoneKeys.EndKey)
 
         ''Q.addCommandToQ(New Command(nvmodeMEIDRead, "NV Mode MEID Read"))
         ''Q.addCommandToQ(New Command(nvmodeMEIDRead, True, "ReadMeid_NV", "Any", "NV Mode MEID Read"))
@@ -652,19 +506,7 @@ Public Class cdmaTerm
 
     Public Shared Sub ModeSwitch(ByVal mode As Qcdm.Mode)
 
-        ''first check which read type then go
-        If mode = Qcdm.Mode.MODE_RADIO_OFFLINE Then
-            Q.Add(New Command(modeOfflineD, "mode offline")) ''TODO: refactor to actually pass qc enum
-        ElseIf mode = Qcdm.Mode.MODE_RADIO_ONLINE Then
-            Q.Add(New Command(modeReset, "no mode online(reset sent)"))
-        ElseIf mode = Qcdm.Mode.MODE_RADIO_LOWPOWER Then
-            Q.Add(New Command(modeOfflineD, "no mode low(offd sent)"))
-        ElseIf mode = Qcdm.Mode.MODE_RADIO_RESET Then
-            Q.Add(New Command(modeReset, "mode reset"))
-        ElseIf mode = "P2K" Then
-            switchToP2K()
-        End If
-
+        Q.Add(CommandFactory.GetCommand(Qcdm.Cmd.DIAG_CONTROL_F, New Byte() {mode, 0}))
 
     End Sub
 
@@ -737,13 +579,13 @@ Public Class cdmaTerm
 
     Private Shared Sub EncodeMIN(MIN1 As String)
 
-        Dim minStrings() As String = SecretDecoderRing.encode_NV_MIN1(MIN1)
+        Dim minStrings() As String = Cmd_NV_MIN1_I.encode_NV_MIN1(MIN1)
         Phone.MIN1Raw = minStrings(0)
         Phone.MIN2Raw = minStrings(1)
 
     End Sub
 
-   
+
     Public Shared Sub WriteMin(MinNumber As String)
         EncodeMIN(MinNumber)
 
@@ -773,7 +615,7 @@ Public Class cdmaTerm
     End Sub
 
     Shared Function DecodeMin(MIN1Raw As String, MIN2Raw As String) As String
-        Return SecretDecoderRing.decode_NV_MIN1(MIN1Raw, MIN2Raw)
+        Return Cmd_NV_MIN1_I.decode_NV_MIN1(MIN1Raw, MIN2Raw)
     End Function
 
     Public Shared Sub Disconnect()
@@ -1003,8 +845,11 @@ Public Class cdmaTerm
     End Enum
 
     Public Shared Sub KeyPress(k As phoneKeys)
-        cdmaTerm.Q.Add(CommandFactory.GetCommand(DIAG_HS_KEY_F, New Byte() {0, k}))
+        AddKeyPress(k)
         cdmaTerm.Q.Run()
+    End Sub
+    Public Shared Sub AddKeyPress(k As phoneKeys)
+        cdmaTerm.Q.Add(CommandFactory.GetCommand(DIAG_HS_KEY_F, New Byte() {0, k}))
     End Sub
 
     Public Shared Sub WriteNamLock(lockNam As Boolean)
@@ -1133,8 +978,6 @@ Public Class cdmaTerm
 
     End Function
 
-
-
     'Private Sub ReadFolder(ByVal folderName As String)
     '    Try
     '        ''not sure if i want these clears here
@@ -1147,41 +990,6 @@ Public Class cdmaTerm
     '        logger.addToLog("Efs read err 2: " + ex.ToString)
     '    End Try
     'End Sub
-
-    'Private Sub ReloadDataSetup_Click(sender As System.Object, e As System.EventArgs) Handles ReloadDataSetup.Click
-    '    Dim runScripts As Boolean = False
-
-    '    Dim fd As New OpenFileDialog
-
-    '    fd.Title = "Select a carrier .xml script"
-    '    Dim result = fd.ShowDialog()
-    '    If result = Windows.Forms.DialogResult.OK Then
-    '        runScripts = True
-    '    End If
-    '    Dim CarrierXml As String = fd.FileName
-
-    '    fd.Title = "Select a model .xml script"
-    '    result = fd.ShowDialog()
-    '    If result = Windows.Forms.DialogResult.OK Then
-    '        runScripts = runScripts And True
-    '    End If
-    '    Dim ModelXml As String = fd.FileName
-
-    '    If runScripts Then
-    '        loadModel(ModelXml, loadCarrier(CarrierXml))
-    '    End If
-
-    'End Sub
-
-    Function loadCarrier(FileName As String, dataMdn As String, dataMin As String) As Carrier
-        Dim myCarrier As New Carrier(FileName, dataMdn, dataMin)
-        Logger.Add("Loaded: " + myCarrier.Name + " " + myCarrier.Prl)
-        Return myCarrier
-    End Function
-    Function loadModel(FileName As String, Carrier As Carrier, prlFilePath As String) As Model
-        Dim myModel As New Model(FileName, Carrier, prlFilePath)
-        Return myModel
-    End Function
 
     Public Shared Sub updatePhoneFromViewModel()
         Try

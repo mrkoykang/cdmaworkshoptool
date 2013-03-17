@@ -76,7 +76,7 @@ Public Module ExtensionMethods
     End Function
 
     <Extension()> _
-    Public Function ToHexString(ByVal InputValue As Byte()) As String
+    Public Function ToHexString(ByVal inputValue As Byte()) As String
         Return BytesToHexString(InputValue)
     End Function
 

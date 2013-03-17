@@ -146,37 +146,10 @@ Public Class SecretDecoderRing
 
     Private Shared Sub decodeNvItem(ByVal cmd As Command)
         Select Case cmd.currentNv
-                ''Case NvItems.NVItems.NV_NAM_LOCK_I
-                ''Read nam lock
-                '' decode_NV_NAM_LOCK_I(cmd.bytesRxd)
-            Case NvItems.NvItems.NV_MIN1_I
-                ''Read min1
-                decode_NV_MIN1(cmd)
-                'Case NvItems.NVItems.NV_PPP_USER_ID_I ''910 EVDO_P1
-                '    decode_NV_PPP_USER_ID_I(cmd.bytesRxd)
-                'Case NvItems.NVItems.NV_PPP_PASSWORD_I ''906 EVDO_U1
-                '    decode_NV_PPP_PASSWORD_I(cmd.bytesRxd)
-                'Case NvItems.NVItems.NV_PAP_USER_ID_I ''318 EVDO_P2
-                '    decode_NV_PAP_USER_ID_I(cmd.bytesRxd)
-                'Case NvItems.NVItems.NV_PAP_PASSWORD_I ''319 EVDO_U2
-                '    decode_NV_PAP_PASSWORD_I(cmd.bytesRxd)
-                'Case NvItems.NVItems.NV_HDR_AN_AUTH_USER_ID_LONG_I ''1194 EVDO_P3
-                '    decode_NV_HDR_AN_AUTH_USER_ID_LONG(cmd.bytesRxd)
-                'Case NvItems.NVItems.NV_HDR_AN_AUTH_PASSWORD_LONG_I ''1192 EVDO_U3
-                '    decode_NV_HDR_AN_AUTH_PASSWD_LONG(cmd.bytesRxd)
-                'Case NvItems.NVItems.NV_HDR_AN_AUTH_NAI_I ''579 EVDO_P4
-                '    decode_NV_HDR_AN_AUTH_NAI_I(cmd.bytesRxd)
-                'Case NvItems.NVItems.NV_HDR_AN_AUTH_PASSWORD_I ''580 EVDO_U4
-                '    decode_NV_HDR_AN_AUTH_PASSWORD_I(cmd.bytesRxd)
-                'Case NvItems.NVItems.NV_DS_QCMIP_I ''0x01cb evdo mode
-                '    decode_NV_DS_QCMIP_I(cmd.bytesRxd)
+ 
             Case 11055 ''item 0x2b2f 11055 data 0x7d4 2004 bb reg id
                 decode_11055(cmd.bytesRxd)
 
-                'Case NvItems.NVItems.NV_DS_MIP_NUM_PROF_I ''number of profiles
-                '    decode_NV_DS_MIP_NUM_PROF_I(cmd.bytesRxd)
-                'Case NvItems.NVItems.NV_DS_MIP_ENABLE_PROF_I ''enabled profile
-                '    decode_NV_DS_MIP_ENABLE_PROF_I(cmd.bytesRxd)
         End Select
 
     End Sub
@@ -213,106 +186,26 @@ Public Class SecretDecoderRing
         ''test decode spc
         Try
 
+            Dim bytesIn As String = cmd.bytesRxd.ToHexString()
 
-            ''Dim spcFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
-
-            Dim spcFromPacket As String = cmd.bytesRxd.ToHexString()
-
-            Dim thisIsTheSPC As String = ""
+            Dim lgSpc As String = ""
 
 
-            thisIsTheSPC += spcFromPacket(9) + spcFromPacket(11) & _
-            spcFromPacket(13) + spcFromPacket(15) & _
-            spcFromPacket(17) + spcFromPacket(19)
+            lgSpc += bytesIn(9) + bytesIn(11) & _
+            bytesIn(13) + bytesIn(15) & _
+            bytesIn(17) + bytesIn(19)
 
-            'If thisIsTheSPC = "000000" Then
-            '    logger.addToLog("cant find meid 1")
+            cdmaTerm.thePhone.Spc = lgSpc
+            cdmaTerm.thePhoneRxd.Spc = lgSpc
 
-            'Else
-            cdmaTerm.thePhone.Spc = thisIsTheSPC
-            cdmaTerm.thePhoneRxd.Spc = thisIsTheSPC
-            ''End If
-
-
-        Catch
-            logger.add("cant find spc_lg 1")
+        Catch ex As Exception
+            Logger.Add("er spc_lg 1 " + ex.ToString())
 
         End Try
 
     End Sub
 
-    Shared Sub decode_ReadNam0MIN_Part2(ByVal cmd As Command)
-        ''test decode mdn
-        Try
-
-            ''Dim stringFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
-            Dim stringFromPacket As String = cmd.bytesRxd.ToHexString()
-
-            Dim DecodedString As String = ""
-
-
-            DecodedString += stringFromPacket(9) + stringFromPacket(11) & _
-            stringFromPacket(13) + stringFromPacket(15) & _
-            stringFromPacket(17) + stringFromPacket(19) & _
-            stringFromPacket(21) + stringFromPacket(23) & _
-            stringFromPacket(25) + stringFromPacket(27)
-
-            Dim buildFullMin As String = MIN2Raw + DecodedString
-            MIN2Raw = buildFullMin
-
-
-
-        Catch
-            logger.add("damn decoder ring: cant get decoded min2")
-
-        End Try
-
-    End Sub
     Private Shared MIN2Raw As String
-
-    Shared Sub decode_ReadNam0MIN_part1(ByVal cmd As Command)
-        ''test decode mdn
-        '' Try
-
-        ''Dim stringFromPacket As String = cdmaTerm.AtReturnCmdBox.Text
-        Dim stringFromPacket As String = cmd.bytesRxd.ToHexString()
-
-        Dim DecodedString As String = ""
-
-
-        'DecodedString += stringFromPacket(9) + stringFromPacket(11) & _
-        'stringFromPacket(13)
-
-
-        'cdmaTerm.nam0MINTextbox.Text = DecodedString
-
-        Dim min1 As Int32 = &HF9EBE7
-        '' Both values min1 and min2 have to be read out
-        Dim min2 As Int32 = &H3E7
-
-        min2 = (min2 + 1) Mod (10) + ((((min2 Mod (100) / 10) + 1) Mod (10)) * 10) + ((((min2 / 100) + 1) Mod (10)) * 100)
-
-        Dim min1a As Int64 = (min1 And &HFFC000) >> 14
-
-        min1a = (min1a + 1) Mod (10) + ((((min1a Mod (100) / 10) + 1) Mod (10)) * 10) + ((((min1a / 100) + 1) Mod (10)) * 100)
-        Dim min1b As Int64 = ((min1 And &H3C00) >> 10) Mod (10)
-        Dim min1c As Int64 = (min1 And &H3FF)
-        min1c = (min1c + 1) Mod (10) + ((((min1c Mod (100) / 10) + 1) Mod (10)) * 10) + ((((min1c / 100) + 1) Mod (10)) * 100)
-
-        ''? string formatter method..?
-        ''sprintf_s(buff, 0x30, "%03d %03d %d %03d",min2,min1a,min1b,min1c);  // result
-
-        cdmaTerm.thePhone.Min = (min2.ToString + min1a.ToString + min1b.ToString + min1c.ToString)
-        cdmaTerm.thePhoneRxd.Min = (min2.ToString + min1a.ToString + min1b.ToString + min1c.ToString)
-
-        '' cdmaTerm.nam0MDNTextbox.Text = (min2) Mod (&H3D).ToString + min1a Mod (&H3D).ToString + min1b Mod (&HD).ToString + min1c Mod (&H3D).ToString
-
-        '' Catch
-        '' logger.addToLog("damn decoder ring: cant get decoded min1")
-
-        ''End Try
-
-    End Sub
 
     ''#End Region
 
@@ -410,7 +303,7 @@ Public Class SecretDecoderRing
 
     Public Shared Function trimFrontAndEndAscii(ByVal str As String) As String
         If (str.Length - 7) <= 0 Then
-            logger.add("No ascii response to command l: " + str.Length.ToString)
+            Logger.Add("No ascii response to command l: " + str.Length.ToString)
             Return ""
         End If
         Return str.Substring(4, str.Length - 7)
@@ -450,104 +343,12 @@ Public Class SecretDecoderRing
 
     Private Shared Sub decode_DIAG_SPC_F(ByVal cmd As Command)
         If cmd.bytesRxd(1) <> 1 Then
-            logger.add("Spc not accepted, don't send anything for 10 seconds (or devterm will crash)")
+            Logger.Add("Spc not accepted, don't send anything for 10 seconds (or devterm will crash)")
             System.Threading.Thread.Sleep(1000)
         ElseIf cmd.bytesRxd(1) = 1 And cmd.bytesRxd(0) = &H41 Then
-            logger.add("Spc Accepted")
+            Logger.Add("Spc Accepted")
         End If
     End Sub
-
-    Private Shared Sub decode_NV_MIN1(ByVal cmd As Command)
-        ' logger.addToLog("rxd: " + cdmaTerm.biznytesToStrizings(cmd.bytesRxd))
-        'logger.addToLog("rxd: " + getAsciiStrings(cmd.bytesRxd))
-        'cdmaTerm.MIN1Raw = cdmaTerm.biznytesToStrizings(New Byte() {cmd.bytesRxd(7), cmd.bytesRxd(6), cmd.bytesRxd(5), cmd.bytesRxd(4)})
-        'test to fix lg
-        Phone.MIN1Raw = (New Byte() {cmd.bytesRxd(11), cmd.bytesRxd(10), cmd.bytesRxd(9), cmd.bytesRxd(8)}).ToHexString()
-        Dim min1 As New Integer
-        min1 = &HF9D260
-        Dim min2 As New Integer
-        min2 = &H3E7
-
-        min2 = (min2 + 1) Mod 10 + ((((min2 Mod 100 / 10) + 1) Mod 10) * 10) + ((((min2 / 100) + 1) Mod 10) * 100)
-
-        Dim min1a As New Int64
-        min1a = (min1 And &HFFC000) >> 14
-        min1a = (min1a + 1) Mod 10 + ((((min1a Mod 100 / 10) + 1) Mod 10) * 10) + ((((min1a / 100) + 1) Mod 10) * 100)
-
-        Dim min1b As New Int64
-        min1b = ((min1 And &H3C00) >> 10) Mod 10
-
-        Dim min1c As New Int64
-        min1c = (min1 And &H3FF)
-        min1c = (min1c + 1) Mod 10 + ((((min1c Mod 100 / 10) + 1) Mod 10) * 10) + ((((min1c / 100) + 1) Mod 10) * 100)
-
-        logger.add("test Min Decode: " & "min2: " & min2 & "min1a: " & min1a & "min1b: " & min1b & "min1c: " & min1c)
-    End Sub
-
-    Public Shared Function decode_NV_MIN1(ByVal min1 As String, ByVal min2 As String) As String
-        Try
-            Return decode_NV_MIN1(System.Convert.ToInt32(min1, 16), System.Convert.ToInt32(min2, 16))
-        Catch ex As Exception
-            logger.add("decode_NV_MIN1 string string err: " + ex.ToString)
-            Return ""
-        End Try
-    End Function
-    Public Shared Function decode_NV_MIN1(ByVal min1 As Long, ByVal min2 As Long) As String
-
-        min2 = (min2 + 1) Mod 10 + (((((min2 Mod 100) \ 10) + 1) Mod 10) * 10) + ((((min2 \ 100) + 1) Mod 10) * 100)
-
-        Dim min1a As New Integer
-        min1a = (min1 And &HFFC000) >> 14
-
-        min1a = (min1a + 1) Mod 10 + (((((min1a Mod 100) \ 10) + 1) Mod 10) * 10) + ((((min1a \ 100) + 1) Mod 10) * 100)
-
-        Dim min1b As New Integer
-        min1b = ((min1 And &H3C00) >> 10) Mod 10
-
-        Dim min1c As New Integer
-        min1c = (min1 And &H3FF)
-
-        Dim min1c_5b As Integer = (min1c + 1) Mod 10
-        Dim min1c_5c As Integer = (((((min1c Mod 100) \ 10) + 1) Mod 10) * 10)
-        Dim min1c_5d As Integer = ((((min1c \ 100) + 1) Mod 10) * 100)
-
-        min1c = min1c_5b + min1c_5c + min1c_5d
-
-        Return min2.ToString("000") + min1a.ToString("000") + min1b.ToString("0") + min1c.ToString("000")
-
-    End Function
-
-    Shared Function encode_NV_MIN1(ByVal min1str As String) As String()
-        Dim min1 As String = "Min1"
-        Dim min2 As String = "Min2"
-
-        'WORD min2=(((byte)_strtoui64(min1str.Mid(0,1),NULL,16)+9)%10)*100+(((byte)_strtoui64(min1str.Mid(1,1),NULL,16)+9)%10)*10+(((byte)_strtoui64(min1str.Mid(2,1),NULL,16)+9)%10 );
-        Dim min2i As Integer = (((min1str.Substring(0, 1)) + 9) Mod 10) * 100 + (((min1str.Substring(1, 1)) + 9) Mod 10) * 10 + (((min1str.Substring(2, 1)) + 9) Mod 10)
-
-        'DWORD min1a=(((byte)_strtoui64(min1str.Mid(3,1),NULL,16)+9)%10)*100+(((byte)_strtoui64(min1str.Mid(4,1),NULL,16)+9)%10)*10+(((byte)_strtoui64(min1str.Mid(5,1),NULL,16)+9)%10);
-        Dim min1a As Integer = (((min1str.Substring(3, 1)) + 9) Mod 10) * 100 + (((min1str.Substring(4, 1)) + 9) Mod 10) * 10 + (((min1str.Substring(5, 1)) + 9) Mod 10)
-
-        'DWORD min1b=(byte)_strtoui64(min1str.Mid(6,1),NULL,16);
-        Dim min1b As Integer = (min1str.Substring(6, 1))
-
-        'if (min1b==0) min1b=10;
-        If (min1b = 0) Then
-            min1b = 10
-        End If
-        'DWORD min1c=(((byte)_strtoui64(min1str.Mid(7,1),NULL,16)+9)%10)*100+(((byte)_strtoui64(min1str.Mid(8,1),NULL,16)+9)%10)*10+(((byte)_strtoui64(min1str.Mid(9,1),NULL,16)+9)%10);
-        Dim min1c As Integer = (((min1str.Substring(7, 1)) + 9) Mod 10) * 100 + (((min1str.Substring(8, 1)) + 9) Mod 10) * 10 + (((min1str.Substring(9, 1)) + 9) Mod 10)
-
-        'DWORD min1=min1c+(min1b<<10)+(min1a<<14);
-        min1 = (min1c + (min1b << 10) + (min1a << 14)).ToString("x8")
-
-        'min1 = ""
-        min2 = min2i.ToString("x4")
-        'char *buff=(char*)malloc(0x30);
-        'sprintf_s(buff,0x30,"%02X",min2); // Output Min2
-        'sprintf_s(buff,0x30,"%08X",min1); // Output Min1
-
-        Return New String() {min1.ToUpper, min2.ToUpper}
-    End Function
 
     Private Shared Sub decode_11055(ByVal bytesRxd As Byte())
         ''TODO untested

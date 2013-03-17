@@ -14,20 +14,16 @@
 '' check out the GPL v3 for details
 '' http://www.gnu.org/copyleft/gpl.html
 ''-------------------------------------------------------------------------------------------------------------
-
-Imports System
-Imports System.Collections
 Imports System.IO
-Imports System.Threading
-Imports System.ComponentModel
+Imports System.Globalization
+Imports System.Text
 
 Public Class CommandQueue
-
     Private myQ As New Queue
     ''sync wrapper for queue
-    Public mySynqdQ As Queue = Queue.Synchronized(myQ)
-    Public badItemCount As Integer = 0
-    Public inturruptCommandQFlag As Boolean = False
+    Public MySynqdQ As Queue = Queue.Synchronized(myQ)
+    Public BadItemCount As Integer = 0
+    Public InturruptCommandQFlag As Boolean = False
 
     Public Sub Add(ByRef inCommand As Command)
         mySynqdQ.Enqueue(inCommand)
@@ -48,7 +44,7 @@ Public Class CommandQueue
         Logger.Add("Message queue was silently cleared")
         mySynqdQ.Clear()
     End Sub
-    Private pendingOperations As Boolean = False
+
     ''Returns true if all commands execute
     Public Function Run() As Boolean
         'If (BackgroundWorker1.IsBusy Or pendingOperations) Then
@@ -88,7 +84,9 @@ Public Class CommandQueue
                         Return False
                     End If
                     thisC.decode()
-                    Logger.Add("q count: " + mySynqdQ.Count.ToString + Environment.NewLine + thisC.debuggingText & Environment.NewLine)
+                    Logger.Add(
+                        "q count: " + mySynqdQ.Count.ToString + Environment.NewLine + thisC.debuggingText &
+                        Environment.NewLine)
 
                 End While
             End If
@@ -124,14 +122,14 @@ Public Class CommandQueue
     'End Sub
 
 
-    Friend Sub checkNvQForBadItems()
+    Friend Sub CheckNvQForBadItems()
         Try
 
-            For Each c As Command In mySynqdQ
+            For Each c As Command In MySynqdQ
 
                 If c.bytesRxd.Length < 136 Then
                     c.badSecurityNvRead = True
-                    badItemCount += 1
+                    BadItemCount += 1
                 ElseIf c.bytesRxd(131) = 5 Or (c.bytesRxd.Length = 137 And c.bytesRxd(132) = 5) Then
 
                     '' TEST RX: 267D5E0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000500206C7E
@@ -139,13 +137,13 @@ Public Class CommandQueue
                     'inactive or bad?
                     ''c.badNvRead = True
                     c.inactiveNvRead = True
-                    badItemCount += 1
+                    BadItemCount += 1
                 ElseIf c.bytesRxd(131) = 6 Or (c.bytesRxd.Length = 137 And c.bytesRxd(132) = 6) Then
 
                     'inactive or bad?
                     c.badNvRead = True
                     ''c.emptyNvRead = True
-                    badItemCount += 1
+                    BadItemCount += 1
                 Else
                     ''not needed?
                     'Dim nvData As String = cdmaTerm.biznytesToStrizings(c.bytesRxd).Substring(6, 256)
@@ -164,7 +162,6 @@ Public Class CommandQueue
         Catch ex As Exception
             Logger.Add("nv check err: " + ex.ToString)
         End Try
-
     End Sub
     'Public Sub generateRamBin(ByVal fileName As String)
 
@@ -176,12 +173,12 @@ Public Class CommandQueue
 
     'End Sub
 
-    Public Sub generateRamReadReport(ByVal fileName As String)
+    Public Sub GenerateRamReadReport(ByVal fileName As String)
         Dim myFileStream As FileStream
         Try
             myFileStream = File.OpenWrite(fileName)
 
-            For Each c As Command In mySynqdQ
+            For Each c As Command In MySynqdQ
 
                 If c.bytesRxd.Count > 22 Then
                     For i As Integer = 7 To 22
@@ -199,11 +196,10 @@ Public Class CommandQueue
         Catch ex As Exception
             Logger.Add("Ram read err: " + ex.ToString)
         End Try
-
     End Sub
 
-    Public Function generateRamScanReport() As List(Of String)
-        Dim Ranges As New List(Of String)
+    Public Function GenerateRamScanReport() As List(Of String)
+        Dim ranges As New List(Of String)
         Try
 
             Dim startAddress As String = ""
@@ -211,8 +207,7 @@ Public Class CommandQueue
             Dim inReadableRange As Boolean = False
 
 
-
-            For Each c As Command In mySynqdQ
+            For Each c As Command In MySynqdQ
 
                 If c.bytesRxd.Count > 22 Then
                     If inReadableRange = False Then
@@ -229,7 +224,7 @@ Public Class CommandQueue
                     If inReadableRange Then
                         endAddress = c.bytesRxd(5).ToString("x2") + c.bytesRxd(4).ToString("x2")
                         inReadableRange = False
-                        Ranges.Add(startAddress.ToUpper + " : " + endAddress.ToUpper)
+                        ranges.Add(startAddress.ToUpper + " : " + endAddress.ToUpper)
                     End If
 
                 End If
@@ -243,13 +238,11 @@ Public Class CommandQueue
             Logger.Add("Ram scan err: " + ex.ToString)
         End Try
 
-        Return Ranges
-
+        Return ranges
     End Function
 
 
-
-    Public Sub generateNvReadReport(ByVal fileName As String)
+    Public Sub GenerateNvReadReport(ByVal fileName As String)
         ''this is what the file to write looks like
 
         '        [NV Items]
@@ -285,16 +278,16 @@ Public Class CommandQueue
         ''2.7
         ''Dim completeItems As String = "[Complete items - " + mySynqdQ.Count.ToString + "]"
         ''3.5
-        Dim completeItems As String = "[Complete items - " + (mySynqdQ.Count - badItemCount).ToString + ", Items size - 128]"
+        Dim completeItems As String = "[Complete items - " + (MySynqdQ.Count - BadItemCount).ToString +
+                                      ", Items size - 128]"
 
         SaveTextToFile(completeItems, fileName)
         SaveTextToFile(vbCrLf, fileName)
         SaveTextToFile(vbCrLf, fileName)
 
-        For Each c As Command In mySynqdQ
+        For Each c As Command In MySynqdQ
 
             '' logger.addToLog("rxd: " + cdmaTerm.biznytesToStrizings(c.bytesRxd))
-            Dim nvOutputArray As New List(Of String)
             ''20 38 25 bad response length 20 results in arg out of range
             ''
             ''use the sent data to grab the item #
@@ -315,7 +308,7 @@ Public Class CommandQueue
             Dim hexString As String = nvItemNumberS
 
 
-            Dim decL As Long = Long.Parse(hexString, Globalization.NumberStyles.HexNumber)
+            Dim decL As Long = Long.Parse(hexString, NumberStyles.HexNumber)
 
             If c.badNvRead Then
 
@@ -367,27 +360,26 @@ Public Class CommandQueue
             End If
 
         Next
-
     End Sub
 
-    Public Function SaveTextToFile(ByVal strData As String, ByVal FullPath As String, Optional ByVal Append As Boolean = True) As Boolean
+    Public Function SaveTextToFile(ByVal strData As String, ByVal fullPath As String,
+                                   Optional ByVal append As Boolean = True) As Boolean
 
         Dim bAns As Boolean = False
         Dim objReader As StreamWriter
         Try
-            objReader = New StreamWriter(FullPath, Append)
+            objReader = New StreamWriter(fullPath, Append)
             objReader.Write(strData)
             objReader.Close()
             bAns = True
-        Catch Ex As Exception
-            Logger.Add("SaveTextToFile err: " + Ex.ToString)
+        Catch ex As Exception
+            Logger.Add("SaveTextToFile err: " + ex.ToString)
         End Try
         Return bAns
-
     End Function
 
     Private Function hexSpace(ByVal hexString As String) As String
-        Dim sb As New System.Text.StringBuilder
+        Dim sb As New StringBuilder
         Try
 
             For i = 0 To hexString.Length - 1 Step 2
@@ -403,5 +395,4 @@ Public Class CommandQueue
     Public Function GetCount() As Integer
         Return mySynqdQ.Count
     End Function
-
 End Class

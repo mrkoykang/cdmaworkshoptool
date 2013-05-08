@@ -21,7 +21,7 @@
 
             Dim nvItemNumberPart1 As String
             Dim nvItemNumberPart2 As String
-
+            ''todo:wtfness - this &H14 should probably actually cause  or flag an err
             If c.bytesRxd(0) = &H14 Then
                 nvItemNumberPart1 = c.bytesToTx.ToHexString().Substring(4, 2)
                 nvItemNumberPart2 = c.bytesToTx.ToHexString().Substring(2, 2)
@@ -88,10 +88,18 @@
 
     Public Overrides Sub decode()
         Try
+            ''todo: lazyness calling code lots of times 
+            Dim HeaderLength = 6
+            Dim HeaderAndCrcEofLength = HeaderLength + 6
 
-            cdmaTerm.thePhoneRxd.NvItems(Me.currentNv) = New Nv(Me.currentNv, SecretDecoderRing.trimFrontAndEndAscii(SecretDecoderRing.getAsciiStrings(bytesRxd)))
 
-            cdmaTerm.thePhone.NvItems(Me.currentNv) = New Nv(Me.currentNv, SecretDecoderRing.trimFrontAndEndAscii(SecretDecoderRing.getAsciiStrings(bytesRxd)))
+            cdmaTerm.thePhoneRxd.NvItems(Me.currentNv) = New Nv(currentNv, _
+                                                                SecretDecoderRing.trimFrontAndEndAscii(SecretDecoderRing.getAsciiStrings(bytesRxd)), _
+                                                                "0x" + bytesRxd.ToHexString().Substring(HeaderLength, bytesRxd.ToHexString().Length - HeaderAndCrcEofLength))
+
+            cdmaTerm.thePhone.NvItems(Me.currentNv) = New Nv(currentNv, _
+                                                             SecretDecoderRing.trimFrontAndEndAscii(SecretDecoderRing.getAsciiStrings(bytesRxd)), _
+                                                             "0x" + bytesRxd.ToHexString().Substring(HeaderLength, bytesRxd.ToHexString().Length - HeaderAndCrcEofLength))
 
         Catch ex As Exception
             logger.add("decode err:" + ex.ToString)

@@ -596,5 +596,17 @@ q.Run()";
         {
             cdmaTerm.SendAtCommand(AtCommand.Text);
         }
+
+        private void NvEditShowHex_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem s = (MenuItem)sender;
+            Nv nvEdit = (Nv)s.CommandParameter;
+            nvEdit.DisplayData = nvEdit.DataHex;
+            var nv = cdmaTerm.thePhone.NvItems;
+            cdmaTerm.thePhone.NvItems = null;
+            cdmaTerm.thePhone.NvItems = nv;
+        }
+
+   
     }
 }

@@ -5,7 +5,7 @@
         xmlns:metro="http://schemas.codeplex.com/elysium/theme"
         xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
                   
-              Title="cdmaDevTerm .2.85.alpha (c)12.12 dg chromableedstudios.com"
+              Title="cdmaDevTerm .2.9ish (c)05.13 dg chromableedstudios.com"
               Height="650" Width="554" 
               AllowsTransparency="False" WindowStyle="ThreeDBorderWindow">
     <Grid>
@@ -355,13 +355,20 @@
                                                         </TextBox.ToolTip>
 
                                                     </TextBox>
-                                                    <TextBox Text="{Binding Value.Data}" Margin="1" Grid.Column="1" >
+                                                    <TextBox Text="{Binding Value.DisplayData}" Margin="1" Grid.Column="1" >
                                                         <TextBox.ToolTip>
                                                             <ToolTip>
                                                                 <TextBlock Text="string or 0xFFFF..."/>
                                                             </ToolTip>
                                                         </TextBox.ToolTip>
-
+                                                        <ContextMenuService.ContextMenu>
+                                                            <ContextMenu>
+                                                                <MenuItem Name="NvEditShowHex" Header="Show hex" 
+                                                                           CommandParameter="{Binding Value}" Click="NvEditShowHex_Click"/>
+                                                                <MenuItem Header="Copy" Command="Copy"></MenuItem>
+                                                                <MenuItem Header="Paste" Command="Paste"></MenuItem>
+                                                            </ContextMenu>
+                                                        </ContextMenuService.ContextMenu>
                                                     </TextBox>
                                                 </Grid>
                                             </DataTemplate>

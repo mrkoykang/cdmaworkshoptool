@@ -1,4 +1,19 @@
-﻿Imports System.Text
+﻿'' cdmaDevTerm
+'' Copyright (c) Dillon Graham 2010-2013 Chromableed Studios
+'' www.chromableedstudios.com
+''     
+'' cdmadevterm by ¿k? with help from ajh and jh and many others
+''
+'' this was originally developed as a test framework, before many 
+'' things about qcdm(and programming) were understood by the author
+'' please forgive some code that should never have seen the light of day ;)
+''
+''-------------------------------------------------------------------------------------------------------------
+'' CDMA DEV TERM is released AS-IS without any warranty of any thing, blah blah blah, under the GPL v3 licence
+'' check out the GPL v3 for details
+'' http://www.gnu.org/copyleft/gpl.html
+''-------------------------------------------------------------------------------------------------------------
+Imports System.Text
 
 Public Class NvItems
     Public Enum NvItems As Long
@@ -1352,6 +1367,7 @@ Public Class NvItems
 
     '#End Region
 
+    ''todo:wtfness
     Function fixNVItemNumber(ByVal itemNumber As Integer, ByVal length As Integer) As String
         Dim chex As String = Convert.ToString(itemNumber, 16)
         ''make it fatter
@@ -1411,49 +1427,33 @@ Public Class NvItems
     '    Dim bob As New BuilderBob
     '    Dim result(2) As Byte
 
-
-
     '    ''fix the order the hex is displayed in
     '    Dim returnHex As String = fixNVItemNumber(itemNumber, 6)
-
-
     '    ''logger.addToLog("return hex revd/:" + returnHex)
-
     '    Dim prefix As Byte() = cdmaTerm.String_To_Bytes("26" + returnHex)
     '    ''no se? test
     '    '' cdmaTerm. Q.addCommandToQ(New Command((bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")))
     '    ''
-
     '    Dim fullCommand As New List(Of Byte)
     '    For Each b As Byte In prefix
     '        fullCommand.Add(b)
     '    Next
-
     '    While fullCommand.Count < 133
     '        fullCommand.Add(&H0)
     '    End While
-
     '    Dim calcCrc() As Byte
     '    calcCrc = cdmaTerm.gimmeCRC_AsByte_FromByte(fullCommand.ToArray)
-
     '    fullCommand.Add(calcCrc(0))
-
     '    fullCommand.Add(calcCrc(1))
-
     '    fullCommand.Add(&H7E)
-
-
     '    ''logger.addToLog("hex: " + returnHex + " prefix: " + cdmaTerm.biznytesToStrizings(prefix) + " whole command: " + cdmaTerm.biznytesToStrizings(fullCommand.ToArray))
-
-
-
     '    Dim returnTheCommand As New Command(fullCommand.ToArray, itemDebug)
 
-
     '    '' Dim returnTheCommand As New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), "Return the Command")
-
     '    Return returnTheCommand
     'End Function
+
+    ''todo:wtfness
     Shared Function readNVItemRange(startingItem As Integer, ByVal endItem As Integer) As Boolean
         Return readNVItemRange(startingItem, endItem, False, "")
     End Function
@@ -1552,7 +1552,6 @@ Public Class NvItems
         ''determine 3.5/2.7 - not sure if this will matter with our engine?
         '' looks like 3.5 supports variable lenth nv?
 
-
         '' loop to write nv item
 
         ''read numbers to first space to tmpNVItemNumber
@@ -1560,35 +1559,9 @@ Public Class NvItems
         '' pad to 6 digits and do the number_flippy_stuff
         '' this is command ( 27 + number_flippy_stuff + data.(-spaces) + crc? + eof?  )
 
-
         ''return number of items written
         Return 0
     End Function
-
-
-    ' ''TODO: this probably needs clean up and i think the builder bob part should/could be replaced
-    'Public Function WriteNVItem(ByVal item As Integer, ByVal value As String) As Boolean
-    '    Dim bob As New BuilderBob
-    '    Dim enc As New ASCIIEncoding
-
-
-    '    Dim prefix As Byte() = cdmaTerm.String_To_Bytes("27" + fixNVItemNumber(item, 4) + (value))
-    '    Dim tempQ As New Qmanager
-
-    '    '' logger.addToLog(cdmaTerm.biznytesToStrizings(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")))).ToString()
-
-    '    ''Dim c As New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), ("nv"))
-
-    '    ''logger.addToLog("prefix" + cdmaTerm.biznytesToStrizings(prefix))
-    '    ''TODO: Error
-    '    ''logger.addToLog("wr nv" + cdmaTerm.biznytesToStrizings(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + ""))))
-
-    '    tempQ.addCommandToQ(New Command(bob.buildATerminalCommand(cdmaTerm.empty_cmd_133, prefix, bob.buildDataArray("0" + "")), ("nv#")))
-
-    '    tempQ.Run()
-    '    Return True
-
-    'End Function
 
     Public Function WriteNVItem(ByVal item As Integer, ByVal data As Byte()) As Boolean
 
@@ -1613,12 +1586,5 @@ Public Class NvItems
         oRead.Close()
         Return LineIn
     End Function
-
-
-
-
-
-
-
 
 End Class

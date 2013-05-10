@@ -1,9 +1,8 @@
-﻿'' CDMA DEV TERM
-'' Copyright (c) Dillon Graham 2010-2012 Chromableed Studios
+﻿'' cdmaDevTerm
+'' Copyright (c) Dillon Graham 2010-2013 Chromableed Studios
 '' www.chromableedstudios.com
-'' chromableedstudios ( a t ) gmail ( d o t ) com
 ''     
-'' cdmadevterm by ¿k? with help from ajh and jh
+'' cdmadevterm by ¿k? with help from ajh and jh and many others
 ''
 '' this was originally developed as a test framework, before many 
 '' things about qcdm(and programming) were understood by the author
@@ -34,6 +33,7 @@ Public Class Command
     Public debuggingText As String ''string to define command for logging purposes
     Public currentQcdm As Qcdm.Cmd = Qcdm.Cmd.NOT_A_COMMAND ''current qcdm command
     Public currentNv As NvItems.NvItems = NvItems.NvItems.NOT_AN_NV_ITEM ''current nv item
+    Public currentNvInt As Integer ''current nv item
     Public badNvRead As Boolean = False
     Public inactiveNvRead As Boolean = False
     Public badSecurityNvRead As Boolean = False
@@ -92,6 +92,8 @@ Public Class Command
     Public Sub New(ByVal qcdm As Qcdm.Cmd, ByVal nv As Integer, ByVal nvItemData As Byte(), ByVal debuggingTextIn As String)
         currentQcdm = qcdm
         currentNv = nv
+        currentNvInt = nv
+
         Dim s As String = Integer.Parse(nv).ToString("X")
         While s.Length < 4
             s = "0" + s
@@ -233,4 +235,45 @@ Public Class Command
         Return output
     End Function
     
+    Public Function GetStatus() As String
+        Dim result = "OK"
+        If bytesRxd.Length < 136 Then
+            badSecurityNvRead = True
+            result = "Access denied"
+        ElseIf bytesRxd(131) = 5 Or (bytesRxd.Length = 137 And bytesRxd(132) = 5) Then
+            inactiveNvRead = True
+            result = "Inactive item"
+        ElseIf bytesRxd(131) = 6 Or (bytesRxd.Length = 137 And bytesRxd(132) = 6) Then
+            badNvRead = True
+            result = "Parameter bad"
+        End If
+        Return result
+    End Function
+
+    Public Function GetNvData() As String
+        If (badNvRead Or badSecurityNvRead Or inactiveNvRead) Then
+            Return ""
+        End If
+
+        Dim nvData As String = bytesRxd.ToHexString().Substring(6, 256)
+        Dim ret =
+        hexSpace(nvData.Substring(0, 32)) _
+        + vbCrLf _
+        + hexSpace(nvData.Substring(32, 32)) _
+        + vbCrLf _
+        + hexSpace(nvData.Substring(64, 32)) _
+        + vbCrLf _
+        + hexSpace(nvData.Substring(96, 32)) _
+        + vbCrLf _
+        + hexSpace(nvData.Substring(64, 32)) _
+        + vbCrLf _
+        + hexSpace(nvData.Substring(80, 32)) _
+        + vbCrLf _
+        + hexSpace(nvData.Substring(96, 32)) _
+        + vbCrLf _
+        + hexSpace(nvData.Substring(128, 32)) _
+        + vbCrLf
+        Return ret
+    End Function
+
 End Class

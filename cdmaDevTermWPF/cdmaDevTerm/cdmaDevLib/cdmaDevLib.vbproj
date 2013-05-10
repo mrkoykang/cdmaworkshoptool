@@ -118,7 +118,17 @@
     <Compile Include="qcdm\Nv.vb" />
     <Compile Include="qcdm\NvItemOLD.vb" />
     <Compile Include="qcdm\NVItems.vb" />
-    <Compile Include="qcdm\NvScriptTool.vb" />
+    <Compile Include="qcdm\NvReadFormatting.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NvReadFormatting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="qcdm\NvReadFormatting1.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NvReadFormatting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="qcdm\NvReadFormattingCode.vb" />
     <Compile Include="p2k.vb" />
     <Compile Include="Prl.vb" />
     <Compile Include="qcdm\Qcdm.vb" />
@@ -143,9 +153,17 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="qcdm\NvReadFormatting.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <CustomToolNamespace>My.Templates</CustomToolNamespace>
+      <LastGenOutput>NvReadFormatting1.vb</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="qcCmd\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,7 +6,91 @@ cdmaDevLib
 </name>
 </assembly>
 <members>
-<member name="P:cdmaDevLib.My.Resources.Resources.ResourceManager">
+<member name="M:cdmaDevLib.My.Templates.NvReadFormatting.TransformText">
+	<summary>
+Create the template output
+</summary>
+</member><member name="T:cdmaDevLib.My.Templates.NvReadFormatting">
+	<summary>
+Class to produce the template output
+</summary>
+</member><member name="P:cdmaDevLib.My.Templates.NvReadFormattingBase.GenerationEnvironment">
+	<summary>
+The string builder that generation-time code is using to assemble generated output
+</summary>
+</member><member name="P:cdmaDevLib.My.Templates.NvReadFormattingBase.Errors">
+	<summary>
+The error collection for the generation process
+</summary>
+</member><member name="P:cdmaDevLib.My.Templates.NvReadFormattingBase.indentLengths">
+	<summary>
+A list of the lengths of each indent that was added with PushIndent
+</summary>
+</member><member name="P:cdmaDevLib.My.Templates.NvReadFormattingBase.CurrentIndent">
+	<summary>
+Gets the current indent we use when adding lines to the output
+</summary>
+</member><member name="P:cdmaDevLib.My.Templates.NvReadFormattingBase.Session">
+	<summary>
+Current transformation session
+</summary>
+</member><member name="M:cdmaDevLib.My.Templates.NvReadFormattingBase.Write(System.String)">
+	<summary>
+Write text directly into the generated output
+</summary>
+</member><member name="M:cdmaDevLib.My.Templates.NvReadFormattingBase.WriteLine(System.String)">
+	<summary>
+Write text directly into the generated output
+</summary>
+</member><member name="M:cdmaDevLib.My.Templates.NvReadFormattingBase.Write(System.String,System.Object[])">
+	<summary>
+Write formatted text directly into the generated output
+</summary>
+</member><member name="M:cdmaDevLib.My.Templates.NvReadFormattingBase.WriteLine(System.String,System.Object[])">
+	<summary>
+Write formatted text directly into the generated output
+</summary>
+</member><member name="M:cdmaDevLib.My.Templates.NvReadFormattingBase.Error(System.String)">
+	<summary>
+Raise an error
+</summary>
+</member><member name="M:cdmaDevLib.My.Templates.NvReadFormattingBase.Warning(System.String)">
+	<summary>
+Raise a warning
+</summary>
+</member><member name="M:cdmaDevLib.My.Templates.NvReadFormattingBase.PushIndent(System.String)">
+	<summary>
+Increase the indent
+</summary>
+</member><member name="M:cdmaDevLib.My.Templates.NvReadFormattingBase.PopIndent">
+	<summary>
+Remove the last indent that was added with PushIndent
+</summary>
+</member><member name="M:cdmaDevLib.My.Templates.NvReadFormattingBase.ClearIndent">
+	<summary>
+Remove any indentation
+</summary>
+</member><member name="P:cdmaDevLib.My.Templates.NvReadFormattingBase.ToStringInstanceHelper.FormatProvider">
+	<summary>
+Gets or sets format provider to be used by ToStringWithCulture method.
+</summary>
+</member><member name="M:cdmaDevLib.My.Templates.NvReadFormattingBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
+	<summary>
+This is called from the compile/run appdomain to convert objects within an expression block to a string
+</summary>
+</member><member name="T:cdmaDevLib.My.Templates.NvReadFormattingBase.ToStringInstanceHelper">
+	<summary>
+Utility class to produce culture-oriented representation of an object as a string.
+</summary>
+</member><member name="P:cdmaDevLib.My.Templates.NvReadFormattingBase.ToStringHelper">
+	<summary>
+Helper to produce culture-oriented representation of an object as a string
+</summary>
+</member><member name="T:cdmaDevLib.My.Templates.NvReadFormattingBase">
+	<summary>
+Base class for this transformation
+</summary>
+</member><member name="P:cdmaDevLib.My.Resources.Resources.ResourceManager">
 	<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>

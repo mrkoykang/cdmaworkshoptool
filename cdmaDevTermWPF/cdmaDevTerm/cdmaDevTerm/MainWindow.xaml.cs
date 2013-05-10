@@ -37,13 +37,15 @@ namespace cdmaDevTerm
         private ScriptEngine _engine;
         private ScriptScope _scope;
 
-        private string _scriptImports = @"#imports
+        private string _scriptImports = 
+@"#imports
 import clr
 from cdmaDevLib import *
 from System import Array,Byte,String
 ";
 
-        private string cdmaDevTermSampleScript = @"#
+        private string cdmaDevTermSampleScript = 
+@"#
 #cdmaDevTerm sample ironPython script
 #copyright 2012 DG, chromableedstudios.com
 #

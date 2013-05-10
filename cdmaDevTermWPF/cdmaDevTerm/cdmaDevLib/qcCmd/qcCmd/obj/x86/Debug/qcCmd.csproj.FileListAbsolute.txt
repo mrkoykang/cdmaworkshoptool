@@ -1,5 +1,0 @@
-C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\qcCmd\qcCmd\bin\Debug\qcCmd.exe
-C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\qcCmd\qcCmd\bin\Debug\qcCmd.pdb
-C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\qcCmd\qcCmd\obj\x86\Debug\ResolveAssemblyReference.cache
-C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\qcCmd\qcCmd\obj\x86\Debug\qcCmd.exe
-C:\data\dev\repos\cdmaworkshoptool\cdmaDevLib\cdmaDevLib\qcCmd\qcCmd\obj\x86\Debug\qcCmd.pdb

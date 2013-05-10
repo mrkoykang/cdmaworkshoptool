@@ -867,7 +867,10 @@ Public Class cdmaTerm
             Dim nvItemList As String() = ReadNvList.Replace(",", "").Split(" ")
             ReadNvItemList(nvItemList)
             Logger.Add("Reading NV List - This may take a while, do not unplug...")
-            nvReadQ.generateNvReadReport(fileName)
+            Dim Format = New My.Templates.NvReadFormatting(nvReadQ)
+            Dim Content = Format.TransformText()
+            System.IO.File.WriteAllText(fileName, Content)
+            ''nvReadQ.generateNvReadReport(fileName)
             Logger.Add("NV Read Complete")
         Catch ex As Exception
             Logger.Add("Read nv list err: " + ex.ToString)
@@ -884,7 +887,7 @@ Public Class cdmaTerm
                 If nvItemList(i).Contains("-") Then
                     Dim subNvRange As String() = nvItemList(i).Split("-")
                     NvItems.readNVItemRange(subNvRange(0), subNvRange(1))
-                ElseIf True Then
+                Else
                     Dim debugString As String = "readNVItemList DIAG_NV_READ_F " + nvItemList(i)
                     Dim cmd = New Command(Qcdm.Cmd.DIAG_NV_READ_F, Integer.Parse(nvItemList(i)), New Byte() {}, debugString)
                     Q.Add(cmd)

@@ -13,19 +13,15 @@
 '' check out the GPL v3 for details
 '' http://www.gnu.org/copyleft/gpl.html
 ''-------------------------------------------------------------------------------------------------------------
+Namespace My.Templates
+    Partial Public Class NvReadFormatting
+        Private count As Integer
+        Private NvRead As CommandQueue
+        Public Sub New(ByVal data As CommandQueue)
+            NvRead = data
+            count = NvRead.GetCount()
+        End Sub
+    End Class
+End Namespace
 
-''this class is mostly used for display purpose
-''check out cmd_nv for the 'actual' nv class
-Public Class Nv
-    Property DisplayData As String
-    Property Data As String
-    Property DataHex As String
-    Property Item As String
 
-    Sub New(_nvItem As NvItems.NvItems, _Data As String, _DataHex As String)
-        Data = _Data
-        DisplayData = _Data
-        DataHex = _DataHex
-        Item = _nvItem.ToString
-    End Sub
-End Class

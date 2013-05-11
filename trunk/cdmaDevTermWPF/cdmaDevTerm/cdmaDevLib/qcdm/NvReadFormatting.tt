@@ -8,6 +8,10 @@
 
 <#
     For Each c As Command In NvRead.MySynqdQ
+
+	 If (c.Sent = False) Then
+		Continue For
+     End If
 #>
 <#= c.currentNvInt.ToString("d5") #> (0x<#= c.currentNvInt.ToString("x4").ToUpper() #>)   -   <#= c.GetStatus() #>
 <#= c.GetNvData() #>

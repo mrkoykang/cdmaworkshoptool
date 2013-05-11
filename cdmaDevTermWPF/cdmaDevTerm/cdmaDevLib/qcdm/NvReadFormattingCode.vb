@@ -15,6 +15,7 @@
 ''-------------------------------------------------------------------------------------------------------------
 Namespace My.Templates
     Partial Public Class NvReadFormatting
+
         Private count As Integer
         Private NvRead As CommandQueue
         Public Sub New(ByVal data As CommandQueue)

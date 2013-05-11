@@ -35,41 +35,45 @@ Namespace My.Templates
 
     For Each c As Command In NvRead.MySynqdQ
 
+	 If (c.Sent = False) Then
+		Continue For
+     End If
+
             
             #End ExternalSource
             
-            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",12)
+            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",16)
             Me.Write(Me.ToStringHelper.ToStringWithCulture(c.currentNvInt.ToString("d5")))
             
             #End ExternalSource
             Me.Write(" (0x")
             
-            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",12)
+            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",16)
             Me.Write(Me.ToStringHelper.ToStringWithCulture(c.currentNvInt.ToString("x4").ToUpper()))
             
             #End ExternalSource
             Me.Write(")   -   ")
             
-            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",12)
+            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",16)
             Me.Write(Me.ToStringHelper.ToStringWithCulture(c.GetStatus()))
             
             #End ExternalSource
             Me.Write(""&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
             
-            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",13)
+            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",17)
             Me.Write(Me.ToStringHelper.ToStringWithCulture(c.GetNvData()))
             
             #End ExternalSource
             Me.Write(""&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
             
-            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",14)
+            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",18)
 
     Next
 
             
             #End ExternalSource
             
-            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",17)
+            #ExternalSource("C:\data\test\New folder (4)\cdmaDevTermWPF\cdmaDevTerm\cdmaDevLib\qcdm\NvReadFormatting.tt",21)
 '' cdmaDevTerm
 '' Copyright (c) Dillon Graham 2010-2013 Chromableed Studios
 '' www.chromableedstudios.com

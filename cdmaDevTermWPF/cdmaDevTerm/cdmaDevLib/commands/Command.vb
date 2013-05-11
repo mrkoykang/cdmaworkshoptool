@@ -24,7 +24,7 @@ Public Class Command
     Inherits ICommand
 
     Public bytesToTx As Byte() ''outgoing byte array
-    Public bytesRxd As Byte() ''incoming byte array
+    Public bytesRxd As Byte() = New Byte() {} ''incoming byte array
     Public appendCRC As Boolean = True ''should the crc+7e be added
     Public fixedLength As Boolean ''is the command a fixed length or varied with data packet
     Public length As Double ''length of byte response
@@ -37,6 +37,7 @@ Public Class Command
     Public badNvRead As Boolean = False
     Public inactiveNvRead As Boolean = False
     Public badSecurityNvRead As Boolean = False
+    Public Sent As Boolean = False
 
     '' COMMAND OBJECT
     ''not preferred command constructor for raw bytes (factory is better-might get decoded that way)
@@ -181,13 +182,14 @@ Public Class Command
             cdmaTerm.Q.InterruptQuiet()
         Else
             Try
-                Dim testSend As New DmPort
+                Dim port As New DmPort
 
-                bytesRxd = testSend.WriteRead(bytesToTx)
+                bytesRxd = port.WriteRead(bytesToTx)
+                Sent = True
 
                 ''untested fix for 7d/5e/5d return issue
                 ''
-                bytesRxd = testSend.unescapeReturnedBytes(bytesRxd)
+                bytesRxd = port.unescapeReturnedBytes(bytesRxd)
                 logger.add(vbNewLine + vbNewLine)
                 logger.add(debuggingText)
 

@@ -548,25 +548,89 @@ q.Run()";
                     completionWindow = new CompletionWindow(CodeTextEditor.TextArea);
 
                     IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
-                    var offset = CodeTextEditor.CaretOffset-9;
+                    var offset = CodeTextEditor.CaretOffset;
                     if (offset > 0)
                     {
-                        var s = CodeTextEditor.Text.Substring(offset, 8);
-                        if (s == "cdmaTerm")
+                        //class methods
+                        var checkString = "cdmaTerm";
+                        var s = CodeTextEditor.Text.Substring(CodeTextEditor.CaretOffset - (checkString.Length + 1), checkString.Length);
+                        if (s == checkString)
                         {
-
                             //http://www.java2s.com/Tutorial/CSharp/0400__Reflection/ListMethods.htm
-                            cdmaTerm f = new cdmaTerm();
-                            Type t = f.GetType();
+                            cdmaTerm searchClass = new cdmaTerm();
+                            Type t = searchClass.GetType();
                             MethodInfo[] mi = t.GetMethods(BindingFlags.Static | BindingFlags.Public);
                             foreach (MethodInfo m in mi)
                             {
                                 data.Add(new CompletionData(m.Name, m.GetSignature()));
-
                             }
                             completionWindow.BorderThickness = new System.Windows.Thickness { Left = 0, Top = 0, Right = 0, Bottom = 0 };
                             completionWindow.Show();
                         }
+
+                        //class methods #2? todo:wtf lazy should refactor to method...meh
+                        checkString = "q";
+                        s = CodeTextEditor.Text.Substring(CodeTextEditor.CaretOffset - (checkString.Length + 1), checkString.Length);
+                        if (s == checkString)
+                        {
+                            CommandQueue searchClass = new CommandQueue();
+                            Type t = searchClass.GetType();
+                            MethodInfo[] mi = t.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+                            foreach (MethodInfo m in mi)
+                            {
+                                data.Add(new CompletionData(m.Name, m.GetSignature()));
+                            }
+                            completionWindow.BorderThickness = new System.Windows.Thickness { Left = 0, Top = 0, Right = 0, Bottom = 0 };
+                            completionWindow.Show();
+                        }
+
+                        //enum
+                        checkString = "NvItems.NvItems";
+                        s = CodeTextEditor.Text.Substring(CodeTextEditor.CaretOffset - (checkString.Length + 1), checkString.Length);
+                        if (s == checkString)
+                        {
+       
+                            foreach (var nvItemEnum in Enum.GetValues(typeof(cdmaDevLib.NvItems.NvItems))) 
+                            {
+                                string enumVals = nvItemEnum.ToString();
+                                data.Add(new CompletionData(nvItemEnum.ToString(), enumVals));
+                            }
+                            completionWindow.BorderThickness = new System.Windows.Thickness { Left = 0, Top = 0, Right = 0, Bottom = 0 };
+                            completionWindow.Show();
+                        }
+
+                        //enum 2 todo:should refactor methods to check string and populate seperate
+                        checkString = "Qcdm.Cmd";
+                        s = CodeTextEditor.Text.Substring(CodeTextEditor.CaretOffset - (checkString.Length + 1), checkString.Length);
+                        if (s == checkString)
+                        {
+
+                            foreach (var qc in Enum.GetValues(typeof(cdmaDevLib.Qcdm.Cmd)))
+                            {
+                                string enumVals = (qc).ToString();
+                                data.Add(new CompletionData(qc.ToString(), enumVals));
+                            }
+                            completionWindow.BorderThickness = new System.Windows.Thickness { Left = 0, Top = 0, Right = 0, Bottom = 0 };
+                            completionWindow.Show();
+                        }
+
+                        //class properties
+                        checkString = "phone";
+                        s = CodeTextEditor.Text.Substring(CodeTextEditor.CaretOffset - (checkString.Length + 1), checkString.Length);
+                        if (s == checkString)
+                        {
+                            PropertyInfo[] phoneProperties = typeof(cdmaDevLib.Phone).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                            foreach (PropertyInfo pi in phoneProperties)
+                            {
+                                data.Add(new CompletionData(pi.Name, pi.PropertyType.ToString()));
+                             
+                                // do something here with the color
+                            }
+                            completionWindow.BorderThickness = new System.Windows.Thickness { Left = 0, Top = 0, Right = 0, Bottom = 0 };
+                            completionWindow.Show();
+                        }
+
+                       
                     }
                     
                     completionWindow.Closed += delegate

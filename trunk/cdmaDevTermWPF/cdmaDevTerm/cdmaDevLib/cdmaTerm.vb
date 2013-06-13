@@ -49,6 +49,7 @@ Public Class cdmaTerm
         HTC
         LG
         MetroPCS
+        EfsNv85
     End Enum
 
 #Region "Port Setup"
@@ -66,10 +67,6 @@ Public Class cdmaTerm
 
     ''no se
     Public commandInProgress As String
-
-    Dim rxBuff As String
-
-    Dim mySDR As New SecretDecoderRing
 
     Public Shared mySerialPort2 As New SerialCom("\\.\COM3", 9600, IO.Ports.StopBits.One, IO.Ports.Parity.None, 8) ''actual winapi port
 
@@ -195,6 +192,7 @@ Public Class cdmaTerm
     End Sub
 
     ''TODO: use factory
+    ''assumes the Q is clear or whatever is in is ok to send
     Shared Sub readSpcFromPhone(ByVal spcType As cdmaTerm.SpcReadType)
         ''first check which read type then go
         If spcType = cdmaTerm.SpcReadType.DefaultNv Then
@@ -246,14 +244,29 @@ Public Class cdmaTerm
 
             Q.Add(CommandFactory.GetCommand(DIAG_ESN_F))
             Q.Run()
-
-
             Try
                 Dim ajhBlackMagic As New metroCalc
                 ''get esn from gui
                 thePhone.Spc = ajhBlackMagic.MetroSPCcalc(thePhone.Esn) ''todo: what to do with result in this design?
             Catch ex As Exception
                 Logger.Add("metro spc error: " + ex.ToString)
+            End Try
+
+        ElseIf spcType = cdmaTerm.SpcReadType.EfsNv85 Then
+            ' thanks to hetaldp for the efs/nv item 85 method
+            Dim EfsNv85 As Byte() = {DIAG_SUBSYS_CMD_F, Qcdm.diagpkt_subsys_cmd_enum_type.DIAG_SUBSYS_FS, &H1B, &H0, &H6, &H0, _
+                &H0, &H0, &HB, &H0, &H0, &H0, _
+                &H6E, &H76, &H6D, &H2F, &H6E, &H75, _
+                &H6D, &H2F, &H38, &H35, &H0, &H55, _
+                &H68, &H7E}
+
+            Dim _cmd As New Command(EfsNv85, "Read Spc EFS NV item 85")
+            cdmaTerm.Q.Add(_cmd)
+            cdmaTerm.Q.Run()
+            Try
+                thePhone.Spc = ASCIIEncoding.ASCII.GetString(_cmd.bytesRxd, 12, 6)
+            Catch ex As Exception
+                Logger.Add("Efs nv 85 err: " + ex.ToString)
             End Try
 
         End If
@@ -460,8 +473,6 @@ Public Class cdmaTerm
 
 
     Public Shared Sub LgReadMeid()
-
-        Dim ponyXpress As New CommandQueue
 
         Q.Add(New Command(unlockLgNvMemory, "Unlock LG NV Memory"))
         Q.Add(New Command(lg_Lock1, "LG Lock 1"))

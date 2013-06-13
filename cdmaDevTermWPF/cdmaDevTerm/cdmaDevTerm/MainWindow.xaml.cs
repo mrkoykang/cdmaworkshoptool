@@ -313,6 +313,10 @@ q.Run()";
             private void SendSP_Click(object sender, RoutedEventArgs e)
             {
                 cdmaTerm.SendA16digitCode(cdmaTerm.thePhone.SixteenDigitSP);
+                if (ReadEfsNv85.IsChecked ?? true)
+                {
+                    cdmaTerm.readSpcFromPhone(cdmaTerm.SpcReadType.EfsNv85);
+                }
             }
 
             private void writeSpc_Click(object sender, RoutedEventArgs e)

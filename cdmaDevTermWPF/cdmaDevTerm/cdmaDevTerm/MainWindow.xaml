@@ -410,6 +410,7 @@
                             <StackPanel Grid.Column="0">
                                 <ComboBox ItemsSource="{Binding SpSixteenDigit}" HorizontalAlignment="Stretch" Margin="2" Name="spBox" VerticalAlignment="Top" MinWidth="300" SelectedValuePath="Value" SelectedValue="{Binding SixteenDigitSP}" DisplayMemberPath="Key" />
                                 <TextBox Text="{Binding SixteenDigitSP}" HorizontalAlignment="Stretch" Margin="2" MinWidth="300"></TextBox>
+                                <CheckBox x:Name="ReadEfsNv85" IsChecked="{Binding Path=NamLock}" Content="READ EFS NV 85 SPC"></CheckBox>
                             </StackPanel>
                             <StackPanel Grid.Column="1">
                                 <Button  Margin="5" MinHeight="70" MinWidth="70" Name="SendSP" Click="SendSP_Click" >
